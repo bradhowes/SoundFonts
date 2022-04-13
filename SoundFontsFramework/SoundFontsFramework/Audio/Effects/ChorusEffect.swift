@@ -5,7 +5,7 @@ import AVFoundation
 /// Chorus audio effect
 public final class ChorusEffect: NSObject {
 
-  public var audioUnit: AVAudioUnitEffect?
+  public let audioUnit: AVAudioUnitEffect
 
   private static let _factoryPresetDefs = [
     AUPresetEntry(
@@ -25,34 +25,27 @@ public final class ChorusEffect: NSObject {
   public var active: ChorusConfig { didSet { applyActiveConfig(active) } }
 
   public override init() {
-
-    let componentDescription = AudioComponentDescription(componentType: FourCharCode(""),
-                                                         componentSubType: FourCharCode(""),
-                                                         componentManufacturer: FourCharCode(""),
+    let componentDescription = AudioComponentDescription(componentType: FourCharCode("aufx"),
+                                                         componentSubType: FourCharCode("chor"),
+                                                         componentManufacturer: FourCharCode("BRay"),
                                                          componentFlags: 0, componentFlagsMask: 0)
-
-    AVAudioUnit.instantiate(with: componentDescription, options: []) { audioUnit, err in
-      guard let audioUnit = audioUnit as? AVAudioUnitEffect else {
-        fatalError("failed to allocate chorus audio unit - " + (err?.localizedDescription ?? "???"))
-      }
-      self.audioUnit = audioUnit
-      self.active = Self._factoryPresetConfigs[0]
-      self.applyActiveConfig(self.active)
-    }
-
+    audioUnit = AVAudioUnitEffect(audioComponentDescription: componentDescription)
+    active = Self._factoryPresetConfigs[0]
     super.init()
+
+    self.applyActiveConfig(self.active)
   }
 }
 
 extension ChorusEffect {
 
   private func applyActiveConfig(_ config: ChorusConfig) {
-    DispatchQueue.global(qos: .userInitiated).async {
-      self.audioUnit.bypass = !config.enabled
-      self.audioUnit.wetDryMix = config.wetDryMix
-      self.audioUnit.rate = config.rate
-      self.audioUnit.feedback = config.feedback
-      self.audioUnit.lowPassCutoff = config.cutoff
-    }
+//    DispatchQueue.global(qos: .userInitiated).async {
+//      self.audioUnit.bypass = !config.enabled
+//      self.audioUnit.wetDryMix = config.wetDryMix
+//      self.audioUnit.rate = config.rate
+//      self.audioUnit.feedback = config.feedback
+//      self.audioUnit.lowPassCutoff = config.cutoff
+//    }
   }
 }

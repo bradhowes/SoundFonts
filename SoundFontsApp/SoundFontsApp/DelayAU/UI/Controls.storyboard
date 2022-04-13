@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +17,7 @@
         <!--Effects-->
         <scene sceneID="GTL-k8-6DV">
             <objects>
-                <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" interfaceStyle="dark" id="erm-79-XXa" customClass="DelayViewController" customModule="DelayAU" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" interfaceStyle="dark" id="erm-79-XXa" customClass="DelayViewController" customModule="ChorusAU" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="146"/>
                         <subviews>
@@ -27,22 +27,22 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="733-cn-OvM">
                                         <rect key="frame" x="0.0" y="0.0" width="376" height="17"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Title">
                                                 <rect key="frame" x="0.0" y="0.0" width="376" height="17"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
-                                                <state key="normal" title=" Delay"/>
+                                                <state key="normal" title="Chorus"/>
                                             </button>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="fillEqually" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8p-ND-Why" userLabel="Delay Controls">
                                         <rect key="frame" x="0.0" y="21" width="376" height="110.5"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Rate">
                                                 <rect key="frame" x="2" y="2" width="90" height="106.5"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" customClass="Knob" customModule="SoundFontsFramework">
                                                         <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="JtZ-rl-MNW"/>
@@ -53,7 +53,7 @@
                                                             <action selector="changeTime:" destination="erm-79-XXa" eventType="valueChanged" id="fZt-ul-dUd"/>
                                                         </connections>
                                                     </view>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs" userLabel="Label">
                                                         <rect key="frame" x="0.0" y="90" width="90" height="16.5"/>
                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
@@ -62,10 +62,10 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Amount">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Depth">
                                                 <rect key="frame" x="96" y="2" width="90" height="106.5"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" userLabel="Amount" customClass="Knob" customModule="SoundFontsFramework">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" customClass="Knob" customModule="SoundFontsFramework">
                                                         <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="iM2-XN-xlU" secondAttribute="height" multiplier="1:1" id="f9r-ZB-MMo"/>
@@ -74,7 +74,7 @@
                                                             <action selector="changeFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="Rpy-FB-916"/>
                                                         </connections>
                                                     </view>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Depth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R" userLabel="Label">
                                                         <rect key="frame" x="0.0" y="90" width="90" height="16.5"/>
                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
@@ -83,10 +83,10 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="maH-vs-3Vs" userLabel="Cutoff">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="maH-vs-3Vs" userLabel="Delay">
                                                 <rect key="frame" x="190" y="2" width="90" height="106.5"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" userLabel="Cutoff" customClass="Knob" customModule="SoundFontsFramework">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" customClass="Knob" customModule="SoundFontsFramework">
                                                         <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="1pW-XF-kq9" secondAttribute="height" multiplier="1:1" id="zxz-QP-a9e"/>
@@ -95,7 +95,7 @@
                                                             <action selector="changeCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="78w-l8-6b8"/>
                                                         </connections>
                                                     </view>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Delay" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw" userLabel="Label">
                                                         <rect key="frame" x="0.0" y="90" width="90" height="16.5"/>
                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
@@ -167,7 +167,7 @@
     <color key="tintColor" systemColor="systemTealColor"/>
     <resources>
         <systemColor name="systemTealColor">
-            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

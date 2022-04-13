@@ -113,6 +113,10 @@
 		BD1C22F125CDC781007C114F /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C22F025CDC781007C114F /* TutorialViewController.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BC23FE690300AE9F3D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController.swift */; };
+		BD22B4752806CC35001132D6 /* Kernel in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B4742806CC35001132D6 /* Kernel */; };
+		BD22B4772806CC35001132D6 /* KernelBridge in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B4762806CC35001132D6 /* KernelBridge */; };
+		BD22B4792806CC35001132D6 /* ParameterAddress in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B4782806CC35001132D6 /* ParameterAddress */; };
+		BD22B47B2806CC35001132D6 /* Parameters in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B47A2806CC35001132D6 /* Parameters */; };
 		BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD239485255213CB004E5E0D /* KeyParamSequence.swift */; };
 		BD23948A25540855004E5E0D /* KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD23948925540855004E5E0D /* KeyTests.swift */; };
 		BD2436B02579356200162A49 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2436AF2579356200162A49 /* ArrowView.swift */; };
@@ -511,9 +515,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD22B4792806CC35001132D6 /* ParameterAddress in Frameworks */,
+				BD22B4752806CC35001132D6 /* Kernel in Frameworks */,
 				BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */,
 				BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */,
 				BDF1C0E02787675600E451C3 /* Tagged in Frameworks */,
+				BD22B4772806CC35001132D6 /* KernelBridge in Frameworks */,
+				BD22B47B2806CC35001132D6 /* Parameters in Frameworks */,
 				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1034,6 +1042,10 @@
 			packageProductDependencies = (
 				BDA52C19277CB72F0010BBF1 /* DictionaryCoder */,
 				BDF1C0DF2787675600E451C3 /* Tagged */,
+				BD22B4742806CC35001132D6 /* Kernel */,
+				BD22B4762806CC35001132D6 /* KernelBridge */,
+				BD22B4782806CC35001132D6 /* ParameterAddress */,
+				BD22B47A2806CC35001132D6 /* Parameters */,
 			);
 			productName = SoundFontsFramework;
 			productReference = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */;
@@ -1090,6 +1102,7 @@
 			packageReferences = (
 				BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */,
 				BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */,
+				BD22B4732806CC35001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */,
 			);
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
 			projectDirPath = "";
@@ -1654,6 +1667,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BD22B4732806CC35001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bradhowes/ChorusKernel";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/almazrafi/DictionaryCoder.git";
@@ -1673,6 +1694,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BD22B4742806CC35001132D6 /* Kernel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD22B4732806CC35001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
+			productName = Kernel;
+		};
+		BD22B4762806CC35001132D6 /* KernelBridge */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD22B4732806CC35001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
+			productName = KernelBridge;
+		};
+		BD22B4782806CC35001132D6 /* ParameterAddress */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD22B4732806CC35001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
+			productName = ParameterAddress;
+		};
+		BD22B47A2806CC35001132D6 /* Parameters */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD22B4732806CC35001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
+			productName = Parameters;
+		};
 		BDA52C19277CB72F0010BBF1 /* DictionaryCoder */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */;

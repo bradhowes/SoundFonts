@@ -10,13 +10,13 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>Chorus</string>
+					<string>SoundFonts Chorus</string>
 					<key>factoryFunction</key>
-					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
+					<string>$(PRODUCT_MODULE_NAME).ChorusViewController</string>
 					<key>manufacturer</key>
 					<string>bray</string>
 					<key>name</key>
-					<string>bray: Chorus</string>
+					<string>bray: SoundFonts Chorus</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
@@ -28,7 +28,7 @@
 					<key>type</key>
 					<string>aufx</string>
 					<key>version</key>
-					<integer>67072</integer>
+					<integer>140038</integer>
 				</dict>
 			</array>
 		</dict>
@@ -37,5 +37,9 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.AudioUnit-UI</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Eurostile.ttc</string>
+	</array>
 </dict>
 </plist>

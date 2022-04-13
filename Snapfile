@@ -17,7 +17,7 @@ concurrent_simulators(false)
 workspace "./SoundFonts.xcworkspace"
 
 # Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
-# launch_arguments(["-favColor red"])
+launch_arguments(["snaps"])
 
 # For more information about all available options run
 # fastlane action snapshot
