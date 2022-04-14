@@ -4,7 +4,7 @@ import os.log
 /**
  Implementation of UIDocument that knows how to work with ConsolidatedConfig entities.
  */
-final class ConsolidatedConfigFileDocument: UIDocument {
+final class ConsolidatedConfigDocument: UIDocument {
   private let log: OSLog
 
   private static let filename = "Consolidated.plist"
@@ -24,7 +24,7 @@ final class ConsolidatedConfigFileDocument: UIDocument {
    */
   init(identity: Int, contents: ConsolidatedConfig? = nil, fileURL: URL? = nil) {
     let fileURL = fileURL ?? Self.sharedConfigPath
-    let log = Logging.logger("ConfigFileDocument[\(identity)]")
+    let log = Logging.logger("ConsolidatedConfigDocument[\(identity)]")
     os_log(.debug, log: log, "init BEGIN - %{public}s", fileURL.description)
     self.log = log
     self.identity = identity

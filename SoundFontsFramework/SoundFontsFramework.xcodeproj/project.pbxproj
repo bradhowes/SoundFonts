@@ -228,7 +228,7 @@
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDDE3A86257A755E00B133CB /* ActiveIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */; };
-		BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift */; };
+		BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigDocument.swift */; };
 		BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B99256E405E00F904E3 /* DelayConfig.swift */; };
 		BDE03B9E256E40DC00F904E3 /* ReverbConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */; };
 		BDE03BB225706F2F00F904E3 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BB125706F2F00F904E3 /* UIButton.swift */; };
@@ -484,7 +484,7 @@
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../SoundFontsApp/SoundFontsApp/App/Resources/Eurostile.ttc; sourceTree = SOURCE_ROOT; };
 		BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveIndicatorView.swift; sourceTree = "<group>"; };
-		BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigFileDocument.swift; sourceTree = "<group>"; };
+		BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigDocument.swift; sourceTree = "<group>"; };
 		BDE03B99256E405E00F904E3 /* DelayConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayConfig.swift; sourceTree = "<group>"; };
 		BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbConfig.swift; sourceTree = "<group>"; };
 		BDE03BB125706F2F00F904E3 /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -789,7 +789,7 @@
 			isa = PBXGroup;
 			children = (
 				BDC8EA3427870F900010595F /* ConsolidatedConfig.swift */,
-				BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift */,
+				BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigDocument.swift */,
 				BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */,
 				BDCAE70325C7E0B100202BAC /* ConsolidatedConfigProvider.swift */,
 				BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */,
@@ -1232,7 +1232,7 @@
 				BD0F940B25728E610065C147 /* MIDIController.swift in Sources */,
 				BDBF897725B5900900B58E23 /* TagsManager.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */,
-				BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift in Sources */,
+				BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigDocument.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit.swift in Sources */,
 				BD3D13B12799E30B009FED96 /* TagsVisibilityManager.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer.swift in Sources */,

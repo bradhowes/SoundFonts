@@ -13,7 +13,7 @@ public final class ConsolidatedConfigProvider: NSObject {
 
   private let log: OSLog
   private var _config: ConsolidatedConfig?
-  private var document: ConsolidatedConfigFileDocument?
+  private var document: ConsolidatedConfigDocument?
   private var documentObserver: NSKeyValueObservation?
   private var stateObserver: NSKeyValueObservation?
 
@@ -76,7 +76,7 @@ public final class ConsolidatedConfigProvider: NSObject {
   private func openDocument() {
     os_log(.debug, log: log, "openDocument BEGIN")
 
-    let document = ConsolidatedConfigFileDocument(identity: identity, contents: config, fileURL: fileURL)
+    let document = ConsolidatedConfigDocument(identity: identity, contents: config, fileURL: fileURL)
     document.open { ok in
       if ok {
         self.useDocument(document)
@@ -87,7 +87,7 @@ public final class ConsolidatedConfigProvider: NSObject {
     }
   }
 
-  private func handleOpenFailure(_ document: ConsolidatedConfigFileDocument) {
+  private func handleOpenFailure(_ document: ConsolidatedConfigDocument) {
     os_log(.info, log: self.log, "handleOpenFailure BEGIN")
     document.attemptLegacyLoad { ok in
       if ok {
@@ -101,7 +101,7 @@ public final class ConsolidatedConfigProvider: NSObject {
     os_log(.debug, log: log, "handleOpenFailure END")
   }
 
-  private func useDocument(_ document: ConsolidatedConfigFileDocument) {
+  private func useDocument(_ document: ConsolidatedConfigDocument) {
     os_log(.info, log: self.log, "useDocument BEGIN")
     self.document = document
     NotificationCenter.default.addObserver(self, selector: #selector(self.processStateChange(_:)),
