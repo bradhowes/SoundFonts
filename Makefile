@@ -6,10 +6,10 @@ DEST = -scheme 'iOS App' -destination platform="$(PLATFORM_IOS)"
 default: test # coverage
 
 build: clean
-	xcodebuild -workspace SoundFonts.xcworkspace build $(DEST)
+	xcodebuild -workspace SoundFonts.xcworkspace build-for-testing $(DEST) -resultBundlePath $PWD
 
 test: build
-	xcodebuild test $(DEST) ENABLE_TESTING_SEARCH_PATHS=YES -resultBundlePath $PWD
+	xcodebuild test-without-building $(DEST) ENABLE_TESTING_SEARCH_PATHS=YES
 
 # Extract coverage info for SoundFonts -- expects defintion of env variable GITHUB_ENV
 
