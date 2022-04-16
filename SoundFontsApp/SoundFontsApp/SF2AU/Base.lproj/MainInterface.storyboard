@@ -1,35 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-    </dependencies>
-    <scenes>
-        <!--Audio Unit View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="AudioUnitViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your AudioUnit UI goes here!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5c-MY-xUb">
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <color key="textColor" xcode11CocoaTouchSystemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="j5c-MY-xUb" firstAttribute="centerX" secondItem="u2v-qu-mbu" secondAttribute="centerX" id="GEu-gu-ROi"/>
-                            <constraint firstItem="j5c-MY-xUb" firstAttribute="top" secondItem="u2v-qu-mbu" secondAttribute="top" constant="20" id="sbA-2i-4eA"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="u2v-qu-mbu"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-        </scene>
-    </scenes>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+  <device id="retina6_1" orientation="portrait" appearance="light"/>
+  <dependencies>
+    <deployment identifier="iOS"/>
+    <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+    <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+    <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+  </dependencies>
+  <scenes>
+    <!--Sound FontsAU View Controller-->
+    <scene sceneID="tne-QT-ifu">
+      <objects>
+        <viewController id="BYZ-38-t0r" customClass="SoundFontsAUViewController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+          <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+              <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3SM-8U-9Rx">
+                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                <connections>
+                  <segue destination="qKl-DY-GQH" kind="embed" id="6ko-Bc-grg"/>
+                </connections>
+              </containerView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="u2v-qu-mbu"/>
+            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+              <constraint firstItem="3SM-8U-9Rx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="LCp-QL-A5a"/>
+              <constraint firstItem="3SM-8U-9Rx" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Nel-9Y-7Ez"/>
+              <constraint firstItem="3SM-8U-9Rx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="ghY-Yz-fO5"/>
+              <constraint firstItem="3SM-8U-9Rx" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottomMargin" id="wXE-Bn-LS2"/>
+            </constraints>
+          </view>
+        </viewController>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+      </objects>
+      <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
+    </scene>
+    <!--SoundFontsControls-->
+    <scene sceneID="IoX-st-QQT">
+      <objects>
+        <viewControllerPlaceholder storyboardName="SoundFontsControls" bundleIdentifier="com.braysoftware.SoundFontsFramework" id="qKl-DY-GQH" sceneMemberID="viewController"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="cPg-4V-1af" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+      </objects>
+      <point key="canvasLocation" x="736" y="138"/>
+    </scene>
+  </scenes>
+  <color key="tintColor" systemColor="systemTealColor"/>
+  <resources>
+    <systemColor name="systemTealColor">
+      <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    </systemColor>
+  </resources>
 </document>
