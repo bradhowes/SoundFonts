@@ -109,7 +109,7 @@ where T: ControllerConfiguration {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
         let sampler = Sampler(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
-                              delay: DelayEffect(), chorus: ChorusEffect(), settings: self.settings)
+                              delay: DelayEffect(), chorus: nil, settings: self.settings)
         self.accessQueue.sync { self._sampler = sampler }
       }
     } else {
