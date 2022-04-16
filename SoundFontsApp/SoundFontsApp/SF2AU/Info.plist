@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleDisplayName</key>
-	<string>SoundFonts</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -28,9 +10,9 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>SoundFonts</string>
+					<string>SF2SAU</string>
 					<key>factoryFunction</key>
-					<string>$(PRODUCT_MODULE_NAME).SoundFontsAUViewController</string>
+					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
 					<key>manufacturer</key>
 					<string>bray</string>
 					<key>name</key>
@@ -38,10 +20,12 @@
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
-					<string>sfnt</string>
+					<string>sf2u</string>
 					<key>tags</key>
 					<array>
 						<string>Synthesizer</string>
+						<string>SF2</string>
+						<string>SoundFonts</string>
 					</array>
 					<key>type</key>
 					<string>aumu</string>
@@ -59,7 +43,5 @@
 	<array>
 		<string>Eurostile.ttc</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
 </dict>
 </plist>
