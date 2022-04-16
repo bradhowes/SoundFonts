@@ -238,6 +238,7 @@
 		BDD0A78F27FD8F4C00F6F789 /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Controls.storyboard; path = SoundFontsApp/DelayAU/UI/Controls.storyboard; sourceTree = SOURCE_ROOT; };
 		BDD9792824171DDE006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eurostile.ttc; sourceTree = "<group>"; };
 		BDEAEEB327F35E7E00A2B2E8 /* ChorusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChorusViewController.swift; sourceTree = "<group>"; };
+		BDFA98DB280B5AEF0069A46F /* SF2AU.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SF2AU.entitlements; sourceTree = "<group>"; };
 		BDFAC20F2565DDD10013844F /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -321,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				BD01D6CD280B517E00AF5586 /* Info.plist */,
+				BDFA98DB280B5AEF0069A46F /* SF2AU.entitlements */,
 				BD01D6C5280B517E00AF5586 /* SF2AUAudioUnit.swift */,
 				BD01D6C7280B517E00AF5586 /* SF2AUParameters.swift */,
 				BD01D6C9280B517E00AF5586 /* SF2AU-Bridging-Header.h */,
