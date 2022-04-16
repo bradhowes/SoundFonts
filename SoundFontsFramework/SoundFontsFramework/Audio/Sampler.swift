@@ -5,6 +5,8 @@ import AudioToolbox
 import Foundation
 import os
 
+import SoundFontInfoLib
+
 /// Failure modes for a sampler
 public enum SamplerStartFailure: Error, Equatable, CustomStringConvertible {
   /// No sampler is available

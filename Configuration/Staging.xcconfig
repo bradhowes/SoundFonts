@@ -1,0 +1,4 @@
+#include "Common.xcconfig"
+
+OTHER_SWIFT_FLAGS = $(inherited) -DStaging
+NAME_SUFFIX = Staging

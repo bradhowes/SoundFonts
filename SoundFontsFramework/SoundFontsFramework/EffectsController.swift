@@ -236,23 +236,10 @@ extension EffectsController {
     updatePresetConfig()
   }
 
-  @IBAction func changeChorusFeedback(_ sender: Any) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    showChorusFeedbackValue()
-    chorusEffect.active = chorusEffect.active.setFeedback(chorusFeedback.value)
-    updatePresetConfig()
-  }
-
   @IBAction func changeChorusWetDryMix(_ sender: Any) {
     guard let chorusEffect = self.chorusEffect else { return }
     showChorusMixValue()
     chorusEffect.active = chorusEffect.active.setWetDryMix(chorusWetDryMix.value)
-    updatePresetConfig()
-  }
-
-  @IBAction func toggleChorusNegFeedback(_ sender: UIButton) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    chorusEffect.active = chorusEffect.active.setNegFeedback(!chorusEffect.active.negFeedback)
     updatePresetConfig()
   }
 
@@ -354,7 +341,6 @@ extension EffectsController {
       settings.chorusRate = config.rate
       settings.chorusDelay = config.delay
       settings.chorusDepth = config.depth
-      settings.chorusFeedback = config.feedback
       settings.chorusWetDryMix = config.wetDryMix
     }
   }
@@ -549,11 +535,9 @@ extension EffectsController {
     showChorusDelayValue()
     chorusDepth.setValue(config.depth, animated: true)
     showChorusDepthValue()
-    chorusFeedback.setValue(config.feedback, animated: true)
     showChorusFeedbackValue()
     chorusWetDryMix.setValue(config.wetDryMix, animated: true)
     showChorusMixValue()
-    chorusNegFeedback.showEnabled(config.negFeedback)
     chorusOdd90.showEnabled(config.odd90)
     updateChorusState(config.enabled)
   }
