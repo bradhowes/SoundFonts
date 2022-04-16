@@ -7,6 +7,7 @@
 //
 
 import CoreAudioKit
+import SoundFontInfoLib
 
 public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
     var audioUnit: AUAudioUnit?
@@ -22,7 +23,7 @@ public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
     }
     
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-        audioUnit = try SF2AUAudioUnit(componentDescription: componentDescription, options: [])
+        audioUnit = try SF2EngineAU(componentDescription: componentDescription, options: [])
         
         return audioUnit!
     }
