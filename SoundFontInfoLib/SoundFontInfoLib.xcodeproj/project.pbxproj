@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD01D6A6280B035C00AF5586 /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A5280B035C00AF5586 /* SF2Lib */; };
+		BD01D6A8280B035C00AF5586 /* AUv3-DSP-Headers in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A7280B035C00AF5586 /* AUv3-DSP-Headers */; };
+		BD01D6AA280B035C00AF5586 /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A9280B035C00AF5586 /* AUv3-Support */; };
 		BD05CF9B27D8B31100E58550 /* SF2Engine.h in Headers */ = {isa = PBXBuildFile; fileRef = BD05CF9A27D8B31100E58550 /* SF2Engine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */; };
 		BD05CFA127D8BB1B00E58550 /* SF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */; };
@@ -77,7 +80,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD01D6A6280B035C00AF5586 /* SF2Lib in Frameworks */,
 				BD3B815627E3B484007D9144 /* SF2Files.framework in Frameworks */,
+				BD01D6A8280B035C00AF5586 /* AUv3-DSP-Headers in Frameworks */,
+				BD01D6AA280B035C00AF5586 /* AUv3-Support in Frameworks */,
 				BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */,
 				BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */,
 				BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */,
@@ -194,6 +200,9 @@
 			);
 			name = SoundFontInfoLibTests;
 			packageProductDependencies = (
+				BD01D6A5280B035C00AF5586 /* SF2Lib */,
+				BD01D6A7280B035C00AF5586 /* AUv3-DSP-Headers */,
+				BD01D6A9280B035C00AF5586 /* AUv3-Support */,
 			);
 			productName = SoundFontInfoLibTests;
 			productReference = BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */;
@@ -332,7 +341,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20220416090857;
+				CURRENT_PROJECT_VERSION = 20220416094551;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -403,7 +412,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20220416090857;
+				CURRENT_PROJECT_VERSION = 20220416094551;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -449,7 +458,7 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416090857;
+				CURRENT_PROJECT_VERSION = 20220416094551;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -478,7 +487,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.24.0;
+				MARKETING_VERSION = 2.24.1;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"$(DEBUG_FLAGS)",
@@ -521,7 +530,7 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416090857;
+				CURRENT_PROJECT_VERSION = 20220416094551;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -551,7 +560,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.24.0;
+				MARKETING_VERSION = 2.24.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLib;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -682,6 +691,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BD01D6A5280B035C00AF5586 /* SF2Lib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
+			productName = SF2Lib;
+		};
+		BD01D6A7280B035C00AF5586 /* AUv3-DSP-Headers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
+			productName = "AUv3-DSP-Headers";
+		};
+		BD01D6A9280B035C00AF5586 /* AUv3-Support */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
+			productName = "AUv3-Support";
+		};
 		BD75DC3F27E4BDBC00C31DBA /* AUv3-Support */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;

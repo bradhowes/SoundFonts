@@ -1,15 +1,15 @@
 PLATFORM_IOS = iOS Simulator,name=iPad mini (6th generation)
 PLATFORM_MACOS = macOS
 
-DEST = -scheme App -destination platform="$(PLATFORM_IOS)"
+DEST = -scheme 'iOS App' -destination platform="$(PLATFORM_IOS)"
 
-default: coverage
+default: test # coverage
 
 build: clean
 	xcodebuild -workspace SoundFonts.xcworkspace build $(DEST)
 
 test: build
-	xcodebuild test $(DEST) -enableCodeCoverage YES ENABLE_TESTING_SEARCH_PATHS=YES -resultBundlePath $PWD
+	xcodebuild test $(DEST) ENABLE_TESTING_SEARCH_PATHS=YES -resultBundlePath $PWD
 
 # Extract coverage info for SoundFonts -- expects defintion of env variable GITHUB_ENV
 
@@ -31,8 +31,6 @@ coverage: percentage.txt
 clean:
 	@echo "-- removing cov.txt percentage.txt"
 	@-rm -rf cov.txt percentage.txt WD WD.xcresult
-	xcodebuild clean \
-		-scheme App \
-		-destination platform="$(PLATFORM_IOS)"
+	xcodebuild clean ${DEST}
 
 .PHONY: build test coverage clean
