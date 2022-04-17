@@ -16,10 +16,6 @@
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
 		BD1A2A91266A00F2009E2338 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8D266A0050009E2338 /* ScreenShots.swift */; };
 		BD21CB3A266A6ECE00D4193C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */; };
-		BD22B47E2806CCB9001132D6 /* Kernel in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B47D2806CCB9001132D6 /* Kernel */; };
-		BD22B4802806CCB9001132D6 /* KernelBridge in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B47F2806CCB9001132D6 /* KernelBridge */; };
-		BD22B4822806CCB9001132D6 /* ParameterAddress in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B4812806CCB9001132D6 /* ParameterAddress */; };
-		BD22B4842806CCB9001132D6 /* Parameters in Frameworks */ = {isa = PBXBuildFile; productRef = BD22B4832806CCB9001132D6 /* Parameters */; };
 		BD2454DC2785A480004B445A /* KernelAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2454DA2785A480004B445A /* KernelAdapter.mm */; };
 		BD430FA6241052B0009DB9B3 /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
@@ -68,7 +64,7 @@
 		BDDB042027BC58E400138227 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
 		BDEAEEB727F35E7E00A2B2E8 /* ChorusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEAEEB327F35E7E00A2B2E8 /* ChorusViewController.swift */; };
 		BDFA98DD280B61FC0069A46F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFA98DC280B61FC0069A46F /* SoundFontInfoLib.framework */; };
-		BDFA98DE280B61FC0069A46F /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDFA98DC280B61FC0069A46F /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BDFA98E1280C3E370069A46F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFA98E0280C3E370069A46F /* SoundFontsFramework.framework */; };
 		BDFAC1EA2565D79B0013844F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFAC20F2565DDD10013844F /* Controls.storyboard */; };
 /* End PBXBuildFile section */
@@ -144,17 +140,6 @@
 				BD59076B2565CD4C004DE941 /* ReverbAU.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BDFA98DF280B61FC0069A46F /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BDFA98DE280B61FC0069A46F /* SoundFontInfoLib.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -235,6 +220,7 @@
 		BDEAEEB327F35E7E00A2B2E8 /* ChorusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChorusViewController.swift; sourceTree = "<group>"; };
 		BDFA98DB280B5AEF0069A46F /* SF2AU.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SF2AU.entitlements; sourceTree = "<group>"; };
 		BDFA98DC280B61FC0069A46F /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDFA98E0280C3E370069A46F /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDFAC20F2565DDD10013844F /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -243,6 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFA98E1280C3E370069A46F /* SoundFontsFramework.framework in Frameworks */,
 				BDFA98DD280B61FC0069A46F /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,11 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD4F1B3827FDC879004B4F47 /* SoundFontsFramework.framework in Frameworks */,
-				BD22B47E2806CCB9001132D6 /* Kernel in Frameworks */,
-				BD22B4842806CCB9001132D6 /* Parameters in Frameworks */,
-				BD22B4802806CCB9001132D6 /* KernelBridge in Frameworks */,
 				BD4F1B3427FDC86D004B4F47 /* SoundFontInfoLib.framework in Frameworks */,
-				BD22B4822806CCB9001132D6 /* ParameterAddress in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +454,7 @@
 		BD874C92221A228E00BBD00B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDFA98E0280C3E370069A46F /* SoundFontsFramework.framework */,
 				BDFA98DC280B61FC0069A46F /* SoundFontInfoLib.framework */,
 				BD4F1B3727FDC879004B4F47 /* SoundFontsFramework.framework */,
 				BD4F1B3327FDC86D004B4F47 /* SoundFontInfoLib.framework */,
@@ -575,7 +559,6 @@
 				BD01D6AB280B517E00AF5586 /* Sources */,
 				BD01D6AC280B517E00AF5586 /* Frameworks */,
 				BD01D6AD280B517E00AF5586 /* Resources */,
-				BDFA98DF280B61FC0069A46F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -711,10 +694,6 @@
 			);
 			name = ChorusAU;
 			packageProductDependencies = (
-				BD22B47D2806CCB9001132D6 /* Kernel */,
-				BD22B47F2806CCB9001132D6 /* KernelBridge */,
-				BD22B4812806CCB9001132D6 /* ParameterAddress */,
-				BD22B4832806CCB9001132D6 /* Parameters */,
 			);
 			productName = Chorus;
 			productReference = BD8CAE2527F0ADB6002D6933 /* ChorusAU.appex */;
@@ -778,7 +757,6 @@
 			);
 			mainGroup = BD75B257218B8CFD00C7EBD7;
 			packageReferences = (
-				BD22B47C2806CCB9001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */,
 			);
 			productRefGroup = BD75B261218B8CFD00C7EBD7 /* Products */;
 			projectDirPath = "";
@@ -1027,7 +1005,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1041,7 +1019,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SF2AU;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1057,7 +1035,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoundFontsApp/SF2AU/Info.plist;
@@ -1070,7 +1048,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SF2AU;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1087,7 +1065,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1096,7 +1074,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
@@ -1113,7 +1091,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1122,7 +1100,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
@@ -1179,7 +1157,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1188,7 +1166,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1203,7 +1181,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1212,7 +1190,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1227,7 +1205,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1236,7 +1214,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1251,7 +1229,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1260,7 +1238,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1307,7 +1285,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1373,7 +1351,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1406,7 +1384,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
@@ -1415,7 +1393,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1432,7 +1410,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
@@ -1441,7 +1419,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1497,7 +1475,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ChorusAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1506,7 +1484,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Chorus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1520,7 +1498,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20220416094551;
+				CURRENT_PROJECT_VERSION = 20220417083258;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ChorusAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1529,7 +1507,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.24.1;
+				MARKETING_VERSION = 2.24.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Chorus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1623,40 +1601,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		BD22B47C2806CCB9001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bradhowes/ChorusKernel";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		BD22B47D2806CCB9001132D6 /* Kernel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD22B47C2806CCB9001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
-			productName = Kernel;
-		};
-		BD22B47F2806CCB9001132D6 /* KernelBridge */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD22B47C2806CCB9001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
-			productName = KernelBridge;
-		};
-		BD22B4812806CCB9001132D6 /* ParameterAddress */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD22B47C2806CCB9001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
-			productName = ParameterAddress;
-		};
-		BD22B4832806CCB9001132D6 /* Parameters */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD22B47C2806CCB9001132D6 /* XCRemoteSwiftPackageReference "ChorusKernel" */;
-			productName = Parameters;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BD75B258218B8CFD00C7EBD7 /* Project object */;
 }
