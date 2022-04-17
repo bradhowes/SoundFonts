@@ -2,10 +2,9 @@
 
 import AVFoundation
 import CoreAudioKit
-import SoundFontsFramework
 import os
 
-final class DelayAU: AUAudioUnit {
+public final class DelayAU: AUAudioUnit {
   private let log: OSLog
   private let delay = DelayEffect()
   private lazy var audioUnit = delay.audioUnit
@@ -13,7 +12,47 @@ final class DelayAU: AUAudioUnit {
 
   private var _currentPreset: AUAudioUnitPreset?
 
-  public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
+  public enum Address: AUParameterAddress {
+    case time = 1
+    case feedback
+    case cutoff
+    case wetDryMix
+  }
+
+  public let time: AUParameter = {
+    let param = AUParameterTree.createParameter(
+      withIdentifier: "time", name: "Time", address: Address.time.rawValue, min: 0.0, max: 2.0, unit: .seconds,
+      unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
+    param.value = 1.0
+    return param
+  }()
+
+  public let feedback: AUParameter = {
+    let param = AUParameterTree.createParameter(
+      withIdentifier: "feedback", name: "Feedback", address: Address.feedback.rawValue, min: -100.0, max: 100.0,
+      unit: .percent, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil,
+      dependentParameters: nil)
+    param.value = 50.0
+    return param
+  }()
+
+  public let cutoff: AUParameter = {
+    let param = AUParameterTree.createParameter(
+      withIdentifier: "cutoff", name: "Cutoff", address: Address.cutoff.rawValue, min: 10.0, max: 20_000.0,
+      unit: .hertz, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable, .flag_DisplayLogarithmic],
+      valueStrings: nil, dependentParameters: nil)
+    param.value = 18_000.0
+    return param
+  }()
+
+  public let wetDryMix: AUParameter = {
+    let param = AUParameterTree.createParameter(
+      withIdentifier: "wetDryMix", name: "Mix", address: Address.wetDryMix.rawValue, min: 0.0, max: 100.0,
+      unit: .percent, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil,
+      dependentParameters: nil)
+    param.value = 30.0
+    return param
+  }()
 
   public init(componentDescription: AudioComponentDescription) throws {
     let log = Logging.logger("DelayAU")
@@ -32,51 +71,59 @@ final class DelayAU: AUAudioUnit {
       throw error
     }
 
+    let parameterTree = AUParameterTree.createTree(withChildren: [time, feedback, cutoff, wetDryMix])
+    self.parameterTree = parameterTree
+
+    parameterTree.implementorValueObserver = { parameter, value in
+      switch Address(rawValue: parameter.address) {
+      case .time:
+        self.audioUnit.delayTime = Double(value)
+        self.delay.active = self.delay.active.setTime(value)
+      case .feedback:
+        self.audioUnit.feedback = value
+        self.delay.active = self.delay.active.setFeedback(value)
+      case .cutoff:
+        self.audioUnit.lowPassCutoff = value
+        self.delay.active = self.delay.active.setCutoff(value)
+      case .wetDryMix:
+        self.audioUnit.wetDryMix = value
+        self.delay.active = self.delay.active.setWetDryMix(value)
+      default: break
+      }
+    }
+
+    parameterTree.implementorValueProvider = { parameter in
+      switch Address(rawValue: parameter.address) {
+      case .time: return AUValue(self.audioUnit.delayTime)
+      case .feedback: return self.audioUnit.feedback
+      case .cutoff: return self.audioUnit.lowPassCutoff
+      case .wetDryMix: return self.audioUnit.wetDryMix
+      default: return 0
+      }
+    }
+
     os_log(.debug, log: log, "init - done")
   }
-}
 
-extension DelayAU: AUParameterHandler {
-
-  public func set(_ parameter: AUParameter, value: AUValue) {
-    switch AudioUnitParameters.Address(rawValue: parameter.address) {
-    case .time:
-      audioUnit.delayTime = Double(value)
-      delay.active = delay.active.setTime(value)
-    case .feedback:
-      audioUnit.feedback = value
-      delay.active = delay.active.setFeedback(value)
-    case .cutoff:
-      audioUnit.lowPassCutoff = value
-      delay.active = delay.active.setCutoff(value)
-    case .wetDryMix:
-      audioUnit.wetDryMix = value
-      delay.active = delay.active.setWetDryMix(value)
-    default: break
-    }
-  }
-
-  public func get(_ parameter: AUParameter) -> AUValue {
-    switch AudioUnitParameters.Address(rawValue: parameter.address) {
-    case .time: return AUValue(audioUnit.delayTime)
-    case .feedback: return audioUnit.feedback
-    case .cutoff: return audioUnit.lowPassCutoff
-    case .wetDryMix: return audioUnit.wetDryMix
-    default: return 0
-    }
+  public func setConfig(_ config: DelayConfig) {
+    os_log(.debug, log: log, "setConfig")
+    time.setValue(config.time, originator: nil)
+    feedback.setValue(config.feedback, originator: nil)
+    cutoff.setValue(config.cutoff, originator: nil)
+    wetDryMix.setValue(config.wetDryMix, originator: nil)
   }
 }
 
 extension DelayAU {
 
-  override public func supportedViewConfigurations(
+  public override func supportedViewConfigurations(
     _ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
     IndexSet(availableViewConfigurations.indices)
   }
 
-  override public var component: AudioComponent { wrapped.component }
+  public override var component: AudioComponent { wrapped.component }
 
-  override public func allocateRenderResources() throws {
+  public override func allocateRenderResources() throws {
     os_log(.debug, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
@@ -90,95 +137,86 @@ extension DelayAU {
     os_log(.debug, log: log, "allocateRenderResources - done")
   }
 
-  override public func deallocateRenderResources() {
+  public override func deallocateRenderResources() {
     os_log(.debug, log: log, "deallocateRenderResources")
     wrapped.deallocateRenderResources()
   }
 
-  override public var renderResourcesAllocated: Bool {
+  public override var renderResourcesAllocated: Bool {
     os_log(.debug, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
     return wrapped.renderResourcesAllocated
   }
 
-  override public func reset() {
+  public override func reset() {
     os_log(.debug, log: log, "reset")
     wrapped.reset()
     super.reset()
   }
 
-  override public var inputBusses: AUAudioUnitBusArray {
+  public override var inputBusses: AUAudioUnitBusArray {
     os_log(.debug, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
     return wrapped.inputBusses
   }
 
-  override public var outputBusses: AUAudioUnitBusArray {
+  public override var outputBusses: AUAudioUnitBusArray {
     os_log(.debug, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
     return wrapped.outputBusses
   }
 
-  override public var scheduleParameterBlock: AUScheduleParameterBlock {
+  public override var scheduleParameterBlock: AUScheduleParameterBlock {
     os_log(.debug, log: self.log, "scheduleParameterBlock")
     return wrapped.scheduleParameterBlock
   }
 
-  override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
+  public override func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
     os_log(.debug, log: self.log, "token by AddingRenderObserver")
     return wrapped.token(byAddingRenderObserver: observer)
   }
 
-  override public func removeRenderObserver(_ token: Int) {
+  public override func removeRenderObserver(_ token: Int) {
     os_log(.debug, log: self.log, "removeRenderObserver")
     wrapped.removeRenderObserver(token)
   }
 
-  override public var maximumFramesToRender: AUAudioFrameCount {
+  public override var maximumFramesToRender: AUAudioFrameCount {
     didSet { wrapped.maximumFramesToRender = self.maximumFramesToRender }
   }
 
-  override public var parameterTree: AUParameterTree? {
-    get {
-      parameters.parameterTree
-    }
-    set {
-      fatalError("setting parameterTree is unsupported")
-    }
-  }
-
-  override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
+  public override func parametersForOverview(withCount count: Int) -> [NSNumber] {
     os_log(.debug, log: log, "parametersForOverview: %d", count)
-    return [NSNumber(value: parameters.wetDryMix.address)]
+    return [NSNumber(value: wetDryMix.address)]
   }
 
-  override public var allParameterValues: Bool { wrapped.allParameterValues }
-  override public var isMusicDeviceOrEffect: Bool { true }
+  public override var allParameterValues: Bool { wrapped.allParameterValues }
+  public override var isMusicDeviceOrEffect: Bool { true }
 
-  override public var virtualMIDICableCount: Int {
+  public override var virtualMIDICableCount: Int {
     os_log(.debug, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
     return wrapped.virtualMIDICableCount
   }
 
-  override public var midiOutputNames: [String] { wrapped.midiOutputNames }
+  public override var midiOutputNames: [String] { wrapped.midiOutputNames }
 
-  override public var midiOutputEventBlock: AUMIDIOutputEventBlock? {
+  public override var midiOutputEventBlock: AUMIDIOutputEventBlock? {
     get { wrapped.midiOutputEventBlock }
     set { wrapped.midiOutputEventBlock = newValue }
   }
 
-  override public var fullState: [String: Any]? {
+  public override var fullState: [String: Any]? {
     get { delay.active.fullState }
     set {
       guard let fullState = newValue,
             let config = DelayConfig(state: fullState)
       else { return }
       delay.active = config
-      parameters.set(.time, value: config.time, originator: nil)
-      parameters.set(.feedback, value: config.feedback, originator: nil)
-      parameters.set(.cutoff, value: config.cutoff, originator: nil)
-      parameters.set(.wetDryMix, value: config.wetDryMix, originator: nil)
+      time.setValue(config.time, originator: nil)
+      feedback.setValue(config.feedback, originator: nil)
+      cutoff.setValue(config.cutoff, originator: nil)
+      wetDryMix.setValue(config.wetDryMix, originator: nil)
     }
   }
 
-  override public var fullStateForDocument: [String: Any]? {
+  public override var fullStateForDocument: [String: Any]? {
     get {
       var state = fullState ?? [String: Any]()
       if let preset = _currentPreset {
@@ -195,11 +233,11 @@ extension DelayAU {
     set { fullState = newValue }
   }
 
-  override var supportsUserPresets: Bool { true }
+  public override var supportsUserPresets: Bool { true }
 
   public override var factoryPresets: [AUAudioUnitPreset] { delay.factoryPresets }
 
-  override var currentPreset: AUAudioUnitPreset? {
+  public override var currentPreset: AUAudioUnitPreset? {
     get { _currentPreset }
     set {
       guard let preset = newValue else {
@@ -210,7 +248,7 @@ extension DelayAU {
       if preset.number >= 0 {
         if preset.number < delay.factoryPresetConfigs.count {
           let config = delay.factoryPresetConfigs[preset.number]
-          parameters.setConfig(config)
+          setConfig(config)
           _currentPreset = preset
         }
       } else {
@@ -224,54 +262,54 @@ extension DelayAU {
     }
   }
 
-  override public var latency: TimeInterval { wrapped.latency }
-  override public var tailTime: TimeInterval { wrapped.tailTime }
+  public override var latency: TimeInterval { wrapped.latency }
+  public override var tailTime: TimeInterval { wrapped.tailTime }
 
-  override public var renderQuality: Int {
+  public override var renderQuality: Int {
     get { wrapped.renderQuality }
     set { wrapped.renderQuality = newValue }
   }
 
-  override public var channelCapabilities: [NSNumber]? { wrapped.channelCapabilities }
+  public override var channelCapabilities: [NSNumber]? { wrapped.channelCapabilities }
 
-  override public var channelMap: [NSNumber]? {
+  public override var channelMap: [NSNumber]? {
     get { wrapped.channelMap }
     set { wrapped.channelMap = newValue }
   }
 
-  override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
+  public override func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
   -> MIDICIProfileState
   {
     wrapped.profileState(forCable: cable, channel: channel)
   }
 
-  override public var canPerformInput: Bool { wrapped.canPerformInput }
+  public override var canPerformInput: Bool { wrapped.canPerformInput }
 
-  override public var canPerformOutput: Bool { wrapped.canPerformOutput }
+  public override var canPerformOutput: Bool { wrapped.canPerformOutput }
 
-  override public var isInputEnabled: Bool {
+  public override var isInputEnabled: Bool {
     get { wrapped.isInputEnabled }
     set { wrapped.isInputEnabled = newValue }
   }
 
-  override public var isOutputEnabled: Bool {
+  public override var isOutputEnabled: Bool {
     get { wrapped.isOutputEnabled }
     set { wrapped.isOutputEnabled = newValue }
   }
 
-  override public var outputProvider: AURenderPullInputBlock? {
+  public override var outputProvider: AURenderPullInputBlock? {
     get { wrapped.outputProvider }
     set { wrapped.outputProvider = newValue }
   }
 
-  override public var inputHandler: AUInputHandler? {
+  public override var inputHandler: AUInputHandler? {
     get { wrapped.inputHandler }
     set { wrapped.inputHandler = newValue }
   }
 
-  override public var isRunning: Bool { wrapped.isRunning }
+  public override var isRunning: Bool { wrapped.isRunning }
 
-  override public func startHardware() throws {
+  public override func startHardware() throws {
     os_log(.debug, log: self.log, "startHardware")
     do {
       try wrapped.startHardware()
@@ -282,9 +320,9 @@ extension DelayAU {
     os_log(.debug, log: self.log, "startHardware - done")
   }
 
-  override public func stopHardware() { wrapped.stopHardware() }
+  public override func stopHardware() { wrapped.stopHardware() }
 
-  override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
+  public override var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
     let block = self.wrapped.scheduleMIDIEventBlock
     let log = self.log
     return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
@@ -296,16 +334,16 @@ extension DelayAU {
     }
   }
 
-  override public var renderBlock: AURenderBlock { wrapped.renderBlock }
+  public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
-  override var internalRenderBlock: AUInternalRenderBlock {
+  public override var internalRenderBlock: AUInternalRenderBlock {
 
     // Local copy of values that will be used in render block. Must not dispatch or allocate memory in the block.
     let wrappedBlock = wrapped.internalRenderBlock
-    let timeParameter = parameters.time
-    let feedbackParameter = parameters.feedback
-    let cutoffParameter = parameters.cutoff
-    let wetDryMixParameter = parameters.wetDryMix
+    let timeParameter = time
+    let feedbackParameter = feedback
+    let cutoffParameter = cutoff
+    let wetDryMixParameter = wetDryMix
 
     return {
       (
@@ -318,7 +356,7 @@ extension DelayAU {
         if event.head.eventType == .parameter {
           let address = event.parameter.parameterAddress
           let value = event.parameter.value
-          switch AudioUnitParameters.Address(rawValue: address) {
+          switch Address(rawValue: address) {
           case .time: timeParameter.setValue(value, originator: nil)
           case .feedback: feedbackParameter.setValue(value, originator: nil)
           case .cutoff: cutoffParameter.setValue(value, originator: nil)
@@ -332,4 +370,15 @@ extension DelayAU {
         actionFlags, timestamp, frameCount, outputBusNumber, outputData, head, pullInputBlock)
     }
   }
+}
+
+public extension AUParameterTree {
+
+  /**
+   Obtain the current value of a configuration parameter.
+
+   - parameter withAddress: the parameter to fetch
+   - returns: the current value of the parameter
+   */
+  func parameter(withAddress: DelayAU.Address) -> AUParameter? { parameter(withAddress: withAddress.rawValue) }
 }
