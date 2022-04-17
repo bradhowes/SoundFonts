@@ -58,7 +58,7 @@ extension ReverbViewController: UIPickerViewDelegate {
     _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int
   ) {
     os_log(.debug, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
-    setParameter(.roomPreset, AUValue(row))
+    setParameter(ReverbAU.Address.roomPreset, AUValue(row))
   }
 
   public func pickerView(
@@ -87,10 +87,10 @@ extension ReverbViewController {
     guard let audioUnit = audioUnit else { fatalError("nil audioUnit") }
     guard let parameterTree = audioUnit.parameterTree else { fatalError("nil parameterTree") }
 
-    guard let roomPreset = parameterTree.parameter(withAddress: .roomPreset) else {
+    guard let roomPreset = parameterTree.parameter(withAddress: ReverbAU.Address.roomPreset) else {
       fatalError("Undefined roomPreset parameter")
     }
-    guard let wetDryMix = parameterTree.parameter(withAddress: .wetDryMix) else {
+    guard let wetDryMix = parameterTree.parameter(withAddress: ReverbAU.Address.wetDryMix) else {
       fatalError("Undefined wetDryMix parameter")
     }
 
@@ -100,7 +100,7 @@ extension ReverbViewController {
     parameterObserverToken = parameterTree.token(byAddingParameterObserver: {
       [weak self] address, value in
       guard let self = self else { return }
-      switch AudioUnitParameters.Address(rawValue: address) {
+      switch ReverbAU.Address(rawValue: address) {
       case .roomPreset: DispatchQueue.main.async { self.setActiveRoom(value: value) }
       case .wetDryMix: DispatchQueue.main.async { self.setWetDryMix(value: value) }
       default: break
@@ -108,7 +108,7 @@ extension ReverbViewController {
     })
   }
 
-  private func setParameter(_ address: AudioUnitParameters.Address, _ value: AUValue) {
+  private func setParameter(_ address: ReverbAU.Address, _ value: AUValue) {
     guard let audioUnit = audioUnit else { return }
     guard let parameterTree = audioUnit.parameterTree else { return }
     guard let parameter = parameterTree.parameter(withAddress: address.rawValue) else { return }
@@ -118,12 +118,12 @@ extension ReverbViewController {
   private func setActiveRoom(value: AUValue) {
     let index = min(max(Int(value), 0), ReverbEffect.roomPresets.count - 1)
     room.selectRow(index, inComponent: 0, animated: true)
-    setParameter(.roomPreset, AUValue(index))
+    setParameter(ReverbAU.Address.roomPreset, AUValue(index))
   }
 
   private func setWetDryMix(value: AUValue) {
     wetDryMix.value = min(max(value, 0.0), 100.0)
-    setParameter(.wetDryMix, value)
+    setParameter(ReverbAU.Address.wetDryMix, value)
     wetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
   }
 }

@@ -26,6 +26,8 @@
 		BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE99B6727BF91C000C9F1BC /* Accelerate.framework */; };
 		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
+		BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E4280C50040069A46F /* AVSF2Engine.swift */; };
+		BDFA98E7280C52450069A46F /* AVSF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,8 @@
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BDECD03727CC483800FEDC13 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BDECD03827CC483800FEDC13 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		BDFA98E4280C50040069A46F /* AVSF2Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVSF2Engine.swift; sourceTree = "<group>"; };
+		BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSF2EngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
+				BDFA98E4280C50040069A46F /* AVSF2Engine.swift */,
 				BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */,
 				BD05CF9A27D8B31100E58550 /* SF2Engine.h */,
 				BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */,
@@ -127,6 +132,7 @@
 				BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */,
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */,
+				BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */,
 				BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */,
 			);
 			path = SoundFontInfoLibTests;
@@ -276,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */,
 				BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */,
 				BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */,
 				BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */,
@@ -286,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFA98E7280C52450069A46F /* AVSF2EngineTests.swift in Sources */,
 				BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */,
 				BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */,
 				BD05CFA127D8BB1B00E58550 /* SF2EngineTests.swift in Sources */,

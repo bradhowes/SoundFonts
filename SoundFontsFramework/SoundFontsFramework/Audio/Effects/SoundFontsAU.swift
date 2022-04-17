@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import AudioToolbox
-import SoundFontsFramework
 import CoreAudioKit
 import os
 
@@ -10,7 +9,7 @@ import os
  not contain reverb or delay effects. Most of the methods and getters forward to a _wrapped_ AUAudioUnit, the one that
  comes from the AVAudioUnitSampler.
  */
-final class SoundFontsAU: AUAudioUnit {
+public final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
   private let sampler: Sampler
   private let identity: Int
@@ -80,7 +79,6 @@ final class SoundFontsAU: AUAudioUnit {
   }
 }
 
-
 extension SoundFontsAU {
 
   /**
@@ -111,7 +109,7 @@ extension SoundFontsAU {
 
 extension SoundFontsAU {
 
-  override public var audioUnitName: String? {
+  public override var audioUnitName: String? {
     get { _audioUnitName }
     set {
       os_log(.debug, log: log, "audioUnitName set - %{public}s", newValue ?? "???")
@@ -121,7 +119,7 @@ extension SoundFontsAU {
     }
   }
 
-  override public var audioUnitShortName: String? {
+  public override var audioUnitShortName: String? {
     get { _audioUnitShortName }
     set {
       os_log(.debug, log: log, "audioUnitShortName set - %{public}s", newValue ?? "???")
@@ -131,7 +129,7 @@ extension SoundFontsAU {
     }
   }
 
-  override public func supportedViewConfigurations(_ viewConfigs: [AUAudioUnitViewConfiguration]) -> IndexSet {
+  public override func supportedViewConfigurations(_ viewConfigs: [AUAudioUnitViewConfiguration]) -> IndexSet {
     os_log(.debug, log: log, "supportedViewConfigurations")
     let indices = viewConfigs.enumerated().compactMap {
       $0.1.height > 270 ? $0.0 : nil
@@ -140,9 +138,9 @@ extension SoundFontsAU {
     return IndexSet(indices)
   }
 
-  override public var component: AudioComponent { wrapped.component }
+  public override var component: AudioComponent { wrapped.component }
 
-  override public func allocateRenderResources() throws {
+  public override func allocateRenderResources() throws {
     os_log(.debug, log: log, "allocateRenderResources BEGIN - outputBusses: %{public}d", outputBusses.count)
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
@@ -158,17 +156,17 @@ extension SoundFontsAU {
     os_log(.debug, log: log, "allocateRenderResources END")
   }
 
-  override public func deallocateRenderResources() {
+  public override func deallocateRenderResources() {
     os_log(.debug, log: log, "deallocateRenderResources")
     wrapped.deallocateRenderResources()
   }
 
-  override public var renderResourcesAllocated: Bool {
+  public override var renderResourcesAllocated: Bool {
     os_log(.debug, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
     return wrapped.renderResourcesAllocated
   }
 
-  override public func reset() {
+  public override func reset() {
     os_log(.debug, log: log, "reset BEGIN - %d", renderResourcesAllocated)
     wrapped.reset()
     reloadActivePreset()
@@ -203,36 +201,36 @@ extension SoundFontsAU {
     os_log(.debug, log: log, "reloadActivePreset END")
   }
 
-  override public var inputBusses: AUAudioUnitBusArray {
+  public override var inputBusses: AUAudioUnitBusArray {
     os_log(.debug, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
     return wrapped.inputBusses
   }
 
-  override public var outputBusses: AUAudioUnitBusArray {
+  public override var outputBusses: AUAudioUnitBusArray {
     os_log(.debug, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
     return wrapped.outputBusses
   }
 
-  override public var scheduleParameterBlock: AUScheduleParameterBlock {
+  public override var scheduleParameterBlock: AUScheduleParameterBlock {
     os_log(.debug, log: self.log, "scheduleParameterBlock")
     return wrapped.scheduleParameterBlock
   }
 
-  override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
+  public override func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
     os_log(.debug, log: self.log, "token by AddingRenderObserver")
     return wrapped.token(byAddingRenderObserver: observer)
   }
 
-  override public func removeRenderObserver(_ token: Int) {
+  public override func removeRenderObserver(_ token: Int) {
     os_log(.debug, log: self.log, "removeRenderObserver")
     wrapped.removeRenderObserver(token)
   }
 
-  override public var maximumFramesToRender: AUAudioFrameCount {
+  public override var maximumFramesToRender: AUAudioFrameCount {
     didSet { wrapped.maximumFramesToRender = self.maximumFramesToRender }
   }
 
-  override public var parameterTree: AUParameterTree? {
+  public override var parameterTree: AUParameterTree? {
     get {
       wrapped.parameterTree
     }
@@ -241,18 +239,18 @@ extension SoundFontsAU {
     }
   }
 
-  override public func parametersForOverview(withCount count: Int) -> [NSNumber] { [] }
-  override public var allParameterValues: Bool { wrapped.allParameterValues }
-  override public var isMusicDeviceOrEffect: Bool { true }
+  public override func parametersForOverview(withCount count: Int) -> [NSNumber] { [] }
+  public override var allParameterValues: Bool { wrapped.allParameterValues }
+  public override var isMusicDeviceOrEffect: Bool { true }
 
-  override public var virtualMIDICableCount: Int {
+  public override var virtualMIDICableCount: Int {
     os_log(.debug, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
     return wrapped.virtualMIDICableCount
   }
 
-  override public var midiOutputNames: [String] { wrapped.midiOutputNames }
+  public override var midiOutputNames: [String] { wrapped.midiOutputNames }
 
-  override public var midiOutputEventBlock: AUMIDIOutputEventBlock? {
+  public override var midiOutputEventBlock: AUMIDIOutputEventBlock? {
     get { wrapped.midiOutputEventBlock }
     set { wrapped.midiOutputEventBlock = newValue }
   }
@@ -264,7 +262,7 @@ extension SoundFontsAU {
 
   private var activeSoundFontPresetKey: String { "soundFontPatch" } // Legacy name -- do not change
 
-  override public var fullState: [String: Any]? {
+  public override var fullState: [String: Any]? {
     get {
       os_log(.debug, log: log, "fullState GET")
       var state = [String: Any]()
@@ -279,7 +277,7 @@ extension SoundFontsAU {
     }
   }
 
-  override public var fullStateForDocument: [String: Any]? {
+  public override var fullStateForDocument: [String: Any]? {
     get {
       os_log(.debug, log: log, "fullStateForDocument GET")
       var state = fullState ?? [String: Any]()
@@ -377,7 +375,7 @@ extension SoundFontsAU {
 
 extension SoundFontsAU {
 
-  override var supportsUserPresets: Bool { true }
+  public override var supportsUserPresets: Bool { true }
 
   /**
    Notification that the `currentPreset` attribute of the AudioUnit has changed. These should be user presets created
@@ -401,7 +399,7 @@ extension SoundFontsAU {
     }
   }
 
-  override var currentPreset: AUAudioUnitPreset? {
+  public override var currentPreset: AUAudioUnitPreset? {
     get { _currentPreset }
     set {
       guard let preset = newValue else {
@@ -420,54 +418,54 @@ extension SoundFontsAU {
     }
   }
 
-  override public var latency: TimeInterval { wrapped.latency }
-  override public var tailTime: TimeInterval { wrapped.tailTime }
+  public override var latency: TimeInterval { wrapped.latency }
+  public override var tailTime: TimeInterval { wrapped.tailTime }
 
-  override public var renderQuality: Int {
+  public override var renderQuality: Int {
     get { wrapped.renderQuality }
     set { wrapped.renderQuality = newValue }
   }
 
-  override public var channelCapabilities: [NSNumber]? { wrapped.channelCapabilities }
+  public override var channelCapabilities: [NSNumber]? { wrapped.channelCapabilities }
 
-  override public var channelMap: [NSNumber]? {
+  public override var channelMap: [NSNumber]? {
     get { wrapped.channelMap }
     set { wrapped.channelMap = newValue }
   }
 
-  override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
+  public override func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
   -> MIDICIProfileState
   {
     wrapped.profileState(forCable: cable, channel: channel)
   }
 
-  override public var canPerformInput: Bool { wrapped.canPerformInput }
+  public override var canPerformInput: Bool { wrapped.canPerformInput }
 
-  override public var canPerformOutput: Bool { wrapped.canPerformOutput }
+  public override var canPerformOutput: Bool { wrapped.canPerformOutput }
 
-  override public var isInputEnabled: Bool {
+  public override var isInputEnabled: Bool {
     get { wrapped.isInputEnabled }
     set { wrapped.isInputEnabled = newValue }
   }
 
-  override public var isOutputEnabled: Bool {
+  public override var isOutputEnabled: Bool {
     get { wrapped.isOutputEnabled }
     set { wrapped.isOutputEnabled = newValue }
   }
 
-  override public var outputProvider: AURenderPullInputBlock? {
+  public override var outputProvider: AURenderPullInputBlock? {
     get { wrapped.outputProvider }
     set { wrapped.outputProvider = newValue }
   }
 
-  override public var inputHandler: AUInputHandler? {
+  public override var inputHandler: AUInputHandler? {
     get { wrapped.inputHandler }
     set { wrapped.inputHandler = newValue }
   }
 
-  override public var isRunning: Bool { wrapped.isRunning }
+  public override var isRunning: Bool { wrapped.isRunning }
 
-  override public func startHardware() throws {
+  public override func startHardware() throws {
     os_log(.debug, log: self.log, "startHardware")
     do {
       try wrapped.startHardware()
@@ -478,9 +476,9 @@ extension SoundFontsAU {
     os_log(.debug, log: self.log, "startHardware - done")
   }
 
-  override public func stopHardware() { wrapped.stopHardware() }
+  public override func stopHardware() { wrapped.stopHardware() }
 
-  override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
+  public override var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
     let block = self.wrapped.scheduleMIDIEventBlock
     let log = self.log
     return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
@@ -492,9 +490,9 @@ extension SoundFontsAU {
     }
   }
 
-  override public var renderBlock: AURenderBlock { wrapped.renderBlock }
+  public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
-  override public var internalRenderBlock: AUInternalRenderBlock {
+  public override var internalRenderBlock: AUInternalRenderBlock {
     os_log(.debug, log: log, "internalRenderBlock")
     return wrapped.internalRenderBlock
   }

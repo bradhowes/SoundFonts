@@ -64,16 +64,16 @@ extension DelayViewController {
     guard let audioUnit = audioUnit else { fatalError("nil audioUnit") }
     guard let parameterTree = audioUnit.parameterTree else { fatalError("nil parameterTree") }
 
-    guard let time = parameterTree.parameter(withAddress: .time) else {
+    guard let time = parameterTree.parameter(withAddress: DelayAU.Address.time) else {
       fatalError("Undefined time parameter")
     }
-    guard let feedback = parameterTree.parameter(withAddress: .feedback) else {
+    guard let feedback = parameterTree.parameter(withAddress: DelayAU.Address.feedback) else {
       fatalError("Undefined feedback parameter")
     }
-    guard let cutoff = parameterTree.parameter(withAddress: .cutoff) else {
+    guard let cutoff = parameterTree.parameter(withAddress: DelayAU.Address.cutoff) else {
       fatalError("Undefined cutoff parameter")
     }
-    guard let wetDryMix = parameterTree.parameter(withAddress: .wetDryMix) else {
+    guard let wetDryMix = parameterTree.parameter(withAddress: DelayAU.Address.wetDryMix) else {
       fatalError("Undefined wetDryMix parameter")
     }
 
@@ -85,7 +85,7 @@ extension DelayViewController {
     parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [weak self] address, value in
       guard let self = self else { return }
       os_log(.error, log: self.log, "parameterObserver - address: %ld value: %f")
-      switch AudioUnitParameters.Address(rawValue: address) {
+      switch DelayAU.Address(rawValue: address) {
       case .time: DispatchQueue.main.async { self.setTime(value: value) }
       case .feedback: DispatchQueue.main.async { self.setFeedback(value: value) }
       case .cutoff: DispatchQueue.main.async { self.setCutoff(value: value) }
@@ -95,7 +95,7 @@ extension DelayViewController {
     })
   }
 
-  private func setParameter(_ address: AudioUnitParameters.Address, _ value: AUValue) {
+  private func setParameter(_ address: DelayAU.Address, _ value: AUValue) {
     guard let audioUnit = audioUnit else { return }
     guard let parameterTree = audioUnit.parameterTree else { return }
     guard let parameter = parameterTree.parameter(withAddress: address.rawValue) else { return }
