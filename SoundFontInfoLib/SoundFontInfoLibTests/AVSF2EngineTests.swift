@@ -16,6 +16,7 @@ class AVSF2EngineTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
   let urls: [URL] = SF2Files.allResources.sorted { $0.lastPathComponent < $1.lastPathComponent }
+  var playFinishedExpectation: XCTestExpectation?
 
   func testCreating() {
     AUAudioUnit.registerSubclass(SF2EngineAU.self, as: AVSF2Engine.audioComponentDescription, name: "SF2Engine",
@@ -38,13 +39,15 @@ class AVSF2EngineTests: XCTestCase {
                                  version: 1)
     let exp = expectation(description: "instantiate")
 
+    let uuid = UUID()
+    let uuidString = uuid.uuidString
+    let temporaryDirectory = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+    let audioFileURL = temporaryDirectory.appendingPathComponent(uuidString).appendingPathExtension("caf")
+
     AVAudioUnit.instantiate(with: AVSF2Engine.audioComponentDescription) { avAudioUnit, err in
       guard let avAudioUnit = avAudioUnit as? AVAudioUnitMIDIInstrument else { XCTFail("nil avAudioUnit"); return }
       if let err = err { XCTFail("error - \(err)"); return }
       guard let au = avAudioUnit.auAudioUnit as? SF2EngineAU else { XCTFail("nil auAudioUnit"); return }
-
-      let sampleRate = 44100.0
-      let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: 2, interleaved: false)!
 
       au.maximumFramesToRender = 512
       au.load(self.urls[0])
@@ -52,13 +55,32 @@ class AVSF2EngineTests: XCTestCase {
 
       let engine = AVAudioEngine()
       engine.attach(avAudioUnit)
-      engine.connect(avAudioUnit, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: format)
+      engine.connect(avAudioUnit, to: engine.mainMixerNode, fromBus: 0,
+                     toBus: engine.mainMixerNode.nextAvailableInputBus, format: nil)
       engine.prepare()
 
+      // TODO: don't connect to speaker and evaluate recording for proper samples.
       do {
         try engine.start()
       } catch {
-        XCTFail("failed to start")
+        XCTFail("failed to start engine")
+        return
+      }
+
+      let audioFile: AVAudioFile
+
+      do {
+        audioFile = try AVAudioFile(forWriting: audioFileURL,
+                                    settings: engine.mainMixerNode.inputFormat(forBus: 0).settings,
+                                    commonFormat: .pcmFormatFloat32, interleaved: false)
+      } catch {
+        XCTFail("failed to create AVAudioFile")
+        return
+      }
+
+      engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024,
+                                      format: engine.mainMixerNode.inputFormat(forBus: 0)) { buffer, time in
+        try? audioFile.write(from: buffer)
       }
 
       au.noteOn(60, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
@@ -69,9 +91,29 @@ class AVSF2EngineTests: XCTestCase {
       au.noteOff(64)
       au.noteOff(67)
 
+      engine.mainMixerNode.removeTap(onBus: 0)
       exp.fulfill()
     }
 
-    waitForExpectations(timeout: 10.0)
+    wait(for: [exp], timeout: 10.0)
+
+    // Play the samples from the tap
+//    do {
+//      let player = try AVAudioPlayer(contentsOf: audioFileURL)
+//      player.delegate = self
+//      playFinishedExpectation = self.expectation(description: "AVAudioPlayer finished")
+//      player.play()
+//      wait(for: [playFinishedExpectation!], timeout: 30.0)
+//    } catch {
+//      print("** failed to create AVAudioPlayer")
+//      return
+//    }
   }
 }
+
+extension AVSF2EngineTests: AVAudioPlayerDelegate {
+  func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    playFinishedExpectation!.fulfill()
+  }
+}
+
