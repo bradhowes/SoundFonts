@@ -82,7 +82,7 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
 - (void)noteOn:(int)key velocity:(int)velocity { engine_->noteOn(key, velocity); }
 
 - (AUInternalRenderBlock)internalRenderBlock {
-  os_log_info(log_, "internalRenderBlock");
+  os_log_debug(log_, "internalRenderBlock");
   auto& engine = *engine_;
   auto& log = log_;
   NSInteger bus = 0;
@@ -90,7 +90,7 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   return ^AUAudioUnitStatus(AudioUnitRenderActionFlags*, const AudioTimeStamp* timestamp,
                             AUAudioFrameCount frameCount, NSInteger, AudioBufferList* output,
                             const AURenderEvent* realtimeEventListHead, AURenderPullInputBlock pullInputBlock) {
-    os_log_info(log, "internalRenderBlock - calling processAndRender");
+    os_log_debug(log, "internalRenderBlock - calling processAndRender");
     return engine.processAndRender(timestamp, frameCount, bus, output, realtimeEventListHead, pullInputBlock);
   };
 }

@@ -47,6 +47,16 @@
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
+               BuildableName = "SoundFontInfoLibTests.xctest"
+               BlueprintName = "SoundFontInfoLibTests"
+               ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

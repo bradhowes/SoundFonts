@@ -11,11 +11,12 @@ import AUv3Support
 
 public final class AVSF2Engine: AVAudioUnitMIDIInstrument {
 
+  public static let audioComponentDescription = AudioComponentDescription(componentType: FourCharCode("aumu"),
+                                                                          componentSubType: FourCharCode("sf2e"),
+                                                                          componentManufacturer: FourCharCode("bray"),
+                                                                          componentFlags: 0, componentFlagsMask: 0)
+
   override public init() {
-    let audioComponentDescription = AudioComponentDescription(componentType: FourCharCode("aumu"),
-                                                              componentSubType: FourCharCode("sf2u"),
-                                                              componentManufacturer: FourCharCode("bray"),
-                                                              componentFlags: 0, componentFlagsMask: 0)
-    super.init(audioComponentDescription: audioComponentDescription)
+    super.init(audioComponentDescription: Self.audioComponentDescription)
   }
 }
