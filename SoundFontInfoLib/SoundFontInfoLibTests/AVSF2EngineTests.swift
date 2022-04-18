@@ -79,7 +79,7 @@ class AVSF2EngineTests: XCTestCase {
       }
 
       engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024,
-                                      format: engine.mainMixerNode.inputFormat(forBus: 0)) { buffer, time in
+                                      format: engine.mainMixerNode.inputFormat(forBus: 0)) { buffer, _ in
         try? audioFile.write(from: buffer)
       }
 
@@ -116,4 +116,3 @@ extension AVSF2EngineTests: AVAudioPlayerDelegate {
     playFinishedExpectation!.fulfill()
   }
 }
-

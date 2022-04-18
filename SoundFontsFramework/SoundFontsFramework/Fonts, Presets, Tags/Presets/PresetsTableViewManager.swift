@@ -486,6 +486,27 @@ extension PresetsTableViewManager {
 
 extension PresetsTableViewManager {
 
+  func beginEdit(at indexPath: IndexPath, view: UIView, completionHandler: @escaping (Bool) -> Void) {
+    let slotIndex = slotIndex(from: indexPath)
+    let slot = getSlot(at: slotIndex)
+    guard let soundFontAndPreset = makeSoundFontAndPreset(at: slotIndex) else {
+      DispatchQueue.main.async { completionHandler(false) }
+      return
+    }
+
+    switch slot {
+    case .preset:
+      favorites.beginEdit(
+        config: .preset(
+          state: .init(
+            indexPath: indexPath, sourceView: view, sourceRect: view.bounds,
+            currentLowestNote: keyboard?.lowestNote, completionHandler: completionHandler, soundFonts: soundFonts,
+            soundFontAndPreset: soundFontAndPreset, isActive: isActive(soundFontAndPreset), settings: settings)))
+    case .favorite:
+      editFavorite(at: indexPath, completionHandler: completionHandler)
+    }
+  }
+
   private func makeEditPresetSwipeAction(at indexPath: IndexPath,
                                          soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, actionView, completionHandler in

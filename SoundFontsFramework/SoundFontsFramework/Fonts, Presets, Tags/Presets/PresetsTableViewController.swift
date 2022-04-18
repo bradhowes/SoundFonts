@@ -53,6 +53,22 @@ extension PresetsTableViewController {
     tableView.sectionIndexColor = .darkGray
     tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: presetSectionHeaderIdentifier)
     searchBar.delegate = self
+
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+    longPressGesture.minimumPressDuration = 0.5
+    tableView.addGestureRecognizer(longPressGesture)
+  }
+
+  @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+    let point = sender.location(in: tableView)
+    if let indexPath = tableView.indexPathForRow(at: point),
+       let view = tableView.cellForRow(at: indexPath) {
+      presetsTableViewManager.beginEdit(at: indexPath, view: view) { done in
+        if done {
+          self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
+      }
+    }
   }
 
   public override func viewWillAppear(_ animated: Bool) {
