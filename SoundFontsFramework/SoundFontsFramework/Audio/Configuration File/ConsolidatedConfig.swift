@@ -22,6 +22,13 @@ public class ConsolidatedConfig: NSObject, Codable {
   /// The collection of tags that categorize the soundfonts
   public var tags: TagCollection
 
+  /**
+   New instance
+
+   - parameter soundFonts: the collection of soundfonts to store in the configuration
+   - parameter favorites: the collection of favorites to store in the configuration
+   - parameter tags: the collection of tags to store in the configuration
+   */
   public init(soundFonts: SoundFontCollection, favorites: FavoriteCollection, tags: TagCollection) {
     self.soundFonts = soundFonts
     self.favorites = favorites

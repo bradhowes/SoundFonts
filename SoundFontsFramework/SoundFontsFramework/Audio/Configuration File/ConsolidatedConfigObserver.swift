@@ -7,8 +7,6 @@ import Foundation
  */
 public struct ConsolidatedConfigObserver {
 
-  private let configProvider: ConsolidatedConfigProvider
-
   /// Convenience accessor for the collection of installed sound fonts
   public var soundFonts: SoundFontCollection {
     guard let config = configProvider.config else { fatalError("attempt to access nil config") }
@@ -31,6 +29,7 @@ public struct ConsolidatedConfigObserver {
   /// True if a configuration has been loaded.
   public var isRestored: Bool { configProvider.config != nil }
 
+  private let configProvider: ConsolidatedConfigProvider
   private var configProviderObserver: NSKeyValueObservation?
 
   /**

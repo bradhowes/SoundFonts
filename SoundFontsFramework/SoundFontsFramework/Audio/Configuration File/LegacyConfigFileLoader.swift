@@ -12,6 +12,9 @@ struct LegacyConfigFileLoader<T> where T: Decodable & CustomStringConvertible {
 
   /**
    Attempts to load a legacy config file.
+
+   - parameter filename: the path of the file to load
+   - parameter removeWhenDone: if true then the legacy file is deleted after being used
    */
   static func load(filename: String, removeWhenDone: Bool = false) -> T? {
     os_log(.debug, log: log, "init - %{public}s", filename)
