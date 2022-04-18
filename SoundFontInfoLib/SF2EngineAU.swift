@@ -62,7 +62,8 @@ public final class SF2EngineAU: AUAudioUnit {
       throw error
     }
 
-    guard let format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2) else {
+    guard let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2,
+                                     interleaved: false) else {
       throw Failure.invalidFormat
     }
 
@@ -74,6 +75,14 @@ public final class SF2EngineAU: AUAudioUnit {
 
     os_log(.debug, log: log, "init - done")
   }
+
+  public func load(_ url: URL) { engine.load(url) }
+
+  public func selectPreset(_ index: Int32) { engine.selectPreset(index) }
+
+  public func noteOn(_ key: Int32, velocity: Int32) { engine.note(on: key, velocity: velocity) }
+
+  public func noteOff(_ key: Int32) { engine.noteOff(key) }
 }
 
 extension SF2EngineAU {
@@ -157,9 +166,7 @@ extension SF2EngineAU {
   // We do generate output
   public override var canPerformOutput: Bool { true }
 
-  public override var internalRenderBlock: AUInternalRenderBlock {
-    return engine.internalRenderBlock()
-  }
+  public override var internalRenderBlock: AUInternalRenderBlock { engine.internalRenderBlock() }
 }
 
 // MARK: - State Management

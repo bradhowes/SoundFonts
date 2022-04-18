@@ -16,7 +16,6 @@
 		BD3B815627E3B484007D9144 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3B815527E3B484007D9144 /* SF2Files.framework */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */; };
-		BD75DC4027E4BDBC00C31DBA /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BD75DC3F27E4BDBC00C31DBA /* AUv3-Support */; };
 		BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF9C265DB1F0002AD159 /* SoundFontInfo.mm */; };
 		BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -28,6 +27,8 @@
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 		BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E4280C50040069A46F /* AVSF2Engine.swift */; };
 		BDFA98E7280C52450069A46F /* AVSF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */; };
+		BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDECD03727CC483800FEDC13 /* AudioToolbox.framework */; };
+		BDFA98F5280C745F0069A46F /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BDFA98F4280C745F0069A46F /* AUv3-Support */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +53,6 @@
 		BD8CE57027C53F67009A2FB5 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
 		BD8CE57127C53F67009A2FB5 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
 		BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontInfoLibTests.swift; sourceTree = "<group>"; };
-		BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SoundFontInfoLibTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		BDB1BE74265DAEC7002AD159 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundFontInfoLib.h; sourceTree = SOURCE_ROOT; };
 		BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundFontInfo.h; sourceTree = SOURCE_ROOT; };
@@ -67,6 +67,7 @@
 		BDECD03827CC483800FEDC13 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		BDFA98E4280C50040069A46F /* AVSF2Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVSF2Engine.swift; sourceTree = "<group>"; };
 		BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSF2EngineTests.swift; sourceTree = "<group>"; };
+		BDFA98F1280C73110069A46F /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +76,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDBB720627D89C33007911CF /* SF2Lib in Frameworks */,
-				BD75DC4027E4BDBC00C31DBA /* AUv3-Support in Frameworks */,
+				BDFA98F5280C745F0069A46F /* AUv3-Support in Frameworks */,
+				BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */,
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,7 +135,6 @@
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */,
 				BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */,
-				BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */,
 			);
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
@@ -141,6 +142,7 @@
 		BDECFFED2496BEFB00A52507 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDFA98F1280C73110069A46F /* AVKit.framework */,
 				BD3B815527E3B484007D9144 /* SF2Files.framework */,
 				BDECD03727CC483800FEDC13 /* AudioToolbox.framework */,
 				BDECD03827CC483800FEDC13 /* AudioUnit.framework */,
@@ -185,7 +187,7 @@
 			name = SoundFontInfoLib;
 			packageProductDependencies = (
 				BDBB720527D89C33007911CF /* SF2Lib */,
-				BD75DC3F27E4BDBC00C31DBA /* AUv3-Support */,
+				BDFA98F4280C745F0069A46F /* AUv3-Support */,
 			);
 			productName = SoundFontInfoLib;
 			productReference = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */;
@@ -202,6 +204,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				BDFA98F7280C74760069A46F /* PBXTargetDependency */,
+				BDFA98F9280C74760069A46F /* PBXTargetDependency */,
 				BD74D17323CDB1D200204ED4 /* PBXTargetDependency */,
 			);
 			name = SoundFontInfoLibTests;
@@ -307,6 +311,14 @@
 			isa = PBXTargetDependency;
 			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
 			targetProxy = BD74D17223CDB1D200204ED4 /* PBXContainerItemProxy */;
+		};
+		BDFA98F7280C74760069A46F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = BDFA98F6280C74760069A46F /* SF2Lib */;
+		};
+		BDFA98F9280C74760069A46F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = BDFA98F8280C74760069A46F /* AUv3-Support */;
 		};
 /* End PBXTargetDependency section */
 
@@ -714,15 +726,25 @@
 			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
 			productName = "AUv3-Support";
 		};
-		BD75DC3F27E4BDBC00C31DBA /* AUv3-Support */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-Support";
-		};
 		BDBB720527D89C33007911CF /* SF2Lib */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
 			productName = SF2Lib;
+		};
+		BDFA98F4280C745F0069A46F /* AUv3-Support */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
+			productName = "AUv3-Support";
+		};
+		BDFA98F6280C74760069A46F /* SF2Lib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
+			productName = SF2Lib;
+		};
+		BDFA98F8280C74760069A46F /* AUv3-Support */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
+			productName = "AUv3-Support";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
