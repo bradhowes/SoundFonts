@@ -30,9 +30,12 @@ public enum SamplerStartFailure: Error, Equatable, CustomStringConvertible {
   public var description: String {
     switch self {
     case .noSampler: return "<SamplerStartFailure: no sampler>"
-    case .sessionActivating(error: let error): return "<SamplerStartFailure: sessionActivating - \(error.localizedDescription)>"
-    case .engineStarting(error: let error): return "<SamplerStartFailure: engineStarting - \(error.localizedDescription)>"
-    case .presetLoading(error: let error): return "<SamplerStartFailure: presetLoading - \(error.localizedDescription)>"
+    case .sessionActivating(error: let error):
+      return "<SamplerStartFailure: sessionActivating - \(error.localizedDescription)>"
+    case .engineStarting(error: let error):
+      return "<SamplerStartFailure: engineStarting - \(error.localizedDescription)>"
+    case .presetLoading(error: let error):
+      return "<SamplerStartFailure: presetLoading - \(error.localizedDescription)>"
     }
   }
 }
@@ -65,7 +68,7 @@ public final class Sampler {
   /// The notification that pitch bend range has changed for the sampler
   public static let pitchBendRangeChangedNotification = TypedNotification<Int>(name: .pitchBendRangeChanged)
 
-  public typealias StartResult = Result<AVAudioUnitSampler, SamplerStartFailure>
+  public typealias StartResult = Result<AVAudioUnitMIDIInstrument, SamplerStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
   public enum Mode {
@@ -125,6 +128,7 @@ public final class Sampler {
     if mode == .standalone {
       precondition(reverb != nil, "unexpected nil for reverb")
       precondition(delay != nil, "unexpected nil for delay")
+      // precondition(chorus != nil, "unexpected nil for chorus")
     }
 
     activePresetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: applyPresetConfig(_:))
@@ -199,6 +203,11 @@ public final class Sampler {
     os_log(.debug, log: log, "stop END")
   }
 
+  public func load(at url: URL, preset: Preset) {
+    guard let sampler = auSampler else { return }
+    presetChangeManager.change(sampler: sampler, url: url, preset: preset)
+  }
+
   /**
    Ask the sampler to use the active preset held by the ActivePresetManager.
 
@@ -229,13 +238,14 @@ public final class Sampler {
     let presetConfig = activePresetManager.activePresetConfig
 
     os_log(.debug, log: log, "requesting preset change")
-    presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(preset.program),
-                               bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB)) { [weak self] in
+    presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }
-      os_log(.debug, log: self.log, "request complete")
+      os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
+
       if let presetConfig = presetConfig {
         self.applyPresetConfig(presetConfig)
       }
+
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
         self.presetLoaded = true

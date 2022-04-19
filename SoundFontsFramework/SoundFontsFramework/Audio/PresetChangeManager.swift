@@ -1,119 +1,126 @@
-// Copyright © 2020 Brad Howes. All rights reserved.
+// Copyright © 2022 Brad Howes. All rights reserved.
 
 import AVFoundation
 import os
 
-private final class PresetChangeOperation: Operation {
-  private lazy var log = Logging.logger("PresetChangeOperation")
+/// Failure modes for a PresetChangeOperation
+public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
+  /// No sampler is available
+  case noSampler
+  /// Request was cancelled
+  case cancelled
+  /// Failed to load a preset
+  case failedToLoad(error: NSError)
 
-  private weak var sampler: AVAudioUnitSampler?
-  private let url: URL
-  private let program: UInt8
-  private let bankMSB: UInt8
-  private let bankLSB: UInt8
-  private let afterLoadBlock: (() -> Void)?
-  private var _finished = false
-  private var _executing = false
-
-  override var isFinished: Bool {
-    get { _finished }
-    set {
-      willChangeValue(forKey: "isFinished")
-      _finished = newValue
-      didChangeValue(forKey: "isFinished")
+  /// The system error associated with a failure.
+  var error: NSError {
+    switch self {
+    case .noSampler: return NSError()
+    case .cancelled: return NSError()
+    case .failedToLoad(let err): return err
     }
   }
 
-  override var isExecuting: Bool {
-    get { _executing }
-    set {
-      willChangeValue(forKey: "isExecuting")
-      _executing = newValue
-      didChangeValue(forKey: "isExecuting")
+  public var description: String {
+    switch self {
+    case .noSampler: return "<PresetChangeFailure: no sampler>"
+    case .cancelled: return "<PresetChangeFailure: cancelled>"
+    case .failedToLoad(error: let error): return "<PresetChangeFailure: failedToLoad - \(error.localizedDescription)>"
     }
-  }
-
-  override var isAsynchronous: Bool { true }
-
-  init(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
-       afterLoadBlock: (() -> Void)? = nil) {
-    self.sampler = sampler
-    self.url = url
-    self.program = program
-    self.bankMSB = bankMSB
-    self.bankLSB = bankLSB
-    self.afterLoadBlock = afterLoadBlock
-    super.init()
-    os_log(.debug, log: log, "init")
-  }
-
-  override func start() {
-    os_log(.debug, log: log, "start - BEGIN")
-
-    isExecuting = true
-    guard let sampler = self.sampler else {
-      os_log(.debug, log: log, "nil sampler")
-      isFinished = true
-      return
-    }
-
-    if self.isCancelled {
-      os_log(.debug, log: log, "op cancelled")
-      isFinished = true
-      return
-    }
-
-    do {
-      os_log(.debug, log: log, "before loadSoundBankInstrument")
-      try sampler.loadSoundBankInstrument(at: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB)
-      os_log(.debug, log: log, "after loadSoundBankInstrument")
-    } catch let error as NSError {
-      switch error.code {
-      case -1: break
-      case -43, -54: // permission error for SF2 file
-        NotificationCenter.default.post(name: .soundFontFileAccessDenied, object: url.lastPathComponent)
-      default:
-        os_log(.error, log: log, "failed loadSoundBankInstrument - %d %{public}s", errno, error.localizedDescription)
-      }
-    }
-
-    os_log(.debug, log: log, "before afterLoadBlock")
-    afterLoadBlock?()
-    os_log(.debug, log: log, "after afterLoadBlock")
-
-    isExecuting = false
-    isFinished = true
-    os_log(.debug, log: log, "start - END")
   }
 }
 
+/**
+ Controls changes to the active sound font preset of a sampler.
+ */
 final class PresetChangeManager {
   private lazy var log = Logging.logger("PresetChangeManager")
   private let queue = OperationQueue()
   private var active = true
+
+  typealias OperationResult = Result<Preset, PresetChangeFailure>
+  typealias AfterLoadBlock = (OperationResult) -> Void
 
   init() {
     queue.maxConcurrentOperationCount = 1
     queue.underlyingQueue = DispatchQueue.global(qos: .userInitiated)
   }
 
+  /// Start accepting preset change requests.
   func start() {
     os_log(.debug, log: log, "start")
     active = true
   }
 
-  func change(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
-              afterLoadBlock: (() -> Void)? = nil) {
-    os_log(.debug, log: log, "change - %{public}s %d %d %d", url.lastPathComponent, program, bankMSB, bankLSB)
+  /**
+   Place into the queue an operation to change the active preset.
+
+   - parameter sampler: the sampler to change
+   - parameter url: the URL of the soundfont to use
+   - parameter preset: the preset to change to
+   - parameter afterLoadBlock: block to invoke after the change is done
+   */
+  func change(sampler: LoadableSampler, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
+    os_log(.debug, log: log, "change - %{public}s %{public}s", url.lastPathComponent, preset.description)
     guard active else { return }
-    queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, program: program, bankMSB: bankMSB,
-                                             bankLSB: bankLSB, afterLoadBlock: afterLoadBlock))
+    queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, preset: preset,
+                                             afterLoadBlock: afterLoadBlock))
   }
 
+  /// Stop processing preset change requests
   func stop() {
     os_log(.debug, log: log, "stop")
     active = false
     queue.cancelAllOperations()
     queue.waitUntilAllOperationsAreFinished()
+  }
+}
+
+private final class PresetChangeOperation: Operation {
+  private lazy var log = Logging.logger("PresetChangeOperation")
+
+  private weak var sampler: LoadableSampler?
+  private let url: URL
+  private let preset: Preset
+  private let afterLoadBlock: PresetChangeManager.AfterLoadBlock?
+
+  override var isAsynchronous: Bool { true }
+
+  init(sampler: LoadableSampler, url: URL, preset: Preset, afterLoadBlock: PresetChangeManager.AfterLoadBlock? = nil) {
+    self.sampler = sampler
+    self.url = url
+    self.preset = preset
+    self.afterLoadBlock = afterLoadBlock
+    super.init()
+    os_log(.debug, log: log, "init")
+  }
+
+  override func main() {
+    os_log(.debug, log: log, "main - BEGIN")
+
+    guard let sampler = self.sampler else {
+      os_log(.debug, log: log, "nil sampler")
+      afterLoadBlock?(.failure(.noSampler))
+      return
+    }
+
+    if self.isCancelled {
+      os_log(.debug, log: log, "op cancelled")
+      afterLoadBlock?(.failure(.cancelled))
+      return
+    }
+
+    os_log(.debug, log: log, "before loadAndActivate")
+    let result = sampler.loadAndActivate(url: url, preset: preset)
+    os_log(.debug, log: log, "after loadAndActivate - %d", result ?? noErr)
+
+    os_log(.debug, log: log, "before afterLoadBlock")
+    if let error = result {
+      afterLoadBlock?(.failure(.failedToLoad(error: error)))
+    } else {
+      afterLoadBlock?(.success(self.preset))
+    }
+    os_log(.debug, log: log, "after afterLoadBlock")
+    os_log(.debug, log: log, "main - END")
   }
 }

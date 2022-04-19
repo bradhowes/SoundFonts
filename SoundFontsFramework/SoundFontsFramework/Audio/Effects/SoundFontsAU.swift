@@ -183,20 +183,12 @@ extension SoundFontsAU {
       return
     }
 
-    do {
-
-      os_log(.debug, log: log, "reloadActivePreset - before loadSoundBankInstrument %{public}s", presetConfig.name)
-      try sampler.auSampler?.loadSoundBankInstrument(at: soundFont.fileURL,
-                                                     program: UInt8(activePreset.program),
-                                                     bankMSB: UInt8(activePreset.bankMSB),
-                                                     bankLSB: UInt8(activePreset.bankLSB))
-      os_log(.debug, log: log, "reloadActivePreset - after loadSoundBankInstrument")
-    } catch {
-      os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
-    }
+    os_log(.debug, log: log, "reloadActivePreset - before sampler.load %{public}s", presetConfig.name)
+    sampler.load(at: soundFont.fileURL, preset: activePreset)
+    os_log(.debug, log: log, "reloadActivePreset - after sampler.load")
 
     os_log(.debug, log: self.log, "reloadActivePreset - applying preset config")
-    self.sampler.applyPresetConfig(presetConfig)
+    sampler.applyPresetConfig(presetConfig)
 
     os_log(.debug, log: log, "reloadActivePreset END")
   }
