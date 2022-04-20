@@ -3,37 +3,23 @@
 @testable import SoundFontsFramework
 
 import XCTest
+import SoundFontInfoLib
 import SF2Files
 import AVFAudio
 
-class LoadablePresetTests: XCTestCase {
+class SF2EngineLoadablePresetTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
   let urls: [URL] = SF2Files.allResources.sorted { $0.lastPathComponent < $1.lastPathComponent }
   var loadFinishedExpectation: XCTestExpectation?
 
-  var engine: AVAudioEngine! = nil
-  var synth: AVAudioUnitSampler! = nil
+  var synth: SF2Engine! = nil
 
   override func setUp() {
-    // NOTE: there is an internal race in the AVAudioEngine which can cause crashes if an instance is disposed soon
-    // after loading a soundfont. Unfortunately, there is no call I know of yet to determine when the loading is
-    // actually done.
-    engine = AVAudioEngine()
-    synth = AVAudioUnitSampler()
-    engine.attach(synth)
-    engine.connect(synth, to: engine.mainMixerNode, format: nil)
+    synth = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
   }
 
   override func tearDownWithError() throws {
-    // We spend some time with the engine in hopes that it keeps us from running into the race mentioned above. Removing
-    // these statements can lead to an "unbalanced reference count" assertion or
-    // "Bank manager destroyed with active banks" assertion.
-    engine.prepare()
-    XCTAssertNoThrow(try engine.start())
-    engine.stop()
-    engine.disconnectNodeOutput(synth)
-    engine.detach(synth)
   }
 
   func testLoading() throws {
@@ -47,13 +33,12 @@ class LoadablePresetTests: XCTestCase {
     // actually done.
     let error = synth.loadAndActivatePreset(Preset("", 0, 0, 0), from: urls[0].appendingPathExtension("blah"))
     XCTAssertNotNil(error)
-    XCTAssertEqual(error?.code, -43)
-
+    XCTAssertEqual(error?.code, 100)
   }
 
   func testBadPreset() throws {
-    let error = synth.loadAndActivatePreset(Preset("", 127, 127, 0), from: urls[0])
+    let error = synth.loadAndActivatePreset(Preset("", 127, 127, 9999), from: urls[0])
     XCTAssertNotNil(error)
-    XCTAssertEqual(error?.code, -10851)
+    XCTAssertEqual(error?.code, 300)
   }
 }

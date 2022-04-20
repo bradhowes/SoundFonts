@@ -3,6 +3,7 @@
 import Foundation
 import AVFAudio
 import os.log
+import SoundFontInfoLib
 
 /**
  Abstraction for an entity that can load a preset from a URL.
@@ -40,6 +41,29 @@ extension AVAudioUnitSampler: LoadablePreset {
              error.localizedDescription)
       return error
     }
+    return nil
+  }
+}
+
+extension SF2Engine: LoadablePreset {
+  public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
+    var err = self.load(url)
+    switch err {
+    case .fileNotFound:
+      NotificationCenter.default.post(name: .soundFontFileNotAvailable, object: url.lastPathComponent)
+      return NSError(domain: "SF2Engine", code: Int(err.rawValue))
+    case .cannotAccessFile:
+      NotificationCenter.default.post(name: .soundFontFileAccessDenied, object: url.lastPathComponent)
+      return NSError(domain: "SF2Engine", code: Int(err.rawValue))
+    default: break
+    }
+
+    err = self.selectPreset(Int32(preset.soundFontIndex))
+    switch err {
+    case .OK: break
+    default: return NSError(domain: "SF2Engine", code: Int(err.rawValue))
+    }
+
     return nil
   }
 }

@@ -6,6 +6,12 @@
 #include <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
+  SF2EnginePresetChangeStatus_OK = 0,
+  SF2EnginePresetChangeStatus_FileNotFound = 100,
+  SF2EnginePresetChangeStatus_CannotAccessFile = 200,
+  SF2EnginePresetChangeStatus_InvalidIndex = 300
+};
 
 /**
  Objective-C wrapper for the C++ Engine class in SF2Lib.
@@ -54,14 +60,14 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param url the location of the file to load
  */
-- (void)load:(NSURL*)url;
+- (SF2EnginePresetChangeStatus)load:(NSURL*)url;
 
 /**
  Set the active preset.
 
  @param index the index of the preset to use
  */
-- (void)selectPreset:(int)index;
+- (SF2EnginePresetChangeStatus)selectPreset:(int)index;
 
 /**
  Set the active preset.
