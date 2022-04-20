@@ -6,6 +6,7 @@
 #import "SF2Engine.h"
 #import "SF2Lib/Configuration.h"
 #import "SF2Lib/IO/File.hpp"
+#import "SF2Lib/IO/Format.hpp"
 #import "SF2Lib/Render/Engine/Engine.hpp"
 
 using File = SF2::IO::File;
@@ -50,19 +51,31 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   os_log_info(log_, "renderingStopped END");
 }
 
-- (void)load:(NSURL*)url {
+- (SF2EnginePresetChangeStatus)load:(NSURL*)url {
   engine_->allOff();
-  if ([url_ isEqual:url]) return;
+  if ([url_ isEqual:url]) return SF2EnginePresetChangeStatus_OK;
 
   url_ = url;
   auto oldFile = file_;
-  file_ = new File([[url path] UTF8String]);
-  engine_->load(*file_, 0);
+  try {
+    file_ = new File([[url path] UTF8String]);
+    engine_->load(*file_, 0);
+  } catch (std::runtime_error&) {
+    if (oldFile != nullptr) file_ = oldFile;
+    return SF2EnginePresetChangeStatus_FileNotFound;
+  } catch (SF2::IO::Format&) {
+    if (oldFile != nullptr) file_ = oldFile;
+    return SF2EnginePresetChangeStatus_CannotAccessFile;
+  }
+
   delete oldFile;
+  return SF2EnginePresetChangeStatus_OK;
 }
 
-- (void)selectPreset:(int)index {
+- (SF2EnginePresetChangeStatus)selectPreset:(int)index {
+  if (index < 0 || index >= int(engine_->presetCount())) return SF2EnginePresetChangeStatus_InvalidIndex;
   engine_->usePreset(size_t(index));
+  return SF2EnginePresetChangeStatus_OK;
 }
 
 - (void)selectBank:(int)bank program:(int)program {
