@@ -250,7 +250,8 @@
 		BDFA98EC280C55B80069A46F /* ReverbAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98EB280C55B80069A46F /* ReverbAU.swift */; };
 		BDFA98EE280C5C4C0069A46F /* DelayAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98ED280C5C4C0069A46F /* DelayAU.swift */; };
 		BDFA98F0280C60880069A46F /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98EF280C60880069A46F /* SoundFontsAU.swift */; };
-		BDFA9900280DF07B0069A46F /* SF2Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98FF280DF07B0069A46F /* SF2Processor.swift */; };
+		BDFA9900280DF07B0069A46F /* LoadablePreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */; };
+		BDFA9902281047520069A46F /* LoadablePresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA9901281047520069A46F /* LoadablePresetTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -508,7 +509,8 @@
 		BDFA98EB280C55B80069A46F /* ReverbAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbAU.swift; sourceTree = "<group>"; };
 		BDFA98ED280C5C4C0069A46F /* DelayAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayAU.swift; sourceTree = "<group>"; };
 		BDFA98EF280C60880069A46F /* SoundFontsAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsAU.swift; sourceTree = "<group>"; };
-		BDFA98FF280DF07B0069A46F /* SF2Processor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SF2Processor.swift; sourceTree = "<group>"; };
+		BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadablePreset.swift; sourceTree = "<group>"; };
+		BDFA9901281047520069A46F /* LoadablePresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadablePresetTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -724,7 +726,7 @@
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
 				BDBF897A25B5930100B58E23 /* Tags.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
-				BDFA98FF280DF07B0069A46F /* SF2Processor.swift */,
+				BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -897,6 +899,7 @@
 				BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */,
 				BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */,
 				BD1A2A822668AB75009E2338 /* PresetConfigTests.swift */,
+				BDFA9901281047520069A46F /* LoadablePresetTests.swift */,
 				BD1A2A802668A9C7009E2338 /* ReusableViewTests.swift */,
 				BD1A2A7E26682DAB009E2338 /* SelectedSoundFontManagerTests.swift */,
 				BD6E8AB824058C6200067AE2 /* SettingsTests.swift */,
@@ -1226,7 +1229,7 @@
 				BD1B8CD9270C762700C6BF15 /* MIDIMonitor.swift in Sources */,
 				BD074C7E23CDAF51001987E9 /* UISearchBar.swift in Sources */,
 				BD3F44D62501958000653ABD /* PersistentContainer.swift in Sources */,
-				BDFA9900280DF07B0069A46F /* SF2Processor.swift in Sources */,
+				BDFA9900280DF07B0069A46F /* LoadablePreset.swift in Sources */,
 				BD0FAC802523CAEC00EEF187 /* UIContextualAction.swift in Sources */,
 				BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */,
 				BDD5FA7125043C3700367F0B /* NSManagedObjectContext.swift in Sources */,
@@ -1359,6 +1362,7 @@
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
 				BD2454D8278474E3004B445A /* SoundFontAndPresetTests.swift in Sources */,
+				BDFA9902281047520069A46F /* LoadablePresetTests.swift in Sources */,
 				BD1A2A7F26682DAB009E2338 /* SelectedSoundFontManagerTests.swift in Sources */,
 				BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */,
 				BD1A2A872668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift in Sources */,
