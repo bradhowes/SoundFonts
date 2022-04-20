@@ -253,6 +253,7 @@
 		BDFA9900280DF07B0069A46F /* LoadablePreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */; };
 		BDFA9902281047520069A46F /* SamplerLoadablePresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA9901281047520069A46F /* SamplerLoadablePresetTests.swift */; };
 		BDFA990428106FC70069A46F /* SF2EngineLoadablePresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */; };
+		BDFA990628107BA30069A46F /* PresetChangeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -513,6 +514,7 @@
 		BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadablePreset.swift; sourceTree = "<group>"; };
 		BDFA9901281047520069A46F /* SamplerLoadablePresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SamplerLoadablePresetTests.swift; sourceTree = "<group>"; };
 		BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SF2EngineLoadablePresetTests.swift; sourceTree = "<group>"; };
+		BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -903,6 +905,7 @@
 				BD1A2A822668AB75009E2338 /* PresetConfigTests.swift */,
 				BDFA9901281047520069A46F /* SamplerLoadablePresetTests.swift */,
 				BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */,
+				BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */,
 				BD1A2A802668A9C7009E2338 /* ReusableViewTests.swift */,
 				BD1A2A7E26682DAB009E2338 /* SelectedSoundFontManagerTests.swift */,
 				BD6E8AB824058C6200067AE2 /* SettingsTests.swift */,
@@ -1351,6 +1354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFA990628107BA30069A46F /* PresetChangeManagerTests.swift in Sources */,
 				BDC961A724FFA745003D9BEF /* StringTests.swift in Sources */,
 				BD23948A25540855004E5E0D /* KeyTests.swift in Sources */,
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
