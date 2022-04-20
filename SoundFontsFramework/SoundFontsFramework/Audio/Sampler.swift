@@ -205,7 +205,13 @@ public final class Sampler {
 
   public func load(at url: URL, preset: Preset) {
     guard let sampler = auSampler else { return }
-    presetChangeManager.change(sampler: sampler, url: url, preset: preset)
+    os_log(.debug, log: self.log, "load BEGIN - url: %{public}s preset: %{public}s", url.description,
+           preset.description)
+    presetChangeManager.change(sampler: sampler, url: url, preset: preset) { [weak self] result in
+      guard let self = self else { return }
+      os_log(.debug, log: self.log, "load complete - %{public}s", result.description)
+    }
+    os_log(.debug, log: self.log, "load END")
   }
 
   /**
