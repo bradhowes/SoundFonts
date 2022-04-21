@@ -16,21 +16,15 @@ class SamplerLoadablePresetTests: XCTestCase {
   var synth: AVAudioUnitSampler! = nil
 
   override func setUp() {
-    // NOTE: there is an internal race in the AVAudioEngine which can cause crashes if an instance is disposed soon
-    // after loading a soundfont. Unfortunately, there is no call I know of yet to determine when the loading is
-    // actually done.
     engine = AVAudioEngine()
     synth = AVAudioUnitSampler()
     engine.attach(synth)
     engine.connect(synth, to: engine.mainMixerNode, format: nil)
+    engine.prepare()
+    XCTAssertNoThrow(try engine.start())
   }
 
   override func tearDownWithError() throws {
-    // We spend some time with the engine in hopes that it keeps us from running into the race mentioned above. Removing
-    // these statements can lead to an "unbalanced reference count" assertion or
-    // "Bank manager destroyed with active banks" assertion.
-    engine.prepare()
-    XCTAssertNoThrow(try engine.start())
     engine.stop()
     engine.disconnectNodeOutput(synth)
     engine.detach(synth)
@@ -42,9 +36,6 @@ class SamplerLoadablePresetTests: XCTestCase {
   }
 
   func testBadUrl() throws {
-    // NOTE: there is an internal race in the AVAudioEngine which can cause crashes if an instance is disposed soon
-    // after loading a soundfont. Unfortunately, there is no call I know of yet to determine when the loading is
-    // actually done.
     let error = synth.loadAndActivatePreset(Preset("", 0, 0, 0), from: urls[0].appendingPathExtension("blah"))
     XCTAssertNotNil(error)
     XCTAssertEqual(error?.code, -43)
