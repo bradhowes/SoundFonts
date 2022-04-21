@@ -31,7 +31,8 @@ public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
 }
 
 /**
- Controls changes to the active sound font preset of a sampler.
+ Controls changes to the active sound font preset of a sampler. Requests are sent to a queue so that changes take place
+ in an asynchronous but serial manner.
  */
 final class PresetChangeManager {
   private lazy var log = Logging.logger("PresetChangeManager")
@@ -41,15 +42,12 @@ final class PresetChangeManager {
   typealias OperationResult = Result<Preset, PresetChangeFailure>
   typealias AfterLoadBlock = (OperationResult) -> Void
 
+  /**
+   Create new manager.
+   */
   init() {
     queue.maxConcurrentOperationCount = 1
     queue.underlyingQueue = DispatchQueue.global(qos: .userInitiated)
-  }
-
-  /// Start accepting preset change requests.
-  func start() {
-    os_log(.debug, log: log, "start")
-    active = true
   }
 
   /**
@@ -67,7 +65,13 @@ final class PresetChangeManager {
                                              afterLoadBlock: afterLoadBlock))
   }
 
-  /// Stop processing preset change requests
+  /// Start accepting preset change requests.
+  func start() {
+    os_log(.debug, log: log, "start")
+    active = true
+  }
+
+  /// Stop processing preset change requests.
   func stop() {
     os_log(.debug, log: log, "stop")
     active = false
