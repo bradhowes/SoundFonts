@@ -45,8 +45,8 @@ public final class EffectsController: UIViewController {
 
   private var isMainApp: Bool = false
   private var activePresetManager: ActivePresetManager!
-  private var soundFonts: SoundFonts!
-  private var favorites: Favorites!
+  private var soundFonts: SoundFontsProvider!
+  private var favorites: FavoritesProvider!
   private var settings: Settings!
 
   private var sampler: Sampler?

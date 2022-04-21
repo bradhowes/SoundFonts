@@ -3,7 +3,7 @@
 import Foundation
 
 /// Manages the state of the keyboard
-public protocol Keyboard: AnyObject {
+public protocol AnyKeyboard: AnyObject {
 
   /// The value of the first note shown on the keyboard
   var lowestNote: Note { get set }

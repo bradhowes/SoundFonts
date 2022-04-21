@@ -34,7 +34,7 @@ public final class TagsEditorTableViewController: UITableViewController {
    */
   public struct Config {
     /// The collection of all of the tags that exist for the app
-    let tags: Tags
+    let tags: TagsProvider
     /// The set of tags that are currently active for the sound font
     let active: Set<Tag.Key>?
     /// True if the sound font being edited is built-in
@@ -50,7 +50,7 @@ public final class TagsEditorTableViewController: UITableViewController {
      - parameter builtIn: true if the sound font is a builtin one
      - parameter completionHandler: completion handler that receives a new `active` set when the editor is dismissed.
      */
-    init(tags: Tags, active: Set<Tag.Key>, builtIn: Bool, completionHandler: @escaping (Set<Tag.Key>) -> Void) {
+    init(tags: TagsProvider, active: Set<Tag.Key>, builtIn: Bool, completionHandler: @escaping (Set<Tag.Key>) -> Void) {
       self.tags = tags
       self.active = active
       self.builtIn = builtIn
@@ -62,7 +62,7 @@ public final class TagsEditorTableViewController: UITableViewController {
 
      - parameter tags: the tags that currently exist
      */
-    init(tags: Tags) {
+    init(tags: TagsProvider) {
       self.tags = tags
       self.active = nil
       self.builtIn = false
@@ -76,7 +76,7 @@ public final class TagsEditorTableViewController: UITableViewController {
   @IBOutlet private var editButton: UIBarButtonItem!
   @IBOutlet private var doneButton: UIBarButtonItem!
 
-  private var tags: Tags!
+  private var tags: TagsProvider!
   private var active = Set<Tag.Key>()
   private var builtIn: Bool = false
   private var selectable: Bool = true

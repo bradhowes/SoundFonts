@@ -10,7 +10,7 @@ import os.log
 final class TagsTableViewController: UITableViewController {
   private let serialQueue = DispatchQueue(label: "TagsTableViewController", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .main)
-  private var tags: Tags!
+  private var tags: TagsProvider!
   private var activeTagManager: ActiveTagManager!
 
   override func viewDidLoad() {

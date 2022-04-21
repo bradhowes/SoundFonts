@@ -22,7 +22,7 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
 // MARK: - Favorites protocol
 
-extension FavoritesManager: Favorites {
+extension FavoritesManager: FavoritesProvider {
 
   var isRestored: Bool { observer.isRestored }
 
@@ -96,7 +96,7 @@ extension FavoritesManager: Favorites {
     favorite.presetConfig.chorusConfig = chorus
   }
 
-  func validate(_ soundFonts: SoundFonts) {
+  func validate(_ soundFonts: SoundFontsProvider) {
     var invalidFavoriteKeys = [Favorite.Key]()
     for index in 0..<self.count {
       let favorite = self.getBy(index: index)

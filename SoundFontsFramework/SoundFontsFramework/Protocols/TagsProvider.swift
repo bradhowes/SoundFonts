@@ -28,7 +28,7 @@ public enum TagsEvent: CustomStringConvertible {
 }
 
 /// Protocol for activity involving sound font tags.
-public protocol Tags: AnyObject {
+public protocol TagsProvider: AnyObject {
 
   /// True if the tags collection has been restored
   var isRestored: Bool { get }

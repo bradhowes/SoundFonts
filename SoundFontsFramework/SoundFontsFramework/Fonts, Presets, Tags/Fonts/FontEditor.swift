@@ -17,13 +17,13 @@ final class FontEditor: UIViewController {
     /// The rect to use for presenting
     let rect: CGRect
     /// The collection of all sound fonts
-    let soundFonts: SoundFonts
+    let soundFonts: SoundFontsProvider
     /// The unique key for the sound font being edited
     let soundFontKey: SoundFont.Key
     /// The number of favorites associated with the sound font being edited
     let favoriteCount: Int
     /// The collection of known tags
-    let tags: Tags
+    let tags: TagsProvider
     /// The function to call when dismissing the editor. Sole parameter indicates if an activity was completed.
     let completionHandler: ((Bool) -> Void)?
   }

@@ -11,9 +11,9 @@ internal struct PresetsTableRowVisibilityEditor {
   private(set) var viewSlots: [PresetViewSlot]
   private(set) var sectionRowCounts: [Int]
   private let soundFont: SoundFont
-  private let favorites: Favorites
+  private let favorites: FavoritesProvider
 
-  init(viewSlots: [PresetViewSlot], sectionRowCounts: [Int], soundFont: SoundFont, favorites: Favorites) {
+  init(viewSlots: [PresetViewSlot], sectionRowCounts: [Int], soundFont: SoundFont, favorites: FavoritesProvider) {
     self.viewSlots = viewSlots
     self.sectionRowCounts = sectionRowCounts
     self.soundFont = soundFont

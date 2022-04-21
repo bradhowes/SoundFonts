@@ -169,7 +169,7 @@ extension SoundFont {
     return true
   }
 
-  public func validate(_ tags: Tags) {
+  public func validate(_ tags: TagsProvider) {
     var invalidTags = [Tag.Key]()
     for tagKey in self.tags {
       if let tag = tags.getBy(key: tagKey) {

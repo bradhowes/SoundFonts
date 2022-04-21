@@ -18,7 +18,7 @@ public final class SoundFontsControlsController: UIViewController {
 
   private var upperViewManager = SlidingViewManager()
   private var fontsViewManager: FontsViewManager!
-  private var infoBar: InfoBar!
+  private var infoBar: AnyInfoBar!
   private var settings: Settings!
   private var isMainApp: Bool = false
 

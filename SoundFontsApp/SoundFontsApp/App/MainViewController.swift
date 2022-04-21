@@ -15,11 +15,11 @@ final class MainViewController: UIViewController {
 
   private weak var router: ComponentContainer?
   private var midiController: MIDIController?
-  private var soundFonts: SoundFonts!
+  private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
-  private var keyboard: Keyboard!
+  private var keyboard: AnyKeyboard!
   private var sampler: Sampler?
-  private var infoBar: InfoBar!
+  private var infoBar: AnyInfoBar!
   private var settings: Settings!
   fileprivate var noteInjector: NoteInjector!
 
