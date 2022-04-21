@@ -13,7 +13,7 @@ public final class MIDIController {
   public private(set) var channel: Int
 
   private let sampler: Sampler
-  private let keyboard: Keyboard?
+  private let keyboard: AnyKeyboard?
   private let settings: Settings
   private var observer: NSKeyValueObservation?
 
@@ -23,7 +23,7 @@ public final class MIDIController {
    - parameter sampler: the Sampler to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(sampler: Sampler, keyboard: Keyboard?, settings: Settings) {
+  public init(sampler: Sampler, keyboard: AnyKeyboard?, settings: Settings) {
     self.sampler = sampler
     self.keyboard = keyboard
     self.settings = settings

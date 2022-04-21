@@ -16,7 +16,7 @@ final class VolumeMonitor {
     case noPreset
   }
 
-  private let keyboard: Keyboard?
+  private let keyboard: AnyKeyboard?
 
   private var volume: Float = 1.0 {
     didSet {
@@ -36,7 +36,7 @@ final class VolumeMonitor {
 
    - parameter keyboard: Keyboard instance that handle key renderings
    */
-  init(keyboard: Keyboard?) {
+  init(keyboard: AnyKeyboard?) {
     self.keyboard = keyboard
   }
 }

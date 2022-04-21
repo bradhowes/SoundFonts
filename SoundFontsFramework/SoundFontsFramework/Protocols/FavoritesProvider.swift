@@ -46,7 +46,7 @@ public enum FavoritesEvent: CustomStringConvertible {
 }
 
 /// Actions available on a collection of Favorite instances. Supports subscribing to changes.
-public protocol Favorites {
+public protocol FavoritesProvider {
 
   /// True if the collection of favorites has been restored from disk
   var isRestored: Bool { get }
@@ -174,5 +174,5 @@ public protocol Favorites {
   @discardableResult
   func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
 
-  func validate(_ soundFonts: SoundFonts)
+  func validate(_ soundFonts: SoundFontsProvider)
 }

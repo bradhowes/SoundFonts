@@ -18,7 +18,7 @@ struct TagsVisibilityManager {
   private let fontsView: UIView
   private let containerView: UIView
   private let tagsTableViewController: TagsTableViewController
-  private let infoBar: InfoBar
+  private let infoBar: AnyInfoBar
   private let maxTagsViewHeightConstraint: CGFloat
 
   /**
@@ -32,7 +32,7 @@ struct TagsVisibilityManager {
    - parameter infoBar: the InfoBar that holds the button used to show/hide the tags table
    */
   init(tagsBottonConstraint: NSLayoutConstraint, tagsViewHeightConstrain: NSLayoutConstraint, fontsView: UIView,
-       containerView: UIView, tagsTableViewController: TagsTableViewController, infoBar: InfoBar) {
+       containerView: UIView, tagsTableViewController: TagsTableViewController, infoBar: AnyInfoBar) {
     self.tagsBottomConstraint = tagsBottonConstraint
     self.tagsViewHeightConstraint = tagsViewHeightConstrain
     self.fontsView = fontsView

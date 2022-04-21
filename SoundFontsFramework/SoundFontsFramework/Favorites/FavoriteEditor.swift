@@ -12,7 +12,7 @@ final public class FavoriteEditor: UIViewController {
     let sourceRect: CGRect
     let currentLowestNote: Note?
     let completionHandler: ((Bool) -> Void)?
-    let soundFonts: SoundFonts
+    let soundFonts: SoundFontsProvider
     let soundFontAndPreset: SoundFontAndPreset
     let isActive: Bool
     let settings: Settings
@@ -54,7 +54,7 @@ final public class FavoriteEditor: UIViewController {
   private var position: IndexPath = IndexPath(row: -1, section: -1)
   private var currentLowestNote: Note?
   private var completionHandler: ((Bool) -> Void)?
-  private var soundFonts: SoundFonts! = nil
+  private var soundFonts: SoundFontsProvider! = nil
   private var soundFontAndPreset: SoundFontAndPreset! = nil
   private var settings: Settings!
 

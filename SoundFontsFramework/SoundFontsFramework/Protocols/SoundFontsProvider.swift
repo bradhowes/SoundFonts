@@ -36,7 +36,7 @@ public enum SoundFontsEvent: CustomStringConvertible {
 }
 
 /// Actions available on a collection of SoundFont instances. Supports subscribing to changes.
-public protocol SoundFonts: AnyObject {
+public protocol SoundFontsProvider: AnyObject {
 
   /// True if the collection of sound fonts has been restored
   var isRestored: Bool { get }
@@ -53,7 +53,7 @@ public protocol SoundFonts: AnyObject {
    - parameter favorites: collection of favorites
    - parameter tags: collection of tags
    */
-  func validateCollections(favorites: Favorites, tags: Tags)
+  func validateCollections(favorites: FavoritesProvider, tags: TagsProvider)
 
   /**
    Obtain the sound font at the given index. NOTE: this indexing mirrors the order seen in the UI due to name sorting.

@@ -18,11 +18,11 @@ where T: ControllerConfiguration {
   /// Manager that controls when to ask for a review from the customer
   public let askForReview: AskForReview?
   /// The manager for the collection of sound fonts
-  public let soundFonts: SoundFonts
+  public let soundFonts: SoundFontsProvider
   /// The manager for the collection of favorites
-  public let favorites: Favorites
+  public let favorites: FavoritesProvider
   /// The manager for the collection of sound font tags
-  public let tags: Tags
+  public let tags: TagsProvider
   /// The manager of the active preset
   public let activePresetManager: ActivePresetManager
   /// The manager of the selected sound font
@@ -47,10 +47,10 @@ where T: ControllerConfiguration {
   private weak var tagsTableViewController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
 
   /// The controller for the info bar
-  public var infoBar: InfoBar { infoBarController }
+  public var infoBar: AnyInfoBar { infoBarController }
 
   /// The controller for the keyboard (nil when running in the AUv3 app extension)
-  public var keyboard: Keyboard? { keyboardController }
+  public var keyboard: AnyKeyboard? { keyboardController }
 
   /// The manager of the fonts/presets view
   public var fontsViewManager: FontsViewManager { soundFontsViewController }

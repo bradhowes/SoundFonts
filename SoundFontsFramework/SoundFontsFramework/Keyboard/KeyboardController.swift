@@ -31,7 +31,7 @@ final class KeyboardController: UIViewController {
   private var keyLabelOptionObservation: NSKeyValueObservation?
   private var keyWidthObservation: NSKeyValueObservation?
 
-  private var infoBar: InfoBar!
+  private var infoBar: AnyInfoBar!
   private var touchedKeys = TouchKeyMap()
 
   private var trackedTouch: UITouch?
@@ -228,7 +228,7 @@ extension KeyboardController {
 
 // MARK: - Keyboard Protocol
 
-extension KeyboardController: Keyboard {
+extension KeyboardController: AnyKeyboard {
 
   /**
    Notification that the given note is being played (eg by MIDI event)

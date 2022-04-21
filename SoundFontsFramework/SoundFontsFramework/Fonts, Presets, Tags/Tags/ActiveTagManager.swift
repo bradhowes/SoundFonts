@@ -27,7 +27,7 @@ public enum ActiveTagEvent: CustomStringConvertible {
  */
 public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
   private lazy var log = Logging.logger("ActiveTagManager")
-  private let tags: Tags
+  private let tags: TagsProvider
   private let settings: Settings
 
   /// The currently active tag.
@@ -43,7 +43,7 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
    - parameter tags: the tags collection to use for values
    - parameter settings: the Settings store to use for the `activeTagKey` value
    */
-  public init(tags: Tags, settings: Settings) {
+  public init(tags: TagsProvider, settings: Settings) {
     self.tags = tags
     self.settings = settings
     super.init()

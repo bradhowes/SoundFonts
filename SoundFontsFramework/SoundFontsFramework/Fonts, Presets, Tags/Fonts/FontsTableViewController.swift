@@ -18,8 +18,8 @@ final class FontsTableViewController: UITableViewController {
   private var activeTagManager: ActiveTagManager!
   private var fontSwipeActionGenerator: FontActionManager!
 
-  private var soundFonts: SoundFonts!
-  private var tags: Tags!
+  private var soundFonts: SoundFontsProvider!
+  private var tags: TagsProvider!
   private var settings: Settings!
 
   private var dataSource = [SoundFont.Key]()

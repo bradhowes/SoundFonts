@@ -32,14 +32,14 @@ let sfiTwo = SoundFontInfo(
 )!
 let sfTwo = SoundFont(sfiTwo.embeddedName, soundFontInfo: sfiTwo, resource: sfiTwo.url)
 
-class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFonts {
+class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFontsProvider {
   let collection = [sfOne, sfTwo]
   var isRestored: Bool = false { didSet { notify(.restored) } }
   let soundFontNames: [String] = ["One", "Two"]
   let defaultPreset: SoundFontAndPreset? = .init(soundFontKey: sfOne.key, soundFontName: sfOne.displayName, presetIndex: 0, itemName: "an")
   var count: Int { soundFontNames.count }
 
-  func validateCollections(favorites: Favorites, tags: Tags) {}
+  func validateCollections(favorites: FavoritesProvider, tags: TagsProvider) {}
 
   func getBy(index: Int) -> SoundFont { collection[index] }
 
@@ -74,7 +74,7 @@ class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFonts {
   func importFromLocalDocumentsDirectory() -> (good: Int, total: Int) { (good: 0, total: 0) }
 }
 
-class FavoritesMock: SubscriptionManager<FavoritesEvent>, Favorites {
+class FavoritesMock: SubscriptionManager<FavoritesEvent>, FavoritesProvider {
   var favorites: [Favorite] = .init()
   var isRestored: Bool = false { didSet { notify(.restored) } }
   var count: Int { favorites.count }
@@ -92,7 +92,7 @@ class FavoritesMock: SubscriptionManager<FavoritesEvent>, Favorites {
   func remove(key: Favorite.Key) { fatalError() }
   func removeAll(associatedWith: SoundFont) { fatalError() }
   func count(associatedWith: SoundFont) -> Int { 0 }
-  func validate(_ soundFonts: SoundFonts) {}
+  func validate(_ soundFonts: SoundFontsProvider) {}
 }
 
 class ActivePresetManagerTests: XCTestCase {

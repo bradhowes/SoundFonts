@@ -34,7 +34,7 @@ public final class InfoBarController: UIViewController {
   private var panOrigin: CGPoint = CGPoint.zero
   private var fader: UIViewPropertyAnimator?
   private var activePresetManager: ActivePresetManager!
-  private var soundFonts: SoundFonts!
+  private var soundFonts: SoundFontsProvider!
   private var isMainApp: Bool!
   private var settings: Settings!
 
@@ -145,7 +145,7 @@ extension InfoBarController: ControllerConfiguration {
   }
 }
 
-extension InfoBarController: InfoBar {
+extension InfoBarController: AnyInfoBar {
 
   public func updateButtonsForPresetsViewState(visible: Bool) {
     editVisibility.isEnabled = visible

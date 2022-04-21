@@ -24,15 +24,15 @@ public final class SoundFontsViewController: UIViewController {
   private weak var tagsTableViewController: TagsTableViewController!
 
   private var maxTagsViewHeightConstraint: CGFloat = 0.0
-  private var soundFonts: SoundFonts!
-  private var favorites: Favorites!
-  private var infoBar: InfoBar!
-  private var tags: Tags!
+  private var soundFonts: SoundFontsProvider!
+  private var favorites: FavoritesProvider!
+  private var infoBar: AnyInfoBar!
+  private var tags: TagsProvider!
   private var settings: Settings!
 
   private var selectedSoundFontManager: SelectedSoundFontManager!
   private var activeTagManager: ActiveTagManager!
-  private var keyboard: Keyboard?
+  private var keyboard: AnyKeyboard?
   private var tagsVisibilityManager: TagsVisibilityManager!
 
   private var dividerDragGesture = UIPanGestureRecognizer()

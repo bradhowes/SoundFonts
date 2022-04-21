@@ -10,7 +10,7 @@ public final class PresetsTableViewController: UITableViewController {
 
   /// Text field for entering preset search queries.
   @IBOutlet public var searchBar: UISearchBar!
-  private var infoBar: InfoBar!
+  private var infoBar: AnyInfoBar!
 
   /// True when user is searching
   public var isSearching: Bool { searchBar.isFirstResponder }

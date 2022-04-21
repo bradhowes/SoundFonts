@@ -23,7 +23,7 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
   }
 }
 
-extension TagsManager: Tags {
+extension TagsManager: TagsProvider {
 
   /// Indicator that the collection of tags has been restored
   var isRestored: Bool { observer.isRestored }

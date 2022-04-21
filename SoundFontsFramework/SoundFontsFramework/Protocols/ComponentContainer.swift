@@ -24,11 +24,11 @@ public protocol ComponentContainer: AnyObject {
   /// The Sampler that is used to generate sounds
   var sampler: Sampler? { get }
   /// The collection of installed sound font files
-  var soundFonts: SoundFonts { get }
+  var soundFonts: SoundFontsProvider { get }
   /// The collection of favorite presets
-  var favorites: Favorites { get }
+  var favorites: FavoritesProvider { get }
   /// The collection of user-defined tags for sound fonts
-  var tags: Tags { get }
+  var tags: TagsProvider { get }
   /// The manager that tracks and holds the active preset that is in use in the samplers
   var activePresetManager: ActivePresetManager { get }
   /// The manager that tracks and holds the selected sound font. It is not necessarily the sound font that has the
@@ -36,9 +36,9 @@ public protocol ComponentContainer: AnyObject {
   var selectedSoundFontManager: SelectedSoundFontManager { get }
   var activeTagManager: ActiveTagManager { get }
   /// The manager for the info bar that sits below the sound font and preset table views and above the keyboard.
-  var infoBar: InfoBar { get }
+  var infoBar: AnyInfoBar { get }
   /// The keyboard manager if inside the application; the AUv3 component has no keyboard and so this will be nil.
-  var keyboard: Keyboard? { get }
+  var keyboard: AnyKeyboard? { get }
   /// The manager of the preset table view
   var fontsViewManager: FontsViewManager { get }
   /// The manager of the favorites collection view

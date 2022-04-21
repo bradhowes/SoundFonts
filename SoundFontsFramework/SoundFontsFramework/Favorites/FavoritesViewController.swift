@@ -15,10 +15,10 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   @IBOutlet public var doubleTapGestureRecognizer: UITapGestureRecognizer!
 
   private var activePresetManager: ActivePresetManager!
-  private var keyboard: Keyboard?
-  private var favorites: Favorites!
-  private var soundFonts: SoundFonts!
-  private var tags: Tags!
+  private var keyboard: AnyKeyboard?
+  private var favorites: FavoritesProvider!
+  private var soundFonts: SoundFontsProvider!
+  private var tags: TagsProvider!
   private var settings: Settings!
   private var favoriteMover: FavoriteMover!
 

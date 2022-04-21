@@ -69,7 +69,7 @@ extension FileManager {
 
 // MARK: - SoundFonts Protocol
 
-extension SoundFontsManager: SoundFonts {
+extension SoundFontsManager: SoundFontsProvider {
 
   public var isRestored: Bool { observer.isRestored }
 
@@ -91,7 +91,7 @@ extension SoundFontsManager: SoundFonts {
     collection.getBy(soundFontAndPreset: soundFontAndPreset)
   }
 
-  public func validateCollections(favorites: Favorites, tags: Tags) {
+  public func validateCollections(favorites: FavoritesProvider, tags: TagsProvider) {
     os_log(.debug, log: log, "validateCollections")
     favorites.validate(self)
     tags.validate()

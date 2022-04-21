@@ -35,8 +35,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   }
 
   private lazy var log = Logging.logger("ActivePresetManager")
-  private let soundFonts: SoundFonts
-  private let favorites: Favorites
+  private let soundFonts: SoundFontsProvider
+  private let favorites: FavoritesProvider
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
   public private(set) var state: State = .starting
@@ -80,7 +80,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter selectedSoundFontManager: the manager of the selected sound font
    - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
    */
-  public init(soundFonts: SoundFonts, favorites: Favorites, selectedSoundFontManager: SelectedSoundFontManager,
+  public init(soundFonts: SoundFontsProvider, favorites: FavoritesProvider, selectedSoundFontManager: SelectedSoundFontManager,
               settings: Settings) {
     self.soundFonts = soundFonts
     self.favorites = favorites

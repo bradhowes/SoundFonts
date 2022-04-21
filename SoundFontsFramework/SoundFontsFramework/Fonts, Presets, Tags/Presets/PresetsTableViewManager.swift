@@ -20,9 +20,9 @@ final class PresetsTableViewManager: NSObject {
 
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let activePresetManager: ActivePresetManager
-  private let soundFonts: SoundFonts
-  private let favorites: Favorites
-  private let keyboard: Keyboard?
+  private let soundFonts: SoundFontsProvider
+  private let favorites: FavoritesProvider
+  private let keyboard: AnyKeyboard?
   private let settings: Settings
 
   private var viewSlots = [PresetViewSlot]()
@@ -69,8 +69,8 @@ final class PresetsTableViewManager: NSObject {
    - parameter infoBar: the info bar manager
    */
   init(viewController: PresetsTableViewController, activePresetManager: ActivePresetManager,
-       selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
-       keyboard: Keyboard?, infoBar: InfoBar, settings: Settings) {
+       selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFontsProvider, favorites: FavoritesProvider,
+       keyboard: AnyKeyboard?, infoBar: AnyInfoBar, settings: Settings) {
     self.viewController = viewController
     self.selectedSoundFontManager = selectedSoundFontManager
     self.activePresetManager = activePresetManager

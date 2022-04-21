@@ -5,7 +5,7 @@ import UIKit
 public final class GuideViewController: UIViewController {
 
   private var savedParent: UIViewController!
-  private var infoBar: InfoBar!
+  private var infoBar: AnyInfoBar!
   private var settings: Settings!
 
   @IBOutlet private weak var fontPresetPanel: UIView!

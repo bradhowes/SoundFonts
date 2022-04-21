@@ -131,7 +131,7 @@ extension Preset {
     return favorite
   }
 
-  func validate(_ favorites: Favorites) {
+  func validate(_ favorites: FavoritesProvider) {
     var invalidFavoriteIndices = [Int]()
     for (favoriteIndex, favoriteKey) in self.favorites.enumerated().reversed() {
       if !favorites.contains(key: favoriteKey) {

@@ -83,8 +83,8 @@ public final class SettingsViewController: UIViewController {
   private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
   public weak var settings: Settings!
-  public weak var soundFonts: SoundFonts!
-  public weak var infoBar: InfoBar!
+  public weak var soundFonts: SoundFontsProvider!
+  public weak var infoBar: AnyInfoBar!
   public var isMainApp = true
 
   private var midiConnectionsObserver: NSKeyValueObservation!
