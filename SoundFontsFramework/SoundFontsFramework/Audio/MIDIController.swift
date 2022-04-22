@@ -12,7 +12,7 @@ public final class MIDIController {
   /// Current MIDI channel to listen to for MIDI. A value of -1 means OMNI -- respond to all messages
   public private(set) var channel: Int
 
-  private let sampler: Sampler
+  private let sampler: Synth
   private let keyboard: AnyKeyboard?
   private let settings: Settings
   private var observer: NSKeyValueObservation?
@@ -23,7 +23,7 @@ public final class MIDIController {
    - parameter sampler: the Sampler to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(sampler: Sampler, keyboard: AnyKeyboard?, settings: Settings) {
+  public init(sampler: Synth, keyboard: AnyKeyboard?, settings: Settings) {
     self.sampler = sampler
     self.keyboard = keyboard
     self.settings = settings

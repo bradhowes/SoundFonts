@@ -22,7 +22,7 @@ public final class NoteInjector {
 
    - parameter sampler: the sampler to command
    */
-  public func post(to sampler: Sampler) {
+  public func post(to sampler: Synth) {
     guard settings.playSample == true else { return }
     workItems.forEach { $0.cancel() }
 

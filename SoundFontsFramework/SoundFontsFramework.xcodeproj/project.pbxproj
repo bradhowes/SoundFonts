@@ -23,7 +23,7 @@
 		BD074C5123CDAF51001987E9 /* SoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEC23CDAF51001987E9 /* SoundFont.swift */; };
 		BD074C5223CDAF51001987E9 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BED23CDAF51001987E9 /* Preset.swift */; };
 		BD074C5323CDAF51001987E9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEE23CDAF51001987E9 /* Note.swift */; };
-		BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* Sampler.swift */; };
+		BD074C5423CDAF51001987E9 /* Synth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* Synth.swift */; };
 		BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */; };
 		BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */; };
 		BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */; };
@@ -250,7 +250,7 @@
 		BDFA98EC280C55B80069A46F /* ReverbAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98EB280C55B80069A46F /* ReverbAU.swift */; };
 		BDFA98EE280C5C4C0069A46F /* DelayAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98ED280C5C4C0069A46F /* DelayAU.swift */; };
 		BDFA98F0280C60880069A46F /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98EF280C60880069A46F /* SoundFontsAU.swift */; };
-		BDFA9900280DF07B0069A46F /* LoadablePreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */; };
+		BDFA9900280DF07B0069A46F /* PresetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98FF280DF07B0069A46F /* PresetLoader.swift */; };
 		BDFA9902281047520069A46F /* SamplerLoadablePresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA9901281047520069A46F /* SamplerLoadablePresetTests.swift */; };
 		BDFA990428106FC70069A46F /* SF2EngineLoadablePresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */; };
 		BDFA990628107BA30069A46F /* PresetChangeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */; };
@@ -283,7 +283,7 @@
 		BD074BEC23CDAF51001987E9 /* SoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFont.swift; sourceTree = "<group>"; };
 		BD074BED23CDAF51001987E9 /* Preset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
 		BD074BEE23CDAF51001987E9 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		BD074BEF23CDAF51001987E9 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
+		BD074BEF23CDAF51001987E9 /* Synth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synth.swift; sourceTree = "<group>"; };
 		BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontAndPreset.swift; sourceTree = "<group>"; };
 		BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewManager.swift; sourceTree = "<group>"; };
@@ -511,7 +511,7 @@
 		BDFA98EB280C55B80069A46F /* ReverbAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbAU.swift; sourceTree = "<group>"; };
 		BDFA98ED280C5C4C0069A46F /* DelayAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayAU.swift; sourceTree = "<group>"; };
 		BDFA98EF280C60880069A46F /* SoundFontsAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsAU.swift; sourceTree = "<group>"; };
-		BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadablePreset.swift; sourceTree = "<group>"; };
+		BDFA98FF280DF07B0069A46F /* PresetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetLoader.swift; sourceTree = "<group>"; };
 		BDFA9901281047520069A46F /* SamplerLoadablePresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SamplerLoadablePresetTests.swift; sourceTree = "<group>"; };
 		BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SF2EngineLoadablePresetTests.swift; sourceTree = "<group>"; };
 		BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManagerTests.swift; sourceTree = "<group>"; };
@@ -614,7 +614,7 @@
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
-				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
+				BD074BEF23CDAF51001987E9 /* Synth.swift */,
 				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */,
 				BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */,
@@ -730,7 +730,7 @@
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
 				BDBF897A25B5930100B58E23 /* TagsProvider.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
-				BDFA98FF280DF07B0069A46F /* LoadablePreset.swift */,
+				BDFA98FF280DF07B0069A46F /* PresetLoader.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1235,7 +1235,7 @@
 				BD1B8CD9270C762700C6BF15 /* MIDIMonitor.swift in Sources */,
 				BD074C7E23CDAF51001987E9 /* UISearchBar.swift in Sources */,
 				BD3F44D62501958000653ABD /* PersistentContainer.swift in Sources */,
-				BDFA9900280DF07B0069A46F /* LoadablePreset.swift in Sources */,
+				BDFA9900280DF07B0069A46F /* PresetLoader.swift in Sources */,
 				BD0FAC802523CAEC00EEF187 /* UIContextualAction.swift in Sources */,
 				BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */,
 				BDD5FA7125043C3700367F0B /* NSManagedObjectContext.swift in Sources */,
@@ -1339,7 +1339,7 @@
 				BD1B8CDB270CB1E200C6BF15 /* MIDIPacketList.swift in Sources */,
 				BD1971BA26617D8100C7FCF5 /* ManagedPresetConfig.swift in Sources */,
 				BD074C5323CDAF51001987E9 /* Note.swift in Sources */,
-				BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */,
+				BD074C5423CDAF51001987E9 /* Synth.swift in Sources */,
 				BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,

@@ -11,7 +11,7 @@ import os
  */
 public final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let sampler: Sampler
+  private let sampler: Synth
   private let identity: Int
   private let activePresetManager: ActivePresetManager
   private let settings: Settings
@@ -36,7 +36,7 @@ public final class SoundFontsAU: AUAudioUnit {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, sampler: Sampler, identity: Int,
+  public init(componentDescription: AudioComponentDescription, sampler: Synth, identity: Int,
               activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU[\(identity)]")
     self.log = log

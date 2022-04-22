@@ -18,7 +18,7 @@ final class MainViewController: UIViewController {
   private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
   private var keyboard: AnyKeyboard!
-  private var sampler: Sampler?
+  private var sampler: Synth?
   private var infoBar: AnyInfoBar!
   private var settings: Settings!
   fileprivate var noteInjector: NoteInjector!
@@ -186,7 +186,7 @@ extension MainViewController {
 
 extension MainViewController: ControllerConfiguration {
 
-  private func startAudioBackground_BT(_ sampler: Sampler) {
+  private func startAudioBackground_BT(_ sampler: Synth) {
     os_log(.debug, log: log, "startAudioBackground_BT BEGIN")
 
     let sampleRate: Double = 44100.0
@@ -291,7 +291,7 @@ extension MainViewController: ControllerConfiguration {
     }
   }
 
-  private func setSampler_BT(_ sampler: Sampler) {
+  private func setSampler_BT(_ sampler: Synth) {
     os_log(.debug, log: log, "setSampler_BT BEGIN")
     self.sampler = sampler
     if startRequested {
@@ -317,14 +317,14 @@ extension MainViewController: ControllerConfiguration {
       if playSample { self.noteInjector.post(to: sampler) }
     }
 
-    if case let .failure(what) = result, what != .noSampler {
+    if case let .failure(what) = result, what != .noSynth {
       self.postAlert_BT(for: what)
     }
 
     os_log(.debug, log: log, "useActivePreset_BT END")
   }
 
-  private func finishStart(_ result: Sampler.StartResult) {
+  private func finishStart(_ result: Synth.StartResult) {
     os_log(.debug, log: log, "finishStart BEGIN - %{public}s", result.description)
 
     switch result {
@@ -348,7 +348,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.error, log: log, "recreateSampler - END")
   }
 
-  private func postAlert_BT(for what: SamplerStartFailure) {
+  private func postAlert_BT(for what: SynthStartFailure) {
     DispatchQueue.main.async { NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what)) }
   }
 

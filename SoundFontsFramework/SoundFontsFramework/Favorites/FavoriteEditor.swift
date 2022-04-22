@@ -344,7 +344,7 @@ extension FavoriteEditor {
     pitchBendRange.text = "\(value)"
     presetConfig.pitchBendRange = value
     if config.state.isActive {
-      Sampler.pitchBendRangeChangedNotification.post(value: value)
+      Synth.pitchBendRangeChangedNotification.post(value: value)
     }
   }
 
@@ -358,7 +358,7 @@ extension FavoriteEditor {
     gainSlider.value = value
     presetConfig.gain = value
     if config.state.isActive {
-      Sampler.gainChangedNotification.post(value: value)
+      Synth.gainChangedNotification.post(value: value)
     }
   }
 
@@ -370,7 +370,7 @@ extension FavoriteEditor {
     panSlider.value = value
     presetConfig.pan = value
     if config.state.isActive {
-      Sampler.panChangedNotification.post(value: value)
+      Synth.panChangedNotification.post(value: value)
     }
   }
 
