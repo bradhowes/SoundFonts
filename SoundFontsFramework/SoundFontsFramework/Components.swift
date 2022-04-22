@@ -65,11 +65,11 @@ where T: ControllerConfiguration {
   public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }
 
   /// The sampler engine that generates audio from sound font files
-  public var sampler: Sampler? { accessQueue.sync { _sampler } }
+  public var sampler: Synth? { accessQueue.sync { _sampler } }
 
   private var _alertManager: AlertManager?
 
-  private var _sampler: Sampler? {
+  private var _sampler: Synth? {
     didSet {
       if let sampler = _sampler {
         notify(.samplerAvailable(sampler))
@@ -108,12 +108,12 @@ where T: ControllerConfiguration {
   public func createAudioComponents() {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
-        let sampler = Sampler(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
+        let sampler = Synth(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
                               delay: DelayEffect(), chorus: nil, settings: self.settings)
         self.accessQueue.sync { self._sampler = sampler }
       }
     } else {
-      self._sampler = Sampler(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
+      self._sampler = Synth(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
                               chorus: nil, settings: settings)
     }
   }

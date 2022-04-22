@@ -5,7 +5,7 @@ import UIKit
 /// State change events that can happen with a ComponentContainer.
 public enum ComponentContainerEvent: CustomStringConvertible {
   /// The sampler is ready for use.
-  case samplerAvailable(Sampler)
+  case samplerAvailable(Synth)
 
   public var description: String {
     switch self {
@@ -22,7 +22,7 @@ public protocol ComponentContainer: AnyObject {
   /// User settings for the app
   var settings: Settings { get }
   /// The Sampler that is used to generate sounds
-  var sampler: Sampler? { get }
+  var sampler: Synth? { get }
   /// The collection of installed sound font files
   var soundFonts: SoundFontsProvider { get }
   /// The collection of favorite presets

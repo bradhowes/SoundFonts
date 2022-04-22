@@ -99,7 +99,7 @@ extension TuningComponent {
     tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
     tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: centsToFrequency(tuningCentsValue)))
     if isActive {
-      Sampler.tuningChangedNotification.post(value: tuningCentsValue)
+      Synth.tuningChangedNotification.post(value: tuningCentsValue)
     }
   }
 }

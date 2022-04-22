@@ -63,7 +63,7 @@ public final class InfoBarController: UIViewController {
     panner.maximumNumberOfTouches = 1
     touchView.addGestureRecognizer(panner)
 
-    tuningChangedNotifier = Sampler.tuningChangedNotification.registerOnAny(block: updateTuningIndicator(_:))
+    tuningChangedNotifier = Synth.tuningChangedNotification.registerOnAny(block: updateTuningIndicator(_:))
     presetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: updateIndicators(_:))
   }
 

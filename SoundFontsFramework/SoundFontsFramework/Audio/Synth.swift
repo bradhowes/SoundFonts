@@ -8,9 +8,9 @@ import os
 import SoundFontInfoLib
 
 /// Failure modes for a sampler
-public enum SamplerStartFailure: Error, Equatable, CustomStringConvertible {
-  /// No sampler is available
-  case noSampler
+public enum SynthStartFailure: Error, Equatable, CustomStringConvertible {
+  /// No synth is available
+  case noSynth
   /// Failed to active a session
   case sessionActivating(error: NSError)
   /// Failed to start audio engine
@@ -20,7 +20,7 @@ public enum SamplerStartFailure: Error, Equatable, CustomStringConvertible {
   /// The system error associated with a failure.
   var error: NSError {
     switch self {
-    case .noSampler: return NSError()
+    case .noSynth: return NSError()
     case .sessionActivating(let err): return err
     case .engineStarting(let err): return err
     case .presetLoading(let err): return err
@@ -29,7 +29,7 @@ public enum SamplerStartFailure: Error, Equatable, CustomStringConvertible {
 
   public var description: String {
     switch self {
-    case .noSampler: return "<SamplerStartFailure: no sampler>"
+    case .noSynth: return "<SamplerStartFailure: no sampler>"
     case .sessionActivating(error: let error):
       return "<SamplerStartFailure: sessionActivating - \(error.localizedDescription)>"
     case .engineStarting(error: let error):
@@ -49,11 +49,30 @@ extension Result: CustomStringConvertible {
   }
 }
 
+public protocol AnyMIDISynth: PresetLoader {
+  var avAudioUnit: AVAudioUnitMIDIInstrument { get }
+
+  var globalTuning: Float { get set }
+  var globalGain: Float { get set }
+  var globalPan: Float { get set }
+
+  func reset()
+  func noteOn(_ note: UInt8, velocity: UInt8)
+  func noteOff(_ note: UInt8)
+  func changeController(_ controller: UInt8, value: UInt8)
+  func pitchBend(_ value: UInt16)
+  func changeAllKeysPressure(_ pressure: UInt8)
+  func changeKeyPressure(_ key: UInt8, pressure: UInt8)
+  func changeProgram(_ program: UInt8, bankMSB: UInt8, bankLSB: UInt8)
+  func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8)
+  func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8, data2: UInt8)
+}
+
 /**
  This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
  */
-public final class Sampler {
-  private static let log = Logging.logger("Sampler")
+public final class Synth {
+  private static let log = Logging.logger("Synth")
   private var log: OSLog { Self.log }
 
   /// The notification that tuning value has changed for the sampler
@@ -68,7 +87,7 @@ public final class Sampler {
   /// The notification that pitch bend range has changed for the sampler
   public static let pitchBendRangeChangedNotification = TypedNotification<Int>(name: .pitchBendRangeChanged)
 
-  public typealias StartResult = Result<AVAudioUnitMIDIInstrument, SamplerStartFailure>
+  public typealias StartResult = Result<AVAudioUnitMIDIInstrument, SynthStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
   public enum Mode {
@@ -227,7 +246,7 @@ public final class Sampler {
     // Ok if the sampler is not yet available. We will apply the preset when it is
     guard let sampler = auSampler else {
       os_log(.debug, log: log, "no sampler yet")
-      return .failure(.noSampler)
+      return .failure(.noSynth)
     }
 
     guard let soundFont = activePresetManager.activeSoundFont else {
@@ -264,7 +283,7 @@ public final class Sampler {
   }
 }
 
-extension Sampler {
+extension Synth {
 
   /**
    Set the AVAudioUnitSampler tuning value
@@ -322,7 +341,7 @@ extension Sampler {
   }
 }
 
-extension Sampler: NoteProcessor {
+extension Synth: NoteProcessor {
 
   /**
    Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
@@ -355,7 +374,7 @@ extension Sampler: NoteProcessor {
   }
 }
 
-extension Sampler {
+extension Synth {
 
   /**
    After-touch for the given playing note.
@@ -404,7 +423,7 @@ extension Sampler {
   }
 }
 
-extension Sampler {
+extension Synth {
 
   private func startEngine(_ sampler: AVAudioUnitSampler) -> StartResult {
 

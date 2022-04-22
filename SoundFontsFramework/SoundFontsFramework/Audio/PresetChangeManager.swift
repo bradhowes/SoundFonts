@@ -58,7 +58,7 @@ final class PresetChangeManager {
    - parameter preset: the preset to change to
    - parameter afterLoadBlock: block to invoke after the change is done
    */
-  func change(sampler: LoadablePreset, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
+  func change(sampler: PresetLoader, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
     os_log(.debug, log: log, "change - %{public}s %{public}s", url.lastPathComponent, preset.description)
     guard active else { return }
     queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, preset: preset,
@@ -83,14 +83,14 @@ final class PresetChangeManager {
 private final class PresetChangeOperation: Operation {
   private lazy var log = Logging.logger("PresetChangeOperation")
 
-  private weak var sampler: LoadablePreset?
+  private weak var sampler: PresetLoader?
   private let url: URL
   private let preset: Preset
   private let afterLoadBlock: PresetChangeManager.AfterLoadBlock?
 
   override var isAsynchronous: Bool { true }
 
-  init(sampler: LoadablePreset, url: URL, preset: Preset, afterLoadBlock: PresetChangeManager.AfterLoadBlock? = nil) {
+  init(sampler: PresetLoader, url: URL, preset: Preset, afterLoadBlock: PresetChangeManager.AfterLoadBlock? = nil) {
     self.sampler = sampler
     self.url = url
     self.preset = preset

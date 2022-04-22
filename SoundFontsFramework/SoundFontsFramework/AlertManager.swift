@@ -129,8 +129,8 @@ extension Notification {
     return tmp
   }
 
-  fileprivate var samplerStartFailureObject: SamplerStartFailure {
-    guard let tmp = object as? SamplerStartFailure else { fatalError() }
+  fileprivate var samplerStartFailureObject: SynthStartFailure {
+    guard let tmp = object as? SynthStartFailure else { fatalError() }
     return tmp
   }
 }
@@ -153,10 +153,10 @@ extension AlertManager {
     return AlertConfig(title: strings.0, body: String(format: strings.1, name))
   }
 
-  private func samplerStartFailureAlert(failure: SamplerStartFailure) -> AlertConfig {
+  private func samplerStartFailureAlert(failure: SynthStartFailure) -> AlertConfig {
     let title = Formatters.strings.samplerStartFailureTitle
     switch failure {
-    case .noSampler:
+    case .noSynth:
       return AlertConfig(title: title, body: Formatters.strings.noSamplerFailureBody)
     case .engineStarting(let error):
       return AlertConfig(

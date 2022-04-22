@@ -8,7 +8,7 @@ import SoundFontInfoLib
 /**
  Abstraction for an entity that can load a preset from a URL.
  */
-public protocol LoadablePreset: AnyObject {
+public protocol PresetLoader: AnyObject {
 
   /**
    Load and activate a preset found in an SF2 file.
@@ -20,7 +20,7 @@ public protocol LoadablePreset: AnyObject {
   func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError?
 }
 
-extension AVAudioUnitSampler: LoadablePreset {
+extension AVAudioUnitSampler: PresetLoader {
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
     do {
@@ -45,7 +45,7 @@ extension AVAudioUnitSampler: LoadablePreset {
   }
 }
 
-extension SF2Engine: LoadablePreset {
+extension SF2Engine: PresetLoader {
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
     var err = self.load(url)
     switch err {
