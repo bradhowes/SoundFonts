@@ -64,15 +64,15 @@ where T: ControllerConfiguration {
   /// The manager for posting alerts
   public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }
 
-  /// The sampler engine that generates audio from sound font files
-  public var sampler: Synth? { accessQueue.sync { _sampler } }
+  /// The synth engine that generates audio from sound font files
+  public var synth: Synth? { accessQueue.sync { _synth } }
 
   private var _alertManager: AlertManager?
 
-  private var _sampler: Synth? {
+  private var _synth: Synth? {
     didSet {
-      if let sampler = _sampler {
-        notify(.samplerAvailable(sampler))
+      if let synth = _synth {
+        notify(.synthAvailable(synth))
       }
     }
   }
@@ -108,13 +108,13 @@ where T: ControllerConfiguration {
   public func createAudioComponents() {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
-        let sampler = Synth(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
-                              delay: DelayEffect(), chorus: nil, settings: self.settings)
-        self.accessQueue.sync { self._sampler = sampler }
+        let synth = Synth(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
+                          delay: DelayEffect(), chorus: nil, settings: self.settings)
+        self.accessQueue.sync { self._synth = synth }
       }
     } else {
-      self._sampler = Synth(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
-                              chorus: nil, settings: settings)
+      self._synth = Synth(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
+                          chorus: nil, settings: settings)
     }
   }
 

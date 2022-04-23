@@ -12,7 +12,7 @@ final class VolumeMonitor {
   private enum Reason {
     /// Volume level is at zero
     case volumeLevel
-    /// There is no preset active in the sampler
+    /// There is no preset active in the synth
     case noPreset
   }
 
@@ -28,7 +28,7 @@ final class VolumeMonitor {
   private var reason: Reason?
   private var sessionVolumeObserver: NSKeyValueObservation?
 
-  /// Set to true if there is a valid preset installed and in use by the sampler.
+  /// Set to true if there is a valid preset installed and in use by the synth.
   public var validActivePreset = true
 
   /**

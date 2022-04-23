@@ -7,7 +7,7 @@ import os
 
 import SoundFontInfoLib
 
-/// Failure modes for a sampler
+/// Failure modes for a synth
 public enum SynthStartFailure: Error, Equatable, CustomStringConvertible {
   /// No synth is available
   case noSynth
@@ -29,13 +29,13 @@ public enum SynthStartFailure: Error, Equatable, CustomStringConvertible {
 
   public var description: String {
     switch self {
-    case .noSynth: return "<SamplerStartFailure: no sampler>"
+    case .noSynth: return "<SynthStartFailure: no synth>"
     case .sessionActivating(error: let error):
-      return "<SamplerStartFailure: sessionActivating - \(error.localizedDescription)>"
+      return "<SynthStartFailure: sessionActivating - \(error.localizedDescription)>"
     case .engineStarting(error: let error):
-      return "<SamplerStartFailure: engineStarting - \(error.localizedDescription)>"
+      return "<SynthStartFailure: engineStarting - \(error.localizedDescription)>"
     case .presetLoading(error: let error):
-      return "<SamplerStartFailure: presetLoading - \(error.localizedDescription)>"
+      return "<SynthStartFailure: presetLoading - \(error.localizedDescription)>"
     }
   }
 }
@@ -96,7 +96,7 @@ public final class Synth {
   }
 
   /// The internal AVAudioUnitSampler that does the actual sound generation
-  public private(set) var auSampler: AVAudioUnitSampler?
+  public private(set) var avSynth: AVAudioUnitSampler?
 
   public let reverbEffect: ReverbEffect?
   public let delayEffect: DelayEffect?
@@ -112,7 +112,7 @@ public final class Synth {
   private var presetLoaded: Bool = false
 
   /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
-  private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
+  private var auAudioUnit: AUAudioUnit? { avSynth?.auAudioUnit }
 
   private var activePresetConfigChangedNotifier: NotificationObserver?
   private var tuningChangedNotifier: NotificationObserver?
@@ -167,7 +167,7 @@ public final class Synth {
   public func start() -> StartResult {
     os_log(.debug, log: log, "start BEGIN")
     let sampler = AVAudioUnitSampler()
-    auSampler = sampler
+    avSynth = sampler
 
     if settings.globalTuningEnabled {
       sampler.globalTuning = settings.globalTuning
@@ -197,13 +197,13 @@ public final class Synth {
     if let engine = self.engine {
       os_log(.debug, log: log, "stopping engine")
       engine.stop()
-      if let sampler = self.auSampler {
+      if let sampler = self.avSynth {
         os_log(.debug, log: log, "resetting sampler")
         sampler.reset()
         os_log(.debug, log: log, "detaching sampler")
         engine.detach(sampler)
         os_log(.debug, log: log, "dropping sampler")
-        self.auSampler = nil
+        self.avSynth = nil
       }
 
       os_log(.debug, log: log, "resetting engine")
@@ -212,21 +212,21 @@ public final class Synth {
       self.engine = nil
     }
 
-    if let sampler = self.auSampler {
+    if let sampler = self.avSynth {
       os_log(.debug, log: log, "resetting sampler")
       sampler.reset()
       os_log(.debug, log: log, "dropping sampler")
-      self.auSampler = nil
+      self.avSynth = nil
     }
 
     os_log(.debug, log: log, "stop END")
   }
 
   public func load(at url: URL, preset: Preset) {
-    guard let sampler = auSampler else { return }
+    guard let synth = avSynth else { return }
     os_log(.debug, log: self.log, "load BEGIN - url: %{public}s preset: %{public}s", url.description,
            preset.description)
-    presetChangeManager.change(sampler: sampler, url: url, preset: preset) { [weak self] result in
+    presetChangeManager.change(synth: synth, url: url, preset: preset) { [weak self] result in
       guard let self = self else { return }
       os_log(.debug, log: self.log, "load complete - %{public}s", result.description)
     }
@@ -244,26 +244,26 @@ public final class Synth {
     os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
-    guard let sampler = auSampler else {
+    guard let synth = avSynth else {
       os_log(.debug, log: log, "no sampler yet")
       return .failure(.noSynth)
     }
 
     guard let soundFont = activePresetManager.activeSoundFont else {
       os_log(.debug, log: log, "activePresetManager.activeSoundFont is nil")
-      return .success(sampler)
+      return .success(synth)
     }
 
     guard let preset = activePresetManager.activePreset else {
       os_log(.debug, log: log, "activePresetManager.activePreset is nil")
-      return .success(sampler)
+      return .success(synth)
     }
 
     self.presetLoaded = false
     let presetConfig = activePresetManager.activePresetConfig
 
     os_log(.debug, log: log, "requesting preset change")
-    presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, preset: preset) { [weak self] result in
+    presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }
       os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
 
@@ -279,7 +279,7 @@ public final class Synth {
     }
 
     os_log(.debug, log: log, "loadActivePreset END")
-    return .success(sampler)
+    return .success(synth)
   }
 }
 
@@ -292,7 +292,7 @@ extension Synth {
    */
   public func setTuning(_ value: Float) {
     os_log(.debug, log: log, "setTuning BEGIN - %f", value)
-    auSampler?.globalTuning = value
+    avSynth?.globalTuning = value
     os_log(.debug, log: log, "setTuning END")
   }
 
@@ -303,7 +303,7 @@ extension Synth {
    */
   public func setGain(_ value: Float) {
     os_log(.debug, log: log, "setGain BEGIN - %f", value)
-    auSampler?.masterGain = value
+    avSynth?.masterGain = value
     os_log(.debug, log: log, "setGain END")
   }
 
@@ -314,7 +314,7 @@ extension Synth {
    */
   public func setPan(_ value: Float) {
     os_log(.debug, log: log, "setPan BEGIN - %f", value)
-    auSampler?.stereoPan = value
+    avSynth?.stereoPan = value
     os_log(.debug, log: log, "setPan END")
   }
 
@@ -330,10 +330,10 @@ extension Synth {
       return
     }
 
-    auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 0)
-    auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 0)
-    auSampler?.sendMIDIEvent(0xB0, data1: 6, data2: UInt8(value))
-    auSampler?.sendMIDIEvent(0xB0, data1: 38, data2: 0)
+    avSynth?.sendMIDIEvent(0xB0, data1: 101, data2: 0)
+    avSynth?.sendMIDIEvent(0xB0, data1: 100, data2: 0)
+    avSynth?.sendMIDIEvent(0xB0, data1: 6, data2: UInt8(value))
+    avSynth?.sendMIDIEvent(0xB0, data1: 38, data2: 0)
 
     // auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 127)
     // auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 127)
@@ -359,7 +359,7 @@ extension Synth: NoteProcessor {
       noteOff(midiValue)
       return
     }
-    auSampler?.startNote(midiValue, withVelocity: velocity, onChannel: 0)
+    avSynth?.startNote(midiValue, withVelocity: velocity, onChannel: 0)
   }
 
   /**
@@ -370,7 +370,7 @@ extension Synth: NoteProcessor {
   public func noteOff(_ midiValue: UInt8) {
     os_log(.debug, log: log, "noteOff - %d", midiValue)
     guard presetLoaded else { return }
-    auSampler?.stopNote(midiValue, onChannel: 0)
+    avSynth?.stopNote(midiValue, onChannel: 0)
   }
 }
 
@@ -385,7 +385,7 @@ extension Synth {
   public func polyphonicKeyPressure(_ midiValue: UInt8, pressure: UInt8) {
     os_log(.debug, log: log, "polyphonicKeyPressure - %d %d", midiValue, pressure)
     guard presetLoaded else { return }
-    auSampler?.sendPressure(forKey: midiValue, withValue: pressure, onChannel: 0)
+    avSynth?.sendPressure(forKey: midiValue, withValue: pressure, onChannel: 0)
   }
 
   /**
@@ -396,7 +396,7 @@ extension Synth {
   public func channelPressure(_ pressure: UInt8) {
     os_log(.debug, log: log, "channelPressure - %d", pressure)
     guard presetLoaded else { return }
-    auSampler?.sendPressure(pressure, onChannel: 0)
+    avSynth?.sendPressure(pressure, onChannel: 0)
   }
 
   /**
@@ -407,19 +407,19 @@ extension Synth {
   public func pitchBendChange(_ value: UInt16) {
     os_log(.debug, log: log, "pitchBend - %d", value)
     guard presetLoaded else { return }
-    auSampler?.sendPitchBend(value, onChannel: 0)
+    avSynth?.sendPitchBend(value, onChannel: 0)
   }
 
   public func controlChange(_ controller: UInt8, value: UInt8) {
     os_log(.debug, log: log, "controllerChange - %d %d", controller, value)
     guard presetLoaded else { return }
-    auSampler?.sendController(controller, withValue: value, onChannel: 0)
+    avSynth?.sendController(controller, withValue: value, onChannel: 0)
   }
 
   public func programChange(_ program: UInt8) {
     os_log(.debug, log: log, "programChange - %d", program)
     guard presetLoaded else { return }
-    auSampler?.sendProgramChange(program, onChannel: 0)
+    avSynth?.sendProgramChange(program, onChannel: 0)
   }
 }
 

@@ -6,7 +6,7 @@ import UIKit
 import os
 
 /**
- Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
+ Top-level view controller for the application. It contains the Synth which will emit sounds based on what keys are
  touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
  to the background or stops being active.
  */
@@ -18,7 +18,7 @@ final class MainViewController: UIViewController {
   private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
   private var keyboard: AnyKeyboard!
-  private var sampler: Synth?
+  private var synth: Synth?
   private var infoBar: AnyInfoBar!
   private var settings: Settings!
   fileprivate var noteInjector: NoteInjector!
@@ -50,7 +50,7 @@ final class MainViewController: UIViewController {
 
     observers.append(NotificationCenter.default.addObserver(forName: AVAudioSession.mediaServicesWereResetNotification,
                                                             object: nil, queue: nil) { [weak self] _ in
-      self?.recreateSampler()
+      self?.recreateSynth()
     })
   }
 
@@ -113,12 +113,12 @@ extension MainViewController {
   func startAudio() {
     os_log(.debug, log: log, "startAudio BEGIN")
     startRequested = true
-    guard let sampler = self.sampler else {
-      os_log(.debug, log: log, "startAudio END - no sampler")
+    guard let synth = self.synth else {
+      os_log(.debug, log: log, "startAudio END - no synth")
       return
     }
 
-    DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground_BT(sampler) }
+    DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground_BT(synth) }
     os_log(.debug, log: log, "startAudio END")
   }
 
@@ -160,14 +160,14 @@ extension MainViewController {
   func stopAudio() {
     os_log(.debug, log: log, "stopAudio BEGIN")
     startRequested = false
-    guard sampler != nil else {
-      os_log(.debug, log: log, "stopAudio END - no sampler")
+    guard synth != nil else {
+      os_log(.debug, log: log, "stopAudio END - no synth")
       return
     }
 
     MIDI.sharedInstance.receiver = nil
     volumeMonitor?.stop()
-    sampler?.stop()
+    synth?.stop()
 
     let session = AVAudioSession.sharedInstance()
     do {
@@ -186,7 +186,7 @@ extension MainViewController {
 
 extension MainViewController: ControllerConfiguration {
 
-  private func startAudioBackground_BT(_ sampler: Synth) {
+  private func startAudioBackground_BT(_ synth: Synth) {
     os_log(.debug, log: log, "startAudioBackground_BT BEGIN")
 
     let sampleRate: Double = 44100.0
@@ -237,8 +237,8 @@ extension MainViewController: ControllerConfiguration {
 
     dump(route: session.currentRoute)
 
-    os_log(.debug, log: log, "startAudioBackground_BT - starting sampler")
-    let result = sampler.start()
+    os_log(.debug, log: log, "startAudioBackground_BT - starting synth")
+    let result = synth.start()
 
     DispatchQueue.main.async { self.finishStart(result) }
     os_log(.debug, log: log, "startAudioBackground_BT END")
@@ -266,8 +266,8 @@ extension MainViewController: ControllerConfiguration {
 
     router.activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
     router.subscribe(self, notifier: routerChanged_BT)
-    if let sampler = router.sampler {
-      activePresetManager.runOnNotifyQueue { self.setSampler_BT(sampler) }
+    if let synth = router.synth {
+      activePresetManager.runOnNotifyQueue { self.setSynth_BT(synth) }
     }
     
     activePresetManager.restoreActive(settings.lastActivePreset)
@@ -277,9 +277,9 @@ extension MainViewController: ControllerConfiguration {
 
   private func startMIDI() {
     os_log(.debug, log: log, "startMIDI BEGIN")
-    guard let sampler = self.sampler else { return }
-    os_log(.error, log: log, "starting MIDI for sampler")
-    midiController = MIDIController(sampler: sampler, keyboard: keyboard, settings: settings)
+    guard let synth = self.synth else { return }
+    os_log(.error, log: log, "starting MIDI for synth")
+    midiController = MIDIController(synth: synth, keyboard: keyboard, settings: settings)
     MIDI.sharedInstance.receiver = midiController
     os_log(.debug, log: log, "startMIDI END")
   }
@@ -287,17 +287,17 @@ extension MainViewController: ControllerConfiguration {
   private func routerChanged_BT(_ event: ComponentContainerEvent) {
     os_log(.debug, log: log, "routerChanged: %{public}s", event.description)
     switch event {
-    case .samplerAvailable(let sampler): setSampler_BT(sampler)
+    case .synthAvailable(let synth): setSynth_BT(synth)
     }
   }
 
-  private func setSampler_BT(_ sampler: Synth) {
-    os_log(.debug, log: log, "setSampler_BT BEGIN")
-    self.sampler = sampler
+  private func setSynth_BT(_ synth: Synth) {
+    os_log(.debug, log: log, "setSynth_BT BEGIN")
+    self.synth = synth
     if startRequested {
-      self.startAudioBackground_BT(sampler)
+      self.startAudioBackground_BT(synth)
     }
-    os_log(.debug, log: log, "setSampler_BT END")
+    os_log(.debug, log: log, "setSynth_BT END")
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
@@ -312,9 +312,9 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "useActivePreset_BT BEGIN - %{public}s", activePresetKind.description)
     volumeMonitor?.validActivePreset = activePresetKind != .none
     midiController?.allNotesOff()
-    guard let sampler = self.sampler else { return }
-    let result = sampler.loadActivePreset {
-      if playSample { self.noteInjector.post(to: sampler) }
+    guard let synth = self.synth else { return }
+    let result = synth.loadActivePreset {
+      if playSample { self.noteInjector.post(to: synth) }
     }
 
     if case let .failure(what) = result, what != .noSynth {
@@ -339,17 +339,17 @@ extension MainViewController: ControllerConfiguration {
     os_log(.error, log: log, "finishStart - END")
   }
 
-  private func recreateSampler() {
-    os_log(.error, log: log, "recreateSampler - BEGIN")
+  private func recreateSynth() {
+    os_log(.error, log: log, "recreateSynth - BEGIN")
     self.stopAudio()
-    self.sampler = nil
+    self.synth = nil
     router?.createAudioComponents()
     self.startAudio()
-    os_log(.error, log: log, "recreateSampler - END")
+    os_log(.error, log: log, "recreateSynth - END")
   }
 
   private func postAlert_BT(for what: SynthStartFailure) {
-    DispatchQueue.main.async { NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what)) }
+    DispatchQueue.main.async { NotificationCenter.default.post(Notification(name: .synthStartFailure, object: what)) }
   }
 
   private func setupAudioSessionNotifications_BT() {

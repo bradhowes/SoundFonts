@@ -5,7 +5,7 @@ import UIKit
 /// Mapping of UITouch instances from touch events to the Key instances that are played by the touches.
 internal struct TouchKeyMap {
 
-  /// The sampler that is generating sound
+  /// The synth that is generating sound
   var processor: NoteProcessor?
 
   private var touchedKeys = [UITouch: Key]()
