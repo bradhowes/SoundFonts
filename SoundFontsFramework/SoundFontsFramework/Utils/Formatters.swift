@@ -87,13 +87,13 @@ public struct Formatters {
       )
     }
 
-    var samplerStartFailureTitle: String {
+    var synthStartFailureTitle: String {
       NSLocalizedString(
-        "samplerStartFailureTitle", bundle: bundle,
+        "synthStartFailureTitle", bundle: bundle,
         comment: "Alert title when there is a sampler start failure")
     }
 
-    var noSamplerFailureBody: String {
+    var noSynthFailureBody: String {
       NSLocalizedString(
         "noSamplerFailureBody", bundle: bundle,
         comment: "Alert message when there is no sampler available to start")

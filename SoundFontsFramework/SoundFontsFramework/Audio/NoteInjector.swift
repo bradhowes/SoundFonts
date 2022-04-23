@@ -18,21 +18,21 @@ public final class NoteInjector {
   }
 
   /**
-   Post MIDI commands to Sampler to play a short note.
+   Post MIDI commands to the synth to play a short note.
 
-   - parameter sampler: the sampler to command
+   - parameter synth: the synth to command
    */
-  public func post(to sampler: Synth) {
+  public func post(to synth: Synth) {
     guard settings.playSample == true else { return }
     workItems.forEach { $0.cancel() }
 
     let note = self.note
-    let noteOn = DispatchWorkItem { sampler.noteOn(note, velocity: 32) }
+    let noteOn = DispatchWorkItem { synth.noteOn(note, velocity: 32) }
 
     // NOTE: for some reason, executing this without any delay does not work.
     playingQueue.asyncAfter(deadline: .now() + 0.025, execute: noteOn)
 
-    let noteOff = DispatchWorkItem { sampler.noteOff(note) }
+    let noteOff = DispatchWorkItem { synth.noteOff(note) }
     playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
     workItems = [noteOn, noteOff]

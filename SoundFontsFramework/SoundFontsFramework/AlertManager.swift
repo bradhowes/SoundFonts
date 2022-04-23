@@ -70,7 +70,7 @@ public final class AlertManager {
     .configLoadFailure,
     .soundFontsCollectionOrphans,
     .soundFontFileAccessDenied,
-    .samplerStartFailure
+    .synthStartFailure
   ]
 
   /**
@@ -97,8 +97,8 @@ public final class AlertManager {
         return soundFontsCollectionOrphansAlert(count: notification.intObject)
       case .soundFontFileAccessDenied:
         return soundFontFileAccessDeniedAlert(name: notification.stringObject)
-      case .samplerStartFailure:
-        return samplerStartFailureAlert(failure: notification.samplerStartFailureObject)
+      case .synthStartFailure:
+        return synthStartFailureAlert(failure: notification.synthStartFailureObject)
       default: fatalError("unexpected notification - \(notification.name)")
       }
     }()
@@ -129,7 +129,7 @@ extension Notification {
     return tmp
   }
 
-  fileprivate var samplerStartFailureObject: SynthStartFailure {
+  fileprivate var synthStartFailureObject: SynthStartFailure {
     guard let tmp = object as? SynthStartFailure else { fatalError() }
     return tmp
   }
@@ -153,11 +153,11 @@ extension AlertManager {
     return AlertConfig(title: strings.0, body: String(format: strings.1, name))
   }
 
-  private func samplerStartFailureAlert(failure: SynthStartFailure) -> AlertConfig {
-    let title = Formatters.strings.samplerStartFailureTitle
+  private func synthStartFailureAlert(failure: SynthStartFailure) -> AlertConfig {
+    let title = Formatters.strings.synthStartFailureTitle
     switch failure {
     case .noSynth:
-      return AlertConfig(title: title, body: Formatters.strings.noSamplerFailureBody)
+      return AlertConfig(title: title, body: Formatters.strings.noSynthFailureBody)
     case .engineStarting(let error):
       return AlertConfig(
         title: title,

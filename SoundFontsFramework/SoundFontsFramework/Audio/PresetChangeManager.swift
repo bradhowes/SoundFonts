@@ -5,8 +5,8 @@ import os
 
 /// Failure modes for a PresetChangeOperation
 public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
-  /// No sampler is available
-  case noSampler
+  /// No synth is available
+  case noSynth
   /// Request was cancelled
   case cancelled
   /// Failed to load a preset
@@ -15,7 +15,7 @@ public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
   /// The system error associated with a failure.
   var error: NSError {
     switch self {
-    case .noSampler: return NSError()
+    case .noSynth: return NSError()
     case .cancelled: return NSError()
     case .failedToLoad(let err): return err
     }
@@ -23,7 +23,7 @@ public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
 
   public var description: String {
     switch self {
-    case .noSampler: return "<PresetChangeFailure: no sampler>"
+    case .noSynth: return "<PresetChangeFailure: no synth>"
     case .cancelled: return "<PresetChangeFailure: cancelled>"
     case .failedToLoad(error: let error): return "<PresetChangeFailure: failedToLoad - \(error.localizedDescription)>"
     }
@@ -31,7 +31,7 @@ public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
 }
 
 /**
- Controls changes to the active sound font preset of a sampler. Requests are sent to a queue so that changes take place
+ Controls changes to the active sound font preset of a synth. Requests are sent to a queue so that changes take place
  in an asynchronous but serial manner.
  */
 final class PresetChangeManager {
@@ -53,16 +53,15 @@ final class PresetChangeManager {
   /**
    Place into the queue an operation to change the active preset.
 
-   - parameter sampler: the sampler to change
+   - parameter synth: the synth to change
    - parameter url: the URL of the soundfont to use
    - parameter preset: the preset to change to
    - parameter afterLoadBlock: block to invoke after the change is done
    */
-  func change(sampler: PresetLoader, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
+  func change(synth: PresetLoader, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
     os_log(.debug, log: log, "change - %{public}s %{public}s", url.lastPathComponent, preset.description)
     guard active else { return }
-    queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, preset: preset,
-                                             afterLoadBlock: afterLoadBlock))
+    queue.addOperation(PresetChangeOperation(synth: synth, url: url, preset: preset, afterLoadBlock: afterLoadBlock))
   }
 
   /// Start accepting preset change requests.
@@ -83,15 +82,15 @@ final class PresetChangeManager {
 private final class PresetChangeOperation: Operation {
   private lazy var log = Logging.logger("PresetChangeOperation")
 
-  private weak var sampler: PresetLoader?
+  private weak var synth: PresetLoader?
   private let url: URL
   private let preset: Preset
   private let afterLoadBlock: PresetChangeManager.AfterLoadBlock?
 
   override var isAsynchronous: Bool { true }
 
-  init(sampler: PresetLoader, url: URL, preset: Preset, afterLoadBlock: PresetChangeManager.AfterLoadBlock? = nil) {
-    self.sampler = sampler
+  init(synth: PresetLoader, url: URL, preset: Preset, afterLoadBlock: PresetChangeManager.AfterLoadBlock? = nil) {
+    self.synth = synth
     self.url = url
     self.preset = preset
     self.afterLoadBlock = afterLoadBlock
@@ -102,9 +101,9 @@ private final class PresetChangeOperation: Operation {
   override func main() {
     os_log(.debug, log: log, "main - BEGIN")
 
-    guard let sampler = self.sampler else {
-      os_log(.debug, log: log, "nil sampler")
-      afterLoadBlock?(.failure(.noSampler))
+    guard let synth = self.synth else {
+      os_log(.debug, log: log, "nil synth")
+      afterLoadBlock?(.failure(.noSynth))
       return
     }
 
@@ -115,7 +114,7 @@ private final class PresetChangeOperation: Operation {
     }
 
     os_log(.debug, log: log, "before loadAndActivate")
-    let result = sampler.loadAndActivatePreset(preset, from: url)
+    let result = synth.loadAndActivatePreset(preset, from: url)
     os_log(.debug, log: log, "after loadAndActivate - %d", result ?? noErr)
 
     os_log(.debug, log: log, "before afterLoadBlock")

@@ -4,7 +4,7 @@ import os
 
 /**
  A controller that processes external MIDI events. Shows keys being played if given a Keyboard, and sends MIDI note
- actions to a Sampler.
+ actions to a synth.
  */
 public final class MIDIController {
   private lazy var log = Logging.logger("MIDIController")
@@ -12,19 +12,19 @@ public final class MIDIController {
   /// Current MIDI channel to listen to for MIDI. A value of -1 means OMNI -- respond to all messages
   public private(set) var channel: Int
 
-  private let sampler: Synth
+  private let synth: Synth
   private let keyboard: AnyKeyboard?
   private let settings: Settings
   private var observer: NSKeyValueObservation?
 
   /**
-   Construct new controller for a sampler and keyboard
+   Construct new controller for a synth and keyboard
 
-   - parameter sampler: the Sampler to command
+   - parameter synth: the synth to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(sampler: Synth, keyboard: AnyKeyboard?, settings: Settings) {
-    self.sampler = sampler
+  public init(synth: Synth, keyboard: AnyKeyboard?, settings: Settings) {
+    self.synth = synth
     self.keyboard = keyboard
     self.settings = settings
     self.channel = settings.midiChannel
@@ -46,12 +46,12 @@ public final class MIDIController {
 extension MIDIController: MIDIReceiver {
 
   public func noteOff(note: UInt8, velocity: UInt8) {
-    sampler.noteOff(note)
+    synth.noteOff(note)
     keyboard?.noteIsOff(note: note)
   }
 
   public func noteOn(note: UInt8, velocity: UInt8) {
-    sampler.noteOn(note, velocity: velocity)
+    synth.noteOn(note, velocity: velocity)
     keyboard?.noteIsOn(note: note)
   }
 
@@ -60,22 +60,22 @@ extension MIDIController: MIDIReceiver {
   }
 
   public func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
-    sampler.polyphonicKeyPressure(note, pressure: pressure)
+    synth.polyphonicKeyPressure(note, pressure: pressure)
   }
 
   public func channelPressure(pressure: UInt8) {
-    sampler.channelPressure(pressure)
+    synth.channelPressure(pressure)
   }
 
   public func pitchBendChange(value: UInt16) {
-    sampler.pitchBendChange(value)
+    synth.pitchBendChange(value)
   }
 
   public func controlChange(controller: UInt8, value: UInt8) {
-    sampler.controlChange(controller, value: value)
+    synth.controlChange(controller, value: value)
   }
 
   public func programChange(program: UInt8) {
-    sampler.programChange(program)
+    synth.programChange(program)
   }
 }

@@ -54,7 +54,7 @@ public final class ReverbAU: AUAudioUnit {
       componentDescription.componentFlags, componentDescription.componentManufacturer,
       componentDescription.componentType, componentDescription.componentSubType)
 
-    os_log(.debug, log: log, "starting AVAudioUnitSampler")
+    os_log(.debug, log: log, "starting AUAudioUnit")
 
     do {
       try super.init(componentDescription: componentDescription, options: [])

@@ -49,10 +49,10 @@ public final class EffectsController: UIViewController {
   private var favorites: FavoritesProvider!
   private var settings: Settings!
 
-  private var sampler: Synth?
-  private var reverbEffect: ReverbEffect? { sampler?.reverbEffect }
-  private var delayEffect: DelayEffect? { sampler?.delayEffect }
-  private var chorusEffect: ChorusEffect? { sampler?.chorusEffect}
+  private var synth: Synth?
+  private var reverbEffect: ReverbEffect? { synth?.reverbEffect }
+  private var delayEffect: DelayEffect? { synth?.delayEffect }
+  private var chorusEffect: ChorusEffect? { synth?.chorusEffect}
 
   public override func viewDidLoad() {
 
@@ -265,8 +265,8 @@ extension EffectsController: ControllerConfiguration {
     router.subscribe(self, notifier: routerChange_BT)
     activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
 
-    if let sampler = router.sampler {
-      self.sampler = sampler
+    if let synth = router.synth {
+      self.synth = synth
       updateState()
     }
   }
@@ -411,9 +411,9 @@ extension EffectsController {
 
   private func routerChange_BT(_ event: ComponentContainerEvent) {
     switch event {
-    case .samplerAvailable(let sampler):
+    case .synthAvailable(let synth):
       DispatchQueue.main.async {
-        self.sampler = sampler
+        self.synth = synth
         self.updateState()
       }
     }

@@ -19,13 +19,13 @@ extension Notification.Name {
   public static let soundFontFileNotAvailable = Notification.Name("soundFontFileNotAvailable")
   /// Notification that the active preset config changed.
   public static let activePresetConfigChanged = Notification.Name("activePresetConfigChanged")
-  /// Notification that the sampler tuning should changed
+  /// Notification that the synth tuning should changed
   public static let tuningChanged = Notification.Name("tuningChanged")
-  /// Notification that the sampler gain should changed
+  /// Notification that the synth gain should changed
   public static let gainChanged = Notification.Name("gainChanged")
-  /// Notification that the sampler pan should changed
+  /// Notification that the synth pan should changed
   public static let panChanged = Notification.Name("panChanged")
-  /// Notification that the sampler pitch-bend range should changed
+  /// Notification that the synth pitch-bend range should changed
   public static let pitchBendRangeChanged = Notification.Name("pitchBendRangeChanged")
   /// Failed to load the consolidated config file
   public static let configLoadFailure = Notification.Name("configLoadFailure")
@@ -33,8 +33,8 @@ extension Notification.Name {
   public static let showingEffects = Notification.Name("showingEffects")
   /// Notification that the effects view is going away.
   public static let hidingEffects = Notification.Name("hidingEffects")
-  /// Notification about sampler failure.
-  public static let samplerStartFailure = Notification.Name("samplerStartFailure")
+  /// Notification about synth failure.
+  public static let synthStartFailure = Notification.Name("synthStartFailure")
   /// Notification that app is resigning active state
   public static let appResigningActive = Notification.Name("appResigningActive")
   /// Notification to show the tutorial screen

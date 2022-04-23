@@ -5,13 +5,13 @@ import CoreAudioKit
 import os
 
 /**
- AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does
+ AUv3 component for SoundFonts. The component hosts its own synth instance but unlike the SoundFonts app, it does
  not contain reverb or delay effects. Most of the methods and getters forward to a _wrapped_ AUAudioUnit, the one that
  comes from the AVAudioUnitSampler.
  */
 public final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let sampler: Synth
+  private let synth: Synth
   private let identity: Int
   private let activePresetManager: ActivePresetManager
   private let settings: Settings
@@ -31,16 +31,16 @@ public final class SoundFontsAU: AUAudioUnit {
    Construct a new AUv3 component.
 
    - parameter componentDescription: the definition used when locating the component to create
-   - parameter sampler: the Sampler instance to use for actually rendering audio
+   - parameter synth: the Synth instance to use for actually rendering audio
    - parameter identity: the (pseudo) unique identity for this instance
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, sampler: Synth, identity: Int,
+  public init(componentDescription: AudioComponentDescription, synth: Synth, identity: Int,
               activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU[\(identity)]")
     self.log = log
-    self.sampler = sampler
+    self.synth = synth
     self.identity = identity
     self.activePresetManager = activePresetManager
     self.settings = settings
@@ -48,12 +48,12 @@ public final class SoundFontsAU: AUAudioUnit {
     os_log(.debug, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
            componentDescription.componentManufacturer, componentDescription.componentType,
            componentDescription.componentSubType)
-    os_log(.debug, log: log, "starting AVAudioUnitSampler")
+    os_log(.debug, log: log, "starting synth")
 
-    switch sampler.start() {
+    switch synth.start() {
     case let .success(auSampler): self.wrapped = auSampler.auAudioUnit
     case .failure(let what):
-      os_log(.debug, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
+      os_log(.debug, log: log, "failed to start synth - %{public}s", what.localizedDescription)
       throw what
     }
 
@@ -183,12 +183,12 @@ extension SoundFontsAU {
       return
     }
 
-    os_log(.debug, log: log, "reloadActivePreset - before sampler.load %{public}s", presetConfig.name)
-    sampler.load(at: soundFont.fileURL, preset: activePreset)
-    os_log(.debug, log: log, "reloadActivePreset - after sampler.load")
+    os_log(.debug, log: log, "reloadActivePreset - before synth.load %{public}s", presetConfig.name)
+    synth.load(at: soundFont.fileURL, preset: activePreset)
+    os_log(.debug, log: log, "reloadActivePreset - after synth.load")
 
     os_log(.debug, log: self.log, "reloadActivePreset - applying preset config")
-    sampler.applyPresetConfig(presetConfig)
+    synth.applyPresetConfig(presetConfig)
 
     os_log(.debug, log: log, "reloadActivePreset END")
   }
