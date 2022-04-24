@@ -16,14 +16,19 @@ class MIDIPacketTests: XCTestCase {
     var channel: Int = -1
     var received = [Event]()
 
-    func noteOn(note: UInt8, velocity: UInt8) { self.received.append(Event(cmd: 0x90, data1: note, data2: velocity)) }
-    func noteOff(note: UInt8, velocity: UInt8) { self.received.append(Event(cmd: 0x80, data1: note, data2: velocity)) }
+    func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+      received.append(Event(cmd: 0x90, data1: note, data2: velocity))
+    }
+
+    func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+      received.append(Event(cmd: 0x80, data1: note, data2: velocity)) }
   }
 
   class Monitor: MIDIMonitor {
-    var uniqueIds = [MIDIUniqueID: Int]()
-    func seen(uniqueId: MIDIUniqueID, channel: Int) {
-      uniqueIds[uniqueId] = channel
+    var uniqueIds = [MIDIUniqueID: Set<UInt8>]()
+    func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
+      print(uniqueId, channel)
+      uniqueIds[uniqueId, default: .init()].insert(channel)
     }
   }
 
@@ -64,14 +69,6 @@ class MIDIPacketTests: XCTestCase {
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2:32)])
   }
 
-  func testParserFilteringOutOnChannelMismatch() {
-    let receiver = Receiver()
-    receiver.channel = 2
-    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(receiver: receiver, monitor: nil, uniqueId: 123)
-    XCTAssertTrue(receiver.received.isEmpty)
-  }
-
   func testParserReceivingOnChannelMatch() {
     let receiver = Receiver()
     receiver.channel = 1
@@ -96,8 +93,8 @@ class MIDIPacketTests: XCTestCase {
 
   func testParserMultipleMessages() {
     let receiver = Receiver()
-    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
-    noteOn.parse(receiver: receiver, monitor: nil, uniqueId: 123)
+    let noteOnOff = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
+    noteOnOff.parse(receiver: receiver, monitor: nil, uniqueId: 123)
     XCTAssertEqual(receiver.received, [
       Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
       Receiver.Event(cmd: 0x80, data1: 64, data2: 0)
@@ -185,6 +182,6 @@ class MIDIPacketTests: XCTestCase {
     let uniqueId: MIDIUniqueID = 123
     list.parse(receiver: nil, monitor: monitor, uniqueId: uniqueId)
 
-    XCTAssertEqual(monitor.uniqueIds[uniqueId], 2)
+    XCTAssertEqual(monitor.uniqueIds[uniqueId], Set<UInt8>([1, 2]))
   }
 }

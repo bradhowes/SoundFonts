@@ -36,7 +36,7 @@ public final class NoteInjector {
     // NOTE: for some reason, executing this without any delay does not work.
     playingQueue.asyncAfter(deadline: .now() + 0.025, execute: noteOn)
 
-    let noteOff = DispatchWorkItem { synth.stopNote(note: note, channel: noteChannel) }
+    let noteOff = DispatchWorkItem { synth.stopNote(note: note, velocity: 0, channel: noteChannel) }
     playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
     workItems = [noteOn, noteOff]

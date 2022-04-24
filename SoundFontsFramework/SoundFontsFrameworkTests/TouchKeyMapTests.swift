@@ -3,39 +3,39 @@
 @testable import SoundFontsFramework
 import XCTest
 
-class SamplerMock: KeyboardNoteProcessor {
-  var state = Set<Int>()
-  func noteOn(_ note: UInt8, velocity: UInt8) { state.insert(Int(note)) }
-  func noteOff(_ note: UInt8) { state.remove(Int(note)) }
+class SynthMock: KeyboardNoteProcessor {
+  var state = Set<UInt8>()
+  func startNote(note: UInt8, velocity: UInt8, channel: UInt8) { state.insert(note) }
+  func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) { state.remove(note) }
 }
 
 class TouchKeyMapTests: XCTestCase {
 
   let settings = Settings()
-  var sampler: SamplerMock!
+  var synth: SynthMock!
   var map: TouchKeyMap!
 
   override func setUp() {
-    sampler = SamplerMock()
+    synth = SynthMock()
     map = TouchKeyMap()
-    map.processor = sampler
+    map.processor = synth
   }
 
   func testAssign() {
     let touch = UITouch()
-    XCTAssertEqual(sampler.state.count, 0)
+    XCTAssertEqual(synth.state.count, 0)
     XCTAssertTrue(map.assign(touch, key: Key(frame: .zero, note: Note(midiNoteValue: 64), settings: settings)))
-    XCTAssertEqual(sampler.state.count, 1)
+    XCTAssertEqual(synth.state.count, 1)
     XCTAssertFalse(map.assign(touch, key: Key(frame: .zero, note: Note(midiNoteValue: 64), settings: settings)))
-    XCTAssertEqual(sampler.state.count, 1)
+    XCTAssertEqual(synth.state.count, 1)
   }
 
   func testReleaseAll() {
     let touch = UITouch()
     XCTAssertTrue(map.assign(touch, key: Key(frame: .zero, note: Note(midiNoteValue: 64), settings: settings)))
-    XCTAssertEqual(sampler.state.count, 1)
+    XCTAssertEqual(synth.state.count, 1)
     map.releaseAll()
-    XCTAssertEqual(sampler.state.count, 0)
+    XCTAssertEqual(synth.state.count, 0)
   }
 
   func testRelease() {
@@ -43,9 +43,9 @@ class TouchKeyMapTests: XCTestCase {
     let touch2 = UITouch()
     XCTAssertTrue(map.assign(touch1, key: Key(frame: .zero, note: Note(midiNoteValue: 64), settings: settings)))
     XCTAssertTrue(map.assign(touch2, key: Key(frame: .zero, note: Note(midiNoteValue: 65), settings: settings)))
-    XCTAssertEqual(sampler.state.count, 2)
+    XCTAssertEqual(synth.state.count, 2)
     map.release(touch1)
-    XCTAssertEqual(sampler.state.count, 1)
+    XCTAssertEqual(synth.state.count, 1)
     XCTAssertFalse(map.assign(touch2, key: Key(frame: .zero, note: Note(midiNoteValue: 65), settings: settings)))
     XCTAssertTrue(map.assign(touch1, key: Key(frame: .zero, note: Note(midiNoteValue: 64), settings: settings)))
   }
@@ -53,10 +53,10 @@ class TouchKeyMapTests: XCTestCase {
   func testTouchShift() {
     let touch = UITouch()
     XCTAssertTrue(map.assign(touch, key: Key(frame: .zero, note: Note(midiNoteValue: 64), settings: settings)))
-    XCTAssertEqual(sampler.state.count, 1)
+    XCTAssertEqual(synth.state.count, 1)
     XCTAssertTrue(map.assign(touch, key: Key(frame: .zero, note: Note(midiNoteValue: 65), settings: settings)))
-    XCTAssertEqual(sampler.state.count, 1)
-    XCTAssertFalse(sampler.state.contains(64))
-    XCTAssertTrue(sampler.state.contains(65))
+    XCTAssertEqual(synth.state.count, 1)
+    XCTAssertFalse(synth.state.contains(64))
+    XCTAssertTrue(synth.state.contains(65))
   }
 }

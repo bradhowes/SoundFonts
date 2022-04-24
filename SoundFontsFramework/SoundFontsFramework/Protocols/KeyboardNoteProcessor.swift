@@ -20,7 +20,8 @@ public protocol KeyboardNoteProcessor {
    Stop a note.
 
    - parameter note: the MIDI note to stop
+   - parameter velocity: the velocity of the note (usually ignored)
    - parameter channel: the channel to operate on
    */
-  func stopNote(note: UInt8, channel: UInt8)
+  func stopNote(note: UInt8, velocity: UInt8, channel: UInt8)
 }
