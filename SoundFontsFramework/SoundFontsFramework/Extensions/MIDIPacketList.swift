@@ -278,16 +278,34 @@ extension MIDIPacket {
     // Visit the individual bytes until all consumed. If there is something we don't understand, we stop processing the
     // packet.
     withUnsafeBytes(of: self.data) { ptr in
+      var runningStatus: MsgKind? = nil
       var index: Int = 0
       while index < byteCount {
         let status = ptr[index]
         index += 1
 
-        // We have no way to know how to skip over an unknown command, so just rest of packet
-        guard let command = MsgKind(status) else { return }
+        // Support 'running status' by reusing the last byte with the high bit set when we have a byte that does not
+        // not have it set but it should.
+        let command: MsgKind
+        if let tmp = MsgKind(status) {
+
+          // New MIDI command
+          command = tmp
+          runningStatus = tmp
+
+        } else if let tmp = runningStatus {
+
+          // Reuse last MIDI command
+          command = tmp
+        } else {
+
+          // Cannot continue with the packet
+          os_log(.error, log: log, "packet - missing command")
+          return
+        }
 
         let needed = command.byteCount
-        let channel = UInt8(status & 0x0F)
+        let channel = UInt8(command.rawValue & 0x0F)
 
         // We have enough information to update the channel that an endpoint is sending on
         MIDI.sharedInstance.updateChannel(uniqueId: uniqueId, channel: channel)
@@ -298,7 +316,10 @@ extension MIDIPacket {
         }
 
         // Not enough bytes to continue on
-        guard index + needed <= byteCount else { return }
+        guard index + needed <= byteCount else {
+          os_log(.error, log: log, "packet - not enough bytes to continue")
+          return
+        }
 
         if let receiver = receiver {
           switch command {
