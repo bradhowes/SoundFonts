@@ -88,11 +88,11 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
 
 - (int)activeVoiceCount { return static_cast<int>(engine_->activeVoiceCount()); }
 
-- (void)allOff { engine_->allOff(); }
+- (void)stopAllNotes { engine_->allOff(); }
 
-- (void)noteOff:(int)key { engine_->noteOff(key); }
+- (void)stopNote:(UInt8)key velocity:(UInt8)velocity { engine_->noteOff(key); }
 
-- (void)noteOn:(int)key velocity:(int)velocity { engine_->noteOn(key, velocity); }
+- (void)startNote:(UInt8)key velocity:(UInt8)velocity { engine_->noteOn(key, velocity); }
 
 - (AUInternalRenderBlock)internalRenderBlock {
   os_log_debug(log_, "internalRenderBlock");
