@@ -70,6 +70,6 @@ extension TouchKeyMap {
 
   private func keyRelease(_ key: Key) {
     key.pressed = false
-    processor?.stopNote(note: UInt8(key.note.midiNoteValue), channel: noteChannel)
+    processor?.stopNote(note: UInt8(key.note.midiNoteValue), velocity: 0, channel: noteChannel)
   }
 }

@@ -334,7 +334,7 @@ extension SynthManager: KeyboardNoteProcessor {
       return
     }
     guard velocity > 0 else {
-      stopNote(note: note, channel: channel)
+      stopNote(note: note, velocity: velocity, channel: channel)
       return
     }
 
@@ -346,10 +346,10 @@ extension SynthManager: KeyboardNoteProcessor {
 
    - parameter midiValue: MIDI value that indicates the pitch to stop
    */
-  public func stopNote(note: UInt8, channel: UInt8) {
+  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "stopNote - %d", note)
     guard presetLoaded else { return }
-    synth?.stopNote(note: note, channel: channel)
+    synth?.stopNote(note: note, velocity: velocity, channel: channel)
   }
 }
 

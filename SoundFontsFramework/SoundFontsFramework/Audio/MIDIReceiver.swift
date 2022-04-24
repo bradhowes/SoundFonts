@@ -45,8 +45,8 @@ public final class MIDIReceiver {
 
 extension MIDIReceiver: AnyMIDIReceiver {
 
-  public func stopNote(note: UInt8, channel: UInt8) {
-    synth.stopNote(note: note, channel: channel)
+  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+    synth.stopNote(note: note, velocity: velocity, channel: channel)
     keyboard?.noteIsOff(note: note)
   }
 

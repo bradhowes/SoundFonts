@@ -278,7 +278,8 @@ extension MIDIPacket {
     // Visit the individual bytes until all consumed. If there is something we don't understand, we stop processing the
     // packet.
     withUnsafeBytes(of: self.data) { ptr in
-      var runningStatus: MsgKind? = nil
+      var runningStatus: MsgKind?
+      var channel: UInt8 = 0
       var index: Int = 0
       while index < byteCount {
         let status = ptr[index]
@@ -291,11 +292,13 @@ extension MIDIPacket {
 
           // New MIDI command
           command = tmp
+          channel = status & 0x0F
           runningStatus = tmp
 
         } else if let tmp = runningStatus {
 
           // Reuse last MIDI command
+          index -= 1
           command = tmp
         } else {
 
@@ -305,7 +308,7 @@ extension MIDIPacket {
         }
 
         let needed = command.byteCount
-        let channel = UInt8(command.rawValue & 0x0F)
+        print(status, command.rawValue, channel)
 
         // We have enough information to update the channel that an endpoint is sending on
         MIDI.sharedInstance.updateChannel(uniqueId: uniqueId, channel: channel)
