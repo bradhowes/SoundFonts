@@ -76,13 +76,20 @@ public final class SF2EngineAU: AUAudioUnit {
     os_log(.debug, log: log, "init - done")
   }
 
+  @inlinable
   public func load(_ url: URL) { engine.load(url) }
 
+  @inlinable
   public func selectPreset(_ index: Int32) { engine.selectPreset(index) }
 
-  public func noteOn(_ key: Int32, velocity: Int32) { engine.note(on: key, velocity: velocity) }
+  @inlinable
+  public func startNote(note: UInt8, velocity: UInt8) { engine.startNote(note, velocity: velocity) }
 
-  public func noteOff(_ key: Int32) { engine.noteOff(key) }
+  @inlinable
+  public func stopNote(note: UInt8, velocity: UInt8) { engine.stopNote(note, velocity: velocity) }
+
+  @inlinable
+  public func stopAllNotes() { engine.stopAllNotes() }
 }
 
 extension SF2EngineAU {

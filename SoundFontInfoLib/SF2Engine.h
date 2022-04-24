@@ -80,14 +80,14 @@ typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
 /**
  Stop playing all notes
  */
-- (void)allOff;
+- (void)stopAllNotes;
 
 /**
  Stop playing the given MIDI key
 
  @param key the MIDI key to stop
  */
-- (void)noteOff:(int)key;
+- (void)stopNote:(UInt8)note velocity:(UInt8)velocity;
 
 /**
  Start playing the given MIDI key
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
  @param key the MIDI key to play
  @param velocity the velocity to apply to the note
  */
-- (void)noteOn:(int)key velocity:(int)velocity;
+- (void)startNote:(UInt8)note velocity:(UInt8)velocity;
 
 /// @returns the internal render block used to generate samples
 - (AUInternalRenderBlock)internalRenderBlock;

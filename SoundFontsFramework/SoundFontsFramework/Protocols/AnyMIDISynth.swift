@@ -1,6 +1,7 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import AVFoundation
+import SoundFontInfoLib
 
 /**
  Protocol for any entity that acts as a MIDI synth.
@@ -14,6 +15,44 @@ public protocol AnyMIDISynth: AnyMIDIReceiver, PresetLoader {
   var synthGlobalTuning: Float { get set }
 
   func reset()
+}
+
+extension AVSF2Engine: AnyMIDISynth {
+
+  @inlinable
+  public func reset() {
+    self.avAudioUnit.reset()
+  }
+
+  public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
+    sf2Engine.load(url)
+    sf2Engine.selectPreset(Int32(preset.program))
+    return nil
+  }
+
+  @inlinable
+  public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+    sf2Engine.startNote(note: note, velocity: velocity)
+  }
+
+  @inlinable
+  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+    sf2Engine.stopNote(note: note, velocity: velocity)
+  }
+
+  @inlinable
+  public func stopAllNotes() {
+    sf2Engine.stopAllNotes()
+  }
+
+  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {}
+  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {}
+  public func changeProgram(program: UInt8, channel: UInt8) {}
+  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {}
+  public func setPressure(pressure: UInt8, channel: UInt8) {}
+  public func setPitchBend(value: UInt16, channel: UInt8) {}
+  public func processMIDIEvent(status: UInt8, data1: UInt8) {}
+  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {}
 }
 
 extension AVAudioUnitSampler: AnyMIDISynth {

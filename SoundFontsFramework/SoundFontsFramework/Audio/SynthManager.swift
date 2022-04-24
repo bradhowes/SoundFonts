@@ -146,11 +146,11 @@ public final class SynthManager {
    */
   public func start() -> StartResult {
     os_log(.debug, log: log, "start BEGIN")
-    let synth = AVAudioUnitSampler()
+    let synth = makeSynth()
     self.synth = synth
 
     if settings.globalTuningEnabled {
-      synth.globalTuning = settings.globalTuning
+      synth.synthGlobalTuning = settings.globalTuning
     }
 
     presetChangeManager.start()
@@ -165,6 +165,13 @@ public final class SynthManager {
     return result
   }
 
+  private func makeSynth() -> AnyMIDISynth {
+#if USE_APPLE_SYNTH
+    return AVAudioUnitSampler()
+#else
+    return AVSF2Engine()
+#endif
+  }
   /**
    Stop the existing audio engine. NOTE: this only applies to the standalone case.
    */
@@ -398,7 +405,7 @@ extension SynthManager: AnyMIDIReceiver {
 
 extension SynthManager {
 
-  private func startEngine(_ sampler: AVAudioUnitSampler) -> StartResult {
+  private func startEngine(_ synth: AnyMIDISynth) -> StartResult {
 
     os_log(.debug, log: log, "creating AVAudioEngine")
     let engine = AVAudioEngine()
@@ -408,7 +415,7 @@ extension SynthManager {
     engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hardwareFormat)
 
     os_log(.debug, log: log, "attaching sampler")
-    engine.attach(sampler)
+    engine.attach(synth.avAudioUnit)
 
     os_log(.debug, log: log, "attaching reverb")
     guard let reverb = reverbEffect?.audioUnit else { fatalError("unexpected nil Reverb") }
@@ -421,7 +428,7 @@ extension SynthManager {
     // Signal processing chain: Sampler -> delay -> reverb -> mixer
     engine.connect(reverb, to: engine.mainMixerNode, format: nil)
     engine.connect(delay, to: reverb, format: nil)
-    engine.connect(sampler, to: delay, format: nil)
+    engine.connect(synth.avAudioUnit, to: delay, format: nil)
 
     os_log(.debug, log: log, "preparing engine for start")
     engine.prepare()
