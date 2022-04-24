@@ -11,7 +11,7 @@ import os
  */
 public final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let synth: Synth
+  private let synth: SynthManager
   private let identity: Int
   private let activePresetManager: ActivePresetManager
   private let settings: Settings
@@ -36,7 +36,7 @@ public final class SoundFontsAU: AUAudioUnit {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, synth: Synth, identity: Int,
+  public init(componentDescription: AudioComponentDescription, synth: SynthManager, identity: Int,
               activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU[\(identity)]")
     self.log = log
@@ -51,7 +51,7 @@ public final class SoundFontsAU: AUAudioUnit {
     os_log(.debug, log: log, "starting synth")
 
     switch synth.start() {
-    case let .success(auSampler): self.wrapped = auSampler.auAudioUnit
+    case let .success(synth): self.wrapped = synth.avAudioUnit.auAudioUnit
     case .failure(let what):
       os_log(.debug, log: log, "failed to start synth - %{public}s", what.localizedDescription)
       throw what

@@ -29,7 +29,7 @@ extension MIDIPacketList: Sequence {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  public func parse(receiver: MIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
+  public func parse(receiver: AnyMIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
     os_signpost(.begin, log: log, name: "parse")
     os_log(.debug, log: log, "processPackets - %d", numPackets)
     for packet in self {
@@ -263,7 +263,7 @@ extension MIDIPacket {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  func parse(receiver: MIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
+  func parse(receiver: AnyMIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
     let byteCount = Int(self.length)
 
     // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big
@@ -279,7 +279,6 @@ extension MIDIPacket {
     // packet.
     withUnsafeBytes(of: self.data) { ptr in
       var index: Int = 0
-      let receiverChannel = receiver?.channel ?? -2
       while index < byteCount {
         let status = ptr[index]
         index += 1
@@ -288,34 +287,35 @@ extension MIDIPacket {
         guard let command = MsgKind(status) else { return }
 
         let needed = command.byteCount
-        let packetChannel = Int(status & 0x0F)
+        let channel = UInt8(status & 0x0F)
 
         // We have enough information to update the channel that an endpoint is sending on
-        MIDI.sharedInstance.updateChannel(uniqueId: uniqueId, channel: packetChannel)
-        os_log(.debug, log: log, "message: %d packetChannel: %d needed: %d", command.rawValue, packetChannel, needed)
+        MIDI.sharedInstance.updateChannel(uniqueId: uniqueId, channel: channel)
+        os_log(.debug, log: log, "message: %d packetChannel: %d needed: %d", command.rawValue, channel, needed)
 
         if let monitor = monitor {
-          monitor.seen(uniqueId: uniqueId, channel: packetChannel)
+          monitor.seen(uniqueId: uniqueId, channel: channel)
         }
 
         // Not enough bytes to continue on
         guard index + needed <= byteCount else { return }
 
-        // Filter out messages if they come on a channel we are not listening to
-        guard receiverChannel == -1 || receiverChannel == packetChannel else {
-          index += needed
-          continue
-        }
-
         if let receiver = receiver {
           switch command {
-          case .noteOff: receiver.noteOff(note: ptr[index], velocity: ptr[index + 1])
-          case .noteOn: receiver.noteOn(note: ptr[index], velocity: ptr[index + 1])
-          case .polyphonicKeyPressure: receiver.polyphonicKeyPressure(note: ptr[index], pressure: ptr[index + 1])
-          case .controlChange: receiver.controlChange(controller: ptr[index], value: ptr[index + 1])
-          case .programChange: receiver.programChange(program: ptr[index])
-          case .channelPressure: receiver.channelPressure(pressure: ptr[index])
-          case .pitchBendChange: receiver.pitchBendChange(value: UInt16(ptr[index + 1]) << 7 + UInt16(ptr[index]))
+          case .noteOff:
+            receiver.stopNote(note: ptr[index], velocity: ptr[index + 1], channel: channel)
+          case .noteOn:
+            receiver.startNote(note: ptr[index], velocity: ptr[index + 1], channel: channel)
+          case .polyphonicKeyPressure:
+            receiver.setNotePressure(note: ptr[index], pressure: ptr[index + 1], channel: channel)
+          case .controlChange:
+            receiver.setController(controller: ptr[index], value: ptr[index + 1], channel: channel)
+          case .programChange:
+            receiver.changeProgram(program: ptr[index], channel: channel)
+          case .channelPressure:
+            receiver.setPressure(pressure: ptr[index], channel: channel)
+          case .pitchBendChange:
+            receiver.setPitchBend(value: UInt16(ptr[index + 1]) << 7 + UInt16(ptr[index]), channel: channel)
           case .systemExclusive: break
           case .timeCodeQuarterFrame: break
           case .songPositionPointer: break
@@ -326,7 +326,8 @@ extension MIDIPacket {
           case .continueCurrentSequence: break
           case .stopCurrentSequence: break
           case .activeSensing: break
-          case .reset: receiver.allNotesOff()
+          case .reset:
+            receiver.stopAllNotes()
           }
         }
 

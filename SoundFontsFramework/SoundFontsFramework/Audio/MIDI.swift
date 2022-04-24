@@ -22,7 +22,7 @@ public final class MIDI: NSObject {
   private var sources: MIDISources { MIDISources() }
 
   @objc dynamic
-  public private(set) var channels = [MIDIUniqueID: Int]()
+  public private(set) var channels = [MIDIUniqueID: UInt8]()
 
   @objc dynamic
   public private(set) var activeConnections = Set<MIDIUniqueID>()
@@ -38,7 +38,7 @@ public final class MIDI: NSObject {
     /// True if connected to it and able to receive MIDI commands from endpoint
     let connected: Bool
     /// Last seen channel in a MIDI message from this device
-    let channel: Int?
+    let channel: UInt8?
   }
 
   /// Obtain current state of MIDI device connections
@@ -54,7 +54,7 @@ public final class MIDI: NSObject {
   }
 
   /// Delegate which will receive incoming MIDI messages
-  public weak var receiver: MIDIReceiver? {
+  public weak var receiver: AnyMIDIReceiver? {
     didSet {
       os_log(.debug, log: log, "MIDI receiver set")
     }
@@ -81,7 +81,7 @@ public final class MIDI: NSObject {
     if client != MIDIClientRef() { MIDIClientDispose(client) }
   }
 
-  public func updateChannel(uniqueId: MIDIUniqueID, channel: Int) {
+  public func updateChannel(uniqueId: MIDIUniqueID, channel: UInt8) {
     channels[uniqueId] = channel
   }
 }

@@ -59,9 +59,14 @@ extension MIDIDevicesTableViewController {
     let deviceState = devices[indexPath.row]
     cell.textLabel?.text = deviceState.displayName
 
-    let channel = MIDI.sharedInstance.channels[deviceState.uniqueId] ?? -2
-    let channelText = channel == -2 ? "" : "Chan: \(channel + 1)"
-    cell.detailTextLabel?.text = "\(channelText)" // "\(deviceState.connected ? "✅" : "🟥")"
+    let channelText: String
+    if let channel = MIDI.sharedInstance.channels[deviceState.uniqueId] {
+      channelText = "Chan: \(channel + 1)"
+    } else {
+      channelText = ""
+    }
+
+    cell.detailTextLabel?.text = "\(channelText)"
     return cell
   }
 
@@ -74,7 +79,7 @@ extension MIDIDevicesTableViewController {
 
 extension MIDIDevicesTableViewController: MIDIMonitor {
 
-  public func seen(uniqueId: MIDIUniqueID, channel: Int) {
+  public func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
     DispatchQueue.main.async {
       for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == uniqueId {
         let indexPath = IndexPath(row: row, section: 0)

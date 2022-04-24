@@ -113,8 +113,8 @@ extension KeyboardController: ControllerConfiguration {
     router.favorites.subscribe(self, notifier: favoritesChanged_BT)
     router.subscribe(self, notifier: routerChanged_BT)
 
-    if router.synth != nil {
-      touchedKeys.processor = router.synth
+    if let synth = router.synth {
+      touchedKeys.processor = synth
     }
   }
 

@@ -391,11 +391,11 @@ extension SettingsViewController {
   }
 
   private func updatePitchBendRange() {
-    let value = Int(pitchBendStepper.value)
+    let value = UInt8(pitchBendStepper.value)
     os_log(.debug, log: log, "new pitch-bend range %d", value)
     pitchBendRange.text = "\(value)"
-    settings.pitchBendRange = value
-    Synth.pitchBendRangeChangedNotification.post(value: value)
+    settings.pitchBendRange = Int(value)
+    SynthManager.pitchBendRangeChangedNotification.post(value: value)
   }
 
   private func postNotice(msg: String) {
@@ -474,7 +474,7 @@ extension SettingsViewController: SegueHandler {
 
 extension SettingsViewController: MIDIMonitor {
 
-  public func seen(uniqueId: MIDIUniqueID, channel: Int) {
+  public func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
     DispatchQueue.main.async {
       MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer)
     }
