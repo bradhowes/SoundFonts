@@ -5,7 +5,7 @@ import CoreMIDI
 import XCTest
 
 class MIDIPacketTests: XCTestCase {
-  class Receiver: MIDIReceiver {
+  class Receiver: AnyMIDIReceiver {
 
     struct Event: Equatable {
       let cmd: UInt8

@@ -4,9 +4,22 @@ import UIKit
 
 /// Mapping of UITouch instances from touch events to the Key instances that are played by the touches.
 internal struct TouchKeyMap {
+  private let noteVelocity: UInt8
+  private let noteChannel: UInt8
 
-  /// The synth that is generating sound
-  var processor: NoteProcessor?
+  /// The entity that processes key touches as MIDI notes
+  var processor: KeyboardNoteProcessor?
+
+  /**
+   Construct new entity.
+
+   - parameter noteVelocity: the velocity to use when starting a MIDI note
+   - parameter noteChannel: the channel to use for the MIDI note commands
+   */
+  init(noteVelocity: UInt8 = 64, noteChannel: UInt8 = 0) {
+    self.noteVelocity = noteVelocity
+    self.noteChannel = noteChannel
+  }
 
   private var touchedKeys = [UITouch: Key]()
 
@@ -52,11 +65,11 @@ extension TouchKeyMap {
 
   private func keyPress(_ key: Key) {
     key.pressed = true
-    processor?.noteOn(UInt8(key.note.midiNoteValue), velocity: 64)
+    processor?.startNote(note: UInt8(key.note.midiNoteValue), velocity: noteVelocity, channel: noteChannel)
   }
 
   private func keyRelease(_ key: Key) {
     key.pressed = false
-    processor?.noteOff(UInt8(key.note.midiNoteValue))
+    processor?.stopNote(note: UInt8(key.note.midiNoteValue), channel: noteChannel)
   }
 }

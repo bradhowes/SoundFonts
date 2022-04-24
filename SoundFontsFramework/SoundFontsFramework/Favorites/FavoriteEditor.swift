@@ -340,11 +340,11 @@ extension FavoriteEditor {
   }
 
   private func updatePitchBendRange() {
-    let value = Int(pitchBendStepper.value)
+    let value = UInt8(pitchBendStepper.value)
     pitchBendRange.text = "\(value)"
-    presetConfig.pitchBendRange = value
+    presetConfig.pitchBendRange = Int(value)
     if config.state.isActive {
-      Synth.pitchBendRangeChangedNotification.post(value: value)
+      SynthManager.pitchBendRangeChangedNotification.post(value: value)
     }
   }
 
@@ -358,7 +358,7 @@ extension FavoriteEditor {
     gainSlider.value = value
     presetConfig.gain = value
     if config.state.isActive {
-      Synth.gainChangedNotification.post(value: value)
+      SynthManager.gainChangedNotification.post(value: value)
     }
   }
 
@@ -370,7 +370,7 @@ extension FavoriteEditor {
     panSlider.value = value
     presetConfig.pan = value
     if config.state.isActive {
-      Synth.panChangedNotification.post(value: value)
+      SynthManager.panChangedNotification.post(value: value)
     }
   }
 

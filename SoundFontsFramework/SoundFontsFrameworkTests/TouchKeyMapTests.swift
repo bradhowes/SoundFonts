@@ -3,7 +3,7 @@
 @testable import SoundFontsFramework
 import XCTest
 
-class SamplerMock: NoteProcessor {
+class SamplerMock: KeyboardNoteProcessor {
   var state = Set<Int>()
   func noteOn(_ note: UInt8, velocity: UInt8) { state.insert(Int(note)) }
   func noteOff(_ note: UInt8) { state.remove(Int(note)) }

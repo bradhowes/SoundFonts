@@ -49,29 +49,10 @@ extension Result: CustomStringConvertible {
   }
 }
 
-public protocol AnyMIDISynth: PresetLoader {
-  var avAudioUnit: AVAudioUnitMIDIInstrument { get }
-
-  var globalTuning: Float { get set }
-  var globalGain: Float { get set }
-  var globalPan: Float { get set }
-
-  func reset()
-  func noteOn(_ note: UInt8, velocity: UInt8)
-  func noteOff(_ note: UInt8)
-  func changeController(_ controller: UInt8, value: UInt8)
-  func pitchBend(_ value: UInt16)
-  func changeAllKeysPressure(_ pressure: UInt8)
-  func changeKeyPressure(_ key: UInt8, pressure: UInt8)
-  func changeProgram(_ program: UInt8, bankMSB: UInt8, bankLSB: UInt8)
-  func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8)
-  func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8, data2: UInt8)
-}
-
 /**
  This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
  */
-public final class Synth {
+public final class SynthManager {
   private static let log = Logging.logger("Synth")
   private var log: OSLog { Self.log }
 
@@ -85,9 +66,9 @@ public final class Synth {
   public static let panChangedNotification = TypedNotification<Float>(name: .panChanged)
 
   /// The notification that pitch bend range has changed for the sampler
-  public static let pitchBendRangeChangedNotification = TypedNotification<Int>(name: .pitchBendRangeChanged)
+  public static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
 
-  public typealias StartResult = Result<AVAudioUnitMIDIInstrument, SynthStartFailure>
+  public typealias StartResult = Result<AnyMIDISynth, SynthStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
   public enum Mode {
@@ -96,7 +77,9 @@ public final class Synth {
   }
 
   /// The internal AVAudioUnitSampler that does the actual sound generation
-  public private(set) var avSynth: AVAudioUnitSampler?
+  public private(set) var synth: AnyMIDISynth?
+  public var avAudioUnit: AVAudioUnitMIDIInstrument? { synth?.avAudioUnit }
+  private var auAudioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
 
   public let reverbEffect: ReverbEffect?
   public let delayEffect: DelayEffect?
@@ -110,9 +93,6 @@ public final class Synth {
 
   private var engine: AVAudioEngine?
   private var presetLoaded: Bool = false
-
-  /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
-  private var auAudioUnit: AUAudioUnit? { avSynth?.auAudioUnit }
 
   private var activePresetConfigChangedNotifier: NotificationObserver?
   private var tuningChangedNotifier: NotificationObserver?
@@ -154,7 +134,7 @@ public final class Synth {
     tuningChangedNotifier = Self.tuningChangedNotification.registerOnAny(block: setTuning(_:))
     gainChangedNotifier = Self.gainChangedNotification.registerOnAny(block: setGain(_:))
     panChangedNotifier = Self.panChangedNotification.registerOnAny(block: setPan(_:))
-    pitchBendRangeChangedNotifier = Self.pitchBendRangeChangedNotification.registerOnAny(block: setPitchBendRange(_:))
+    pitchBendRangeChangedNotifier = Self.pitchBendRangeChangedNotification.registerOnAny(block: setPitchBendRange)
 
     os_log(.debug, log: Self.log, "init END")
   }
@@ -166,20 +146,20 @@ public final class Synth {
    */
   public func start() -> StartResult {
     os_log(.debug, log: log, "start BEGIN")
-    let sampler = AVAudioUnitSampler()
-    avSynth = sampler
+    let synth = AVAudioUnitSampler()
+    self.synth = synth
 
     if settings.globalTuningEnabled {
-      sampler.globalTuning = settings.globalTuning
+      synth.globalTuning = settings.globalTuning
     }
 
     presetChangeManager.start()
 
     if mode == .audioUnit {
-      return .success(sampler)
+      return .success(synth)
     }
 
-    let result = startEngine(sampler)
+    let result = startEngine(synth)
     os_log(.debug, log: log, "start END - %{public}s", result.description)
 
     return result
@@ -197,13 +177,13 @@ public final class Synth {
     if let engine = self.engine {
       os_log(.debug, log: log, "stopping engine")
       engine.stop()
-      if let sampler = self.avSynth {
+      if let synth = self.synth {
         os_log(.debug, log: log, "resetting sampler")
-        sampler.reset()
+        synth.reset()
         os_log(.debug, log: log, "detaching sampler")
-        engine.detach(sampler)
+        engine.detach(synth.avAudioUnit)
         os_log(.debug, log: log, "dropping sampler")
-        self.avSynth = nil
+        self.synth = nil
       }
 
       os_log(.debug, log: log, "resetting engine")
@@ -212,18 +192,18 @@ public final class Synth {
       self.engine = nil
     }
 
-    if let sampler = self.avSynth {
+    if let sampler = self.synth {
       os_log(.debug, log: log, "resetting sampler")
       sampler.reset()
       os_log(.debug, log: log, "dropping sampler")
-      self.avSynth = nil
+      self.synth = nil
     }
 
     os_log(.debug, log: log, "stop END")
   }
 
   public func load(at url: URL, preset: Preset) {
-    guard let synth = avSynth else { return }
+    guard let synth = synth else { return }
     os_log(.debug, log: self.log, "load BEGIN - url: %{public}s preset: %{public}s", url.description,
            preset.description)
     presetChangeManager.change(synth: synth, url: url, preset: preset) { [weak self] result in
@@ -244,7 +224,7 @@ public final class Synth {
     os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
-    guard let synth = avSynth else {
+    guard let synth = synth else {
       os_log(.debug, log: log, "no sampler yet")
       return .failure(.noSynth)
     }
@@ -283,7 +263,7 @@ public final class Synth {
   }
 }
 
-extension Synth {
+extension SynthManager {
 
   /**
    Set the AVAudioUnitSampler tuning value
@@ -292,7 +272,7 @@ extension Synth {
    */
   public func setTuning(_ value: Float) {
     os_log(.debug, log: log, "setTuning BEGIN - %f", value)
-    avSynth?.globalTuning = value
+    synth?.synthGlobalTuning = value
     os_log(.debug, log: log, "setTuning END")
   }
 
@@ -303,7 +283,7 @@ extension Synth {
    */
   public func setGain(_ value: Float) {
     os_log(.debug, log: log, "setGain BEGIN - %f", value)
-    avSynth?.masterGain = value
+    synth?.synthGain = value
     os_log(.debug, log: log, "setGain END")
   }
 
@@ -314,7 +294,7 @@ extension Synth {
    */
   public func setPan(_ value: Float) {
     os_log(.debug, log: log, "setPan BEGIN - %f", value)
-    avSynth?.stereoPan = value
+    synth?.synthStereoPan = value
     os_log(.debug, log: log, "setPan END")
   }
 
@@ -323,25 +303,23 @@ extension Synth {
 
    - parameter value: range in semitones
    */
-  public func setPitchBendRange(_ value: Int) {
+  public func setPitchBendRange(value: UInt8) {
     os_log(.debug, log: log, "setPitchBendRange BEGIN - %d", value)
-    guard value > 0 && value < 25 else {
+    guard value < 25 else {
       os_log(.error, log: log, "setPitchBendRange END - invalid value: %d", value)
       return
     }
 
-    avSynth?.sendMIDIEvent(0xB0, data1: 101, data2: 0)
-    avSynth?.sendMIDIEvent(0xB0, data1: 100, data2: 0)
-    avSynth?.sendMIDIEvent(0xB0, data1: 6, data2: UInt8(value))
-    avSynth?.sendMIDIEvent(0xB0, data1: 38, data2: 0)
+    synth?.processMIDIEvent(status: 0xB0, data1: 101, data2: 0)
+    synth?.processMIDIEvent(status: 0xB0, data1: 100, data2: 0)
+    synth?.processMIDIEvent(status: 0xB0, data1: 6, data2: UInt8(value))
+    synth?.processMIDIEvent(status: 0xB0, data1: 38, data2: 0)
 
-    // auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 127)
-    // auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 127)
     os_log(.debug, log: log, "setPitchBendRange END")
   }
 }
 
-extension Synth: NoteProcessor {
+extension SynthManager: KeyboardNoteProcessor {
 
   /**
    Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
@@ -349,17 +327,18 @@ extension Synth: NoteProcessor {
    - parameter midiValue: MIDI value that indicates the pitch to play
    - parameter velocity: how loud to play the note (1-127)
    */
-  public func noteOn(_ midiValue: UInt8, velocity: UInt8) {
-    os_log(.debug, log: log, "noteOn - %d %d", midiValue, velocity)
+  public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+    os_log(.debug, log: log, "startNote - %d %d", note, velocity)
     guard presetLoaded else {
       os_log(.error, log: log, "no preset loaded")
       return
     }
     guard velocity > 0 else {
-      noteOff(midiValue)
+      stopNote(note: note, channel: channel)
       return
     }
-    avSynth?.startNote(midiValue, withVelocity: velocity, onChannel: 0)
+
+    synth?.startNote(note: note, velocity: velocity, channel: channel)
   }
 
   /**
@@ -367,14 +346,14 @@ extension Synth: NoteProcessor {
 
    - parameter midiValue: MIDI value that indicates the pitch to stop
    */
-  public func noteOff(_ midiValue: UInt8) {
-    os_log(.debug, log: log, "noteOff - %d", midiValue)
+  public func stopNote(note: UInt8, channel: UInt8) {
+    os_log(.debug, log: log, "stopNote - %d", note)
     guard presetLoaded else { return }
-    avSynth?.stopNote(midiValue, onChannel: 0)
+    synth?.stopNote(note: note, channel: channel)
   }
 }
 
-extension Synth {
+extension SynthManager: AnyMIDIReceiver {
 
   /**
    After-touch for the given playing note.
@@ -382,10 +361,10 @@ extension Synth {
    - parameter midiValue: MIDI value that indicates the pitch being played
    - parameter pressure: the after-touch pressure value for the key
    */
-  public func polyphonicKeyPressure(_ midiValue: UInt8, pressure: UInt8) {
-    os_log(.debug, log: log, "polyphonicKeyPressure - %d %d", midiValue, pressure)
+  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {
+    os_log(.debug, log: log, "setKeyPressure - %d %d", note, pressure)
     guard presetLoaded else { return }
-    avSynth?.sendPressure(forKey: midiValue, withValue: pressure, onChannel: 0)
+    synth?.setNotePressure(note: note, pressure: pressure, channel: channel)
   }
 
   /**
@@ -393,10 +372,10 @@ extension Synth {
 
    - parameter pressure: the after-touch pressure value for all of the playing keys
    */
-  public func channelPressure(_ pressure: UInt8) {
-    os_log(.debug, log: log, "channelPressure - %d", pressure)
+  public func setPressure(_ pressure: UInt8, channel: UInt8) {
+    os_log(.debug, log: log, "setPressure - %d", pressure)
     guard presetLoaded else { return }
-    avSynth?.sendPressure(pressure, onChannel: 0)
+    synth?.setPressure(pressure: pressure, channel: channel)
   }
 
   /**
@@ -404,26 +383,20 @@ extension Synth {
 
    - parameter value: the controller value. Middle is 0x200
    */
-  public func pitchBendChange(_ value: UInt16) {
-    os_log(.debug, log: log, "pitchBend - %d", value)
+  public func setPitchBend(_ value: UInt16, channel: UInt8) {
+    os_log(.debug, log: log, "setPitchBend - %d", value)
     guard presetLoaded else { return }
-    avSynth?.sendPitchBend(value, onChannel: 0)
+    synth?.setPitchBend(value: value, channel: channel)
   }
 
-  public func controlChange(_ controller: UInt8, value: UInt8) {
-    os_log(.debug, log: log, "controllerChange - %d %d", controller, value)
+  public func setController(_ controller: UInt8, value: UInt8, channel: UInt8) {
+    os_log(.debug, log: log, "setController - %d %d", controller, value)
     guard presetLoaded else { return }
-    avSynth?.sendController(controller, withValue: value, onChannel: 0)
-  }
-
-  public func programChange(_ program: UInt8) {
-    os_log(.debug, log: log, "programChange - %d", program)
-    guard presetLoaded else { return }
-    avSynth?.sendProgramChange(program, onChannel: 0)
+    synth?.setController(controller: controller, value: value, channel: channel)
   }
 }
 
-extension Synth {
+extension SynthManager {
 
   private func startEngine(_ sampler: AVAudioUnitSampler) -> StartResult {
 
@@ -474,9 +447,9 @@ extension Synth {
     setTuning(tuning)
 
     if let pitchBendRange = presetConfig.pitchBendRange {
-      setPitchBendRange(pitchBendRange)
+      setPitchBendRange(value: UInt8(pitchBendRange))
     } else {
-      setPitchBendRange(settings.pitchBendRange)
+      setPitchBendRange(value: UInt8(settings.pitchBendRange))
     }
 
     setGain(presetConfig.gain)

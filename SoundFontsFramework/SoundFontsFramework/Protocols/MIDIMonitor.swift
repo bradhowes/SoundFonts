@@ -13,5 +13,5 @@ public protocol MIDIMonitor: AnyObject {
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the message
    - parameter channel: the channel found in the MIDI message
    */
-  func seen(uniqueId: MIDIUniqueID, channel: Int)
+  func seen(uniqueId: MIDIUniqueID, channel: UInt8)
 }

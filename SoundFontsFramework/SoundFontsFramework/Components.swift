@@ -65,11 +65,11 @@ where T: ControllerConfiguration {
   public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }
 
   /// The synth engine that generates audio from sound font files
-  public var synth: Synth? { accessQueue.sync { _synth } }
+  public var synth: SynthManager? { accessQueue.sync { _synth } }
 
   private var _alertManager: AlertManager?
 
-  private var _synth: Synth? {
+  private var _synth: SynthManager? {
     didSet {
       if let synth = _synth {
         notify(.synthAvailable(synth))
@@ -108,12 +108,12 @@ where T: ControllerConfiguration {
   public func createAudioComponents() {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
-        let synth = Synth(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
+        let synth = SynthManager(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
                           delay: DelayEffect(), chorus: nil, settings: self.settings)
         self.accessQueue.sync { self._synth = synth }
       }
     } else {
-      self._synth = Synth(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
+      self._synth = SynthManager(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
                           chorus: nil, settings: settings)
     }
   }

@@ -14,11 +14,11 @@ final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
   private weak var router: ComponentContainer?
-  private var midiController: MIDIController?
+  private var midiController: MIDIReceiver?
   private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
   private var keyboard: AnyKeyboard!
-  private var synth: Synth?
+  private var synth: SynthManager?
   private var infoBar: AnyInfoBar!
   private var settings: Settings!
   fileprivate var noteInjector: NoteInjector!
@@ -186,7 +186,7 @@ extension MainViewController {
 
 extension MainViewController: ControllerConfiguration {
 
-  private func startAudioBackground_BT(_ synth: Synth) {
+  private func startAudioBackground_BT(_ synth: SynthManager) {
     os_log(.debug, log: log, "startAudioBackground_BT BEGIN")
 
     let sampleRate: Double = 44100.0
@@ -279,7 +279,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "startMIDI BEGIN")
     guard let synth = self.synth else { return }
     os_log(.error, log: log, "starting MIDI for synth")
-    midiController = MIDIController(synth: synth, keyboard: keyboard, settings: settings)
+    midiController = MIDIReceiver(synth: synth, keyboard: keyboard, settings: settings)
     MIDI.sharedInstance.receiver = midiController
     os_log(.debug, log: log, "startMIDI END")
   }
@@ -291,7 +291,7 @@ extension MainViewController: ControllerConfiguration {
     }
   }
 
-  private func setSynth_BT(_ synth: Synth) {
+  private func setSynth_BT(_ synth: SynthManager) {
     os_log(.debug, log: log, "setSynth_BT BEGIN")
     self.synth = synth
     if startRequested {
@@ -311,7 +311,7 @@ extension MainViewController: ControllerConfiguration {
   private func useActivePreset_BT(_ activePresetKind: ActivePresetKind, playSample: Bool) {
     os_log(.debug, log: log, "useActivePreset_BT BEGIN - %{public}s", activePresetKind.description)
     volumeMonitor?.validActivePreset = activePresetKind != .none
-    midiController?.allNotesOff()
+    midiController?.stopAllNotes()
     guard let synth = self.synth else { return }
     let result = synth.loadActivePreset {
       if playSample { self.noteInjector.post(to: synth) }
@@ -324,7 +324,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "useActivePreset_BT END")
   }
 
-  private func finishStart(_ result: Synth.StartResult) {
+  private func finishStart(_ result: SynthManager.StartResult) {
     os_log(.debug, log: log, "finishStart BEGIN - %{public}s", result.description)
 
     switch result {

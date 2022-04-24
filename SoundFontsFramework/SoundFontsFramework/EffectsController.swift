@@ -49,7 +49,7 @@ public final class EffectsController: UIViewController {
   private var favorites: FavoritesProvider!
   private var settings: Settings!
 
-  private var synth: Synth?
+  private var synth: SynthManager?
   private var reverbEffect: ReverbEffect? { synth?.reverbEffect }
   private var delayEffect: DelayEffect? { synth?.delayEffect }
   private var chorusEffect: ChorusEffect? { synth?.chorusEffect}
