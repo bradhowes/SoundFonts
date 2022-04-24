@@ -74,38 +74,53 @@ extension AVAudioUnitSampler: AnyMIDISynth {
 
   public var avAudioUnit: AVAudioUnitMIDIInstrument { self }
 
+  @inlinable
   public func stopAllNotes() {
     self.reset()
   }
 
+  @inlinable
   public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
     startNote(note, withVelocity: velocity, onChannel: channel)
   }
 
-  public func stopNote(note: UInt8, channel: UInt8) { stopNote(note, onChannel: channel) }
+  @inlinable
+  public func stopNote(note: UInt8, channel: UInt8) {
+    stopNote(note, onChannel: channel)
+  }
 
+  @inlinable
   public func setController(_ controller: UInt8, value: UInt8, channel: UInt8) {
     sendController(controller, withValue: value, onChannel: channel)
   }
 
+  @inlinable
   public func setPitchBend(_ value: UInt16, channel: UInt8) { sendPitchBend(value, onChannel: channel) }
+
+  @inlinable
   public func setAllKeysPressure(_ pressure: UInt8, channel: UInt8) { sendPressure(pressure, onChannel: channel) }
+
+  @inlinable
   public func setKeyPressure(_ key: UInt8, pressure: UInt8, channel: UInt8) {
     sendPressure(forKey: key, withValue: pressure, onChannel: channel)
   }
 
+  @inlinable
   public func changeProgram(_ program: UInt8, channel: UInt8) {
     sendProgramChange(program, onChannel: channel)
   }
 
+  @inlinable
   public func changeProgram(_ program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {
     sendProgramChange(program, bankMSB: bankMSB, bankLSB: bankLSB, onChannel: channel)
   }
 
+  @inlinable
   public func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8) {
     sendMIDIEvent(midiStatus, data1: data1)
   }
 
+  @inlinable
   public func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8, data2: UInt8) {
     sendMIDIEvent(midiStatus, data1: data1, data2: data2)
   }
