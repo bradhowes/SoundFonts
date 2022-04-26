@@ -6,7 +6,6 @@ import os
 /// Specialization of UITableViewCell that will display a SoundFont name, a Preset name, or a Tag name.
 /// Probably better would be to separate these into distinct classes, but this works for now.
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
-  fileprivate lazy var log = Logging.logger("TableCell")
 
   /**
    Attribute flags that describes the models the state of a row in a table
@@ -85,7 +84,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       startBookmarkMonitor()
     }
 
-    os_log(.debug, log: log, "updateForFont - '%{public}s' flags: %d", name, flags.rawValue)
     update(name: indexPath.prefixRow + name, flags: flags)
     self.name.accessibilityLabel = "font \(name)"
     self.name.accessibilityHint = "font list entry for font \(name)"
@@ -162,7 +160,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   override public func prepareForReuse() {
-    os_log(.debug, log: log, "prepareForReuse BEGIN - %{public}s", name.text ?? "")
     super.prepareForReuse()
 
     stopBookmarkMonitor()
@@ -178,7 +175,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     tuningIndicator.isHidden = true
     panIndicator.isHidden = true
     gainIndicator.isHidden = true
-    os_log(.debug, log: log, "prepareForReuse END")
   }
 
   private func fontColor(for flags: Flags) -> UIColor? {
@@ -189,34 +185,26 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   private func updateButton() {
-    os_log(.debug, log: log, "updateButton BEGIN")
     accessoryView = infoButton
     if accessoryView == nil && activeAlert != nil {
-      os_log(.debug, log: log, "updateButton - dismissing alert")
       activeAlert?.dismiss(animated: true)
       activeAlert = nil
     }
-    os_log(.debug, log: log, "updateButton END")
   }
 
   private var infoButton: UIButton? {
-    os_log(.debug, log: log, "infoButton BEGIN")
     guard let bookmark = self.bookmark else {
-      os_log(.debug, log: log, "infoButton - nil bookmark")
       return nil
     }
 
     if bookmark.isAvailable {
-      os_log(.debug, log: log, "infoButton - bookmark is available")
       return nil
     }
 
     if !bookmark.isUbiquitous {
-      os_log(.debug, log: log, "infoButton - bookmark is missing")
       return missingFileButton
     }
 
-    os_log(.debug, log: log, "infoButton - bookmark is downloadable")
     return downloadableFileButton
   }
 
