@@ -85,43 +85,43 @@ extension AVAudioUnitSampler: AnyMIDISynth {
   }
 
   @inlinable
-  public func stopNote(note: UInt8, channel: UInt8) {
+  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
     stopNote(note, onChannel: channel)
   }
 
   @inlinable
-  public func setController(_ controller: UInt8, value: UInt8, channel: UInt8) {
+  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
     sendController(controller, withValue: value, onChannel: channel)
   }
 
   @inlinable
-  public func setPitchBend(_ value: UInt16, channel: UInt8) { sendPitchBend(value, onChannel: channel) }
+  public func setPitchBend(value: UInt16, channel: UInt8) { sendPitchBend(value, onChannel: channel) }
 
   @inlinable
-  public func setAllKeysPressure(_ pressure: UInt8, channel: UInt8) { sendPressure(pressure, onChannel: channel) }
+  public func setPressure(pressure: UInt8, channel: UInt8) { sendPressure(pressure, onChannel: channel) }
 
   @inlinable
-  public func setKeyPressure(_ key: UInt8, pressure: UInt8, channel: UInt8) {
-    sendPressure(forKey: key, withValue: pressure, onChannel: channel)
+  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {
+    sendPressure(forKey: note, withValue: pressure, onChannel: channel)
   }
 
   @inlinable
-  public func changeProgram(_ program: UInt8, channel: UInt8) {
+  public func changeProgram(program: UInt8, channel: UInt8) {
     sendProgramChange(program, onChannel: channel)
   }
 
   @inlinable
-  public func changeProgram(_ program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {
+  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {
     sendProgramChange(program, bankMSB: bankMSB, bankLSB: bankLSB, onChannel: channel)
   }
 
   @inlinable
-  public func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8) {
-    sendMIDIEvent(midiStatus, data1: data1)
+  public func processMIDIEvent(status: UInt8, data1: UInt8) {
+    sendMIDIEvent(status, data1: data1)
   }
 
   @inlinable
-  public func processMIDIEvent(_ midiStatus: UInt8, data1: UInt8, data2: UInt8) {
-    sendMIDIEvent(midiStatus, data1: data1, data2: data2)
+  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {
+    sendMIDIEvent(status, data1: data1, data2: data2)
   }
 }

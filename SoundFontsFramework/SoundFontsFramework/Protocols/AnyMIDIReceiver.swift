@@ -5,8 +5,7 @@ import Foundation
 import os
 
 /**
- Protocol for an object that processes supported MIDI messages. All methods of the protocol are optional; each has a
- default implementation that does nothing.
+ Protocol for an object that processes supported MIDI messages.
  */
 public protocol AnyMIDIReceiver: AnyObject, KeyboardNoteProcessor {
 
@@ -85,18 +84,4 @@ public protocol AnyMIDIReceiver: AnyObject, KeyboardNoteProcessor {
    - parameter data2: the second byte of the message
    */
   func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8)
-}
-
-extension AnyMIDIReceiver {
-  public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {}
-  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {}
-  public func stopAllNotes() {}
-  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {}
-  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {}
-  public func changeProgram(program: UInt8, channel: UInt8) {}
-  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {}
-  public func setPressure(pressure: UInt8, channel: UInt8) {}
-  public func setPitchBend(value: UInt16, channel: UInt8) {}
-  public func processMIDIEvent(status: UInt8, data1: UInt8) {}
-  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {}
 }
