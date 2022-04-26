@@ -64,15 +64,15 @@ extension MIDIReceiver: AnyMIDIReceiver {
   }
 
   public func setPressure(pressure: UInt8, channel: UInt8) {
-    synth.setPressure(pressure, channel: channel)
+    synth.setPressure(pressure: pressure, channel: channel)
   }
 
   public func setPitchBend(value: UInt16, channel: UInt8) {
-    synth.setPitchBend(value, channel: channel)
+    synth.setPitchBend(value: value, channel: channel)
   }
 
   public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
-    synth.setController(controller, value: value, channel: channel)
+    synth.setController(controller: controller, value: value, channel: channel)
   }
 
   public func changeProgram(program: UInt8, channel: UInt8) {
@@ -81,5 +81,13 @@ extension MIDIReceiver: AnyMIDIReceiver {
 
   public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {
     synth.changeProgram(program: program, bankMSB: bankMSB, bankLSB: bankLSB, channel: channel)
+  }
+
+  public func processMIDIEvent(status: UInt8, data1: UInt8) {
+    synth.processMIDIEvent(status: status, data1: data1)
+  }
+
+  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {
+    synth.processMIDIEvent(status: status, data1: data1, data2: data2)
   }
 }

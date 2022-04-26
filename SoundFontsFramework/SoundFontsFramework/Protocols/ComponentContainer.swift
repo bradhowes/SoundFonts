@@ -45,6 +45,8 @@ public protocol ComponentContainer: AnyObject {
   var favoritesViewManager: FavoritesViewManager { get }
   /// The provider of swipe actions for the sound fonts view
   var fontSwipeActionGenerator: FontActionManager { get }
+  /// The entity for posting alerts to the user
+  var alertManager: AlertManager { get }
 
   func createAudioComponents()
 

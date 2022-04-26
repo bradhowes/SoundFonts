@@ -56,7 +56,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   @IBOutlet weak var gainIndicator: UILabel!
 
   private var bookmark: Bookmark?
-  private var buttonMonitor: Timer?
+  private var bookmarkMonitor: Timer?
 
   /// Set if there is a problem accessing a file associated with this cell.
   var activeAlert: UIAlertController?
@@ -82,7 +82,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       self.bookmark = bookmark
       name += "°"
       updateButton()
-      startButtonMonitor()
+      startBookmarkMonitor()
     }
 
     os_log(.debug, log: log, "updateForFont - '%{public}s' flags: %d", name, flags.rawValue)
@@ -143,29 +143,33 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     panIndicator.isHidden = !flags.hasPanSetting
     gainIndicator.isHidden = !flags.hasGainSetting
 
-    // showsReorderControl = true
-
     activeIndicator.accessibilityIdentifier = flags.isActive ? "\(name) is active" : "\(name) is not active"
     tuningIndicator.accessibilityIdentifier = flags.hasTuningSetting ? "\(name) has tuning" : "\(name) has no tuning"
     panIndicator.accessibilityIdentifier = flags.hasPanSetting ? "\(name) has pan" : "\(name) has no pan"
     gainIndicator.accessibilityIdentifier = flags.hasGainSetting ? "\(name) has gain" : "\(name) has no gain"
   }
 
-  private func stopButtonMonitor() {
-    buttonMonitor?.invalidate()
+  private func stopBookmarkMonitor() {
+    bookmarkMonitor?.invalidate()
+    bookmarkMonitor = nil
   }
 
-  private func startButtonMonitor() {
-    stopButtonMonitor()
-    buttonMonitor = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in self?.updateButton() }
+  private func startBookmarkMonitor() {
+    stopBookmarkMonitor()
+    bookmarkMonitor = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+      self?.updateButton()
+    }
   }
 
   override public func prepareForReuse() {
-    os_log(.debug, log: log, "prepareForReuse")
+    os_log(.debug, log: log, "prepareForReuse BEGIN - %{public}s", name.text ?? "")
     super.prepareForReuse()
+
+    stopBookmarkMonitor()
 
     accessoryView = nil
     activeAlert = nil
+    bookmark = nil
 
     name.isHidden = false
     tagEditor.isHidden = true
@@ -174,6 +178,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     tuningIndicator.isHidden = true
     panIndicator.isHidden = true
     gainIndicator.isHidden = true
+    os_log(.debug, log: log, "prepareForReuse END")
   }
 
   private func fontColor(for flags: Flags) -> UIColor? {
@@ -184,17 +189,34 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   private func updateButton() {
+    os_log(.debug, log: log, "updateButton BEGIN")
     accessoryView = infoButton
     if accessoryView == nil && activeAlert != nil {
+      os_log(.debug, log: log, "updateButton - dismissing alert")
       activeAlert?.dismiss(animated: true)
       activeAlert = nil
     }
+    os_log(.debug, log: log, "updateButton END")
   }
 
   private var infoButton: UIButton? {
-    guard let bookmark = self.bookmark else { return nil }
-    if bookmark.isAvailable { return nil }
-    if !bookmark.isUbiquitous { return missingFileButton }
+    os_log(.debug, log: log, "infoButton BEGIN")
+    guard let bookmark = self.bookmark else {
+      os_log(.debug, log: log, "infoButton - nil bookmark")
+      return nil
+    }
+
+    if bookmark.isAvailable {
+      os_log(.debug, log: log, "infoButton - bookmark is available")
+      return nil
+    }
+
+    if !bookmark.isUbiquitous {
+      os_log(.debug, log: log, "infoButton - bookmark is missing")
+      return missingFileButton
+    }
+
+    os_log(.debug, log: log, "infoButton - bookmark is downloadable")
     return downloadableFileButton
   }
 

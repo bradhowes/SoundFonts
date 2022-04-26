@@ -1,5 +1,4 @@
 [![CI](https://github.com/bradhowes/SoundFonts/workflows/CI/badge.svg)](https://github.com/bradhowes/SoundFonts)
-[![COV](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bradhowes/61c608b414893498479c268f2a106292/raw/SoundFonts-coverage.json)](https://github.com/bradhowes/SoundFonts/blob/main/.github/workflows/CI.yml)
 [![Swift 5.4](https://img.shields.io/badge/Swift-5.4-orange.svg?style=flat)](https://swift.org)
 [![AUv3](https://img.shields.io/badge/AU-v3-green.svg)](https://github.com/bradhowes/SoundFonts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A31F34.svg)](https://opensource.org/licenses/MIT)

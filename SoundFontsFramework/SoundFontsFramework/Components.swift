@@ -62,12 +62,11 @@ where T: ControllerConfiguration {
   public var fontSwipeActionGenerator: FontActionManager { soundFontsViewController }
 
   /// The manager for posting alerts
-  public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }
+  public var alertManager: AlertManager { _alertManager }
+  private var _alertManager: AlertManager!
 
   /// The synth engine that generates audio from sound font files
   public var synth: SynthManager? { accessQueue.sync { _synth } }
-
-  private var _alertManager: AlertManager?
 
   private var _synth: SynthManager? {
     didSet {
@@ -125,16 +124,9 @@ where T: ControllerConfiguration {
    */
   public func setMainViewController(_ mvc: T) {
     mainViewController = mvc
-
-    let alertManager = AlertManager(presenter: mvc)
-    accessQueue.sync { _alertManager = alertManager }
-
-    for obj in mvc.children {
-      processChildController(obj)
-    }
-
+    _alertManager = AlertManager(presenter: mvc)
+    mvc.children.forEach { processChildController($0) }
     validate()
-
     establishConnections()
   }
 

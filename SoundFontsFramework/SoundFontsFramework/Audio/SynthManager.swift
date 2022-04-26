@@ -166,10 +166,10 @@ public final class SynthManager {
   }
 
   private func makeSynth() -> AnyMIDISynth {
-#if USE_APPLE_SYNTH
-    return AVAudioUnitSampler()
-#else
+#if USE_SF2ENGINE_SYNTH
     return AVSF2Engine()
+#else
+    return AVAudioUnitSampler()
 #endif
   }
   /**
@@ -362,6 +362,16 @@ extension SynthManager: KeyboardNoteProcessor {
 
 extension SynthManager: AnyMIDIReceiver {
 
+  public func stopAllNotes() {}
+
+  public func changeProgram(program: UInt8, channel: UInt8) {}
+
+  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {}
+
+  public func processMIDIEvent(status: UInt8, data1: UInt8) {}
+
+  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {}
+
   /**
    After-touch for the given playing note.
 
@@ -379,7 +389,7 @@ extension SynthManager: AnyMIDIReceiver {
 
    - parameter pressure: the after-touch pressure value for all of the playing keys
    */
-  public func setPressure(_ pressure: UInt8, channel: UInt8) {
+  public func setPressure(pressure: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "setPressure - %d", pressure)
     guard presetLoaded else { return }
     synth?.setPressure(pressure: pressure, channel: channel)
@@ -390,13 +400,13 @@ extension SynthManager: AnyMIDIReceiver {
 
    - parameter value: the controller value. Middle is 0x200
    */
-  public func setPitchBend(_ value: UInt16, channel: UInt8) {
+  public func setPitchBend(value: UInt16, channel: UInt8) {
     os_log(.debug, log: log, "setPitchBend - %d", value)
     guard presetLoaded else { return }
     synth?.setPitchBend(value: value, channel: channel)
   }
 
-  public func setController(_ controller: UInt8, value: UInt8, channel: UInt8) {
+  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "setController - %d %d", controller, value)
     guard presetLoaded else { return }
     synth?.setController(controller: controller, value: value, channel: channel)
