@@ -83,13 +83,13 @@ class AVSF2EngineTests: XCTestCase {
         try? audioFile.write(from: buffer)
       }
 
-      au.noteOn(60, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
-      au.noteOn(64, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
-      au.noteOn(67, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
-      Thread.sleep(forTimeInterval: 1.0)
-      au.noteOff(60)
-      au.noteOff(64)
-      au.noteOff(67)
+      au.startNote(note: 60, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
+      au.startNote(note: 64, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
+      au.startNote(note: 67, velocity: 64) // avAudioUnit.startNote(64, withVelocity: 127, onChannel: 0)
+      Thread.sleep(forTimeInterval: 4.0)
+      au.stopNote(note: 60, velocity: 0)
+      au.stopNote(note: 64, velocity: 0)
+      au.stopNote(note: 67, velocity: 0)
 
       engine.mainMixerNode.removeTap(onBus: 0)
       exp.fulfill()

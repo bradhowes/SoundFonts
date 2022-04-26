@@ -17,7 +17,7 @@ class PresetChangeManagerTests: XCTestCase {
   var synth: SF2Engine! = nil
 
   override func setUp() {
-    synth = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
+    synth = SF2Engine(voiceCount: 32)
     presetChangeManager = PresetChangeManager()
   }
 

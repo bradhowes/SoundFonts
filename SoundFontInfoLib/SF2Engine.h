@@ -37,9 +37,8 @@ typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
  Constructor.
 
  @param voicesCount the maximum number of voices that can play simultaneously
- @param loggingBase the value to use as the base for creating loggers
  */
-- (instancetype)initLoggingBase:(NSString*)loggingBase voiceCount:(int)voicesCount;
+- (instancetype)initVoiceCount:(int)voicesCount;
 
 /**
  Set the rendering parameters prior to starting the audio unit graph.

@@ -48,7 +48,7 @@ public final class SF2EngineAU: AUAudioUnit {
     let loggingSubsystem = "com.braysoftware.SoundFonts"
     let log = OSLog(subsystem: loggingSubsystem, category: "SF2EngineAU")
     self.log = log
-    self.engine = SF2Engine(loggingBase: loggingSubsystem, voiceCount: 32)
+    self.engine = SF2Engine(voiceCount: 32)
 
     os_log(.debug, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
            componentDescription.componentManufacturer, componentDescription.componentType,

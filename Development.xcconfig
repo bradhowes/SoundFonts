@@ -20,7 +20,7 @@ NAME_SUFFIX = Dev
 USE_SF2ENGINE_SYNTH = -DUSE_SF2ENGINE_SYNTH
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
-OTHER_SWIFT_FLAGS = $(inherited) -D$(NAME_SUFFIX) $(DEBUG_FLAGS) $(xUSE_SF2ENGINE_SYNTH)
+OTHER_SWIFT_FLAGS = $(inherited) -D$(NAME_SUFFIX) $(DEBUG_FLAGS) $(USE_SF2ENGINE_SYNTH)
 
 EXTRA_CPP = -pedantic -Wmissing-braces -Wparentheses -Wswitch -Wcompletion-handler -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wno-unknown-pragmas -Wuninitialized -Wconditional-uninitialized -Wconversion -Wconstant-conversion -Wassign-enum -Wsign-compare -Wint-conversion -Wbool-conversion -Wenum-conversion -Wfloat-conversion -Wshorten-64-to-32 -Wsign-conversion -Wmove -Wcomma -Wno-newline-eof
 

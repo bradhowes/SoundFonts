@@ -19,13 +19,13 @@ class SF2EngineTests: XCTestCase {
   var playFinishedExpectation: XCTestExpectation?
 
   func testCreating() {
-    let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
+    let engine = SF2Engine(voiceCount: 32)
     XCTAssertEqual(32, engine.voiceCount)
     XCTAssertEqual(0, engine.activeVoiceCount)
   }
 
   func testLoadingUrls() {
-    let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
+    let engine = SF2Engine(voiceCount: 32)
     engine.load(urls[0])
     XCTAssertEqual(189, engine.presetCount)
 
@@ -40,7 +40,7 @@ class SF2EngineTests: XCTestCase {
   }
 
   func testLoadingAllPresets() {
-    let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
+    let engine = SF2Engine(voiceCount: 32)
     engine.load(urls[2])
     XCTAssertEqual(270, engine.presetCount)
     for preset in 1..<engine.presetCount {
@@ -50,22 +50,22 @@ class SF2EngineTests: XCTestCase {
 
   func testLoadingTimes() {
     measure {
-      let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
+      let engine = SF2Engine(voiceCount: 32)
       engine.load(urls[2])
     }
   }
 
   func testNoteOn() {
-    let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
+    let engine = SF2Engine(voiceCount: 32)
     engine.load(urls[2])
     engine.selectPreset(0)
-    engine.note(on: 69, velocity: 64)
+    engine.startNote(69, velocity: 64)
     XCTAssertEqual(1, engine.activeVoiceCount)
-    engine.note(on: 69, velocity: 64)
+    engine.startNote(69, velocity: 64)
     XCTAssertEqual(2, engine.activeVoiceCount)
-    engine.noteOff(69)
+    engine.stopNote(69, velocity: 0)
     XCTAssertEqual(2, engine.activeVoiceCount)
-    engine.allOff()
+    engine.stopAllNotes()
     XCTAssertEqual(0, engine.activeVoiceCount)
   }
 
@@ -93,9 +93,9 @@ class SF2EngineTests: XCTestCase {
     let chorusSendBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: maxFrameCount)!
     let reverbSendBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: maxFrameCount)!
 
-    synth.engine.note(on: 60, velocity: 64)
-    synth.engine.note(on: 64, velocity: 64)
-    synth.engine.note(on: 67, velocity: 64)
+    synth.engine.startNote(60, velocity: 64)
+    synth.engine.startNote(64, velocity: 64)
+    synth.engine.startNote(67, velocity: 64)
 
     let dryBufferList = dryBuffer.mutableAudioBufferList
     var buffers = UnsafeMutableAudioBufferListPointer(dryBufferList)
@@ -217,16 +217,16 @@ class SF2EngineTests: XCTestCase {
     var noteOnFrame = 4
     var noteOffFrame = noteOnFrame + noteOnDuration
 
-    let playChord = { (note1: Int32, note2: Int32, note3: Int32, sustain: Bool) in
+    let playChord = { (note1: UInt8, note2: UInt8, note3: UInt8, sustain: Bool) in
       renderUntil(noteOnFrame)
-      synth.engine.note(on: note1, velocity: 64)
-      synth.engine.note(on: note2, velocity: 64)
-      synth.engine.note(on: note3, velocity: 64)
+      synth.engine.startNote(note1, velocity: 64)
+      synth.engine.startNote(note2, velocity: 64)
+      synth.engine.startNote(note3, velocity: 64)
       renderUntil(noteOffFrame)
       if !sustain {
-        synth.engine.noteOff(note1)
-        synth.engine.noteOff(note2)
-        synth.engine.noteOff(note3)
+        synth.engine.stopNote(note1, velocity: 0)
+        synth.engine.stopNote(note2, velocity: 0)
+        synth.engine.stopNote(note3, velocity: 0)
       }
       noteOnFrame += noteOnDuration
       noteOffFrame += noteOnDuration
