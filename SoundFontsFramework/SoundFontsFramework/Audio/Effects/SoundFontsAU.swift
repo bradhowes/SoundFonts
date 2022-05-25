@@ -1,6 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import AudioToolbox
+import AVKit
 import CoreAudioKit
 import os
 
@@ -176,20 +177,20 @@ extension SoundFontsAU {
   private func reloadActivePreset() {
     os_log(.debug, log: log, "reloadActivePreset BEGIN")
     guard let activePreset = activePresetManager.activePreset,
-          let soundFont = activePresetManager.activeSoundFont,
-          let presetConfig = activePresetManager.activePresetConfig
+          let soundFont = activePresetManager.activeSoundFont
     else {
       os_log(.debug, log: log, "reloadActivePreset END - no active preset")
       return
     }
 
-    os_log(.debug, log: log, "reloadActivePreset - before synth.load %{public}s", presetConfig.name)
-    synth.load(at: soundFont.fileURL, preset: activePreset)
-    os_log(.debug, log: log, "reloadActivePreset - after synth.load")
+    guard let sampler = synth.avAudioUnit as? AVAudioUnitSampler else {
+      os_log(.error, log: log, "reloadActivePreset END - no sampler available")
+      return
+    }
 
-    os_log(.debug, log: self.log, "reloadActivePreset - applying preset config")
-    synth.applyPresetConfig(presetConfig)
-
+    // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
+    try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(activePreset.program),
+                                         bankMSB: UInt8(activePreset.bankMSB), bankLSB: UInt8(activePreset.bankLSB))
     os_log(.debug, log: log, "reloadActivePreset END")
   }
 
