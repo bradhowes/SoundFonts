@@ -148,6 +148,7 @@
 		BD3CF702241FA779004A13D1 /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3CF704241FA77A004A13D1 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		BD3CF706241FA77A004A13D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD3E0C71284F316200FF2025 /* ChorusKernel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChorusKernel; path = ../../ChorusKernel; sourceTree = "<group>"; };
 		BD430FA92410E57F009DB9B3 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD430FAB2410E57F009DB9B3 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD498F9423EEF34100755AB9 /* SoundFontsAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SoundFontsAU.entitlements; path = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements; sourceTree = SOURCE_ROOT; };
@@ -335,6 +336,14 @@
 			path = AppTests;
 			sourceTree = "<group>";
 		};
+		BD3E0C70284F316200FF2025 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				BD3E0C71284F316200FF2025 /* ChorusKernel */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		BD42F3572388697200E6D576 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,6 +393,7 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
+				BD3E0C70284F316200FF2025 /* Packages */,
 				BD8CE57727C53F97009A2FB5 /* Development.xcconfig */,
 				BD8CE57627C53F97009A2FB5 /* Release.xcconfig */,
 				BDB1BE4C265DA502002AD159 /* SoundFontsApp */,
