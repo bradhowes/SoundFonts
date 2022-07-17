@@ -245,6 +245,7 @@
 		BDF1C0E02787675600E451C3 /* Tagged in Frameworks */ = {isa = PBXBuildFile; productRef = BDF1C0DF2787675600E451C3 /* Tagged */; };
 		BDF3B3D52566BB9C003F7BB3 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3D42566BB9C003F7BB3 /* UILabel.swift */; };
 		BDF3B3DB2566C9A1003F7BB3 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */; };
+		BDF4E696286CFD8700443CA9 /* Envelope.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDF4E695286CFD8700443CA9 /* Envelope.storyboard */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDF86312246EC4300006D8CD /* AudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86311246EC4300006D8CD /* AudioUnit.swift */; };
 		BDFA98EA280C53FF0069A46F /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BDFA98E9280C53FF0069A46F /* AUv3-Support */; };
@@ -508,6 +509,7 @@
 		BDF1C0DC278763A700E451C3 /* PresetViewSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetViewSlot.swift; sourceTree = "<group>"; };
 		BDF3B3D42566BB9C003F7BB3 /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
+		BDF4E695286CFD8700443CA9 /* Envelope.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Envelope.storyboard; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
 		BDF86311246EC4300006D8CD /* AudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnit.swift; sourceTree = "<group>"; };
 		BDFA98EB280C55B80069A46F /* ReverbAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbAU.swift; sourceTree = "<group>"; };
@@ -848,6 +850,8 @@
 		BD4E296D27AA63FA0087D9DF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BD130B0425614A6D00D1CDF6 /* Effects.storyboard */,
+				BDF4E695286CFD8700443CA9 /* Envelope.storyboard */,
 				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
 				BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */,
@@ -855,7 +859,6 @@
 				BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */,
 				BD6476332665167300FDD94B /* PresetsTableView.storyboard */,
 				BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */,
-				BD130B0425614A6D00D1CDF6 /* Effects.storyboard */,
 				BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */,
 				BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */,
 				BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */,
@@ -1164,6 +1167,7 @@
 				BD62CF5A253DE22D00DBDC1B /* SettingsView.storyboard in Resources */,
 				BDEB12552620728B003CE8EE /* Changes.md in Resources */,
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
+				BDF4E696286CFD8700443CA9 /* Envelope.storyboard in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
 				BD44E6132791B374004E0543 /* TagsEditorTableView.storyboard in Resources */,
 			);

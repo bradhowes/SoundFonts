@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,16 +19,16 @@
             <objects>
                 <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" interfaceStyle="dark" id="erm-79-XXa" customClass="EffectsController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="132"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1274" height="132"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQU-9E-SkR">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="132"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1274" height="132"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="1313" height="132"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1272" height="132"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
-                                                <rect key="frame" x="0.0" y="8" width="1313" height="124"/>
+                                                <rect key="frame" x="0.0" y="8" width="1272" height="124"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="zNv-Im-W2c" userLabel="Reverb VStack">
                                                         <rect key="frame" x="0.0" y="0.0" width="282" height="124"/>
@@ -36,11 +36,11 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="CzH-A1-o2R" userLabel="Reverb Controls">
                                                                 <rect key="frame" x="0.0" y="0.0" width="282" height="124"/>
                                                                 <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OAQ-F1-Cv4">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OAQ-F1-Cv4">
                                                                         <rect key="frame" x="4" y="14" width="150" height="96.5"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-Yz-uJo">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="66" height="64"/>
+                                                                                <rect key="frame" x="0.0" y="16" width="66" height="64"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vkv-Bw-zse">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="66" height="25"/>
@@ -125,10 +125,10 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8p-ND-Why" userLabel="Delay Controls">
                                                                 <rect key="frame" x="0.0" y="0.0" width="399" height="124"/>
                                                                 <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ikN-N0-7ZJ">
-                                                                        <rect key="frame" x="4" y="14" width="139" height="96.5"/>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ikN-N0-7ZJ" userLabel="Enables">
+                                                                        <rect key="frame" x="4" y="30" width="55" height="64"/>
                                                                         <subviews>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="P7B-ac-grc">
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="P7B-ac-grc" userLabel="Toggles">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="55" height="64"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
@@ -166,32 +166,32 @@
                                                                                     </button>
                                                                                 </subviews>
                                                                             </stackView>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
-                                                                                <rect key="frame" x="59" y="0.0" width="80" height="96.5"/>
-                                                                                <subviews>
-                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                                                        <accessibility key="accessibilityConfiguration" hint="Controls amount time before stored samples repeat" label="DelayTimeControl">
-                                                                                            <bool key="isElement" value="YES"/>
-                                                                                        </accessibility>
-                                                                                        <constraints>
-                                                                                            <constraint firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="height" multiplier="1:1" id="ezB-q9-Isf"/>
-                                                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="fZz-5V-9Or"/>
-                                                                                        </constraints>
-                                                                                        <connections>
-                                                                                            <action selector="changeDelayTime:" destination="erm-79-XXa" eventType="valueChanged" id="f7U-NN-lp6"/>
-                                                                                        </connections>
-                                                                                    </view>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
-                                                                                        <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
-                                                                                        <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                        <accessibility key="accessibilityConfiguration" hint="Label for the time control" label="DelayTimeLabel"/>
-                                                                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
-                                                                                        <color key="textColor" systemColor="systemTealColor"/>
-                                                                                        <nil key="highlightedColor"/>
-                                                                                    </label>
-                                                                                </subviews>
-                                                                            </stackView>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
+                                                                        <rect key="frame" x="63" y="14" width="80" height="96.5"/>
+                                                                        <subviews>
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                                                <accessibility key="accessibilityConfiguration" hint="Controls amount time before stored samples repeat" label="DelayTimeControl">
+                                                                                    <bool key="isElement" value="YES"/>
+                                                                                </accessibility>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="height" multiplier="1:1" id="ezB-q9-Isf"/>
+                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="fZz-5V-9Or"/>
+                                                                                </constraints>
+                                                                                <connections>
+                                                                                    <action selector="changeDelayTime:" destination="erm-79-XXa" eventType="valueChanged" id="f7U-NN-lp6"/>
+                                                                                </connections>
+                                                                            </view>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
+                                                                                <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
+                                                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                                                <accessibility key="accessibilityConfiguration" hint="Label for the time control" label="DelayTimeLabel"/>
+                                                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
+                                                                                <color key="textColor" systemColor="systemTealColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Feedback">
@@ -279,15 +279,15 @@
                                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="uFt-en-Whn" userLabel="Chorus VStack">
-                                                        <rect key="frame" x="697" y="0.0" width="616" height="124"/>
+                                                        <rect key="frame" x="697" y="0.0" width="575" height="124"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="31O-ry-ZQ1" userLabel="Chorus Controls">
-                                                                <rect key="frame" x="0.0" y="0.0" width="616" height="124"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="575" height="124"/>
                                                                 <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="F9A-dp-dRl" userLabel="Enable">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="F9A-dp-dRl" userLabel="On/Off">
                                                                         <rect key="frame" x="4" y="30" width="67" height="64"/>
                                                                         <subviews>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="dyC-e7-8c1" userLabel="Enable">
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="dyC-e7-8c1" userLabel="Toggles">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="67" height="64"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xFP-4U-ub1" userLabel="Chorus">
@@ -457,21 +457,21 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8M-3y-aXo" userLabel="Toggles">
-                                                                        <rect key="frame" x="495" y="30" width="117" height="64"/>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8M-3y-aXo" userLabel="Options">
+                                                                        <rect key="frame" x="495" y="30" width="76" height="64"/>
                                                                         <subviews>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="j0F-5S-NqU" userLabel="Enable">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="117" height="64"/>
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="j0F-5S-NqU" userLabel="Toggles">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="76" height="64"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufr-h2-3Gf" userLabel="Neg Feedback">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="117" height="25"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="69" height="25"/>
                                                                                         <accessibility key="accessibilityConfiguration" hint="Toggle use of delay effect" label="DelayToggle"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="25" id="MpO-2i-T0o"/>
                                                                                         </constraints>
                                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                         <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                        <state key="normal" title="Neg Feedback" image="EffectOff">
+                                                                                        <state key="normal" title="Neg FB" image="EffectOff">
                                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                                         </state>
                                                                                         <connections>
@@ -545,7 +545,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="414" height="132"/>
+                    <size key="freeformSize" width="1274" height="132"/>
                     <connections>
                         <outlet property="chorusControls" destination="uFt-en-Whn" id="DQX-aV-3rK"/>
                         <outlet property="chorusDelay" destination="6xU-z0-Djy" id="68I-cr-V6s"/>
