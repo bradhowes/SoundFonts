@@ -94,6 +94,7 @@ public final class SynthManager {
   private var engine: AVAudioEngine?
   private var presetLoaded: Bool = false
   private var pendingPresetChanges: Int = 0
+  private var isRendering: Bool { presetLoaded && pendingPresetChanges == 0 } // engine.isRunning ?
 
   private var activePresetConfigChangedNotifier: NotificationObserver?
   private var tuningChangedNotifier: NotificationObserver?
@@ -335,13 +336,13 @@ extension SynthManager: KeyboardNoteProcessor {
    - parameter velocity: how loud to play the note (1-127)
    */
   public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "startNote - %d %d %d", note, velocity, pendingPresetChanges)
+    os_log(.debug, log: log, "startNote - %d %d", note, velocity)
     guard velocity > 0 else {
       stopNote(note: note, velocity: velocity, channel: channel)
       return
     }
 
-    guard presetLoaded && pendingPresetChanges == 0 else { return }
+    guard isRendering else { return }
     synth?.startNote(note: note, velocity: velocity, channel: channel)
   }
 
@@ -352,14 +353,16 @@ extension SynthManager: KeyboardNoteProcessor {
    */
   public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "stopNote - %d %d", note, pendingPresetChanges)
-    guard presetLoaded && pendingPresetChanges == 0 else { return }
+    guard isRendering else { return }
     synth?.stopNote(note: note, velocity: velocity, channel: channel)
   }
 }
 
 extension SynthManager: AnyMIDIReceiver {
 
-  public func stopAllNotes() {}
+  public func stopAllNotes() {
+    synth?.stopAllNotes()
+  }
 
   public func changeProgram(program: UInt8, channel: UInt8) {}
 
@@ -377,7 +380,7 @@ extension SynthManager: AnyMIDIReceiver {
    */
   public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "setKeyPressure - %d %d", note, pressure)
-    guard presetLoaded else { return }
+    guard isRendering else { return }
     synth?.setNotePressure(note: note, pressure: pressure, channel: channel)
   }
 
@@ -388,7 +391,7 @@ extension SynthManager: AnyMIDIReceiver {
    */
   public func setPressure(pressure: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "setPressure - %d", pressure)
-    guard presetLoaded else { return }
+    guard isRendering else { return }
     synth?.setPressure(pressure: pressure, channel: channel)
   }
 
@@ -399,13 +402,13 @@ extension SynthManager: AnyMIDIReceiver {
    */
   public func setPitchBend(value: UInt16, channel: UInt8) {
     os_log(.debug, log: log, "setPitchBend - %d", value)
-    guard presetLoaded else { return }
+    guard isRendering else { return }
     synth?.setPitchBend(value: value, channel: channel)
   }
 
   public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "setController - %d %d", controller, value)
-    guard presetLoaded else { return }
+    guard isRendering else { return }
     synth?.setController(controller: controller, value: value, channel: channel)
   }
 }
