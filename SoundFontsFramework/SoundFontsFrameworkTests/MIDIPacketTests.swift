@@ -4,7 +4,7 @@
 import CoreMIDI
 import XCTest
 
-class MIDIPacketTests: XCTestCase {
+class MIDIPacketTesting: XCTestCase {
   class Receiver: AnyMIDIReceiver {
 
     func stopAllNotes() {}
