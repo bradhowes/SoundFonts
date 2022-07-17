@@ -24,9 +24,8 @@ extension AVAudioUnitSampler: PresetLoader {
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
     do {
-      try loadSoundBankInstrument(at: url,
-                                  program: UInt8(preset.program),
-                                  bankMSB: UInt8(preset.bankMSB),
+      stopAllNotes()
+      try loadSoundBankInstrument(at: url, program: UInt8(preset.program), bankMSB: UInt8(preset.bankMSB),
                                   bankLSB: UInt8(preset.bankLSB))
     } catch let error as NSError {
       switch error.code {
@@ -46,6 +45,7 @@ extension AVAudioUnitSampler: PresetLoader {
 }
 
 extension SF2Engine: PresetLoader {
+
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
     var err = self.load(url)
     switch err {

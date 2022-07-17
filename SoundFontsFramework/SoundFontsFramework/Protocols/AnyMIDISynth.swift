@@ -21,7 +21,8 @@ extension AVSF2Engine: AnyMIDISynth {
 
   @inlinable
   public func reset() {
-    self.avAudioUnit.reset()
+    AudioUnitReset(avAudioUnit.audioUnit, kAudioUnitScope_Global, 0)
+    avAudioUnit.reset()
   }
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
@@ -43,6 +44,7 @@ extension AVSF2Engine: AnyMIDISynth {
   @inlinable
   public func stopAllNotes() {
     sf2Engine.stopAllNotes()
+    reset()
   }
 
   public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {}
@@ -76,6 +78,7 @@ extension AVAudioUnitSampler: AnyMIDISynth {
 
   @inlinable
   public func stopAllNotes() {
+    AudioUnitReset(self.audioUnit, kAudioUnitScope_Global, 0)
     self.reset()
   }
 
