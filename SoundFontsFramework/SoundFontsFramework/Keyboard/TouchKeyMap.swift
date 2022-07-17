@@ -27,7 +27,7 @@ internal struct TouchKeyMap {
    Remove all assignments.
    */
   mutating func releaseAll() {
-    touchedKeys.forEach { keyRelease($0.1) }
+    touchedKeys.forEach { releaseKey($0.1) }
     touchedKeys.removeAll()
   }
 
@@ -38,7 +38,7 @@ internal struct TouchKeyMap {
    */
   mutating func release(_ touch: UITouch) {
     guard let key = touchedKeys[touch] else { return }
-    keyRelease(key)
+    releaseKey(key)
     touchedKeys.removeValue(forKey: touch)
   }
 
@@ -52,10 +52,10 @@ internal struct TouchKeyMap {
   mutating func assign(_ touch: UITouch, key: Key) -> Bool {
     if let previous = touchedKeys[touch] {
       guard previous.note != key.note else { return false }
-      keyRelease(previous)
+      releaseKey(previous)
     }
 
-    keyPress(key)
+    activateKey(key)
     touchedKeys[touch] = key
     return true
   }
@@ -63,12 +63,14 @@ internal struct TouchKeyMap {
 
 extension TouchKeyMap {
 
-  private func keyPress(_ key: Key) {
+  private func activateKey(_ key: Key) {
+    guard !key.pressed else { return }
     key.pressed = true
     processor?.startNote(note: UInt8(key.note.midiNoteValue), velocity: noteVelocity, channel: noteChannel)
   }
 
-  private func keyRelease(_ key: Key) {
+  private func releaseKey(_ key: Key) {
+    guard key.pressed else { return }
     key.pressed = false
     processor?.stopNote(note: UInt8(key.note.midiNoteValue), velocity: 0, channel: noteChannel)
   }

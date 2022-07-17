@@ -221,9 +221,7 @@ extension KeyboardController {
    - parameter touches: the touch events that stopped
    - parameter event: the event that spawned the touches
    */
-  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    releaseKeys(touches)
-  }
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { releaseKeys(touches) }
 }
 
 // MARK: - Keyboard Protocol

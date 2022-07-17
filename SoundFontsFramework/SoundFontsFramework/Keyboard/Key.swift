@@ -24,7 +24,9 @@ public final class Key: UIView {
   public var pressed: Bool = false {
     didSet {
       if oldValue != pressed {
-        self.setNeedsDisplay()
+        DispatchQueue.main.async {
+          self.setNeedsDisplay()
+        }
       }
     }
   }

@@ -93,6 +93,7 @@ public final class SynthManager {
 
   private var engine: AVAudioEngine?
   private var presetLoaded: Bool = false
+  private var pendingPresetChanges: Int = 0
 
   private var activePresetConfigChangedNotifier: NotificationObserver?
   private var tuningChangedNotifier: NotificationObserver?
@@ -209,17 +210,6 @@ public final class SynthManager {
     os_log(.debug, log: log, "stop END")
   }
 
-  public func load(at url: URL, preset: Preset) {
-    guard let synth = synth else { return }
-    os_log(.debug, log: self.log, "load BEGIN - url: %{public}s preset: %{public}s", url.description,
-           preset.description)
-    presetChangeManager.change(synth: synth, url: url, preset: preset) { [weak self] result in
-      guard let self = self else { return }
-      os_log(.debug, log: self.log, "load complete - %{public}s", result.description)
-    }
-    os_log(.debug, log: self.log, "load END")
-  }
-
   /**
    Ask the sampler to use the active preset held by the ActivePresetManager.
 
@@ -249,7 +239,13 @@ public final class SynthManager {
     self.presetLoaded = false
     let presetConfig = activePresetManager.activePresetConfig
 
-    os_log(.debug, log: log, "requesting preset change")
+    os_log(.debug, log: log, "requesting preset change - %d", pendingPresetChanges)
+
+    pendingPresetChanges += 1
+    if pendingPresetChanges == 1 {
+      engine?.pause()
+    }
+
     presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }
       os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
@@ -261,6 +257,10 @@ public final class SynthManager {
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
         self.presetLoaded = true
+        self.pendingPresetChanges -= 1
+        if self.pendingPresetChanges == 0 {
+          try? self.engine?.start()
+        }
         afterLoadBlock?()
       }
     }
@@ -335,16 +335,13 @@ extension SynthManager: KeyboardNoteProcessor {
    - parameter velocity: how loud to play the note (1-127)
    */
   public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "startNote - %d %d", note, velocity)
-    guard presetLoaded else {
-      os_log(.error, log: log, "no preset loaded")
-      return
-    }
+    os_log(.debug, log: log, "startNote - %d %d %d", note, velocity, pendingPresetChanges)
     guard velocity > 0 else {
       stopNote(note: note, velocity: velocity, channel: channel)
       return
     }
 
+    guard presetLoaded && pendingPresetChanges == 0 else { return }
     synth?.startNote(note: note, velocity: velocity, channel: channel)
   }
 
@@ -354,8 +351,8 @@ extension SynthManager: KeyboardNoteProcessor {
    - parameter midiValue: MIDI value that indicates the pitch to stop
    */
   public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "stopNote - %d", note)
-    guard presetLoaded else { return }
+    os_log(.debug, log: log, "stopNote - %d %d", note, pendingPresetChanges)
+    guard presetLoaded && pendingPresetChanges == 0 else { return }
     synth?.stopNote(note: note, velocity: velocity, channel: channel)
   }
 }
