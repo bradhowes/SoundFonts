@@ -256,8 +256,8 @@ extension FontsTableViewController {
     let filteredIndex = indexFilteredByActiveTag(index)
     guard filteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
-      tableView.insertRows(at: [filteredIndex.indexPath], with: .automatic)
       dataSource.insert(soundFont.key, at: filteredIndex)
+      tableView.insertRows(at: [filteredIndex.indexPath], with: .automatic)
     } completion: { completed in
       if completed {
         self.selectedSoundFontManager.setSelected(soundFont)
@@ -272,8 +272,8 @@ extension FontsTableViewController {
     let newFilteredIndex = indexFilteredByActiveTag(newIndex)
     guard newFilteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
+      dataSource.insert(dataSource.remove(at: oldFilteredIndex), at: newFilteredIndex)
       tableView.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
-      self.dataSource.insert(self.dataSource.remove(at: oldFilteredIndex), at: newFilteredIndex)
     } completion: { completed in
       if completed {
         self.updateRow(row: newFilteredIndex)
@@ -288,8 +288,8 @@ extension FontsTableViewController {
     let filteredIndex = indexFilteredByActiveTag(index)
     guard filteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
-      tableView.deleteRows(at: [filteredIndex.indexPath], with: .automatic)
       dataSource.remove(at: filteredIndex)
+      tableView.deleteRows(at: [filteredIndex.indexPath], with: .automatic)
     } completion: { _ in
       let newRow = min(filteredIndex, self.dataSource.count - 1)
       guard newRow >= 0 else {
