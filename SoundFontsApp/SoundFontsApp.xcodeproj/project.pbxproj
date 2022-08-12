@@ -138,7 +138,6 @@
 		BD01D6CD280B517E00AF5586 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD05836223E4C52800E094E0 /* SoundFonts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFonts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD0E20292555991600D36607 /* MIKMIDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MIKMIDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0FAC2D251F694B00EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsAUViewController.swift; sourceTree = "<group>"; };
 		BD1A2A8D266A0050009E2338 /* ScreenShots.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
@@ -441,7 +440,6 @@
 				BD4F1B3327FDC86D004B4F47 /* SoundFontInfoLib.framework */,
 				BD50D34925D7749100375455 /* SoundFontInfoLib.framework */,
 				BD50D34725D7747E00375455 /* SoundFontInfoLib.framework */,
-				BD0E20292555991600D36607 /* MIKMIDI.framework */,
 				BD0FAC2D251F694B00EEF187 /* SF2Files.framework */,
 				BDC4A9262419B2B8006D9F4D /* SoundFontInfoLib.framework */,
 				BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */,

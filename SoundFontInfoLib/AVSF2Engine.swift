@@ -4,10 +4,7 @@ import AVFAudio
 import AUv3Support
 
 /**
- An enum masquerading as a namespace. Originally this was a class derived from `AVAudioUnitMIDIInstrument`, but there
- is no way to instantiate a class like that from within the AV framework. Instead, the component description indicates
- the `AV*` class one will get for an audio unit via the `componentType` attribute. For type `aumu` this will be an
- `AVAudioUnitMIDIInstrument` instance, while for an audio effect (type `aufx`) this will be an `AVAudioUnit` instance.
+ Engine that uses SF2EngineAU wrapper to render sounds.
  */
 public final class AVSF2Engine {
   public let avAudioUnit: AVAudioUnitMIDIInstrument

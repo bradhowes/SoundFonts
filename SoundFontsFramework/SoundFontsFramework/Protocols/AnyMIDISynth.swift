@@ -17,6 +17,14 @@ public protocol AnyMIDISynth: AnyMIDIReceiver, PresetLoader {
   func reset()
 }
 
+public extension MIDIPacket {
+  func post(on block: AUScheduleMIDIEventBlock) {
+    withUnsafePointer(to: data.0) { ptr in
+      block(AUEventSampleTimeImmediate, 0, Int(self.length), ptr)
+    }
+  }
+}
+
 extension AVSF2Engine: AnyMIDISynth {
 
   @inlinable
@@ -33,18 +41,23 @@ extension AVSF2Engine: AnyMIDISynth {
 
   @inlinable
   public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    sf2Engine.startNote(note: note, velocity: velocity)
+    guard let midiBlock = self.sf2Engine.scheduleMIDIEventBlock else { fatalError("nil MIDI schedule block") }
+    let packet = MIDIPacket.Builder(timestamp: 0, msg: .noteOn, data1: note, data2: velocity).packet
+    packet.post(on: midiBlock)
   }
 
   @inlinable
   public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    sf2Engine.stopNote(note: note, velocity: velocity)
+    guard let midiBlock = self.sf2Engine.scheduleMIDIEventBlock else { fatalError("nil MIDI schedule block") }
+    let packet = MIDIPacket.Builder(timestamp: 0, msg: .noteOff, data1: note, data2: velocity).packet
+    packet.post(on: midiBlock)
   }
 
   @inlinable
   public func stopAllNotes() {
-    sf2Engine.stopAllNotes()
-    reset()
+    guard let midiBlock = self.sf2Engine.scheduleMIDIEventBlock else { fatalError("nil MIDI schedule block") }
+    let packet = MIDIPacket.Builder(timestamp: 0, msg: .reset).packet
+    packet.post(on: midiBlock)
   }
 
   public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {}
