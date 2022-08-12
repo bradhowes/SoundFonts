@@ -160,7 +160,7 @@ extension MIDIPacket {
      - parameter timestamp: the timestamp for all of the events in the packet
      - parameter data: the initial data to record
      */
-    init(timestamp: MIDITimeStamp, data: [UInt8] = []) {
+    public init(timestamp: MIDITimeStamp, data: [UInt8] = []) {
       self.timestamp = timestamp
       self.data = data
     }
@@ -171,7 +171,7 @@ extension MIDIPacket {
      - parameter timestamp: the timestamp for all of the events in the packet
      - parameter msg: the MIDI command to add
      */
-    init(timestamp: MIDITimeStamp, msg: MsgKind) {
+    public init(timestamp: MIDITimeStamp, msg: MsgKind) {
       self.timestamp = timestamp
       self.data = [msg.rawValue]
     }
@@ -183,7 +183,7 @@ extension MIDIPacket {
      - parameter msg: the MIDI command to add
      - parameter data1: the first data value
      */
-    init(timestamp: MIDITimeStamp, msg: MsgKind, data1: UInt8) {
+    public init(timestamp: MIDITimeStamp, msg: MsgKind, data1: UInt8) {
       self.timestamp = timestamp
       self.data = [msg.rawValue, data1]
     }
@@ -196,7 +196,7 @@ extension MIDIPacket {
      - parameter data1: the first data value
      - parameter data2: the second data value
      */
-    init(timestamp: MIDITimeStamp, msg: MsgKind, data1: UInt8, data2: UInt8) {
+    public init(timestamp: MIDITimeStamp, msg: MsgKind, data1: UInt8, data2: UInt8) {
       self.timestamp = timestamp
       self.data = [msg.rawValue, data1, data2]
     }
@@ -206,7 +206,7 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-    mutating func add(data: [UInt8]) {
+    public mutating func add(data: [UInt8]) {
       self.data.append(contentsOf: data)
     }
 
@@ -215,7 +215,7 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-    mutating func add(msgKind: MsgKind) {
+    public mutating func add(msgKind: MsgKind) {
       self.data.append(msgKind.rawValue)
     }
 
@@ -224,7 +224,7 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-   mutating func add(msgKind: MsgKind, data1: UInt8) {
+   public mutating func add(msgKind: MsgKind, data1: UInt8) {
       self.data.append(contentsOf: [msgKind.rawValue, data1])
     }
 
@@ -233,12 +233,12 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-    mutating func add(msgKind: MsgKind, data1: UInt8, data2: UInt8) {
+    public mutating func add(msgKind: MsgKind, data1: UInt8, data2: UInt8) {
       self.data.append(contentsOf: [msgKind.rawValue, data1, data2])
     }
 
     /// Obtain a MIDIPacket from the MIDI data collection.
-    var packet: MIDIPacket {
+    public var packet: MIDIPacket {
       var packet = MIDIPacket()
       precondition(data.count <= 256)
       packet.timeStamp = timestamp
