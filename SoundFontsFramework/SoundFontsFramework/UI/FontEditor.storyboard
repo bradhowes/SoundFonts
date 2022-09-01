@@ -345,7 +345,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="SoundFont" id="lRj-HM-OCk">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="voT-ST-J8p">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="voT-ST-J8p">
                             <color key="tintColor" systemColor="systemTealColor"/>
                             <connections>
                                 <action selector="close:" destination="Eyw-X4-KFI" id="qOp-wy-h8v"/>

@@ -140,6 +140,9 @@
 		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
 		BD4E2CB025C5759200A7E9D4 /* MIDIBankType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
+		BD5B5C3928C14C1E000BC5A4 /* FontsEditorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5B5C3828C14C1E000BC5A4 /* FontsEditorTableViewController.swift */; };
+		BD5B5C3B28C15657000BC5A4 /* FontsEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5B5C3A28C15657000BC5A4 /* FontsEditor.storyboard */; };
+		BD5B5C3D28C15669000BC5A4 /* FontsEditorTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5B5C3C28C15669000BC5A4 /* FontsEditorTableView.storyboard */; };
 		BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */; };
 		BD62CF59253DE22D00DBDC1B /* FontsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */; };
 		BD62CF5A253DE22D00DBDC1B /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */; };
@@ -396,6 +399,9 @@
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250A23CDABCD0034A31B /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58251123CDABCE0034A31B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD5B5C3828C14C1E000BC5A4 /* FontsEditorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontsEditorTableViewController.swift; sourceTree = "<group>"; };
+		BD5B5C3A28C15657000BC5A4 /* FontsEditor.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FontsEditor.storyboard; sourceTree = "<group>"; };
+		BD5B5C3C28C15669000BC5A4 /* FontsEditorTableView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FontsEditorTableView.storyboard; sourceTree = "<group>"; };
 		BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManager.swift; sourceTree = "<group>"; };
 		BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FontsView.storyboard; sourceTree = "<group>"; };
 		BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsView.storyboard; sourceTree = "<group>"; };
@@ -607,13 +613,13 @@
 				BDBF897E25B5939400B58E23 /* Tags */,
 				BD2F4B302780F9EB0064E31B /* Configuration File */,
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
+				BDB3BF9E270C534800C4257A /* MIDI.swift */,
+				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
+				BD0F940A25728E610065C147 /* MIDIReceiver.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
 				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
-				BDB3BF9E270C534800C4257A /* MIDI.swift */,
-				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
-				BD0F940A25728E610065C147 /* MIDIReceiver.swift */,
 				BD94614E26AC912D00300543 /* ChorusConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
@@ -711,8 +717,8 @@
 		BD074C2D23CDAF51001987E9 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */,
 				BD9494352813A656000E0BFF /* AnyMIDISynth.swift */,
+				BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */,
 				BDA5ACF5265D427C000AE48E /* FontActionManager.swift */,
 				BD074C3A23CDAF51001987E9 /* FontsViewManager.swift */,
 				BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */,
@@ -758,8 +764,10 @@
 			children = (
 				BD62CF54253DE22C00DBDC1B /* FavoriteEditor.storyboard */,
 				BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */,
-				BD44E6122791B374004E0543 /* TagsEditorTableView.storyboard */,
+				BD5B5C3A28C15657000BC5A4 /* FontsEditor.storyboard */,
+				BD5B5C3C28C15669000BC5A4 /* FontsEditorTableView.storyboard */,
 				BD44E6142791C094004E0543 /* TagsEditor.storyboard */,
+				BD44E6122791B374004E0543 /* TagsEditorTableView.storyboard */,
 			);
 			name = Editors;
 			sourceTree = "<group>";
@@ -801,6 +809,7 @@
 			isa = PBXGroup;
 			children = (
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
+				BD5B5C3828C14C1E000BC5A4 /* FontsEditorTableViewController.swift */,
 				BD28D73827958CE4000A57DE /* FontsTableViewController.swift */,
 				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
 			);
@@ -1153,6 +1162,7 @@
 				BDB7408125CC29690051B4E4 /* TagsList.storyboard in Resources */,
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
 				BDB7408225CC29690051B4E4 /* Favorites.storyboard in Resources */,
+				BD5B5C3B28C15657000BC5A4 /* FontsEditor.storyboard in Resources */,
 				BD3D13AB279721DC009FED96 /* FontsTableView.storyboard in Resources */,
 				BD130B0525614A6D00D1CDF6 /* Effects.storyboard in Resources */,
 				BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */,
@@ -1169,6 +1179,7 @@
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
 				BDF4E696286CFD8700443CA9 /* Envelope.storyboard in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
+				BD5B5C3D28C15669000BC5A4 /* FontsEditorTableView.storyboard in Resources */,
 				BD44E6132791B374004E0543 /* TagsEditorTableView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1291,6 +1302,7 @@
 				BD94614D26AC90CC00300543 /* ChorusEffect.swift in Sources */,
 				BD2436B02579356200162A49 /* ArrowView.swift in Sources */,
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
+				BD5B5C3928C14C1E000BC5A4 /* FontsEditorTableViewController.swift in Sources */,
 				BD2F4B24277F28EE0064E31B /* SettingSerializable.swift in Sources */,
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,
 				BD125B41241010840003DE99 /* KeyboardController.swift in Sources */,

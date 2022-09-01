@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hF8-Yx-irV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hF8-Yx-irV">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -119,6 +119,7 @@
                         <outlet property="tagsViewHeightConstraint" destination="1PJ-XU-EgD" id="5pv-11-U2c"/>
                         <segue destination="Fc4-Sm-RhE" kind="presentation" identifier="fontEditor" id="Oj6-XR-yF0"/>
                         <segue destination="h1D-gp-zxw" kind="presentation" identifier="tagsEditor" id="v2Q-dM-oKa"/>
+                        <segue destination="Dd9-0s-MQw" kind="presentation" identifier="fontsEditor" id="IpG-a0-ift"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -140,6 +141,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKi-AO-cPw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="769" y="-1904"/>
+        </scene>
+        <!--FontsEditor-->
+        <scene sceneID="qbc-P7-P08">
+            <objects>
+                <viewControllerPlaceholder storyboardName="FontsEditor" id="Dd9-0s-MQw" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h30-EA-WOT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="457" y="-1523"/>
         </scene>
         <!--FontsTableView-->
         <scene sceneID="k0R-ek-KO9">

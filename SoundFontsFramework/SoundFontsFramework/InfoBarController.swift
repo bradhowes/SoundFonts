@@ -30,6 +30,7 @@ public final class InfoBarController: UIViewController {
   @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
 
   private let doubleTap = UITapGestureRecognizer()
+  private let addButtonLongPressGesture = UILongPressGestureRecognizer()
 
   private var panOrigin: CGPoint = CGPoint.zero
   private var fader: UIViewPropertyAnimator?
@@ -65,6 +66,9 @@ public final class InfoBarController: UIViewController {
 
     tuningChangedNotifier = SynthManager.tuningChangedNotification.registerOnAny(block: updateTuningIndicator(_:))
     presetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: updateIndicators(_:))
+
+    addButtonLongPressGesture.minimumPressDuration = 0.5
+    addSoundFont.addGestureRecognizer(addButtonLongPressGesture)
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -167,6 +171,7 @@ extension InfoBarController: AnyInfoBar {
     case .shiftKeyboardDown: addShiftKeyboardDownClosure(closure)
     case .doubleTap: doubleTap.addClosure(closure)
     case .addSoundFont: addSoundFont.addClosure(closure)
+    case .editSoundFonts: addButtonLongPressGesture.addClosure(closure)
     case .showGuide: showGuide.addClosure(closure)
     case .showSettings: showSettings.addClosure(closure)
     case .editVisibility: editVisibility.addClosure(closure)

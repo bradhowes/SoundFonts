@@ -307,6 +307,7 @@ extension SoundFontsViewController: SegueHandler {
     case fontEditor
     case fontBrowser
     case tagsEditor
+    case fontsEditor
   }
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -340,6 +341,12 @@ extension SoundFontsViewController: SegueHandler {
         fatalError("expected TagsEditorTableViewController.Config")
       }
       prepareToEditTags(segue, config: config)
+
+    case .fontsEditor:
+      guard let config = sender as? FontsEditorTableViewController.Config else {
+        fatalError("expected FontsEditorTableViewController.Config")
+      }
+      prepareToEditFonts(segue, config: config)
     }
   }
 
@@ -371,6 +378,30 @@ extension SoundFontsViewController: SegueHandler {
   private func prepareToEditTags(_ segue: UIStoryboardSegue, config: TagsEditorTableViewController.Config) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? TagsEditorTableViewController
+    else {
+      fatalError("unexpected view configuration")
+    }
+
+    viewController.configure(config)
+
+    if keyboard == nil {
+      viewController.modalPresentationStyle = .fullScreen
+      navController.modalPresentationStyle = .fullScreen
+    }
+
+    if let ppc = navController.popoverPresentationController {
+      ppc.sourceView = view
+      ppc.sourceRect = view.frame
+      ppc.permittedArrowDirections = []
+      ppc.delegate = viewController
+    }
+
+    navController.presentationController?.delegate = viewController
+  }
+
+  private func prepareToEditFonts(_ segue: UIStoryboardSegue, config: FontsEditorTableViewController.Config) {
+    guard let navController = segue.destination as? UINavigationController,
+          let viewController = navController.topViewController as? FontsEditorTableViewController
     else {
       fatalError("unexpected view configuration")
     }

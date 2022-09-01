@@ -11,6 +11,8 @@ public enum InfoBarEvent {
   case shiftKeyboardDown
   /// Add a new sound font file to the collection of known files
   case addSoundFont
+  /// Edit the collection of sound fonts
+  case editSoundFonts
   /// User performed a double-tap action on the info bar. Switch between favorites view and file/preset view
   case doubleTap
   /// Show the guide overlay
@@ -23,9 +25,9 @@ public enum InfoBarEvent {
   case showEffects
   /// Show/hide the tags list
   case showTags
-
+  /// Expose additional buttons on width-constrained devices
   case showMoreButtons
-
+  /// Hide additional buttons on width-constrained devices
   case hideMoreButtons
 }
 

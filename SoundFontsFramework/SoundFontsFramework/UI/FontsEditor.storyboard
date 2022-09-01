@@ -25,10 +25,10 @@
             </objects>
             <point key="canvasLocation" x="269.56521739130437" y="-399.10714285714283"/>
         </scene>
-        <!--TagsEditorTableView-->
+        <!--FontsEditorTableView-->
         <scene sceneID="eVW-Ln-fSF">
             <objects>
-                <viewControllerPlaceholder storyboardName="TagsEditorTableView" id="0hI-yw-N3H" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="FontsEditorTableView" id="0hI-yw-N3H" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="4gQ-z2-P0g"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geY-6W-LbL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

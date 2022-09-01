@@ -73,7 +73,9 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public var isRestored: Bool { observer.isRestored }
 
-  public var count: Int { return collection.count }
+  public var count: Int { collection.count }
+
+  public var isEmpty: Bool { collection.isEmpty }
 
   public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
 

@@ -47,6 +47,8 @@ public protocol SoundFontsProvider: AnyObject {
 
   var count: Int { get }
 
+  var isEmpty: Bool { get }
+
   /**
    Validate the sound font collection, making sure that everything is in order. Removes any stray tags or favorites.
 

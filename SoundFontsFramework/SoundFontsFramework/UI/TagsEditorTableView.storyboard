@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Kr6-Nm-Npn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Kr6-Nm-Npn">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,32 +34,32 @@
                     <navigationItem key="navigationItem" title="Tags" id="s0q-jo-4cq">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="WfX-TS-bVs" userLabel="Cancel Button">
                             <connections>
-                                <action selector="dismiss:" destination="Kr6-Nm-Npn" id="Weu-ae-vPH"/>
+                                <action selector="dismiss:" destination="Kr6-Nm-Npn" id="hgH-5q-Dcb"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="edit" id="DkP-nW-5rx">
                                 <connections>
-                                    <action selector="beginTagEditing:" destination="Kr6-Nm-Npn" id="gcA-wj-1Xu"/>
+                                    <action selector="beginTagEditing:" destination="Kr6-Nm-Npn" id="8q9-rC-szU"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="add" id="ZJW-eu-kBN">
                                 <connections>
-                                    <action selector="addTag:" destination="Kr6-Nm-Npn" id="hfx-CA-WJq"/>
+                                    <action selector="addTag:" destination="Kr6-Nm-Npn" id="tUN-RH-GP6"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="done" id="Mir-Lm-jFM" userLabel="Done Button">
                                 <connections>
-                                    <action selector="endTagEditing:" destination="Kr6-Nm-Npn" id="D9n-Fd-TWP"/>
+                                    <action selector="endTagEditing:" destination="Kr6-Nm-Npn" id="jjc-gk-ja8"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="addButton" destination="ZJW-eu-kBN" id="BTS-w2-xoh"/>
-                        <outlet property="cancelButton" destination="WfX-TS-bVs" id="w2Z-eQ-lUG"/>
-                        <outlet property="doneButton" destination="Mir-Lm-jFM" id="Phu-th-j5p"/>
-                        <outlet property="editButton" destination="DkP-nW-5rx" id="Vnp-2r-tE9"/>
+                        <outlet property="addButton" destination="ZJW-eu-kBN" id="6xf-yE-mBp"/>
+                        <outlet property="cancelButton" destination="WfX-TS-bVs" id="mrC-4h-TCt"/>
+                        <outlet property="doneButton" destination="Mir-Lm-jFM" id="79M-tk-UnX"/>
+                        <outlet property="editButton" destination="DkP-nW-5rx" id="AtE-Fw-hNu"/>
                         <outlet property="navigationItem" destination="s0q-jo-4cq" id="5IP-nd-Z4g"/>
                     </connections>
                 </tableViewController>
