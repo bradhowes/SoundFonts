@@ -8,32 +8,26 @@ import os
 public final class FontsEditorTableViewController: UITableViewController {
   private lazy var log = Logging.logger("FontsEditorTableViewController")
 
-  /// The current action being undertaken by the editor. Used to manage state transitions and UI view.
-  fileprivate enum Action {
-    /// Enter `edit` mode and allow creation, deletion and movement of tags.
-    case editFontEntries
-    /// Exit editing mode and just present the tag names
-    case doneEditing
-  }
-
   /**
    Configuration for the controller that is passed to it via the segue that makes it appear.
    */
   public struct Config {
     let fonts: SoundFontsProvider
+    let settings: Settings
 
-    init(fonts: SoundFontsProvider) {
+    init(fonts: SoundFontsProvider, settings: Settings) {
       self.fonts = fonts
+      self.settings = settings
     }
   }
 
   // NOTE: do *not* make these buttons `weak` or else they will become nil when editing mode changes.
   @IBOutlet private var cancelButton: UIBarButtonItem!
-  @IBOutlet private var editButton: UIBarButtonItem!
-  @IBOutlet private var doneButton: UIBarButtonItem!
+  @IBOutlet private var trashButton: UIBarButtonItem!
 
   private var fonts: SoundFontsProvider!
-  private var currentAction: Action = .doneEditing { didSet { updateButtons() } }
+  private var settings: Settings!
+  private var selectedRows = Set<Int>()
 
   /**
    Configure the editor with given attributes
@@ -42,7 +36,8 @@ public final class FontsEditorTableViewController: UITableViewController {
    */
   func configure(_ config: Config) {
     self.fonts = config.fonts
-    currentAction = .doneEditing
+    self.settings = config.settings
+    self.trashButton.isEnabled = false
   }
 
   override public func viewDidLoad() {
@@ -54,6 +49,7 @@ public final class FontsEditorTableViewController: UITableViewController {
 
   override public func viewWillDisappear(_ animated: Bool) {
     os_log(.debug, log: log, "viewWillDisappear")
+    self.trashButton.isEnabled = false
     super.viewWillDisappear(animated)
   }
 }
@@ -65,53 +61,47 @@ extension FontsEditorTableViewController {
     AskForReview.maybe()
   }
 
-  /**
-   Toggle editing mode. If not editing anything, begin editing the table rows.
+  @IBAction public func deleteFonts(_ sender: UIBarButtonItem) {
+    let promptTitle = "Delete \(selectedRows.count) fonts?"
+    let promptMessage = "This cannot be undone."
+    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
-   - parameter sender: the source of the action
-   */
-  @IBAction public func beginTagEditing(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "toggleTagEditing")
-    switch currentAction {
-    case .doneEditing: currentAction = .editFontEntries
-    case .editFontEntries: currentAction = .doneEditing
+    let delete = UIAlertAction(title: "Delete", style: .destructive) { [weak self ] _ in
+      self?.doDelete()
     }
+
+    let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+
+    alertController.addAction(delete)
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
   }
 
-  @IBAction public func endTagEditing(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "toggleTagEditing")
-    switch currentAction {
-    case .doneEditing: currentAction = .editFontEntries
-    case .editFontEntries: currentAction = .doneEditing
-    }
-  }
-}
-
-// MARK: - UITextFieldDelegate
-
-extension FontsEditorTableViewController {
-
-  private func updateButtons() {
-    switch currentAction {
-    case .editFontEntries:
-      os_log(.debug, log: log, "updateButtons - editing rows")
-      navigationItem.setRightBarButtonItems([doneButton], animated: true)
-      tableView.setEditing(true, animated: true)
-
-    case .doneEditing:
-      os_log(.debug, log: log, "updateButtons - done editing")
-      editButton.isEnabled = !fonts.isEmpty
-      navigationItem.setRightBarButtonItems([editButton], animated: true)
-
-      if tableView.isEditing {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock {
-          self.tableView.reloadData()
+  private func doDelete() {
+    let keys = selectedRows.map { fonts.getBy(index: $0).key }
+    tableView.performBatchUpdates {
+      for key in keys {
+        guard let font = fonts.getBy(key: key) else { continue }
+        fonts.remove(key: key)
+        if font.removable {
+          DispatchQueue.global(qos: .userInitiated).async {
+            try? FileManager.default.removeItem(at: font.fileURL)
+          }
         }
-        tableView.setEditing(false, animated: true)
-        CATransaction.commit()
       }
+      tableView.deleteRows(at: selectedRows.map {.init(row: $0, section: 0)}, with: .automatic)
     }
+    selectedRows.removeAll()
+    trashButton.isEnabled = false
   }
 }
 
@@ -128,40 +118,53 @@ extension FontsEditorTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard !isEditing else { return }
-    tableView.deselectRow(at: indexPath, animated: false)
+    // guard !isEditing else { return }
+
+    tableView.deselectRow(at: indexPath, animated: true)
+
+    if self.selectedRows.contains(indexPath.row) {
+      self.selectedRows.remove(indexPath.row)
+    } else {
+      self.selectedRows.insert(indexPath.row)
+      let font = fonts.getBy(index: indexPath.row)
+      if !font.removable {
+        notifyAboutBuiltinFonts()
+      }
+    }
+
     tableView.reloadRows(at: [indexPath], with: .automatic)
+    trashButton.isEnabled = !selectedRows.isEmpty
+  }
+
+  private func notifyAboutBuiltinFonts() {
+    guard !settings[.notifiedAboutBuiltinFonts] else { return }
+    settings[.notifiedAboutBuiltinFonts] = true
+
+    let alertController = UIAlertController(title: "Built-in Font",
+                                            message: "Deleting a built-in font only hides it from view. " +
+                                            "You can restore their visibility in the Settings view",
+                                            preferredStyle: .alert)
+    let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
   }
 
   override public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    nil
+    indexPath
   }
 
   override public func tableView(_ tableView: UITableView,
                                  editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    .delete
-  }
-
-  override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    true
-  }
-
-  override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-    true
-  }
-
-  override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
-                                 forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      tableView.performBatchUpdates {
-        fonts.remove(key: fonts.getBy(index: indexPath.row).key)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-      } completion: { _ in
-        if self.fonts.isEmpty {
-          self.currentAction = .doneEditing
-        }
-      }
-    }
+    .none
   }
 }
 
@@ -175,7 +178,9 @@ extension FontsEditorTableViewController {
     cell.tagEditor.isHidden = true
     cell.tagEditor.isEnabled = false
     cell.tagEditor.delegate = nil
-    cell.updateForTag(at: indexPath, name: font.displayName, flags: .init())
+    cell.accessoryType = selectedRows.contains(indexPath.row) ? .checkmark : .none
+    cell.updateForTag(at: indexPath, name: font.displayName, flags: font.removable ? .selected : .init())
+
     return cell
   }
 }

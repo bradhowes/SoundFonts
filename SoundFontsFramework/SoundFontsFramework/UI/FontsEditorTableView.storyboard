@@ -37,24 +37,16 @@
                                 <action selector="dismiss:" destination="Kr7-Nm-Npn" id="k5S-vP-sMR"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="edit" id="DkP-nW-6rx">
-                                <connections>
-                                    <action selector="beginTagEditing:" destination="Kr7-Nm-Npn" id="7Ym-SF-7qX"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="done" id="Mir-Lm-jFN" userLabel="Done Button">
-                                <connections>
-                                    <action selector="endTagEditing:" destination="Kr7-Nm-Npn" id="hoc-7d-AGJ"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="DkP-nW-6rx">
+                            <connections>
+                                <action selector="deleteFonts:" destination="Kr7-Nm-Npn" id="sLo-jR-llN"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="cancelButton" destination="WfX-TS-bVt" id="Bt5-ES-18M"/>
-                        <outlet property="doneButton" destination="Mir-Lm-jFN" id="X8i-Ay-B8S"/>
-                        <outlet property="editButton" destination="DkP-nW-6rx" id="QXH-Qw-MaR"/>
                         <outlet property="navigationItem" destination="s0q-jo-5cq" id="5IP-nd-Z4g"/>
+                        <outlet property="trashButton" destination="DkP-nW-6rx" id="wvM-XS-3tG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dda-8v-ayi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

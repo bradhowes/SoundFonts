@@ -10,7 +10,7 @@ public struct ConsolidatedConfigObserver {
   /// Convenience accessor for the collection of installed sound fonts
   public var soundFonts: SoundFontCollection {
     guard let config = configProvider.config else { fatalError("attempt to access nil config") }
-    guard !config.soundFonts.isEmpty else { fatalError("encountered empty soundFonts collection")}
+    // guard !config.soundFonts.isEmpty else { fatalError("encountered empty soundFonts collection")}
     return config.soundFonts
   }
 

@@ -27,10 +27,12 @@ public extension SettingKeys {
   static let globalTuningEnabled = SettingKey("globalTuningEnabled", false)
   /// The global tuning setting that is in effect
   static let globalTuning = SettingKey("globalTuning", Float(0.0))
-  /// When true, copy an SF2 file into the application's folder when the file is added to the app.
+  /// Notify user about built-in fonts when attempting to delete one
+  static let notifiedAboutBuiltinFonts = SettingKey("notifiedAboutBuiltinFonts", false)
 
   // MARK: - App / AUv3 shared settings
 
+  /// When true, copy an SF2 file into the application's folder when the file is added to the app.
   static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", true)
   /// When true, the user has seen the prompt on how to restore hidden presets
   static let showedHidePresetPrompt = SettingKey("showedHidePresetPrompt", false)

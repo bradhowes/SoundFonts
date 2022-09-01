@@ -407,6 +407,7 @@ extension SoundFontsViewController: SegueHandler {
     }
 
     viewController.configure(config)
+    viewController.navigationItem.title = "Remove Fonts"
 
     if keyboard == nil {
       viewController.modalPresentationStyle = .fullScreen

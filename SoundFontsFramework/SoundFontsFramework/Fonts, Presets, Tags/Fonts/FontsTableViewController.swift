@@ -78,8 +78,7 @@ extension FontsTableViewController: ControllerConfiguration {
     router.infoBar.addEventClosure(.editSoundFonts) { sender in
       if let sender = sender as? UILongPressGestureRecognizer {
         if sender.state == .began {
-          os_log(.debug, log: self.log, "showing fonts editor")
-          let config = FontsEditorTableViewController.Config(fonts: self.soundFonts)
+          let config = FontsEditorTableViewController.Config(fonts: self.soundFonts, settings: self.settings)
           guard let parent = self.parent as? SoundFontsViewController else { fatalError() }
           parent.performSegue(withIdentifier: .fontsEditor, sender: config)
         }

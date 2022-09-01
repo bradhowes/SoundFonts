@@ -345,6 +345,12 @@ public extension Settings {
     get { self[.showedChanges] }
     set { self[.showedChanges] = newValue }
   }
+
+  var notifiedAboutBuiltinFonts: Bool {
+    get { self[.notifiedAboutBuiltinFonts] }
+    set { self[.notifiedAboutBuiltinFonts] = newValue }
+  }
+  
   /// The current scale factor that controls how much of the presets view to show in comparison to the fonts view
   var presetsWidthMultiplier: Double {
     get { self[.presetsWidthMultiplier] }
