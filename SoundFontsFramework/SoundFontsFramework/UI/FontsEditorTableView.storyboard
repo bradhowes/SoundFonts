@@ -37,15 +37,23 @@
                                 <action selector="dismiss:" destination="Kr7-Nm-Npn" id="k5S-vP-sMR"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="DkP-nW-6rx">
-                            <connections>
-                                <action selector="deleteFonts:" destination="Kr7-Nm-Npn" id="sLo-jR-llN"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="trash" id="DkP-nW-6rx">
+                                <connections>
+                                    <action selector="deleteFonts:" destination="Kr7-Nm-Npn" id="sLo-jR-llN"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="All" id="Qf6-2D-BXX" userLabel="All">
+                                <connections>
+                                    <action selector="selectAllFonts:" destination="Kr7-Nm-Npn" id="MkY-9V-Uln"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="cancelButton" destination="WfX-TS-bVt" id="Bt5-ES-18M"/>
                         <outlet property="navigationItem" destination="s0q-jo-5cq" id="5IP-nd-Z4g"/>
+                        <outlet property="selectAllButton" destination="Qf6-2D-BXX" id="cmN-jL-dx5"/>
                         <outlet property="trashButton" destination="DkP-nW-6rx" id="wvM-XS-3tG"/>
                     </connections>
                 </tableViewController>

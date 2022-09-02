@@ -24,6 +24,7 @@ public final class FontsEditorTableViewController: UITableViewController {
   // NOTE: do *not* make these buttons `weak` or else they will become nil when editing mode changes.
   @IBOutlet private var cancelButton: UIBarButtonItem!
   @IBOutlet private var trashButton: UIBarButtonItem!
+  @IBOutlet private var selectAllButton: UIBarButtonItem!
 
   private var fonts: SoundFontsProvider!
   private var settings: Settings!
@@ -42,6 +43,7 @@ public final class FontsEditorTableViewController: UITableViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
+    selectedRows.removeAll()
     tableView.register(TableCell.self)
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableView.automaticDimension
@@ -50,6 +52,8 @@ public final class FontsEditorTableViewController: UITableViewController {
   override public func viewWillDisappear(_ animated: Bool) {
     os_log(.debug, log: log, "viewWillDisappear")
     self.trashButton.isEnabled = false
+    self.selectedRows.removeAll()
+    tableView.reloadData()
     super.viewWillDisappear(animated)
   }
 }
@@ -59,6 +63,16 @@ extension FontsEditorTableViewController {
   @IBAction public func dismiss(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true)
     AskForReview.maybe()
+  }
+
+  @IBAction public func selectAllFonts(_ sender: UIBarButtonItem) {
+    if selectedRows.count == fonts.count {
+      selectedRows.removeAll()
+    } else {
+      selectedRows.formUnion(0..<fonts.count)
+    }
+    tableView.reloadData()
+    trashButton.isEnabled = !selectedRows.isEmpty
   }
 
   @IBAction public func deleteFonts(_ sender: UIBarButtonItem) {
