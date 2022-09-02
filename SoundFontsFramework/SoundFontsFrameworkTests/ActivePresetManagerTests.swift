@@ -38,7 +38,8 @@ class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFontsProvider {
   let soundFontNames: [String] = ["One", "Two"]
   let defaultPreset: SoundFontAndPreset? = .init(soundFontKey: sfOne.key, soundFontName: sfOne.displayName, presetIndex: 0, itemName: "an")
   var count: Int { soundFontNames.count }
-
+  var isEmpty: Bool { count == 0 }
+  
   func validateCollections(favorites: FavoritesProvider, tags: TagsProvider) {}
 
   func getBy(index: Int) -> SoundFont { collection[index] }
