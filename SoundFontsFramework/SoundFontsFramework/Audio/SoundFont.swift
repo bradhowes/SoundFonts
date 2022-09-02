@@ -16,9 +16,6 @@ public final class SoundFont: Codable {
   ///  The resolved URL for the sound font
   public var fileURL: URL { kind.fileURL }
 
-  /// True if the SF2 file is not part of the install
-  public var removable: Bool { kind.removable }
-
   public typealias Key = UUID
   public let key: Key
 

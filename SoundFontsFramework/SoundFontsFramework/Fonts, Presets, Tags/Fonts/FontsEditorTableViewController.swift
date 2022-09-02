@@ -76,7 +76,7 @@ extension FontsEditorTableViewController {
   }
 
   @IBAction public func deleteFonts(_ sender: UIBarButtonItem) {
-    let promptTitle = "Delete \(selectedRows.count) fonts?"
+    let promptTitle = "Delete \(selectedRows.count) font\(selectedRows.count == 1 ? "" : "s")?"
     let promptMessage = "This cannot be undone."
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
@@ -106,7 +106,7 @@ extension FontsEditorTableViewController {
       for key in keys {
         guard let font = fonts.getBy(key: key) else { continue }
         fonts.remove(key: key)
-        if font.removable {
+        if font.kind.deletable {
           DispatchQueue.global(qos: .userInitiated).async {
             try? FileManager.default.removeItem(at: font.fileURL)
           }
@@ -141,7 +141,7 @@ extension FontsEditorTableViewController {
     } else {
       self.selectedRows.insert(indexPath.row)
       let font = fonts.getBy(index: indexPath.row)
-      if !font.removable {
+      if !font.kind.installed {
         notifyAboutBuiltinFonts()
       }
     }
@@ -193,7 +193,7 @@ extension FontsEditorTableViewController {
     cell.tagEditor.isEnabled = false
     cell.tagEditor.delegate = nil
     cell.accessoryType = selectedRows.contains(indexPath.row) ? .checkmark : .none
-    cell.updateForTag(at: indexPath, name: font.displayName, flags: font.removable ? .selected : .init())
+    cell.updateForTag(at: indexPath, name: font.displayName, flags: font.kind.installed ? .selected : .init())
 
     return cell
   }

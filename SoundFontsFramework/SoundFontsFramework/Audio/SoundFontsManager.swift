@@ -112,7 +112,7 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public func filtered(by tag: Tag.Key) -> [SoundFont.Key] {
     collection.soundFonts.filter { soundFont in
-      soundFont.tags.union(soundFont.kind.resource ? Tag.stockTagSet : Tag.allTagSet)
+      soundFont.tags.union(soundFont.kind.builtin ? Tag.stockTagSet : Tag.allTagSet)
         .contains(tag)
     }.map { $0.key }
   }

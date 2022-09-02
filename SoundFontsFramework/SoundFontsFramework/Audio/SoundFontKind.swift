@@ -37,17 +37,8 @@ public enum SoundFontKind {
   /// The String representation of the fileURL
   public var path: String { return fileURL.path }
 
-  /// True if the file deleted by the user
-  public var removable: Bool {
-    switch self {
-    case .builtin: return false
-    case .installed: return true
-    case .reference: return true
-    }
-  }
-
-  /// True if is resource
-  public var resource: Bool {
+  /// True if built-in resource
+  public var builtin: Bool {
     switch self {
     case .builtin: return true
     case .installed: return false
@@ -55,7 +46,10 @@ public enum SoundFontKind {
     }
   }
 
-  /// True if is reference
+  /// True if the file was added by the user
+  public var installed: Bool { !builtin }
+
+  /// True if added file is a reference
   public var reference: Bool {
     switch self {
     case .builtin: return false
@@ -63,6 +57,8 @@ public enum SoundFontKind {
     case .reference: return true
     }
   }
+
+  public var deletable: Bool { installed && !reference }
 
   /// Key used to encode/decode the above case types.
   private enum InternalKey: Int {

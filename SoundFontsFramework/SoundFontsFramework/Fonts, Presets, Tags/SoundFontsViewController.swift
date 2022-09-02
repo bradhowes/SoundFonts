@@ -150,7 +150,7 @@ extension SoundFontsViewController {
       self.soundFonts.remove(key: soundFont.key)
       self.favorites.removeAll(associatedWith: soundFont)
       let url = soundFont.fileURL
-      if soundFont.removable {
+      if soundFont.kind.deletable {
         DispatchQueue.global(qos: .userInitiated).async {
           try? FileManager.default.removeItem(at: url)
         }
