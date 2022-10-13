@@ -345,11 +345,7 @@ extension DelayAU {
     let cutoffParameter = cutoff
     let wetDryMixParameter = wetDryMix
 
-    return {
-      (
-        actionFlags, timestamp, frameCount, outputBusNumber, outputData, realtimeEventListHead,
-        pullInputBlock
-      ) in
+    return {(actionFlags, timestamp, frameCount, outputBusNumber, outputData, realtimeEventListHead, pullInputBlock) in
       var head = realtimeEventListHead
       while head != nil {
         guard let event = head?.pointee else { break }

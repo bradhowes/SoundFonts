@@ -46,7 +46,7 @@ public final class AVSF2Engine {
   public static func instantiate() -> AVAudioUnitMIDIInstrument {
     let semaphore = DispatchSemaphore(value: 0)
     var result: AVAudioUnitMIDIInstrument!
-    instantiate() { avAudioUnit, _ in
+    instantiate { avAudioUnit, _ in
       guard let avAudioUnit = avAudioUnit as? AVAudioUnitMIDIInstrument else {
         fatalError("Unable to instantiate SF2EngineAU")
       }

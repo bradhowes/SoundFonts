@@ -101,10 +101,8 @@ public final class TagsEditorTableViewController: UITableViewController {
     self.completionHandler = config.completionHandler
 
     if let active = config.active {
-      for tag in active {
-        if !Tag.stockTagSet.contains(tag) {
-          self.active.insert(tag)
-        }
+      for tag in active where !Tag.stockTagSet.contains(tag) {
+        self.active.insert(tag)
       }
 
       // We are appearing from the FontEditor controller, so do not show the `Cancel` button

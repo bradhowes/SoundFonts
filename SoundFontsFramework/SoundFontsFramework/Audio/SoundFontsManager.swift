@@ -247,13 +247,11 @@ extension SoundFontsManager: SoundFontsProvider {
   public func restoreBundled() {
     os_log(.debug, log: log, "restoreBundled")
     defer { markCollectionChanged() }
-    for url in SF2Files.allResources {
-      if collection.index(of: url) == nil {
-        os_log(.debug, log: log, "restoring %{public}s", url.absoluteString)
-        if let soundFont = Self.addFromBundle(url: url) {
-          let index = collection.add(soundFont)
-          notify(.added(new: index, font: soundFont))
-        }
+    for url in SF2Files.allResources where collection.index(of: url) == nil {
+      os_log(.debug, log: log, "restoring %{public}s", url.absoluteString)
+      if let soundFont = Self.addFromBundle(url: url) {
+        let index = collection.add(soundFont)
+        notify(.added(new: index, font: soundFont))
       }
     }
   }

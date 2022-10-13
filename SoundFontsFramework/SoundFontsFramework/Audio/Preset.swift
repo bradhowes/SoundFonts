@@ -133,12 +133,10 @@ extension Preset {
 
   func validate(_ favorites: FavoritesProvider) {
     var invalidFavoriteIndices = [Int]()
-    for (favoriteIndex, favoriteKey) in self.favorites.enumerated().reversed() {
-      if !favorites.contains(key: favoriteKey) {
-        os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'", self.presetConfig.name,
-               favoriteKey.uuidString)
-        invalidFavoriteIndices.append(favoriteIndex)
-      }
+    for (favoriteIndex, favoriteKey) in self.favorites.enumerated().reversed() where !favorites.contains(key: favoriteKey) {
+      os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'", self.presetConfig.name,
+             favoriteKey.uuidString)
+      invalidFavoriteIndices.append(favoriteIndex)
     }
 
     for index in invalidFavoriteIndices {
