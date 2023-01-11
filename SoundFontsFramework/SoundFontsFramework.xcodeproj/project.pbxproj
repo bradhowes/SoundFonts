@@ -369,6 +369,7 @@
 		BD1C22F025CDC781007C114F /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		BD21AA33294D2EA3008DA31A /* ChorusKernel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChorusKernel; path = ../../ChorusKernel; sourceTree = "<group>"; };
 		BD239485255213CB004E5E0D /* KeyParamSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyParamSequence.swift; sourceTree = "<group>"; };
 		BD23948925540855004E5E0D /* KeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTests.swift; sourceTree = "<group>"; };
 		BD2436AF2579356200162A49 /* ArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
@@ -791,6 +792,14 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
+		BD21AA32294D2EA3008DA31A /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				BD21AA33294D2EA3008DA31A /* ChorusKernel */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		BD2454D627847074004B445A /* Effects */ = {
 			isa = PBXGroup;
 			children = (
@@ -879,6 +888,7 @@
 		BD5824F723CDABCD0034A31B = {
 			isa = PBXGroup;
 			children = (
+				BD21AA32294D2EA3008DA31A /* Packages */,
 				BD7F6C432790A7BB00C867D8 /* Release.xcconfig */,
 				BD7F6C442790A7BB00C867D8 /* Development.xcconfig */,
 				BD074BD023CDAF51001987E9 /* SoundFontsFramework */,

@@ -187,7 +187,7 @@ public extension PresetsTableViewController  {
     presetsTableViewManager.selectSlot(at: indexPath)
 
     if isSearching {
-      endSearch()
+      // endSearch()
     }
   }
 
@@ -361,6 +361,10 @@ extension PresetsTableViewController: UISearchBarDelegate {
 
   public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     os_log(.debug, log: log, "searchBarSearchButtonClicked - %d", searchBar.isFirstResponder)
+    endSearch()
+  }
+
+  public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     endSearch()
   }
 }

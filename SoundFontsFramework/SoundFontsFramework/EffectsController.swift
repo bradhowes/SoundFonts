@@ -27,22 +27,6 @@ public final class EffectsController: UIViewController {
   @IBOutlet private weak var delayWetDryMix: Knob!
   @IBOutlet private weak var delayWetDryMixLabel: UILabel!
 
-  @IBOutlet private weak var chorusControls: UIStackView!
-  @IBOutlet private weak var chorusEnabled: UIButton!
-  @IBOutlet private weak var chorusGlobal: UIButton!
-  @IBOutlet private weak var chorusRate: Knob!
-  @IBOutlet private weak var chorusRateLabel: UILabel!
-  @IBOutlet private weak var chorusDelay: Knob!
-  @IBOutlet private weak var chorusDelayLabel: UILabel!
-  @IBOutlet private weak var chorusDepth: Knob!
-  @IBOutlet private weak var chorusDepthLabel: UILabel!
-  @IBOutlet private weak var chorusFeedback: Knob!
-  @IBOutlet private weak var chorusFeedbackLabel: UILabel!
-  @IBOutlet private weak var chorusWetDryMix: Knob!
-  @IBOutlet private weak var chorusWetDryMixLabel: UILabel!
-  @IBOutlet private weak var chorusNegFeedback: UIButton!
-  @IBOutlet private weak var chorusOdd90: UIButton!
-
   private var isMainApp: Bool = false
   private var activePresetManager: ActivePresetManager!
   private var soundFonts: SoundFontsProvider!
@@ -55,10 +39,6 @@ public final class EffectsController: UIViewController {
   private var chorusEffect: ChorusEffect? { synth?.chorusEffect}
 
   public override func viewDidLoad() {
-
-    #if !DEBUG
-    chorusControls.isHidden = true
-    #endif
 
     view.isHidden = true
 
@@ -195,59 +175,6 @@ extension EffectsController {
     updatePresetConfig()
   }
 
-}
-
-// MARK: - Chorus Actions
-
-extension EffectsController {
-
-  @IBAction func toggleChorusEnabled(_ sender: UIButton) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    chorusEffect.active = chorusEffect.active.setEnabled(!chorusEffect.active.enabled)
-    updateChorusState(chorusEffect.active.enabled)
-    updatePresetConfig()
-  }
-
-  @IBAction func toggleChorusGlobal(_ sender: UIButton) {
-    let value = !settings.chorusGlobal
-    settings.chorusGlobal = value
-    chorusGlobal.showEnabled(value)
-    updatePresetConfig()
-  }
-
-  @IBAction func changeChorusRate(_ sender: Any) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    showChorusRateValue()
-    chorusEffect.active = chorusEffect.active.setRate(chorusRate.value)
-    updatePresetConfig()
-  }
-
-  @IBAction func changeChorusDelay(_ sender: Any) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    showChorusDelayValue()
-    chorusEffect.active = chorusEffect.active.setDelay(chorusDelay.value)
-    updatePresetConfig()
-  }
-
-  @IBAction func changeChorusDepth(_ sender: Any) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    showChorusDepthValue()
-    chorusEffect.active = chorusEffect.active.setDepth(chorusDepth.value)
-    updatePresetConfig()
-  }
-
-  @IBAction func changeChorusWetDryMix(_ sender: Any) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    showChorusMixValue()
-    chorusEffect.active = chorusEffect.active.setWetDryMix(chorusWetDryMix.value)
-    updatePresetConfig()
-  }
-
-  @IBAction func toggleChorusOdd90(_ sender: UIButton) {
-    guard let chorusEffect = self.chorusEffect else { return }
-    chorusEffect.active = chorusEffect.active.setOdd90(!chorusEffect.active.odd90)
-    updatePresetConfig()
-  }
 }
 
 // MARK: - ControllerConfiguration
@@ -450,18 +377,7 @@ extension EffectsController {
       os_log(.debug, log: log, "showing preset delay state - %{public}s", config.description)
       update(config: config)
     }
-
-    chorusGlobal.showEnabled(settings.chorusGlobal)
-    if settings.chorusGlobal {
-      os_log(.debug, log: log, "showing global chorus state")
-      update(config: ChorusConfig(settings: settings))
-    } else {
-      guard let chorusEffect = self.chorusEffect else { return }
-      let config = presetConfig?.chorusConfig ?? chorusEffect.active.setEnabled(false)
-      os_log(.debug, log: log, "showing preset chorus state - %{public}s", config.description)
-      update(config: config)
-    }
-  }
+}
 
   private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
@@ -527,50 +443,6 @@ extension EffectsController {
     animator.startAnimation()
   }
 
-  private func update(config: ChorusConfig) {
-    os_log(.debug, log: log, "update ChorusConfig - %{public}s", config.description)
-    chorusRate.setValue(config.rate, animated: true)
-    showChorusRateValue()
-    chorusDelay.setValue(config.delay, animated: true)
-    showChorusDelayValue()
-    chorusDepth.setValue(config.depth, animated: true)
-    showChorusDepthValue()
-    showChorusFeedbackValue()
-    chorusWetDryMix.setValue(config.wetDryMix, animated: true)
-    showChorusMixValue()
-    chorusOdd90.showEnabled(config.odd90)
-    updateChorusState(config.enabled)
-  }
-
-  private func updateChorusState(_ enabled: Bool) {
-    os_log(.debug, log: log, "updateChorusState - %d", enabled)
-    let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
-    self.chorusEnabled.accessibilityLabel = enabled ? "DisableChorusEffect" : "EnableChorusEffect"
-    animator.addAnimations {
-      self.chorusEnabled.showEnabled(enabled)
-      self.chorusGlobal.isEnabled = true
-      self.chorusGlobal.isUserInteractionEnabled = true
-      self.chorusWetDryMix.isEnabled = enabled
-      self.chorusRate.isEnabled = enabled
-      self.chorusDelay.isEnabled = enabled
-      self.chorusDepth.isEnabled = enabled
-      self.chorusNegFeedback.isEnabled = enabled
-      self.chorusOdd90.isEnabled = enabled
-      self.chorusFeedback.isEnabled = enabled
-      self.chorusWetDryMix.alpha = self.alpha(for: enabled)
-      self.chorusWetDryMixLabel.alpha = self.alpha(for: enabled)
-      self.chorusRate.alpha = self.alpha(for: enabled)
-      self.chorusRateLabel.alpha = self.alpha(for: enabled)
-      self.chorusDelay.alpha = self.alpha(for: enabled)
-      self.chorusDelayLabel.alpha = self.alpha(for: enabled)
-      self.chorusDepth.alpha = self.alpha(for: enabled)
-      self.chorusDepthLabel.alpha = self.alpha(for: enabled)
-      self.chorusFeedback.alpha = self.alpha(for: enabled)
-      self.chorusFeedbackLabel.alpha = self.alpha(for: enabled)
-    }
-    animator.startAnimation()
-  }
-
   private func showReverbMixValue() {
     reverbWetDryMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%")
   }
@@ -594,25 +466,5 @@ extension EffectsController {
 
   private func showDelayMixValue() {
     delayWetDryMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%")
-  }
-
-  private func showChorusRateValue() {
-    chorusRateLabel.showStatus(String(format: "%.0f", chorusRate.value) + "Hz")
-  }
-
-  private func showChorusDelayValue() {
-    chorusDelayLabel.showStatus(String(format: "%.0f", chorusDelay.value) + "s")
-  }
-
-  private func showChorusDepthValue() {
-    chorusDepthLabel.showStatus(String(format: "%.0f", chorusDepth.value) + "%")
-  }
-
-  private func showChorusFeedbackValue() {
-    chorusFeedbackLabel.showStatus(String(format: "%.0f", chorusFeedback.value) + "%")
-  }
-
-  private func showChorusMixValue() {
-    chorusWetDryMixLabel.showStatus(String(format: "%.0f", chorusWetDryMix.value) + "%")
   }
 }
