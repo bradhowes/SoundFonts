@@ -166,8 +166,6 @@
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
 		BD8A31502502E41E0077320F /* SoundFonts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BD8A314E2502E41E0077320F /* SoundFonts.xcdatamodeld */; };
 		BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A317E2503B5400077320F /* CoreDataStackTests.swift */; };
-		BD94614D26AC90CC00300543 /* ChorusEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD94614C26AC90CC00300543 /* ChorusEffect.swift */; };
-		BD94614F26AC912D00300543 /* ChorusConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD94614E26AC912D00300543 /* ChorusConfig.swift */; };
 		BD9494362813A656000E0BFF /* AnyMIDISynth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9494352813A656000E0BFF /* AnyMIDISynth.swift */; };
 		BD9AC9A3256718ED00B47F12 /* AUParameterHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */; };
 		BD9AC9AE2567A50400B47F12 /* AudioUnitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */; };
@@ -369,7 +367,6 @@
 		BD1C22F025CDC781007C114F /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		BD21AA33294D2EA3008DA31A /* ChorusKernel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChorusKernel; path = ../../ChorusKernel; sourceTree = "<group>"; };
 		BD239485255213CB004E5E0D /* KeyParamSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyParamSequence.swift; sourceTree = "<group>"; };
 		BD23948925540855004E5E0D /* KeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTests.swift; sourceTree = "<group>"; };
 		BD2436AF2579356200162A49 /* ArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
@@ -435,8 +432,6 @@
 		BD8A31612502E6920077320F /* ManagedSoundFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedSoundFont.swift; sourceTree = "<group>"; };
 		BD8A317E2503B5400077320F /* CoreDataStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackTests.swift; sourceTree = "<group>"; };
 		BD90AEF424192E7C00D29E18 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		BD94614C26AC90CC00300543 /* ChorusEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChorusEffect.swift; sourceTree = "<group>"; };
-		BD94614E26AC912D00300543 /* ChorusConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChorusConfig.swift; sourceTree = "<group>"; };
 		BD9494352813A656000E0BFF /* AnyMIDISynth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyMIDISynth.swift; sourceTree = "<group>"; };
 		BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUParameterHandler.swift; sourceTree = "<group>"; };
 		BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitManagerDelegate.swift; sourceTree = "<group>"; };
@@ -621,7 +616,6 @@
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
 				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
-				BD94614E26AC912D00300543 /* ChorusConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
@@ -792,18 +786,9 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
-		BD21AA32294D2EA3008DA31A /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				BD21AA33294D2EA3008DA31A /* ChorusKernel */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		BD2454D627847074004B445A /* Effects */ = {
 			isa = PBXGroup;
 			children = (
-				BD94614C26AC90CC00300543 /* ChorusEffect.swift */,
 				BDA5ACF0265D4266000AE48E /* DelayEffect.swift */,
 				BDFA98ED280C5C4C0069A46F /* DelayAU.swift */,
 				BDA5ACEF265D4266000AE48E /* ReverbEffect.swift */,
@@ -888,7 +873,6 @@
 		BD5824F723CDABCD0034A31B = {
 			isa = PBXGroup;
 			children = (
-				BD21AA32294D2EA3008DA31A /* Packages */,
 				BD7F6C432790A7BB00C867D8 /* Release.xcconfig */,
 				BD7F6C442790A7BB00C867D8 /* Development.xcconfig */,
 				BD074BD023CDAF51001987E9 /* SoundFontsFramework */,
@@ -1303,13 +1287,11 @@
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD44E6112791A020004E0543 /* PresetsTableRowVisibilityEditor.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
-				BD94614F26AC912D00300543 /* ChorusConfig.swift in Sources */,
 				BDBF896625B58AEF00B58E23 /* TagCollection.swift in Sources */,
 				BDA5ACEE265D422C000AE48E /* DonePageViewController.swift in Sources */,
 				BD9494362813A656000E0BFF /* AnyMIDISynth.swift in Sources */,
 				BDBF895325B57A3A00B58E23 /* Tag.swift in Sources */,
 				BD1971BC266186E400C7FCF5 /* ManagedReverbConfig.swift in Sources */,
-				BD94614D26AC90CC00300543 /* ChorusEffect.swift in Sources */,
 				BD2436B02579356200162A49 /* ArrowView.swift in Sources */,
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
 				BD5B5C3928C14C1E000BC5A4 /* FontsEditorTableViewController.swift in Sources */,

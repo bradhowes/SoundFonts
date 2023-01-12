@@ -63,7 +63,7 @@ class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFontsProvider {
   func updatePreset(soundFontAndPreset: SoundFontAndPreset, config: PresetConfig) {}
   func setVisibility(soundFontAndPreset: SoundFontAndPreset, state: Bool) {}
   func makeAllVisible(key: SoundFont.Key) {}
-  func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?) {}
+  func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?) {}
   func reloadEmbeddedInfo(key: SoundFont.Key) {}
 
   var hasAnyBundled: Bool { false }
@@ -88,7 +88,7 @@ class FavoritesMock: SubscriptionManager<FavoritesEvent>, FavoritesProvider {
   func update(index: Int, config: PresetConfig) { fatalError() }
   func move(from: Int, to: Int) { fatalError() }
   func setVisibility(key: Favorite.Key, state: Bool) { fatalError() }
-  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?) { fatalError() }
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?) { fatalError() }
   func selected(index: Int) { fatalError() }
   func remove(key: Favorite.Key) { fatalError() }
   func removeAll(associatedWith: SoundFont) { fatalError() }

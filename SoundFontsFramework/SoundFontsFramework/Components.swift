@@ -108,12 +108,12 @@ where T: ControllerConfiguration {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
         let synth = SynthManager(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
-                          delay: DelayEffect(), chorus: nil, settings: self.settings)
+                          delay: DelayEffect(), settings: self.settings)
         self.accessQueue.sync { self._synth = synth }
       }
     } else {
       self._synth = SynthManager(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
-                          chorus: nil, settings: settings)
+                                 settings: settings)
     }
   }
 

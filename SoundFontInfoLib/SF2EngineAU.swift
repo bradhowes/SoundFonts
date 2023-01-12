@@ -19,16 +19,15 @@ public final class SF2EngineAU: AUAudioUnit {
   private let maxFramesToRender: UInt32 = 512
 
   private var dryBus: AUAudioUnitBus!
-  private var chorusSendBus: AUAudioUnitBus!
   private var reverbSendBus: AUAudioUnitBus!
 
   // We have no inputs
   private lazy var _inputBusses: AUAudioUnitBusArray =
   AUAudioUnitBusArray(audioUnit: self, busType: .input, busses: [])
 
-  // We have three outputs -- dry, chorus, reverb
+  // We have two outputs -- dry, reverb
   private lazy var _outputBusses: AUAudioUnitBusArray =
-  AUAudioUnitBusArray(audioUnit: self, busType: .output, busses: [dryBus!, chorusSendBus!, reverbSendBus!])
+  AUAudioUnitBusArray(audioUnit: self, busType: .output, busses: [dryBus!, reverbSendBus!])
 
   public override var inputBusses: AUAudioUnitBusArray { return _inputBusses }
   public override var outputBusses: AUAudioUnitBusArray { return _outputBusses }
@@ -70,7 +69,6 @@ public final class SF2EngineAU: AUAudioUnit {
     maximumFramesToRender = maxFramesToRender
 
     dryBus = try createBus(name: "dry", format: format)
-    chorusSendBus = try createBus(name: "chorusSend", format: format)
     reverbSendBus = try createBus(name: "reverbSend", format: format)
 
     os_log(.debug, log: log, "init - done")

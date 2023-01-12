@@ -198,17 +198,15 @@ extension SoundFontsManager: SoundFontsProvider {
     preset.presetConfig.isHidden = !isVisible
   }
 
-  public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?,
-                         chorus: ChorusConfig?) {
+  public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
            soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.presetIndex,
-           delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
+           delay?.description ?? "nil", reverb?.description ?? "nil")
     defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     preset.presetConfig.delayConfig = delay
     preset.presetConfig.reverbConfig = reverb
-    preset.presetConfig.chorusConfig = chorus
   }
 
   public func makeAllVisible(key: SoundFont.Key) {

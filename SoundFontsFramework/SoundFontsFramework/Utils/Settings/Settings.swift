@@ -275,51 +275,6 @@ public extension Settings {
     get { self[.delayWetDryMix] }
     set { self[.delayWetDryMix] = newValue }
   }
-  /// If true, the chorus AU is currently active
-  var chorusEnabled: Bool {
-    get { self[.chorusEnabled] }
-    set { self[.chorusEnabled] = newValue }
-  }
-  /// If true, the chorus AU is globally active
-  var chorusGlobal: Bool {
-    get { self[.chorusGlobal] }
-    set { self[.chorusGlobal] = newValue }
-  }
-  /// The current chorus rate in seconds
-  var chorusRate: Float {
-    get { self[.chorusRate] }
-    set { self[.chorusRate] = newValue }
-  }
-  /// The current chorus delay
-  var chorusDelay: Float {
-    get { self[.chorusDelay] }
-    set { self[.chorusDelay] = newValue }
-  }
-  /// The current chorus depth
-  var chorusDepth: Float {
-    get { self[.chorusDepth] }
-    set { self[.chorusDepth] = newValue }
-  }
-  /// The current feedback setting between -100% and 100%
-  var chorusFeedback: Float {
-    get { self[.chorusFeedback] }
-    set { self[.chorusFeedback] = newValue }
-  }
-  /// The current chorus mix setting
-  var chorusWetDryMix: Float {
-    get { self[.chorusWetDryMix] }
-    set { self[.chorusWetDryMix] = newValue }
-  }
-  /// The current chorus neg feedback switch
-  var chorusNegFeedback: Bool {
-    get { self[.chorusNegFeedback] }
-    set { self[.chorusNegFeedback] = newValue }
-  }
-  /// The current chorus odd 90° switch
-  var chorusOdd90: Bool {
-    get { self[.chorusOdd90] }
-    set { self[.chorusOdd90] = newValue }
-  }
   /// The currently active font tag
   @objc dynamic var activeTagKey: Tag.Key {
     get { self[.activeTagKey] }

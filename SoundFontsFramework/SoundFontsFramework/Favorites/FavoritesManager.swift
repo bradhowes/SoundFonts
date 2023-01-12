@@ -87,13 +87,12 @@ extension FavoritesManager: FavoritesProvider {
     }
   }
 
-  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?) {
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?) {
     os_log(.debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
-           delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
+           delay?.description ?? "nil", reverb?.description ?? "nil")
     defer { markCollectionChanged() }
     favorite.presetConfig.delayConfig = delay
     favorite.presetConfig.reverbConfig = reverb
-    favorite.presetConfig.chorusConfig = chorus
   }
 
   func validate(_ soundFonts: SoundFontsProvider) {

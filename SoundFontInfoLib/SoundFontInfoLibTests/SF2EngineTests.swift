@@ -90,7 +90,6 @@ class SF2EngineTests: XCTestCase {
     var timestamp = AudioTimeStamp()
 
     let dryBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: maxFrameCount)!
-    let chorusSendBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: maxFrameCount)!
     let reverbSendBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: maxFrameCount)!
 
     synth.engine.startNote(60, velocity: 64)
@@ -121,16 +120,7 @@ class SF2EngineTests: XCTestCase {
     XCTAssertEqual(0.0, samples.first)
     XCTAssertEqual(0.04329596, samples.last)
 
-    let chorusSendBufferList = chorusSendBuffer.mutableAudioBufferList
-    buffers = UnsafeMutableAudioBufferListPointer(chorusSendBufferList)
-    leftBuffer = buffers[0]
-    leftPtr = UnsafeMutableBufferPointer<AUValue>(leftBuffer)
-    rightBuffer = buffers[1]
-    rightPtr = UnsafeMutableBufferPointer<AUValue>(rightBuffer)
-    vDSP_vclr(leftPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
-    vDSP_vclr(rightPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
-
-    status = renderProc(&flags, &timestamp, maxFrameCount, 1, chorusSendBufferList, nil, nil)
+    status = renderProc(&flags, &timestamp, maxFrameCount, 1, dryBufferList, nil, nil)
     XCTAssertEqual(status, 0)
     XCTAssertEqual(2, buffers.count)
     left = buffers[0]

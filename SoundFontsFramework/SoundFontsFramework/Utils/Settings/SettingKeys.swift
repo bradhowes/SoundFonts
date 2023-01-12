@@ -106,28 +106,5 @@ public extension SettingKeys {
   /// The current delay mix setting
   static let delayWetDryMix = SettingKey("delayWetDryMix", Float(45.0))
 
-  // MARK: - Chorus settings
-
-  /// If true, the chorus AU is currently active
-  static let chorusEnabled = SettingKey("chorusEnabled", false)
-  /// If true, the delay AU is globally active
-  static let chorusGlobal = SettingKey("chorusGlobal", false)
-  /// The current delay amount in seconds
-  static let chorusRate = SettingKey("chorusRate", Float(0.19))
-  /// The current delay amount in seconds
-  static let chorusDelay = SettingKey("chorusDelay", Float(0.19))
-  /// The current delay amount in seconds
-  static let chorusDepth = SettingKey("chorusDepth", Float(0.19))
-  /// The current feedback setting between -100% and 100%
-  static let chorusFeedback = SettingKey("chorusFeedback", Float(-75.0))
-  /// The current low-pass cutoff value for the delay effect
-  static let chorusCutoff = SettingKey("chorusCutoff", Float(15000.0))
-  /// The current delay mix setting
-  static let chorusWetDryMix = SettingKey("chorusWetDryMix", Float(45.0))
-  /// If true, use negative feedback
-  static let chorusNegFeedback = SettingKey("chorusNegFeedback", false)
-  /// If true, the odd (R) channel is out of phase with even (L).
-  static let chorusOdd90 = SettingKey("chorusOdd90", false)
-
   static let settingsVersion = SettingKey("settingsVersion", 0)
 }

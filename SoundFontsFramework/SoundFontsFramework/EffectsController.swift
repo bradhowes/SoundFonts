@@ -36,7 +36,6 @@ public final class EffectsController: UIViewController {
   private var synth: SynthManager?
   private var reverbEffect: ReverbEffect? { synth?.reverbEffect }
   private var delayEffect: DelayEffect? { synth?.delayEffect }
-  private var chorusEffect: ChorusEffect? { synth?.chorusEffect}
 
   public override func viewDidLoad() {
 
@@ -260,22 +259,11 @@ extension EffectsController {
       settings.delayCutoff = config.cutoff
       settings.delayWetDryMix = config.wetDryMix
     }
-
-    if let chorusEffect = self.chorusEffect, settings.chorusGlobal {
-      os_log(.debug, log: log, "updating global chorus settings")
-      let config = chorusEffect.active
-      settings.chorusEnabled = config.enabled
-      settings.chorusRate = config.rate
-      settings.chorusDelay = config.delay
-      settings.chorusDepth = config.depth
-      settings.chorusWetDryMix = config.wetDryMix
-    }
   }
 
   private func updatePresetConfig() {
     guard let reverbEffect = self.reverbEffect,
           let delayEffect = self.delayEffect
-          // let chorusEffect = self.chorusEffect
     else {
       return
     }
@@ -308,29 +296,14 @@ extension EffectsController {
       }
     }()
 
-    let chorusConfig: ChorusConfig? = {
-      return nil
-//      if settings.chorusGlobal {
-//        os_log(.debug, log: log, "updating global chorus")
-//        return activePresetManager.activePresetConfig?.chorusConfig
-//      } else if chorusEffect.active.enabled {
-//        os_log(.debug, log: log, "updating preset chorus")
-//        return chorusEffect.active
-//      } else {
-//        os_log(.debug, log: log, "nil chorus preset")
-//        return nil
-//      }
-    }()
-
     if let favorite = activePresetManager.activeFavorite {
       os_log(.debug, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
              delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
-      favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig, chorus: chorusConfig)
+      favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
     } else if let soundFontAndPreset = activePresetManager.active.soundFontAndPreset {
       os_log(.debug, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
              delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
-      soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig,
-                            chorus: chorusConfig)
+      soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig)
     }
 
     updateGlobalConfig()

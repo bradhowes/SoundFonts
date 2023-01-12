@@ -83,7 +83,6 @@ public final class SynthManager {
 
   public let reverbEffect: ReverbEffect?
   public let delayEffect: DelayEffect?
-  public let chorusEffect: ChorusEffect?
 
   private let mode: Mode
   private let activePresetManager: ActivePresetManager
@@ -116,20 +115,18 @@ public final class SynthManager {
    - parameter settings: user-adjustable settings
    */
   public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?,
-              chorus: ChorusEffect?, settings: Settings) {
+              settings: Settings) {
     os_log(.debug, log: Self.log, "init BEGIN")
 
     self.mode = mode
     self.activePresetManager = activePresetManager
     self.reverbEffect = reverb
     self.delayEffect = delay
-    self.chorusEffect = chorus
     self.settings = settings
 
     if mode == .standalone {
       precondition(reverb != nil, "unexpected nil for reverb")
       precondition(delay != nil, "unexpected nil for delay")
-      // precondition(chorus != nil, "unexpected nil for chorus")
     }
 
     activePresetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: applyPresetConfig(_:))

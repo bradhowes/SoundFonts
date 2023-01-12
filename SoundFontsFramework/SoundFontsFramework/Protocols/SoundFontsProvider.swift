@@ -204,10 +204,8 @@ public protocol SoundFontsProvider: AnyObject {
    - parameter soundFontAndPreset: the preset to change
    - parameter delay: the configuration for the delay effect
    - parameter reverb: the configuration for the reverb effect
-   - parameter chorus: the configuration for the chorus effect
    */
-  func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?,
-                  chorus: ChorusConfig?)
+  func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?)
 
   /**
    Reload the embedded contents of the sound font
