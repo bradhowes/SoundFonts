@@ -190,7 +190,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "startAudioBackground_BT BEGIN")
 
     let sampleRate: Double = 44100.0
-    let bufferSize: Int = 512
+    let bufferSize: Int = 64
     let session = AVAudioSession.sharedInstance()
 
     setupAudioSessionNotifications_BT()
