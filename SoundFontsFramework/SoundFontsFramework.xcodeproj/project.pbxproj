@@ -249,7 +249,6 @@
 		BDF4E696286CFD8700443CA9 /* Envelope.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDF4E695286CFD8700443CA9 /* Envelope.storyboard */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDF86312246EC4300006D8CD /* AudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86311246EC4300006D8CD /* AudioUnit.swift */; };
-		BDFA98EA280C53FF0069A46F /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BDFA98E9280C53FF0069A46F /* AUv3-Support */; };
 		BDFA98EC280C55B80069A46F /* ReverbAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98EB280C55B80069A46F /* ReverbAU.swift */; };
 		BDFA98EE280C5C4C0069A46F /* DelayAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98ED280C5C4C0069A46F /* DelayAU.swift */; };
 		BDFA98F0280C60880069A46F /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98EF280C60880069A46F /* SoundFontsAU.swift */; };
@@ -532,7 +531,6 @@
 				BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */,
 				BDF1C0E02787675600E451C3 /* Tagged in Frameworks */,
 				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
-				BDFA98EA280C53FF0069A46F /* AUv3-Support in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1060,7 +1058,6 @@
 			packageProductDependencies = (
 				BDA52C19277CB72F0010BBF1 /* DictionaryCoder */,
 				BDF1C0DF2787675600E451C3 /* Tagged */,
-				BDFA98E9280C53FF0069A46F /* AUv3-Support */,
 			);
 			productName = SoundFontsFramework;
 			productReference = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */;
@@ -1117,7 +1114,6 @@
 			packageReferences = (
 				BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */,
 				BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */,
-				BDFA98E8280C53F20069A46F /* XCRemoteSwiftPackageReference "AUv3Support" */,
 			);
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
 			projectDirPath = "";
@@ -1706,14 +1702,6 @@
 				minimumVersion = 0.6.0;
 			};
 		};
-		BDFA98E8280C53F20069A46F /* XCRemoteSwiftPackageReference "AUv3Support" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bradhowes/AUv3Support";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1726,11 +1714,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */;
 			productName = Tagged;
-		};
-		BDFA98E9280C53FF0069A46F /* AUv3-Support */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BDFA98E8280C53F20069A46F /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-Support";
 		};
 /* End XCSwiftPackageProductDependency section */
 

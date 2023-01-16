@@ -279,9 +279,9 @@ extension SoundFontsAU {
         state[kAUPresetNumberKey] = preset.number
       }
       state[kAUPresetDataKey] = Data()
-      state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aumu")
-      state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "sfnt")
-      state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+      state[kAUPresetTypeKey] = FourCharCode("aumu")
+      state[kAUPresetSubtypeKey] = FourCharCode("sfnt")
+      state[kAUPresetManufacturerKey] = FourCharCode("bray")
       state[kAUPresetVersionKey] = FourCharCode(67072)
       return state
     }

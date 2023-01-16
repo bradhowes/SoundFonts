@@ -8,12 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		BD01D6A6280B035C00AF5586 /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A5280B035C00AF5586 /* SF2Lib */; };
-		BD01D6A8280B035C00AF5586 /* AUv3-DSP-Headers in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A7280B035C00AF5586 /* AUv3-DSP-Headers */; };
-		BD01D6AA280B035C00AF5586 /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A9280B035C00AF5586 /* AUv3-Support */; };
 		BD05CF9B27D8B31100E58550 /* SF2Engine.h in Headers */ = {isa = PBXBuildFile; fileRef = BD05CF9A27D8B31100E58550 /* SF2Engine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */; };
 		BD05CFA127D8BB1B00E58550 /* SF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */; };
 		BD3B815627E3B484007D9144 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3B815527E3B484007D9144 /* SF2Files.framework */; };
+		BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6791612973622C0055BB38 /* FourCharCode.swift */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */; };
 		BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -28,8 +27,6 @@
 		BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E4280C50040069A46F /* AVSF2Engine.swift */; };
 		BDFA98E7280C52450069A46F /* AVSF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */; };
 		BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDECD03727CC483800FEDC13 /* AudioToolbox.framework */; };
-		BDFA98F5280C745F0069A46F /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BDFA98F4280C745F0069A46F /* AUv3-Support */; };
-		BDFA98FB280DBA730069A46F /* AUv3-DSP-Headers in Frameworks */ = {isa = PBXBuildFile; productRef = BDFA98FA280DBA730069A46F /* AUv3-DSP-Headers */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +45,7 @@
 		BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SF2EngineTests.swift; sourceTree = "<group>"; };
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		BD3B815527E3B484007D9144 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD6791612973622C0055BB38 /* FourCharCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourCharCode.swift; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SF2EngineAU.swift; sourceTree = "<group>"; };
@@ -76,9 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDFA98FB280DBA730069A46F /* AUv3-DSP-Headers in Frameworks */,
 				BDBB720627D89C33007911CF /* SF2Lib in Frameworks */,
-				BDFA98F5280C745F0069A46F /* AUv3-Support in Frameworks */,
 				BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */,
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
 			);
@@ -90,8 +86,6 @@
 			files = (
 				BD01D6A6280B035C00AF5586 /* SF2Lib in Frameworks */,
 				BD3B815627E3B484007D9144 /* SF2Files.framework in Frameworks */,
-				BD01D6A8280B035C00AF5586 /* AUv3-DSP-Headers in Frameworks */,
-				BD01D6AA280B035C00AF5586 /* AUv3-Support in Frameworks */,
 				BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */,
 				BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */,
 				BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */,
@@ -108,6 +102,7 @@
 				BD8CE57127C53F67009A2FB5 /* Development.xcconfig */,
 				BD8CE57027C53F67009A2FB5 /* Release.xcconfig */,
 				BDFA98E4280C50040069A46F /* AVSF2Engine.swift */,
+				BD6791612973622C0055BB38 /* FourCharCode.swift */,
 				BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */,
 				BD05CF9A27D8B31100E58550 /* SF2Engine.h */,
 				BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */,
@@ -189,8 +184,6 @@
 			name = SoundFontInfoLib;
 			packageProductDependencies = (
 				BDBB720527D89C33007911CF /* SF2Lib */,
-				BDFA98F4280C745F0069A46F /* AUv3-Support */,
-				BDFA98FA280DBA730069A46F /* AUv3-DSP-Headers */,
 			);
 			productName = SoundFontInfoLib;
 			productReference = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */;
@@ -214,8 +207,6 @@
 			name = SoundFontInfoLibTests;
 			packageProductDependencies = (
 				BD01D6A5280B035C00AF5586 /* SF2Lib */,
-				BD01D6A7280B035C00AF5586 /* AUv3-DSP-Headers */,
-				BD01D6A9280B035C00AF5586 /* AUv3-Support */,
 			);
 			productName = SoundFontInfoLibTests;
 			productReference = BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */;
@@ -255,7 +246,6 @@
 			mainGroup = BD74D15D23CDB1D200204ED4;
 			packageReferences = (
 				BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */,
-				BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */,
 			);
 			productRefGroup = BD74D16823CDB1D200204ED4 /* Products */;
 			projectDirPath = "";
@@ -291,6 +281,7 @@
 			files = (
 				BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */,
 				BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */,
+				BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */,
 				BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */,
 				BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */,
 			);
@@ -719,25 +710,10 @@
 			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
 			productName = SF2Lib;
 		};
-		BD01D6A7280B035C00AF5586 /* AUv3-DSP-Headers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-DSP-Headers";
-		};
-		BD01D6A9280B035C00AF5586 /* AUv3-Support */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-Support";
-		};
 		BDBB720527D89C33007911CF /* SF2Lib */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
 			productName = SF2Lib;
-		};
-		BDFA98F4280C745F0069A46F /* AUv3-Support */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-Support";
 		};
 		BDFA98F6280C74760069A46F /* SF2Lib */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -748,11 +724,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
 			productName = "AUv3-Support";
-		};
-		BDFA98FA280DBA730069A46F /* AUv3-DSP-Headers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-DSP-Headers";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

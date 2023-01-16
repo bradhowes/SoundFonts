@@ -234,9 +234,9 @@ extension ReverbAU {
         state[kAUPresetNumberKey] = preset.number
       }
       state[kAUPresetDataKey] = Data()
-      state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aufx")
-      state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "revb")
-      state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+      state[kAUPresetTypeKey] = FourCharCode("aufx")
+      state[kAUPresetSubtypeKey] = FourCharCode("revb")
+      state[kAUPresetManufacturerKey] = FourCharCode("bray")
       state[kAUPresetVersionKey] = FourCharCode(67072)
       return state
     }

@@ -224,9 +224,9 @@ extension DelayAU {
         state[kAUPresetNumberKey] = preset.number
       }
       state[kAUPresetDataKey] = Data()
-      state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aufx")
-      state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "dlay")
-      state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+      state[kAUPresetTypeKey] = FourCharCode("aufx")
+      state[kAUPresetSubtypeKey] = FourCharCode("dlay")
+      state[kAUPresetManufacturerKey] = FourCharCode("bray")
       state[kAUPresetVersionKey] = FourCharCode(67072)
       return state
     }

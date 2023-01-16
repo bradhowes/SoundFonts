@@ -10,7 +10,7 @@ import AudioToolbox
 import CoreAudio
 import AVFoundation
 import GameKit
-import AUv3Support
+
 
 class AVSF2EngineTests: XCTestCase {
 

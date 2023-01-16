@@ -47,7 +47,6 @@
 		BDDB042027BC58E400138227 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
 		BDFA98DD280B61FC0069A46F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFA98DC280B61FC0069A46F /* SoundFontInfoLib.framework */; };
 		BDFA98E1280C3E370069A46F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFA98E0280C3E370069A46F /* SoundFontsFramework.framework */; };
-		BDFA98FE280DBB390069A46F /* AUv3-Support in Frameworks */ = {isa = PBXBuildFile; productRef = BDFA98FD280DBB390069A46F /* AUv3-Support */; };
 		BDFAC1EA2565D79B0013844F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFAC20F2565DDD10013844F /* Controls.storyboard */; };
 /* End PBXBuildFile section */
@@ -229,7 +228,6 @@
 				BD50C7B323D4793F0019EF15 /* SoundFontInfoLib.framework in Frameworks */,
 				BD50C7B023D479390019EF15 /* SoundFontsFramework.framework in Frameworks */,
 				BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */,
-				BDFA98FE280DBB390069A46F /* AUv3-Support in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,7 +539,6 @@
 			);
 			name = SoundFontsApp;
 			packageProductDependencies = (
-				BDFA98FD280DBB390069A46F /* AUv3-Support */,
 			);
 			productName = SoundFonts;
 			productReference = BD75B260218B8CFD00C7EBD7 /* SoundFontsApp.app */;
@@ -620,7 +617,6 @@
 			);
 			mainGroup = BD75B257218B8CFD00C7EBD7;
 			packageReferences = (
-				BDFA98FC280DBB2A0069A46F /* XCRemoteSwiftPackageReference "AUv3Support" */,
 			);
 			productRefGroup = BD75B261218B8CFD00C7EBD7 /* Products */;
 			projectDirPath = "";
@@ -1375,25 +1371,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		BDFA98FC280DBB2A0069A46F /* XCRemoteSwiftPackageReference "AUv3Support" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bradhowes/AUv3Support";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		BDFA98FD280DBB390069A46F /* AUv3-Support */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BDFA98FC280DBB2A0069A46F /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-Support";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BD75B258218B8CFD00C7EBD7 /* Project object */;
 }
