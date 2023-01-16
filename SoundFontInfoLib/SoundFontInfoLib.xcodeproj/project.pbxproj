@@ -310,10 +310,6 @@
 			isa = PBXTargetDependency;
 			productRef = BDFA98F6280C74760069A46F /* SF2Lib */;
 		};
-		BDFA98F9280C74760069A46F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = BDFA98F8280C74760069A46F /* AUv3-Support */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -686,14 +682,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bradhowes/AUv3Support";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bradhowes/SF2Lib";
@@ -719,11 +707,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
 			productName = SF2Lib;
-		};
-		BDFA98F8280C74760069A46F /* AUv3-Support */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BD75DC3E27E4BDAE00C31DBA /* XCRemoteSwiftPackageReference "AUv3Support" */;
-			productName = "AUv3-Support";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
