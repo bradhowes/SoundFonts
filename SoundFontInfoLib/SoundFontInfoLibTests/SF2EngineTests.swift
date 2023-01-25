@@ -5,11 +5,7 @@ import os.log
 import XCTest
 import SoundFontInfoLib
 import SF2Files
-import Foundation
-import AudioToolbox
 import CoreAudio
-import AVFoundation
-import GameKit
 
 class SF2EngineTests: XCTestCase {
 

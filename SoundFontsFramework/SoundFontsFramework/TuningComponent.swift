@@ -5,8 +5,38 @@ import UIKit
 @objc
 public final class TuningComponent: NSObject {
 
+  static private let transposeSharpLookup: [Int: String] = [
+    100: "C♯",
+    200: "D",
+    300: "D♯",
+    400: "E",
+    500: "F",
+    600: "F♯",
+    700: "G",
+    800: "G♯",
+    900: "A",
+    1000: "A♯",
+    1100: "B"
+  ]
+
+  static private let transposeFlatLookup: [Int: String] = [
+    100: "D♭",
+    200: "D",
+    300: "E♭",
+    400: "E",
+    500: "F",
+    600: "G♭",
+    700: "G",
+    800: "A♭",
+    900: "A",
+    1000: "B♭",
+    1100: "B"
+  ]
+
   private let view: UIView
   private let scrollView: UIScrollView
+  private let transposeValue: UILabel
+  private let transposeStepper: UIStepper
   private let standardTuningButton: UIButton
   private let scientificTuningButton: UIButton
   private let tuningCents: UITextField
@@ -35,6 +65,8 @@ public final class TuningComponent: NSObject {
     tuning: Float,
     view: UIView,
     scrollView: UIScrollView,
+    transposeValue: UILabel,
+    transposeStepper: UIStepper,
     standardTuningButton: UIButton,
     scientificTuningButton: UIButton,
     tuningCents: UITextField,
@@ -44,6 +76,8 @@ public final class TuningComponent: NSObject {
     self.tuningCentsValue = tuning
     self.view = view
     self.scrollView = scrollView
+    self.transposeValue = transposeValue
+    self.transposeStepper = transposeStepper
     self.standardTuningButton = standardTuningButton
     self.scientificTuningButton = scientificTuningButton
     self.tuningCents = tuningCents
@@ -52,6 +86,7 @@ public final class TuningComponent: NSObject {
     self.isActive = isActive
     super.init()
 
+    transposeStepper.addClosure(transposeChanged)
     standardTuningButton.addClosure(useStandardTuning)
     scientificTuningButton.addClosure(useScientificTuning)
 
@@ -61,7 +96,7 @@ public final class TuningComponent: NSObject {
     tuningCents.inputAssistantItem.leadingBarButtonGroups = []
     tuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
 
-    updateState(cents: tuning)
+    setTuningCents(tuning)
 
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(
@@ -75,12 +110,19 @@ public final class TuningComponent: NSObject {
 
 extension TuningComponent {
 
-  public func updateState(cents: Float) {
+  public func updateState(cents: Float, transpose: Int) {
+    transposeStepper.value = Double(transpose)
     setTuningCents(cents)
   }
 }
 
 extension TuningComponent {
+
+  private func transposeChanged(_ stepper: Any) {
+    if let stepper = stepper as? UIStepper {
+      setTuningCents(Float(abs(stepper.value)) * 100)
+    }
+  }
 
   private func toggledTuningEnabled(_ switch: Any) { setTuningCents(tuningCentsValue) }
 
@@ -96,6 +138,21 @@ extension TuningComponent {
 
   private func setTuningCents(_ value: Float) {
     tuningCentsValue = min(max(value, -2400.0), 2400.0)
+
+    let transposeCents = (tuningCentsValue / 100).rounded() * 100.0
+    if Float(transposeCents) == tuningCentsValue {
+      if transposeCents == 0 {
+        transposeValue.text = "None"
+      } else if transposeStepper.value < 0 {
+        transposeValue.text = Self.transposeFlatLookup[Int(transposeCents)]
+      } else {
+        transposeValue.text = Self.transposeSharpLookup[Int(transposeCents)]
+      }
+    } else {
+      transposeValue.text = "—"
+      transposeStepper.value = 0.0
+    }
+
     tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
     tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: centsToFrequency(tuningCentsValue)))
     if isActive {

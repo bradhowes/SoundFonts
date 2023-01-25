@@ -93,6 +93,8 @@ final public class FavoriteEditor: UIViewController {
   @IBOutlet private weak var bankIndex: UILabel!
   @IBOutlet private weak var keyLabel: UILabel!
 
+  @IBOutlet private weak var transposeValue: UILabel!
+  @IBOutlet private weak var transposeStepper: UIStepper!
   @IBOutlet private weak var standardTuningButton: UIButton!
   @IBOutlet private weak var scientificTuningButton: UIButton!
   @IBOutlet private weak var presetTuningCents: UITextField!
@@ -164,10 +166,14 @@ final public class FavoriteEditor: UIViewController {
       lowestNoteCollection.isHidden = true
     }
 
+    transposeStepper.value = Double(presetConfig.presetTranspose ?? 0)
+
     let tuningComponent = TuningComponent(
       tuning: presetConfig.presetTuning,
       view: view,
       scrollView: scrollView,
+      transposeValue: transposeValue,
+      transposeStepper: transposeStepper,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: presetTuningCents,
@@ -175,7 +181,7 @@ final public class FavoriteEditor: UIViewController {
       isActive: config.state.isActive)
 
     self.tuningComponent = tuningComponent
-    tuningComponent.updateState(cents: presetConfig.presetTuning)
+    tuningComponent.updateState(cents: presetConfig.presetTuning, transpose: presetConfig.presetTranspose ?? 0)
 
     setPitchBendRange(presetConfig.pitchBendRange ?? settings.pitchBendRange)
     setGainValue(presetConfig.gain)
@@ -318,6 +324,7 @@ extension FavoriteEditor {
     presetConfig.pan = self.presetConfig.pan
 
     presetConfig.presetTuning = tuningComponent.tuning
+    presetConfig.presetTranspose = Int(transposeStepper.value)
     presetConfig.notes = notesTextView.text
 
     let response: Response =

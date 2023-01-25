@@ -39,6 +39,9 @@ public struct PresetConfig: Codable {
   /// Current preset tuning value (cents)
   public var presetTuning: Float = 0.0
 
+  /// Current transpose stepper value (-11 - +11)
+  public var presetTranspose: Int?
+
   /// User notes about the preset
   public var notes: String?
 

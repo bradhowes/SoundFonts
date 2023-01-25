@@ -23,6 +23,8 @@ public extension SettingKeys {
   static let pitchBendRangeEnabled = SettingKey("pitchBendRangeEnabled", false)
   /// The number of semitones a max pitch bend will cause in a playing note
   static let pitchBendRange = SettingKey("pitchBendRange", 2)
+  /// The global transpose value in 100 cent multiples
+  static let globalTranspose = SettingKey("globalTranspose", 0)
   /// When true, global tuning is active
   static let globalTuningEnabled = SettingKey("globalTuningEnabled", false)
   /// The global tuning setting that is in effect

@@ -285,6 +285,11 @@ public extension Settings {
     get { self[.globalTuning] }
     set { self[.globalTuning] = newValue }
   }
+  /// The global transpose that is in effect (-1100 - +1100)
+  var globalTranspose: Int {
+    get { self[.globalTranspose] }
+    set { self[.globalTranspose] = newValue }
+  }
   /// When true, global tuning is active
   var globalTuningEnabled: Bool {
     get { self[.globalTuningEnabled] }
