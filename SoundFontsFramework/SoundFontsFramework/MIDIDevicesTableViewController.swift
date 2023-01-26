@@ -11,9 +11,11 @@ final class MIDIDevicesTableViewController: UITableViewController {
   private var devices = [MIDI.DeviceState]() { didSet { self.tableView.reloadData() } }
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var channelsObserver: NSKeyValueObservation?
+  private var activeChannel: Int = -1
 
-  func setDevices(_ devices: [MIDI.DeviceState]) {
+  func configure(_ devices: [MIDI.DeviceState], _ activeChannel: Int) {
     self.devices = devices
+    self.activeChannel = activeChannel
   }
 }
 
@@ -79,20 +81,25 @@ extension MIDIDevicesTableViewController {
 
 extension MIDIDevicesTableViewController: MIDIMonitor {
 
+  private func accepting(channel: UInt8) -> Bool {
+    activeChannel == -1 || activeChannel == channel
+  }
+
   public func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
+    let accepted = accepting(channel: channel)
     DispatchQueue.main.async {
       for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
         if let cell = self.tableView.cellForRow(at: indexPath) {
           let layer = cell.contentView.layer
-          Self.midiSeenLayerChange(layer)
+          Self.midiSeenLayerChange(layer, accepted)
         }
       }
     }
   }
 
-  public static func midiSeenLayerChange(_ layer: CALayer) {
-    let color = UIColor.systemOrange.cgColor
+  public static func midiSeenLayerChange(_ layer: CALayer, _ accepted: Bool) {
+    let color = accepted ? UIColor.systemGreen.cgColor : UIColor.systemOrange.cgColor
     let animator = CABasicAnimation(keyPath: "backgroundColor")
     animator.fromValue = color
     animator.toValue = UIColor.clear.cgColor

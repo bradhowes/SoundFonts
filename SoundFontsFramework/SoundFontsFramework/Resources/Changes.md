@@ -9,8 +9,14 @@ to stop processing the file
 
 # 2.27.0
 
-* New transpose control in Settings editor (global) and per-preset in the Preset editor
-* Show "Changes" screen when starting new version. 
+* The app now honors the MIDI channel for all MIDI traffic. MIDI activity while viewing the Settings panel will cause 
+  GREEN flashing over the MIDI devices label
+  if incoming MIDI traffic is on the configured MIDI channel; it will flash YELLOW otherwise, meaning that MIDI messages
+  will be ignored by the synthesizer.
+
+* New transpose control in Settings panel (global) and per-preset in the Preset editor (swipe right and tap pencil to 
+  view).
+* Show "Changes" screen when starting new version.
 
 # 2.26.1
 

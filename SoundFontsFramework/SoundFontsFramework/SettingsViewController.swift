@@ -309,19 +309,12 @@ extension SettingsViewController {
     settings.slideKeyboard = self.slideKeyboard.isOn
   }
 
-  @IBAction func showMIDIConnections(_ sender: UIButton) {
-    print("showMIDIConnections")
-  }
-
   @IBAction func midiChannelStep(_ sender: UIStepper) {
     updateMidiChannel()
   }
 
   @IBAction func pitchBendStep(_ sender: UIStepper) {
     updatePitchBendRange()
-  }
-
-  @IBAction func transposeStep(_ sender: UIStepper) {
   }
 
   @IBAction func connectBluetoothMIDIDevices(_ sender: Any) {
@@ -484,7 +477,7 @@ extension SettingsViewController: SegueHandler {
       guard let destination = segue.destination as? MIDIDevicesTableViewController else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
-      destination.setDevices(MIDI.sharedInstance.devices)
+      destination.configure(MIDI.sharedInstance.devices, settings.midiChannel)
     }
   }
 }
@@ -492,8 +485,9 @@ extension SettingsViewController: SegueHandler {
 extension SettingsViewController: MIDIMonitor {
 
   public func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
+    let accepted = settings.midiChannel == -1 || settings.midiChannel == channel
     DispatchQueue.main.async {
-      MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer)
+      MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
     }
   }
 }

@@ -171,7 +171,6 @@
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="showMIDIConnections:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="Lt0-Me-BQI"/>
                                                                     <segue destination="MVZ-xa-FDo" kind="show" identifier="midiDevicesTableView" id="m3n-Vx-W4K"/>
                                                                 </connections>
                                                             </button>
@@ -267,9 +266,6 @@
                                                                     <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" continuous="NO" autorepeat="NO" wraps="YES" minimumValue="-11" maximumValue="11" translatesAutoresizingMaskIntoConstraints="NO" id="bxo-ag-OCZ">
                                                                         <rect key="frame" x="280" y="0.0" width="94" height="32"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
-                                                                        <connections>
-                                                                            <action selector="transposeStep:" destination="Eyw-X4-KFI" eventType="valueChanged" id="zcl-xv-skP"/>
-                                                                        </connections>
                                                                     </stepper>
                                                                 </subviews>
                                                             </stackView>

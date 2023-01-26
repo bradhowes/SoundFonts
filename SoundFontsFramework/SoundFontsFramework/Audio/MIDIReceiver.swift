@@ -45,12 +45,18 @@ public final class MIDIReceiver {
 
 extension MIDIReceiver: AnyMIDIReceiver {
 
+  private func accepting(_ channel: UInt8) -> Bool {
+    self.channel == -1 || self.channel == channel
+  }
+
   public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.stopNote(note: note, velocity: velocity, channel: channel)
     keyboard?.noteIsOff(note: note)
   }
 
   public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.startNote(note: note, velocity: velocity, channel: channel)
     keyboard?.noteIsOn(note: note)
   }
@@ -60,26 +66,32 @@ extension MIDIReceiver: AnyMIDIReceiver {
   }
 
   public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.setNotePressure(note: note, pressure: pressure, channel: channel)
   }
 
   public func setPressure(pressure: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.setPressure(pressure: pressure, channel: channel)
   }
 
   public func setPitchBend(value: UInt16, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.setPitchBend(value: value, channel: channel)
   }
 
   public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.setController(controller: controller, value: value, channel: channel)
   }
 
   public func changeProgram(program: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.changeProgram(program: program, channel: channel)
   }
 
   public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {
+    guard accepting(channel) else { return }
     synth.changeProgram(program: program, bankMSB: bankMSB, bankLSB: bankLSB, channel: channel)
   }
 
