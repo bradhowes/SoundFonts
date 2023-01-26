@@ -5,7 +5,7 @@ public final class TutorialViewController: UIViewController {
   private static let log = Logging.logger("TutorialViewController")
   private var log: OSLog { Self.log }
 
-  private static let changesDisabled = true
+  private static let changesDisabled = false
 
   // Temporary holding area for changes until the segue for the TutorialContentPagerViewController fires
   private var stagedChanges: [String]?

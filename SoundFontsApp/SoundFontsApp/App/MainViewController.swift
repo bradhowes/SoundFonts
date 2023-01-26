@@ -38,16 +38,21 @@ final class MainViewController: UIViewController {
   /// If true, do not show the tutorial pages for the first time the application starts. This is used by the UI tests.
   /// It is set by `AppDelegate` to true when "-ui_testing" is present on the command line.
   var skipTutorial = false
+  /// If true, always show the "changes" screen
+  var alwaysShowChanges = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
     UIApplication.shared.appDelegate.setMainViewController(self)
     setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+    observers.append(NotificationCenter.default.addObserver(forName: .showChanges, object: nil,
+                                                            queue: nil) { [weak self] _ in
+      self?.showChanges(true)
+    })
     observers.append(NotificationCenter.default.addObserver(forName: .showTutorial, object: nil,
                                                             queue: nil) { [weak self] _ in
       self?.showTutorial()
     })
-
     observers.append(NotificationCenter.default.addObserver(forName: AVAudioSession.mediaServicesWereResetNotification,
                                                             object: nil, queue: nil) { [weak self] _ in
       self?.recreateSynth()
@@ -56,9 +61,14 @@ final class MainViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if !skipTutorial && !settings.showedTutorial {
-      showTutorial()
-      settings.showedTutorial = true
+
+    if !skipTutorial {
+      if !settings.showedTutorial {
+        showTutorial()
+        settings.showedTutorial = true
+      } else {
+        showChanges()
+      }
     }
 
 #if TEST_MEDIA_SERVICES_RESTART // See Development.xcconfig
@@ -82,14 +92,15 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController {
-
+  
   /**
    Show the changes screen if there are changes to be shown.
    */
-  func showChanges() {
-    let currentVersion = Bundle.main.releaseVersionNumber
-    if settings.showedChanges != currentVersion {
-      let changes = ChangesCompiler.compile(since: settings.showedChanges)
+  func showChanges(_ force: Bool = false) {
+    let currentVersion = alwaysShowChanges ? "" : Bundle.main.releaseVersionNumber
+    
+    if settings.showedChanges != currentVersion || alwaysShowChanges || force {
+      let changes = ChangesCompiler.compile()
       settings.showedChanges = currentVersion
       if let viewController = TutorialViewController.instantiateChanges(changes) {
         present(viewController, animated: true, completion: nil)

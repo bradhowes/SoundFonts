@@ -78,6 +78,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
   @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
   @IBOutlet private weak var review: UIButton!
+  @IBOutlet private weak var showChangeslButton: UIButton!
   @IBOutlet private weak var showTutorialButton: UIButton!
   @IBOutlet private weak var contactButton: UIButton!
 
@@ -451,6 +452,11 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
     didFinishWith result: MFMailComposeResult, error: Error?
   ) {
     controller.dismiss(animated: true)
+  }
+
+  @IBAction private func showChanges(_ sender: Any) {
+    dismiss(animated: true)
+    NotificationCenter.default.post(name: .showChanges, object: nil)
   }
 
   @IBAction private func showTutorial(_ sender: Any) {

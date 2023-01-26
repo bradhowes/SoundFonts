@@ -4,8 +4,8 @@ import os
 public struct ChangesCompiler {
   private static let log = Logging.logger("ChangesCompiler")
 
-  public static func compile(since: String, maxItems: Int = 6) -> [String] {
-    os_log(.debug, log: log, "compile changes since: %{public}s", since)
+  public static func compile() -> [String] {
+    os_log(.debug, log: log, "compile changes")
 
     var entries = [String]()
     let bundle = Bundle(for: TutorialViewController.self)
@@ -21,25 +21,17 @@ public struct ChangesCompiler {
       return entries
     }
 
-    let sinceVersion = since.versionComponents
     for line in data.components(separatedBy: .newlines) {
       if line.hasPrefix("# ") {
         let version = String(line[line.index(line.startIndex, offsetBy: 2)...])
           .trimmingCharacters(in: .whitespaces)
         os_log(.debug, log: log, "found version line - '%{public}s'", version)
-        if version.versionComponents <= sinceVersion {
-          os_log(.debug, log: log, "version <= since")
-          break
-        }
+        entries.append("#" + version)
       } else if line.hasPrefix("* ") {
         let entry = String(line[line.index(line.startIndex, offsetBy: 2)...])
           .trimmingCharacters(in: .whitespaces)
         os_log(.debug, log: log, "entry: '%{public}s'", entry)
         entries.append(entry)
-        if entries.count >= maxItems {
-          os_log(.debug, log: log, "max items reached")
-          break
-        }
       } else {
         os_log(.debug, log: log, "skipping: '%{public}s'", line)
       }
@@ -50,10 +42,14 @@ public struct ChangesCompiler {
   }
 
   static let bullet = "•"
+  static let versionFont = UIFont.preferredFont(forTextStyle: .headline)
   static let font = UIFont.preferredFont(forTextStyle: .title3)
 
   public static func views(_ entries: [String]) -> [UIView] {
     return entries.map { entry in
+      if entry.starts(with: "#") {
+        return versionView(String(entry.dropFirst(1)))
+      }
       let stack = UIStackView(arrangedSubviews: [bulletView(), entryView(entry)])
       stack.axis = .horizontal
       stack.spacing = 8
@@ -62,6 +58,14 @@ public struct ChangesCompiler {
       stack.translatesAutoresizingMaskIntoConstraints = false
       return stack
     }
+  }
+
+  static func versionView(_ version: String) -> UIView {
+    let versionView = UILabel()
+    versionView.text = version
+    versionView.textColor = .systemOrange
+    versionView.font = versionFont
+    return versionView
   }
 
   static func bulletView() -> UIView {

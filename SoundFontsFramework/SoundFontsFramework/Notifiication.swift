@@ -37,6 +37,8 @@ extension Notification.Name {
   public static let synthStartFailure = Notification.Name("synthStartFailure")
   /// Notification that app is resigning active state
   public static let appResigningActive = Notification.Name("appResigningActive")
+  /// Notification to show the changes screen
+  public static let showChanges = Notification.Name("showChanges")
   /// Notification to show the tutorial screen
   public static let showTutorial = Notification.Name("showTutorial")
 }

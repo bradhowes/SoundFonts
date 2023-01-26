@@ -143,6 +143,7 @@ extension TuningComponent {
     if Float(transposeCents) == tuningCentsValue {
       if transposeCents == 0 {
         transposeValue.text = "None"
+        transposeStepper.value = 0.0
       } else if transposeStepper.value < 0 {
         transposeValue.text = Self.transposeFlatLookup[Int(transposeCents)]
       } else {
@@ -150,7 +151,6 @@ extension TuningComponent {
       }
     } else {
       transposeValue.text = "—"
-      transposeStepper.value = 0.0
     }
 
     tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
