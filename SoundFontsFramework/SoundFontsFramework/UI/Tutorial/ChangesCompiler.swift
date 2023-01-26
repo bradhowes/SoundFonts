@@ -32,6 +32,8 @@ public struct ChangesCompiler {
           .trimmingCharacters(in: .whitespaces)
         os_log(.debug, log: log, "entry: '%{public}s'", entry)
         entries.append(entry)
+      } else if line.hasPrefix(" ") && !entries.isEmpty {
+        entries[entries.count - 1] = entries.last! + " " + line.trimmingCharacters(in: .whitespaces)
       } else {
         os_log(.debug, log: log, "skipping: '%{public}s'", line)
       }
