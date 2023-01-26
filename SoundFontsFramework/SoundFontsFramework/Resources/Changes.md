@@ -10,6 +10,7 @@ to stop processing the file
 # 2.27.0
 
 * New transpose control in Settings editor (global) and per-preset in the Preset editor
+* Show "Changes" screen when starting new version. 
 
 # 2.26.1
 
