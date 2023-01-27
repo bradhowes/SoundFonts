@@ -257,6 +257,7 @@
 		BDFA990428106FC70069A46F /* SF2EngineLoadablePresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */; };
 		BDFA990628107BA30069A46F /* PresetChangeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */; };
 		BDFE80082983368D00F400A7 /* MIDIActivityNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */; };
+		BDFE800A29844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -522,6 +523,7 @@
 		BDFA990328106FC70069A46F /* SF2EngineLoadablePresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SF2EngineLoadablePresetTests.swift; sourceTree = "<group>"; };
 		BDFA990528107BA30069A46F /* PresetChangeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManagerTests.swift; sourceTree = "<group>"; };
 		BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIActivityNotifier.swift; sourceTree = "<group>"; };
+		BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIIndicatorPulseAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -563,6 +565,7 @@
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
 				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
 				BD1B8CD6270C5EB400C6BF15 /* MIDIDevicesTableViewController.swift */,
+				BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */,
 				BD88BCB62419952700399DE5 /* Notifiication.swift */,
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
@@ -1275,6 +1278,7 @@
 				BD074C8D23CDAF51001987E9 /* AnyKeyboard.swift in Sources */,
 				BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */,
 				BDEB125926207446003CE8EE /* ChangesCompiler.swift in Sources */,
+				BDFE800A29844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift in Sources */,
 				BD3D13AD27973608009FED96 /* TagsTableViewController.swift in Sources */,
 				BDD913F42508DEEE0068E3CE /* DispatchQueue.swift in Sources */,
 				BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */,

@@ -9,14 +9,13 @@ to stop processing the file
 
 # 2.27.0
 
-* The app now honors the MIDI channel for all MIDI traffic. MIDI activity while viewing the Settings panel will cause 
-  GREEN flashing over the MIDI devices label
-  if incoming MIDI traffic is on the configured MIDI channel; it will flash YELLOW otherwise, meaning that MIDI messages
-  will be ignored by the synthesizer.
-
+* The app now honors the MIDI channel. A MIDI activity indicator in the info bar above the
+  keyboard blinks BLUE when MIDI affects the synth and ORANGE if not. There is also an indicator 
+  in the Settings panel.
 * New transpose control in Settings panel (global) and per-preset in the Preset editor (swipe right and tap pencil to 
   view).
-* Show "Changes" screen when starting new version.
+* Show "Changes" screen when starting new version. You can always bring it back up via a button at the bottom of the
+  Settings panel.
 
 # 2.26.1
 

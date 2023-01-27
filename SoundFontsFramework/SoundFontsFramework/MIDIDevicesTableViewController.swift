@@ -95,9 +95,9 @@ extension MIDIDevicesTableViewController {
   }
 
   public static func midiSeenLayerChange(_ layer: CALayer, _ accepted: Bool) {
-    let color = accepted ? UIColor.systemGreen.cgColor : UIColor.systemOrange.cgColor
+    let color = accepted ? UIColor.systemTeal : UIColor.systemOrange
     let animator = CABasicAnimation(keyPath: "backgroundColor")
-    animator.fromValue = color
+    animator.fromValue = color.cgColor
     animator.toValue = UIColor.clear.cgColor
     layer.add(animator, forKey: "MIDI Seen")
   }

@@ -65,12 +65,12 @@
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TQR-5L-F3z" userLabel="MIDI">
-                                        <rect key="frame" x="4" y="16" width="8" height="8"/>
+                                    <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TQR-5L-F3z" userLabel="MIDI">
+                                        <rect key="frame" x="0.0" y="5" width="30" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="8" id="S73-bJ-WVL"/>
-                                            <constraint firstAttribute="width" constant="8" id="TCa-We-TcC"/>
+                                            <constraint firstAttribute="height" constant="30" id="S73-bJ-WVL"/>
+                                            <constraint firstAttribute="width" constant="30" id="TCa-We-TcC"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IXh-d1-UGz" userLabel="Tuning">
@@ -104,7 +104,7 @@
                                     <constraint firstItem="bwl-He-nQi" firstAttribute="top" secondItem="JeZ-VG-nmd" secondAttribute="top" id="NXe-3x-Xt0"/>
                                     <constraint firstAttribute="trailing" secondItem="L4b-eK-8gI" secondAttribute="trailing" constant="8" id="QKg-rW-e9z"/>
                                     <constraint firstItem="bwl-He-nQi" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" id="Y1K-Uv-9qV"/>
-                                    <constraint firstItem="TQR-5L-F3z" firstAttribute="leading" secondItem="cFc-aG-7R9" secondAttribute="trailing" constant="8" id="ZIf-Sn-X2n"/>
+                                    <constraint firstItem="TQR-5L-F3z" firstAttribute="leading" secondItem="cFc-aG-7R9" secondAttribute="trailing" constant="4" id="ZIf-Sn-X2n"/>
                                     <constraint firstAttribute="bottom" secondItem="L4b-eK-8gI" secondAttribute="bottom" id="cGe-PD-FB7"/>
                                     <constraint firstAttribute="bottom" secondItem="bwl-He-nQi" secondAttribute="bottom" id="hCN-wY-QWu"/>
                                     <constraint firstItem="cFc-aG-7R9" firstAttribute="centerX" secondItem="IXh-d1-UGz" secondAttribute="centerX" id="jZ5-OZ-Ccf"/>

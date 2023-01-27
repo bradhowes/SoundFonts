@@ -48,6 +48,7 @@ public final class InfoBarController: UIViewController {
   private var showingMoreButtons = false
   private var tuningChangedNotifier: NotificationObserver?
   private var presetConfigChangedNotifier: NotificationObserver?
+  private var midiIndicatorAnimator: MIDIIndicatorPulseAnimation?
   private var monitorToken: NotificationObserver?
 
   public override func viewDidLoad() {
@@ -73,7 +74,9 @@ public final class InfoBarController: UIViewController {
     addButtonLongPressGesture.minimumPressDuration = 0.5
     addSoundFont.addGestureRecognizer(addButtonLongPressGesture)
 
-    midiIndicator.layer.cornerRadius = 4
+    let animator = MIDIIndicatorPulseAnimation()
+    midiIndicatorAnimator = animator
+    midiIndicator.layer.insertSublayer(animator, below: midiIndicator.layer)
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +96,13 @@ public final class InfoBarController: UIViewController {
         self?.updateSlidingKeyboardState()
       }
     )
+  }
+
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    guard let animator = midiIndicatorAnimator else { return }
+    animator.bounds = midiIndicator.layer.bounds
+    animator.position = CGPoint(x: midiIndicator.bounds.midX, y: midiIndicator.bounds.midY)
   }
 
   /**
@@ -475,16 +485,8 @@ extension InfoBarController {
   }
 
   private func updateMIDIIndicator(accepted: Bool) {
-    let color = accepted ? UIColor.systemGreen : UIColor.systemOrange
-    let view = self.midiIndicator
-    view?.backgroundColor = color
-    view?.alpha = 1.0
-    UIView.animate(
-      withDuration: 1.5,
-      animations: {
-        view?.alpha = 0
-        view?.backgroundColor = .clear
-      }
-    )
+    let color = accepted ? UIColor.systemTeal : UIColor.systemOrange
+    midiIndicatorAnimator?.start(radius: midiIndicator.frame.height / 2, color: color, duration: 0.5,
+                                 repetitions: 2.0)
   }
 }
