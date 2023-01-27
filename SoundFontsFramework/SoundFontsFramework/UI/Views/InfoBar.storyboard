@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +17,7 @@
         <!--Info Bar-->
         <scene sceneID="62U-h3-DvH">
             <objects>
-                <viewController storyboardIdentifier="InfoBarController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="YeB-KN-4f1" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoBarController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YeB-KN-4f1" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utY-mU-BUQ" userLabel="InfoBar">
                         <rect key="frame" x="0.0" y="0.0" width="464" height="40"/>
                         <subviews>
@@ -65,6 +65,14 @@
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TQR-5L-F3z" userLabel="MIDI">
+                                        <rect key="frame" x="4" y="16" width="8" height="8"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="8" id="S73-bJ-WVL"/>
+                                            <constraint firstAttribute="width" constant="8" id="TCa-We-TcC"/>
+                                        </constraints>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IXh-d1-UGz" userLabel="Tuning">
                                         <rect key="frame" x="-10" y="4" width="6" height="12"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -96,11 +104,13 @@
                                     <constraint firstItem="bwl-He-nQi" firstAttribute="top" secondItem="JeZ-VG-nmd" secondAttribute="top" id="NXe-3x-Xt0"/>
                                     <constraint firstAttribute="trailing" secondItem="L4b-eK-8gI" secondAttribute="trailing" constant="8" id="QKg-rW-e9z"/>
                                     <constraint firstItem="bwl-He-nQi" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" id="Y1K-Uv-9qV"/>
+                                    <constraint firstItem="TQR-5L-F3z" firstAttribute="leading" secondItem="cFc-aG-7R9" secondAttribute="trailing" constant="8" id="ZIf-Sn-X2n"/>
                                     <constraint firstAttribute="bottom" secondItem="L4b-eK-8gI" secondAttribute="bottom" id="cGe-PD-FB7"/>
                                     <constraint firstAttribute="bottom" secondItem="bwl-He-nQi" secondAttribute="bottom" id="hCN-wY-QWu"/>
                                     <constraint firstItem="cFc-aG-7R9" firstAttribute="centerX" secondItem="IXh-d1-UGz" secondAttribute="centerX" id="jZ5-OZ-Ccf"/>
                                     <constraint firstItem="L4b-eK-8gI" firstAttribute="top" secondItem="JeZ-VG-nmd" secondAttribute="top" id="k19-HX-DJ7"/>
                                     <constraint firstItem="L4b-eK-8gI" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" id="lbN-MH-Lgi"/>
+                                    <constraint firstItem="TQR-5L-F3z" firstAttribute="centerY" secondItem="JeZ-VG-nmd" secondAttribute="centerY" id="nnj-q1-ibT"/>
                                     <constraint firstItem="j6v-JR-qvA" firstAttribute="centerX" secondItem="IXh-d1-UGz" secondAttribute="centerX" id="t4g-pO-KVo"/>
                                 </constraints>
                             </view>
@@ -259,6 +269,7 @@
                         <outlet property="gainIndicator" destination="j6v-JR-qvA" id="m3c-CO-gSK"/>
                         <outlet property="highestKey" destination="gBF-bM-n1r" id="IYm-Uz-YRq"/>
                         <outlet property="lowestKey" destination="IO0-ky-FSn" id="y9d-PN-YWc"/>
+                        <outlet property="midiIndicator" destination="TQR-5L-F3z" id="1mc-dl-E9p"/>
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
                         <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="aaC-gp-dGa"/>
                         <outlet property="panIndicator" destination="cFc-aG-7R9" id="xqB-V8-WEG"/>

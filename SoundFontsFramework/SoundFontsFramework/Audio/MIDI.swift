@@ -60,7 +60,7 @@ public final class MIDI: NSObject {
     }
   }
 
-  public weak var monitor: MIDIMonitor?
+  private let activityNotifier = MIDIActivityNotifier()
 
   /**
    Create new instance. Initializes CoreMIDI and creates an input port to receive MIDI traffic
@@ -70,6 +70,10 @@ public final class MIDI: NSObject {
     // Create client here -- doing it in initialize() does not work.
     createClient()
     DispatchQueue.global(qos: .userInitiated).async { self.initialize() }
+  }
+
+  public func addMonitor(block: @escaping (MIDIActivityNotifier.Data) -> Void) -> NotificationObserver {
+    activityNotifier.addMonitor(block: block)
   }
 
   /**
@@ -202,7 +206,7 @@ extension MIDI {
 
   private func processPackets(packetList: MIDIPacketList, uniqueId: MIDIUniqueID) {
     os_log(.debug, log: log, "processPackets - numPackets: %d uniqueId: %d", packetList.numPackets, uniqueId)
-    packetList.parse(receiver: receiver, monitor: monitor, uniqueId: uniqueId)
+    packetList.parse(receiver: receiver, monitor: activityNotifier, uniqueId: uniqueId)
   }
 }
 

@@ -12,6 +12,7 @@ final class MIDIDevicesTableViewController: UITableViewController {
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var channelsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
+  private var monitorToken: NotificationObserver?
 
   func configure(_ devices: [MIDI.DeviceState], _ activeChannel: Int) {
     self.devices = devices
@@ -37,14 +38,22 @@ extension MIDIDevicesTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    MIDI.sharedInstance.monitor = self
+    monitorToken = MIDI.sharedInstance.addMonitor { data in
+      let accepted = self.accepting(channel: data.channel)
+      for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == data.uniqueId {
+        let indexPath = IndexPath(row: row, section: 0)
+        if let cell = self.tableView.cellForRow(at: indexPath) {
+          let layer = cell.contentView.layer
+          Self.midiSeenLayerChange(layer, accepted)
+        }
+      }
+    }
   }
 
   override public func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if let monitor = MIDI.sharedInstance.monitor, monitor === self {
-      MIDI.sharedInstance.monitor = nil
-    }
+    monitorToken?.forget()
+    monitorToken = nil
   }
 }
 
@@ -79,23 +88,10 @@ extension MIDIDevicesTableViewController {
 
 // MARK: - MIDIMonitor Methods
 
-extension MIDIDevicesTableViewController: MIDIMonitor {
+extension MIDIDevicesTableViewController {
 
-  private func accepting(channel: UInt8) -> Bool {
+  private func accepting(channel: Int) -> Bool {
     activeChannel == -1 || activeChannel == channel
-  }
-
-  public func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
-    let accepted = accepting(channel: channel)
-    DispatchQueue.main.async {
-      for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == uniqueId {
-        let indexPath = IndexPath(row: row, section: 0)
-        if let cell = self.tableView.cellForRow(at: indexPath) {
-          let layer = cell.contentView.layer
-          Self.midiSeenLayerChange(layer, accepted)
-        }
-      }
-    }
   }
 
   public static func midiSeenLayerChange(_ layer: CALayer, _ accepted: Bool) {

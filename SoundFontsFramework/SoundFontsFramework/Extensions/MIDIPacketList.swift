@@ -29,7 +29,7 @@ extension MIDIPacketList: Sequence {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  public func parse(receiver: AnyMIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
+  public func parse(receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
     os_signpost(.begin, log: log, name: "parse")
     os_log(.debug, log: log, "processPackets - %d", numPackets)
     for packet in self {
@@ -263,7 +263,7 @@ extension MIDIPacket {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  func parse(receiver: AnyMIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
+  func parse(receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
     let byteCount = Int(self.length)
 
     // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big
@@ -314,10 +314,6 @@ extension MIDIPacket {
         MIDI.sharedInstance.updateChannel(uniqueId: uniqueId, channel: channel)
         os_log(.debug, log: log, "message: %d packetChannel: %d needed: %d", command.rawValue, channel, needed)
 
-        if let monitor = monitor {
-          monitor.seen(uniqueId: uniqueId, channel: channel)
-        }
-
         // Not enough bytes to continue on
         guard index + needed <= byteCount else {
           os_log(.error, log: log, "packet - not enough bytes to continue")
@@ -354,6 +350,8 @@ extension MIDIPacket {
             receiver.stopAllNotes()
           }
         }
+
+        monitor.showActivity(uniqueId: uniqueId, channel: Int(channel))
 
         index += needed
       }

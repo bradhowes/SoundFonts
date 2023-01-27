@@ -29,6 +29,8 @@ public final class InfoBarController: UIViewController {
   @IBOutlet private weak var moreButtons: UIView!
   @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
 
+  @IBOutlet private weak var midiIndicator: UIView!
+
   private let doubleTap = UITapGestureRecognizer()
   private let addButtonLongPressGesture = UILongPressGestureRecognizer()
 
@@ -46,6 +48,7 @@ public final class InfoBarController: UIViewController {
   private var showingMoreButtons = false
   private var tuningChangedNotifier: NotificationObserver?
   private var presetConfigChangedNotifier: NotificationObserver?
+  private var monitorToken: NotificationObserver?
 
   public override func viewDidLoad() {
     super .viewDidLoad()
@@ -69,10 +72,17 @@ public final class InfoBarController: UIViewController {
 
     addButtonLongPressGesture.minimumPressDuration = 0.5
     addSoundFont.addGestureRecognizer(addButtonLongPressGesture)
+
+    midiIndicator.layer.cornerRadius = 4
   }
 
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+
+    monitorToken = MIDI.sharedInstance.addMonitor { data in
+      let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == data.channel
+      self.updateMIDIIndicator(accepted: accepted)
+    }
 
     showEffects.tintColor = settings.showEffects ? .systemOrange : .systemTeal
 
@@ -462,5 +472,19 @@ extension InfoBarController {
 
   private func updateSlidingKeyboardState() {
     slidingKeyboardToggle.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
+  }
+
+  private func updateMIDIIndicator(accepted: Bool) {
+    let color = accepted ? UIColor.systemGreen : UIColor.systemOrange
+    let view = self.midiIndicator
+    view?.backgroundColor = color
+    view?.alpha = 1.0
+    UIView.animate(
+      withDuration: 1.5,
+      animations: {
+        view?.alpha = 0
+        view?.backgroundColor = .clear
+      }
+    )
   }
 }

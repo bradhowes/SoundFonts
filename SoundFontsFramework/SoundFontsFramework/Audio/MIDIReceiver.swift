@@ -32,6 +32,9 @@ public final class MIDIReceiver {
   }
 
   private func monitorMIDIChannelValue() {
+
+    // Watch for changes in the MIDI channel setting so we can continue to properly filter MIDI events after use changes
+    // it in the Settings panel.
     self.observer = settings.observe(\.midiChannel) { [weak self] _, _ in
       guard let self = self else { return }
       let value = self.settings.midiChannel

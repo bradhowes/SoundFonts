@@ -8,7 +8,8 @@ import CoreMIDI
 public protocol MIDIMonitor: AnyObject {
 
   /**
-   Notification invoked when there is an incoming MIDI message.
+   Notification invoked when there is an incoming MIDI message. NOTE: this is called on a background
+   thread.
 
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the message
    - parameter channel: the channel found in the MIDI message

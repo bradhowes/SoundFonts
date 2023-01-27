@@ -90,6 +90,7 @@ public final class SettingsViewController: UIViewController {
   public weak var infoBar: AnyInfoBar!
   public var isMainApp = true
 
+  private var monitorToken: NotificationObserver?
   private var midiConnectionsObserver: NSKeyValueObservation!
   private var tuningComponent: TuningComponent?
   private var tuningObserver: NSKeyValueObservation!
@@ -182,7 +183,11 @@ public final class SettingsViewController: UIViewController {
         self?.updateMIDIConnectionsButton()
       }
 
-      MIDI.sharedInstance.monitor = self
+      monitorToken = MIDI.sharedInstance.addMonitor { data in
+        let ourChannel = self.settings.midiChannel
+        let accepted = ourChannel == -1 || ourChannel == data.channel
+        MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
+      }
 
       midiChannelStepper.value = Double(settings.midiChannel)
       updateMidiChannel()
@@ -230,9 +235,8 @@ public final class SettingsViewController: UIViewController {
 
     self.tuningComponent = nil
     self.midiConnectionsObserver = nil
-    if let monitor = MIDI.sharedInstance.monitor, monitor === self {
-      MIDI.sharedInstance.monitor = nil
-    }
+    monitorToken?.forget()
+    monitorToken = nil
 
     os_log(.debug, log: log, "viewDidDisapper BEND")
   }
@@ -478,16 +482,6 @@ extension SettingsViewController: SegueHandler {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
       destination.configure(MIDI.sharedInstance.devices, settings.midiChannel)
-    }
-  }
-}
-
-extension SettingsViewController: MIDIMonitor {
-
-  public func seen(uniqueId: MIDIUniqueID, channel: UInt8) {
-    let accepted = settings.midiChannel == -1 || settings.midiChannel == channel
-    DispatchQueue.main.async {
-      MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
     }
   }
 }
