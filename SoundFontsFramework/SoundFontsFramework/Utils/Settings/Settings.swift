@@ -210,6 +210,11 @@ public extension Settings {
     get { self[.virtualMidiOutId] }
     set { self[.virtualMidiOutId] = newValue }
   }
+  /// If true, processing MIDI messages when app is in the background
+  var backgroundMIDIProcessingEnabled: Bool {
+    get { self[.backgroundMIDIProcessingEnabled] }
+    set { self[.backgroundMIDIProcessingEnabled] = newValue }
+  }
   /// When true, the effects panel is visible. Used to restore UI state when relaunching the app.
   var showEffects: Bool {
     get { self[.showEffects] }

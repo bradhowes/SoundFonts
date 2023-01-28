@@ -32,6 +32,7 @@ public final class SettingsViewController: UIViewController {
 
   @IBOutlet private weak var midiChannelStackView: UIStackView!
   @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
+  @IBOutlet private weak var backgroundMIDIProcessingModeStackView: UIStackView!
   @IBOutlet private weak var pitchBendStackView: UIStackView!
 
   @IBOutlet private weak var divider2: UIView!
@@ -65,6 +66,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var pitchBendRange: UILabel!
   @IBOutlet private weak var pitchBendStepper: UIStepper!
   @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
+  @IBOutlet private weak var backgroundMIDIProcessingMode: UISwitch!
   @IBOutlet private weak var copyFiles: UISwitch!
 
   @IBOutlet private weak var divider5: UIView!
@@ -100,6 +102,7 @@ public final class SettingsViewController: UIViewController {
     midiChannelStackView,
     slideKeyboardStackView,
     bluetoothMIDIConnectStackView,
+    backgroundMIDIProcessingModeStackView,
     removeSoundFontsStackView,
     restoreSoundFontsStackView,
     exportSoundFontsStackView,
@@ -191,7 +194,7 @@ public final class SettingsViewController: UIViewController {
 
       midiChannelStepper.value = Double(settings.midiChannel)
       updateMidiChannel()
-
+      backgroundMIDIProcessingMode.isOn = settings.backgroundMIDIProcessingEnabled
       slideKeyboard.isOn = settings.slideKeyboard
 
       copyFiles.isOn = settings.copyFilesWhenAdding
@@ -315,6 +318,14 @@ extension SettingsViewController {
 
   @IBAction func midiChannelStep(_ sender: UIStepper) {
     updateMidiChannel()
+  }
+
+  @IBAction func toggleBackgroundMIDIProcessingEnabled(_ sender: Any) {
+    if backgroundMIDIProcessingMode.isOn {
+      showBackgroundMIDIProcessingNotice()
+    } else {
+      settings.backgroundMIDIProcessingEnabled = false
+    }
   }
 
   @IBAction func pitchBendStep(_ sender: UIStepper) {
@@ -465,6 +476,25 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
     let count = MIDI.sharedInstance.activeConnections.count
     let suffix = count == 1 ? "device" : "devices"
     midiConnections.setTitle("\(count) \(suffix)", for: .normal)
+  }
+
+  private func showBackgroundMIDIProcessingNotice() {
+    let ac = UIAlertController(
+      title: "Enable Background MIDI Processing",
+      message: """
+          Background MIDI processing allows the synthesizer to generate sounds even when the app is not active. However,
+          doing so will increase power consumption and increase the rate of battery drain.
+          Are you sure you want to enable it?
+          """, preferredStyle: .alert)
+    ac.addAction(
+      UIAlertAction(title: "Yes", style: .default) { _ in
+        self.settings.backgroundMIDIProcessingEnabled = true
+      })
+    ac.addAction(
+      UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        self.backgroundMIDIProcessingMode.isOn = false
+      })
+    present(ac, animated: true)
   }
 }
 

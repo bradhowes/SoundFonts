@@ -81,6 +81,8 @@ public extension SettingKeys {
   static let virtualMidiInId = SettingKey("virtualMidiInId", 0)
   /// The MIDI virtual output ID (not user settable)
   static let virtualMidiOutId = SettingKey("virtualMidiOutId", 0)
+  /// Allow MIDI processing and audio generation when app is in background
+  static let backgroundMIDIProcessingEnabled = SettingKey("backgroundMIDIProcessingEnabled", false)
 
   // MARK: - Reverb settings
 

@@ -78,8 +78,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.debug, log: log, "applicationWillResignActive")
-    // components.mainViewController.stopAudio()
-    // NotificationCenter.default.post(Notification(name: .appResigningActive))
+    if !components.settings.backgroundMIDIProcessingEnabled {
+      components.mainViewController.stopAudio()
+      NotificationCenter.default.post(Notification(name: .appResigningActive))
+    }
   }
 
   /**
