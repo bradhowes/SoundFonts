@@ -7,17 +7,17 @@ import os
 public enum ActivePresetEvent: CustomStringConvertible {
 
   /**
-   Change event
+   Changed event
 
    - Parameter old: the previous active preset
    - Parameter new: the new active preset
    - Parameter playSample: if true, play a note using the new preset
    */
-  case change(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
+  case changed(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
 
   public var description: String {
     switch self {
-    case let .change(old, new, _): return "<ActivePresetEvent: change old: \(old) new: \(new)>"
+    case let .changed(old, new, _): return "<ActivePresetEvent: changed old: \(old) new: \(new)>"
     }
   }
 }
@@ -90,8 +90,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     super.init()
     os_log(.debug, log: log, "init")
 
-    soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
-    favorites.subscribe(self, notifier: favoritesChanged_BT)
+    soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
+    favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
   }
 
   /**
@@ -158,7 +158,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     active = kind
     save(kind)
 
-    notify(.change(old: old, new: kind, playSample: playSample))
+    notify(.changed(old: old, new: kind, playSample: playSample))
     os_log(.debug, log: log, "setActive END")
   }
 
@@ -245,13 +245,13 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
 extension ActivePresetManager {
 
-  private func favoritesChanged_BT(_ event: FavoritesEvent) {
+  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     if case .restored = event {
       DispatchQueue.main.async { self.updateState() }
     }
   }
 
-  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
+  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
     if case .restored = event {
       DispatchQueue.main.async { self.updateState() }
     }

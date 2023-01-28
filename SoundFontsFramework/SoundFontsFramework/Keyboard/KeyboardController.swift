@@ -109,31 +109,31 @@ extension KeyboardController: ControllerConfiguration {
     infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
     infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
 
-    router.activePresetManager.subscribe(self, notifier: presetChanged_BT)
-    router.favorites.subscribe(self, notifier: favoritesChanged_BT)
-    router.subscribe(self, notifier: routerChanged_BT)
+    router.activePresetManager.subscribe(self, notifier: presetChangedNotificationInBackground)
+    router.favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
+    router.subscribe(self, notifier: routerChangedNotificationInBackground)
 
     if let synth = router.synth {
       touchedKeys.processor = synth
     }
   }
 
-  private func routerChanged_BT(_ event: ComponentContainerEvent) {
+  private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
     if case let .synthAvailable(synth) = event {
       touchedKeys.processor = synth
     }
   }
 
-  private func presetChanged_BT(_ event: ActivePresetEvent) {
+  private func presetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     switch event {
-    case .change:
+    case .changed:
       if let presetConfig = activePresetManager.activePresetConfig {
         DispatchQueue.main.async { self.updateWith(presetConfig: presetConfig) }
       }
     }
   }
 
-  private func favoritesChanged_BT(_ event: FavoritesEvent) {
+  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     switch event {
     case let .changed(index: _, favorite: favorite):
       DispatchQueue.main.async { self.handleFavoriteChanged(favorite: favorite) }

@@ -188,8 +188,8 @@ extension EffectsController: ControllerConfiguration {
     favorites = router.favorites
     activePresetManager = router.activePresetManager
 
-    router.subscribe(self, notifier: routerChange_BT)
-    activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
+    router.subscribe(self, notifier: routerChangeNotificationInBackground)
+    activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
 
     if let synth = router.synth {
       self.synth = synth
@@ -309,7 +309,7 @@ extension EffectsController {
     updateGlobalConfig()
   }
 
-  private func routerChange_BT(_ event: ComponentContainerEvent) {
+  private func routerChangeNotificationInBackground(_ event: ComponentContainerEvent) {
     switch event {
     case .synthAvailable(let synth):
       DispatchQueue.main.async {
@@ -319,8 +319,8 @@ extension EffectsController {
     }
   }
 
-  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
-    guard case .change = event else { return }
+  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+    guard case .changed = event else { return }
     DispatchQueue.main.async { self.updateState() }
   }
 

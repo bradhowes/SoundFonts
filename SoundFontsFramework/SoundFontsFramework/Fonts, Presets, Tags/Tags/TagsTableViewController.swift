@@ -48,10 +48,10 @@ extension TagsTableViewController: ControllerConfiguration {
 
   func establishConnections(_ router: ComponentContainer) {
     tags = router.tags
-    tags.subscribe(self, notifier: tagsRestored_BT)
+    tags.subscribe(self, notifier: tagsRestoredNotificationInBackground)
 
     activeTagManager = router.activeTagManager
-    activeTagManager.subscribe(self, notifier: activeTagChanged_BT)
+    activeTagManager.subscribe(self, notifier: activeTagChangedNotificationInBackground)
 
     refresh()
   }
@@ -88,11 +88,11 @@ extension TagsTableViewController {
 
 extension TagsTableViewController {
 
-  private func tagsRestored_BT(_ event: TagsEvent) {
+  private func tagsRestoredNotificationInBackground(_ event: TagsEvent) {
     serialQueue.async { self.refresh() }
   }
 
-  private func activeTagChanged_BT(_ event: ActiveTagEvent) {
+  private func activeTagChangedNotificationInBackground(_ event: ActiveTagEvent) {
     guard tags.isRestored else { return }
     if case let .change(oldTag, newTag) = event {
       serialQueue.async { self.handleTagChange(oldTag, newTag) }

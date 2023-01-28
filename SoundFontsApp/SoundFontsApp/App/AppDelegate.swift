@@ -78,8 +78,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.debug, log: log, "applicationWillResignActive")
-    components.mainViewController.stopAudio()
-    NotificationCenter.default.post(Notification(name: .appResigningActive))
+    // components.mainViewController.stopAudio()
+    // NotificationCenter.default.post(Notification(name: .appResigningActive))
   }
 
   /**
@@ -108,8 +108,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationDidBecomeActive(_ application: UIApplication) {
     os_log(.debug, log: log, "applicationDidBecomeActive")
     UIApplication.shared.isIdleTimerDisabled = true
-    components.mainViewController.startAudio()
-
+    components.mainViewController.startAudioSession()
   }
 
   /**

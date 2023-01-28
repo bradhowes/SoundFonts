@@ -68,12 +68,11 @@ extension FontsTableViewController: ControllerConfiguration {
     settings = router.settings
     fontSwipeActionGenerator = router.fontSwipeActionGenerator
 
-    soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
-    selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChanged_BT)
-    activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
-    activeTagManager.subscribe(self, notifier: activeTagChanged_BT)
-
-    tags!.subscribe(self, notifier: tagsChanged_BT)
+    soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
+    selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChangedNotificationInBackground)
+    activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
+    activeTagManager.subscribe(self, notifier: activeTagChangedNotificationInBackground)
+    tags!.subscribe(self, notifier: tagsChangedNotificationInBackground)
 
     router.infoBar.addEventClosure(.editSoundFonts) { sender in
       if let sender = sender as? UILongPressGestureRecognizer {
@@ -149,8 +148,8 @@ extension FontsTableViewController {
 
 extension FontsTableViewController {
 
-  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
-    os_log(.debug, log: log, "soundFontsChanged BEGIN - %{public}s", event.description)
+  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
+    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground BEGIN - %{public}s", event.description)
     switch event {
     case let .added(new, soundFont):
       serialQueue.async { self.addSoundFont(index: new, soundFont: soundFont) }
@@ -165,31 +164,31 @@ extension FontsTableViewController {
     }
   }
 
-  private func selectedSoundFontChanged_BT(_ event: SelectedSoundFontEvent) {
-    os_log(.debug, log: log, "selectedSoundFontChanged BEGIN - %{public}s", event.description)
+  private func selectedSoundFontChangedNotificationInBackground(_ event: SelectedSoundFontEvent) {
+    os_log(.debug, log: log, "selectedSoundFontChangedNotificationInBackground BEGIN - %{public}s", event.description)
     if case let .changed(old: old, new: new) = event {
       serialQueue.async { self.handleFontChanged(old: old, new: new) }
     }
   }
 
-  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
-    os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
+  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+    os_log(.debug, log: log, "activePresetChangedNotificationInBackground BEGIN - %{public}s", event.description)
     switch event {
-    case let .change(old: old, new: new, playSample: _):
+    case let .changed(old: old, new: new, playSample: _):
       serialQueue.async { self.handlePresetChanged(old: old, new: new) }
     }
   }
 
-  private func activeTagChanged_BT(_ event: ActiveTagEvent) {
-    os_log(.debug, log: log, "activeTagChanged BEGIN - %{public}s", event.description)
+  private func activeTagChangedNotificationInBackground(_ event: ActiveTagEvent) {
+    os_log(.debug, log: log, "activeTagChangedNotificationInBackground BEGIN - %{public}s", event.description)
     switch event {
     case let .change(old: old, new: new):
       serialQueue.async { self.handleActiveTagChanged(old: old, new: new) }
     }
   }
 
-  private func tagsChanged_BT(_ event: TagsEvent) {
-    os_log(.debug, log: log, "tagsChanged BEGIN - %{public}s", event.description)
+  private func tagsChangedNotificationInBackground(_ event: TagsEvent) {
+    os_log(.debug, log: log, "tagsChangedNotificationInBackground BEGIN - %{public}s", event.description)
     if case let .removed(_, tag) = event {
       serialQueue.async { self.handleTagRemoved(tag) }
     }

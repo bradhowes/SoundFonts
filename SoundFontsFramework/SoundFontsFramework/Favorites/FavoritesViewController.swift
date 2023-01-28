@@ -85,19 +85,19 @@ extension FavoritesViewController: ControllerConfiguration {
     tags = router.tags
     settings = router.settings
 
-    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
-    favoritesSubscription = favorites.subscribe(self, notifier: favoritesChanged_BT)
-    soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
-    tagsSubscription = tags.subscribe(self, notifier: tagsChanged_BT)
+    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
+    favoritesSubscription = favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
+    soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
+    tagsSubscription = tags.subscribe(self, notifier: tagsChangedNotificationInBackground)
 
     checkIfRestored()
   }
 
-  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
+  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     guard favorites.isRestored && soundFonts.isRestored else { return }
     switch event {
-    case let .change(old: old, new: new, playSample: _):
+    case let .changed(old: old, new: new, playSample: _):
       if case let .favorite(oldFaveKey, _) = old, let favorite = favorites.getBy(key: oldFaveKey) {
         os_log(.debug, log: log, "updating previous favorite cell")
         serialQueue.async { self.updateCell(with: favorite) }
@@ -109,7 +109,7 @@ extension FavoritesViewController: ControllerConfiguration {
     }
   }
 
-  private func favoritesChanged_BT(_ event: FavoritesEvent) {
+  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     os_log(.debug, log: log, "favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
@@ -148,14 +148,14 @@ extension FavoritesViewController: ControllerConfiguration {
     favoritesView.reloadData()
   }
 
-  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
+  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
     switch event {
     case .restored: serialQueue.async { self.checkIfRestored() }
     default: break
     }
   }
 
-  private func tagsChanged_BT(_ event: TagsEvent) {
+  private func tagsChangedNotificationInBackground(_ event: TagsEvent) {
     switch event {
     case .restored: serialQueue.async { self.checkIfRestored() }
     default: break

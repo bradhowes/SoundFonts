@@ -164,8 +164,8 @@ extension InfoBarController: ControllerConfiguration {
     showEffects.isEnabled = router.isMainApp
     showEffects.isHidden = !router.isMainApp
 
-    activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
-    router.favorites.subscribe(self, notifier: favoritesChanged_BT)
+    activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
+    router.favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
   }
 }
 
@@ -369,19 +369,13 @@ extension InfoBarController {
     }
   }
 
-  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
-    if case .restored = event {
+  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+    if case .changed = event {
       DispatchQueue.main.async { self.showActivePreset() }
     }
   }
 
-  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
-    if case .change = event {
-      DispatchQueue.main.async { self.showActivePreset() }
-    }
-  }
-
-  private func favoritesChanged_BT(_ event: FavoritesEvent) {
+  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     DispatchQueue.main.async { self.showActivePreset() }
   }
 

@@ -47,7 +47,7 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
     self.tags = tags
     self.settings = settings
     super.init()
-    tags.subscribe(self, notifier: tagsRestored_BT)
+    tags.subscribe(self, notifier: tagsRestoredNotificationInBackground)
   }
 
   /**
@@ -81,7 +81,7 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
 
 extension ActiveTagManager {
 
-  private func tagsRestored_BT(_ event: TagsEvent) {
+  private func tagsRestoredNotificationInBackground(_ event: TagsEvent) {
     self.restoreActive()
   }
 

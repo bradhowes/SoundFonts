@@ -91,7 +91,7 @@ extension SoundFontsAU {
   private func activePresetChanged(_ event: ActivePresetEvent) {
     os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     switch event {
-    case .change:
+    case .changed:
       self.currentPreset = nil
       useActivePreset()
     }

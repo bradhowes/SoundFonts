@@ -82,10 +82,10 @@ final class PresetsTableViewManager: NSObject {
 
     os_log(.debug, log: log, "init")
 
-    selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChanged_BT)
-    activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
-    favorites.subscribe(self, notifier: favoritesChanged_BT)
-    soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
+    selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChangedNotificationInBackground)
+    activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
+    favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
+    soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
   }
 }
 
@@ -241,46 +241,46 @@ extension PresetsTableViewManager {
 
 extension PresetsTableViewManager {
 
-  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
+  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     switch event {
-    case let .change(old: old, new: new, playSample: _):
+    case let .changed(old: old, new: new, playSample: _):
       serialQueue.async { self.handleActivePresetChanged(old: old, new: new) }
     }
   }
 
-  private func selectedSoundFontChanged_BT(_ event: SelectedSoundFontEvent) {
+  private func selectedSoundFontChangedNotificationInBackground(_ event: SelectedSoundFontEvent) {
     guard case let .changed(old, new) = event else { return }
-    os_log(.debug, log: log, "selectedSoundFontChange_BT - old: '%{public}s' new: '%{public}s'",
+    os_log(.debug, log: log, "selectedSoundFontChangeNotificationInBackground - old: '%{public}s' new: '%{public}s'",
            old.descriptionOrNil, new.descriptionOrNil)
     serialQueue.async { self.handleSelectedSoundFontChanged(old: old, new: new) }
   }
 
-  private func favoritesChanged_BT(_ event: FavoritesEvent) {
-    os_log(.debug, log: log, "favoritesChange_BT BEGIN")
+  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
+    os_log(.debug, log: log, "favoritesChangeNotificationInBackground BEGIN")
     switch event {
     case .restored:
-      os_log(.debug, log: log, "favoritesChange_BT - restored")
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - restored")
       serialQueue.async { self.handleFavoritesRestored() }
 
     case let .added(_, favorite):
-      os_log(.debug, log: log, "favoritesChange_BT - added - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - added - %{public}s", favorite.key.uuidString)
 
     case let .removed(_, favorite):
-      os_log(.debug, log: log, "favoritesChange_BT - removed - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - removed - %{public}s", favorite.key.uuidString)
 
     case let .changed(_, favorite):
-      os_log(.debug, log: log, "favoritesChange_BT - changed - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - changed - %{public}s", favorite.key.uuidString)
       serialQueue.async { self.updateRow(with: favorite.key) }
 
     case .selected: break
     case .beginEdit: break
     case .removedAll: break
     }
-    os_log(.debug, log: log, "favoritesChange_BT END")
+    os_log(.debug, log: log, "favoritesChangeNotificationInBackground END")
   }
 
-  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
-    os_log(.debug, log: log, "soundFontsChanged_BT BEGIN")
+  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
+    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground BEGIN")
     switch event {
     case let .unhidPresets(font: soundFont):
       if soundFont == self.selectedSoundFont {
@@ -298,7 +298,7 @@ extension PresetsTableViewManager {
     case .moved: break
     case .removed: break
     }
-    os_log(.debug, log: log, "soundFontsChanged_BT END")
+    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground END")
   }
 
   private func slotIndex(from indexPath: IndexPath) -> PresetViewSlotIndex {
