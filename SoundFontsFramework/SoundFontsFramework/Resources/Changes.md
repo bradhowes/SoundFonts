@@ -7,6 +7,10 @@ to stop processing the file
 - because of how the processing works, always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.27.1
+
+* Rename the previous "transpose" control to more accurately describe the effect as a shift of the A4 frequency.
+
 # 2.27.0
 
 * The app now honors the MIDI channel. A MIDI activity indicator in the info bar above the
