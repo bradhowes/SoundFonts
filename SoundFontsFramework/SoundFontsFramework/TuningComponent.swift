@@ -5,32 +5,32 @@ import UIKit
 @objc
 public final class TuningComponent: NSObject {
 
-  static private let transposeSharpLookup: [Int: String] = [
-    100: "C♯",
-    200: "D",
-    300: "D♯",
-    400: "E",
-    500: "F",
-    600: "F♯",
-    700: "G",
-    800: "G♯",
-    900: "A",
-    1000: "A♯",
-    1100: "B"
+  static private let shiftSharpLookup: [Int: String] = [
+    100: "A♯",
+    200: "B",
+    300: "C",
+    400: "C♯",
+    500: "D",
+    600: "D♯",
+    700: "E",
+    800: "F",
+    900: "F♯",
+    1000: "G",
+    1100: "G♯"
   ]
 
-  static private let transposeFlatLookup: [Int: String] = [
-    100: "D♭",
-    200: "D",
-    300: "E♭",
-    400: "E",
-    500: "F",
-    600: "G♭",
-    700: "G",
-    800: "A♭",
-    900: "A",
-    1000: "B♭",
-    1100: "B"
+  static private let shiftFlatLookup: [Int: String] = [
+    100: "B♭",
+    200: "B",
+    300: "C",
+    400: "D♭",
+    500: "D",
+    600: "E♭",
+    700: "E",
+    800: "F",
+    900: "G♭",
+    1000: "G",
+    1100: "A♭"
   ]
 
   private let view: UIView
@@ -145,9 +145,9 @@ extension TuningComponent {
         transposeValue.text = "None"
         transposeStepper.value = 0.0
       } else if transposeStepper.value < 0 {
-        transposeValue.text = Self.transposeFlatLookup[Int(transposeCents)]
+        transposeValue.text = Self.shiftFlatLookup[Int(transposeCents)]
       } else {
-        transposeValue.text = Self.transposeSharpLookup[Int(transposeCents)]
+        transposeValue.text = Self.shiftSharpLookup[Int(transposeCents)]
       }
     } else {
       transposeValue.text = "—"

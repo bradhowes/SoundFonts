@@ -14,11 +14,11 @@
             <objects>
                 <viewController id="BKU-jd-QcQ" customClass="FavoriteEditor" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="PBG-Tj-xjC">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="308"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="370"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lZV-Mh-RrU">
-                                <rect key="frame" x="0.0" y="8" width="400" height="300"/>
+                                <rect key="frame" x="0.0" y="8" width="400" height="362"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9n-Ds-faX" userLabel="Content">
                                         <rect key="frame" x="0.0" y="0.0" width="400" height="994.5"/>
@@ -155,7 +155,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8t8-Pl-91u" userLabel="Transpose">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="32"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" text="Transpose" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkj-HT-5f1" userLabel="Transpose">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" text="Shift A4 to:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkj-HT-5f1" userLabel="Transpose">
                                                                         <rect key="frame" x="0.0" y="6" width="217" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -512,7 +512,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="400" height="400"/>
-                    <size key="freeformSize" width="400" height="400"/>
+                    <size key="freeformSize" width="400" height="462"/>
                     <connections>
                         <outlet property="bankIndex" destination="1XQ-iF-KQ5" id="cBa-FJ-Ho6"/>
                         <outlet property="cancelButton" destination="tAA-It-tjC" id="JmD-jt-lGl"/>
