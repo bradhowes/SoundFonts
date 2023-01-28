@@ -9,6 +9,7 @@ The parsing is really simplistic:
 # 2.27.2
 
 * Allow MIDI processing and audio generation while app is in background.
+* Long-press on effects button or active preset name in info bar to stop all playing notes.
 
 # 2.27.1
 
