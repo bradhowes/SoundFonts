@@ -121,9 +121,6 @@
                                         <rect key="frame" x="190" y="7.5" width="25" height="25"/>
                                         <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="Help"/>
-                                        <connections>
-                                            <action selector="showGuide:" destination="YeB-KN-4f1" eventType="touchUpInside" id="l3y-ET-PrG"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7YL-wn-sth" userLabel="Settings">
                                         <rect key="frame" x="149" y="7.5" width="25" height="25"/>

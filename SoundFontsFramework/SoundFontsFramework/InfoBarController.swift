@@ -33,6 +33,8 @@ public final class InfoBarController: UIViewController {
 
   private let doubleTap = UITapGestureRecognizer()
   private let addButtonLongPressGesture = UILongPressGestureRecognizer()
+  private let effectsButtonLongPressGesture = UILongPressGestureRecognizer()
+  private let presetViewLongPressGesture = UILongPressGestureRecognizer()
 
   private var panOrigin: CGPoint = CGPoint.zero
   private var fader: UIViewPropertyAnimator?
@@ -62,6 +64,12 @@ public final class InfoBarController: UIViewController {
     doubleTap.numberOfTouchesRequired = 1
     doubleTap.numberOfTapsRequired = 2
     touchView.addGestureRecognizer(doubleTap)
+
+    presetViewLongPressGesture.minimumPressDuration = 0.5
+    touchView.addGestureRecognizer(presetViewLongPressGesture)
+
+    effectsButtonLongPressGesture.minimumPressDuration = 0.5
+    showEffects.addGestureRecognizer(effectsButtonLongPressGesture)
 
     let panner = UIPanGestureRecognizer(target: self, action: #selector(panKeyboard))
     panner.minimumNumberOfTouches = 1
@@ -125,31 +133,8 @@ public final class InfoBarController: UIViewController {
 }
 
 extension InfoBarController {
-
-  @IBAction
-  func toggleMoreButtons(_ sender: UIButton) {
-    setMoreButtonsVisible(state: !showingMoreButtons)
-  }
-
-  @IBAction private func showSettings(_ sender: UIButton) {
-    setMoreButtonsVisible(state: false)
-  }
-
-  @IBAction private func showGuide(_ sender: UIButton) {
-    guard traitCollection.horizontalSizeClass == .compact else { return }
-    UIViewPropertyAnimator.runningPropertyAnimator(
-      withDuration: 0.4,
-      delay: 0.0,
-      options: [.curveEaseOut],
-      animations: {
-        self.moreButtonsXConstraint.constant = -40
-      },
-      completion: { _ in
-        self.moreButtonsXConstraint.constant = -40
-      }
-    )
-  }
-
+  @IBAction private func toggleMoreButtons(_ sender: UIButton) { setMoreButtonsVisible(state: !showingMoreButtons) }
+  @IBAction private func showSettings(_ sender: UIButton) { setMoreButtonsVisible(state: false) }
   @IBAction private func toggleSlideKeyboard(_ sender: UIButton) { settings.slideKeyboard = !settings.slideKeyboard }
 }
 
@@ -199,6 +184,9 @@ extension InfoBarController: AnyInfoBar {
     case .showTags: showTags.addClosure(closure)
     case .showMoreButtons: addShowMoreButtonsClosure(closure)
     case .hideMoreButtons: addHideMoreButtonsClosure(closure)
+    case .panic:
+      presetViewLongPressGesture.addClosure(closure)
+      effectsButtonLongPressGesture.addClosure(closure)
     }
   }
 

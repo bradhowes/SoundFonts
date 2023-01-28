@@ -294,6 +294,9 @@ extension MainViewController: ControllerConfiguration {
     os_log(.error, log: log, "starting MIDI for synth")
     midiController = MIDIReceiver(synth: synth, keyboard: keyboard, settings: settings)
     MIDI.sharedInstance.receiver = midiController
+    infoBar.addEventClosure(.panic) { [weak self] _ in
+      self?.midiController?.stopAllNotes()
+    }
     os_log(.debug, log: log, "startMIDI END")
   }
 

@@ -29,6 +29,8 @@ public enum InfoBarEvent {
   case showMoreButtons
   /// Hide additional buttons on width-constrained devices
   case hideMoreButtons
+  /// Panic - stop all notes
+  case panic
 }
 
 /// Handles the actions and display of items in a hypothetical info bar above the keyboard
