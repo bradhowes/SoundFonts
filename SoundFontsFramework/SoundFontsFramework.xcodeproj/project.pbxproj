@@ -81,7 +81,6 @@
 		BD130B192561755F00D1CDF6 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B182561755F00D1CDF6 /* Knob.swift */; };
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
 		BD17E25D25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */; };
-		BD1971C02662500D00C7FCF5 /* ManagedAppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */; };
 		BD1A2A772667E12D009E2338 /* Consolidated_V1.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */; };
 		BD1A2A792668171F009E2338 /* ActivePresetKindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */; };
 		BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A7A266820A1009E2338 /* TouchKeyMapTests.swift */; };
@@ -154,7 +153,6 @@
 		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
-		BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A317E2503B5400077320F /* CoreDataStackTests.swift */; };
 		BD9494362813A656000E0BFF /* AnyMIDISynth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9494352813A656000E0BFF /* AnyMIDISynth.swift */; };
 		BD9AC9A3256718ED00B47F12 /* AUParameterHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */; };
 		BD9AC9AE2567A50400B47F12 /* AudioUnitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */; };
@@ -183,8 +181,6 @@
 		BDBF896625B58AEF00B58E23 /* TagCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF896525B58AEF00B58E23 /* TagCollection.swift */; };
 		BDBF897725B5900900B58E23 /* TagsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF897625B5900900B58E23 /* TagsManager.swift */; };
 		BDBF897B25B5930100B58E23 /* TagsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF897A25B5930100B58E23 /* TagsProvider.swift */; };
-		BDC35B5725081B66009CEFAF /* ManagedSoundFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC35B5625081B66009CEFAF /* ManagedSoundFontTests.swift */; };
-		BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC35B5825081B94009CEFAF /* CoreDataTestHarness.swift */; };
 		BDC662A0253F92B400C03C5F /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC6629F253F92B400C03C5F /* Bookmark.swift */; };
 		BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC3A241AE97000F789B2 /* Localizable.stringsdict */; };
 		BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC3C241AE97000F789B2 /* Localizable.strings */; };
@@ -208,7 +204,6 @@
 		BDD7219D24190D9700FD3567 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD7219C24190D9700FD3567 /* Bundle.swift */; };
 		BDD913F22508DECE0068E3CE /* DispatchTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD913F12508DECE0068E3CE /* DispatchTime.swift */; };
 		BDD913F42508DEEE0068E3CE /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD913F32508DEEE0068E3CE /* DispatchQueue.swift */; };
-		BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD91411250983F60068E3CE /* PlistTranslation.swift */; };
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDDE3A86257A755E00B133CB /* ActiveIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */; };
@@ -1338,13 +1333,10 @@
 				BDC961A724FFA745003D9BEF /* StringTests.swift in Sources */,
 				BD23948A25540855004E5E0D /* KeyTests.swift in Sources */,
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
-				BDC35B5725081B66009CEFAF /* ManagedSoundFontTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
 				BD1A2A812668A9C7009E2338 /* ReusableViewTests.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
-				BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */,
 				BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */,
-				BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */,
 				BD1A2A8B26696AD2009E2338 /* IconTests.swift in Sources */,
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
@@ -1358,12 +1350,10 @@
 				BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */,
 				BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */,
 				BD1A2A852668AD07009E2338 /* NibLoadableViewTests.swift in Sources */,
-				BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */,
 				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,
 				BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */,
 				BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */,
-				BD1971C02662500D00C7FCF5 /* ManagedAppStateTests.swift in Sources */,
 				BD1A2A792668171F009E2338 /* ActivePresetKindTests.swift in Sources */,
 				BD1A2A832668AB75009E2338 /* PresetConfigTests.swift in Sources */,
 				BD1B8CDD270D808C00C6BF15 /* MIDIPacketTests.swift in Sources */,

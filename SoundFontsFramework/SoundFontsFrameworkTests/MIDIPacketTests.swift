@@ -5,6 +5,7 @@ import CoreMIDI
 import XCTest
 
 class MIDIPacketTesting: XCTestCase {
+
   class Receiver: AnyMIDIReceiver {
 
     func stopAllNotes() {}
@@ -75,7 +76,7 @@ class MIDIPacketTesting: XCTestCase {
     let receiver = Receiver()
     receiver.channel = -1 // OMNI mode
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(receiver: receiver, monitor: nil, uniqueId: 123)
+    noteOn.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2:32)])
   }
 
@@ -83,28 +84,28 @@ class MIDIPacketTesting: XCTestCase {
     let receiver = Receiver()
     receiver.channel = 1
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(receiver: receiver, monitor: nil, uniqueId: 123)
+    noteOn.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2: 32)])
   }
 
   func testParserSkippingUnknownMessage() {
     let receiver = Receiver()
     let bogus = MIDIPacket.Builder(timestamp: 0, data: [0xF4, 0x91, 64, 32]).packet
-    bogus.parse(receiver: receiver, monitor: nil, uniqueId: 123)
+    bogus.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
 
   func testParserSkippingIncompleteMessage() {
     let receiver = Receiver()
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64]).packet
-    noteOn.parse(receiver: receiver, monitor: nil, uniqueId: 123)
+    noteOn.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
 
   func testParserMultipleMessages() {
     let receiver = Receiver()
     let noteOnOff = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
-    noteOnOff.parse(receiver: receiver, monitor: nil, uniqueId: 123)
+    noteOnOff.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [
       Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
       Receiver.Event(cmd: 0x80, data1: 64, data2: 0)
@@ -168,7 +169,7 @@ class MIDIPacketTesting: XCTestCase {
 
     let list = builder.packetList
     XCTAssertEqual(list.numPackets, 2)
-    list.parse(receiver: receiver, monitor: nil, uniqueId: 0)
+    list.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 0)
 
     XCTAssertEqual(receiver.received, [
       Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
@@ -180,7 +181,7 @@ class MIDIPacketTesting: XCTestCase {
   }
 
   func testMonitoringTraffic() {
-    let monitor = Monitor()
+    let monitor = MIDIActivityNotifier()
 
     var builder = MIDIPacketList.Builder()
     builder.add(packet: MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
@@ -189,9 +190,19 @@ class MIDIPacketTesting: XCTestCase {
     let list = builder.packetList
     XCTAssertEqual(list.numPackets, 2)
 
+    let expectation = self.expectation(description: "saw packets")
+    var channels = Set<Int>()
+    let token = monitor.addMonitor { data in
+      channels.insert(data.channel)
+      if channels.count == 2 {
+        expectation.fulfill()
+      }
+    }
+
     let uniqueId: MIDIUniqueID = 123
     list.parse(receiver: nil, monitor: monitor, uniqueId: uniqueId)
 
-    XCTAssertEqual(monitor.uniqueIds[uniqueId], Set<UInt8>([1, 2]))
+    wait(for: [expectation], timeout: 1.0)
+    XCTAssertEqual(channels, Set<Int>([1, 2]))
   }
 }
