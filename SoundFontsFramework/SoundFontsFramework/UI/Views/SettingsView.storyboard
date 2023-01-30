@@ -553,7 +553,7 @@
                                                         <rect key="frame" x="0.0" y="1037.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.27.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
-                                                                <rect key="frame" x="0.0" y="6" width="46.5" height="18"/>
+                                                                <rect key="frame" x="0.0" y="6" width="49" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -685,10 +685,11 @@
                         <outlet property="review" destination="NL8-An-Dti" id="Sfa-bh-6RE"/>
                         <outlet property="scientificTuningButton" destination="THj-i9-SWg" id="ede-EJ-tNS"/>
                         <outlet property="scrollView" destination="b5u-sn-F2E" id="YBE-AN-NUe"/>
+                        <outlet property="showChangeHistoryStackView" destination="DU9-N7-tqE" id="mHf-V4-pcd"/>
                         <outlet property="showChangeslButton" destination="mHN-pb-pNJ" id="lC2-jG-y8h"/>
                         <outlet property="showSolfegeNotes" destination="Ngg-Rs-cwx" id="FxF-mH-RiW"/>
                         <outlet property="showTutorialButton" destination="KSo-n2-QXd" id="sx9-Kl-p4u"/>
-                        <outlet property="showTutorialStackView" destination="DU9-N7-tqE" id="IfN-83-dNh"/>
+                        <outlet property="showTutorialStackView" destination="WKq-RZ-u9g" id="dR6-0d-qUm"/>
                         <outlet property="slideKeyboard" destination="63H-E9-af2" id="tFn-sg-j78"/>
                         <outlet property="slideKeyboardStackView" destination="Y8y-cK-zGV" id="BXr-jm-6g5"/>
                         <outlet property="solfegeStackView" destination="Tmr-5h-0DY" id="Pf8-GH-5K9"/>

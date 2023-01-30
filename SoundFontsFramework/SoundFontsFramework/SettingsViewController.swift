@@ -50,6 +50,7 @@ public final class SettingsViewController: UIViewController {
 
   @IBOutlet private weak var divider4: UIView!
 
+  @IBOutlet private weak var showChangeHistoryStackView: UIStackView!
   @IBOutlet private weak var showTutorialStackView: UIStackView!
   @IBOutlet private weak var versionReviewStackView: UIStackView!
   @IBOutlet private weak var contactDeveloperStackView: UIStackView!
@@ -108,6 +109,7 @@ public final class SettingsViewController: UIViewController {
     exportSoundFontsStackView,
     importSoundFontsStackView,
     versionReviewStackView,
+    showChangeHistoryStackView,
     showTutorialStackView,
     contactDeveloperStackView,
     pitchBendStackView,
@@ -222,7 +224,10 @@ public final class SettingsViewController: UIViewController {
       exportSoundFontsStackView.isHidden = true
       importSoundFontsStackView.isHidden = true
       showTutorialStackView.isHidden = true
-      versionReviewStackView.isHidden = true
+      showChangeHistoryStackView.isHidden = true
+
+      // Cannot write review from AUv3
+      review.isEnabled = false
     }
   }
 

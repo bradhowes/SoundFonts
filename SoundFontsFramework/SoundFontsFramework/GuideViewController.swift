@@ -12,6 +12,8 @@ public final class GuideViewController: UIViewController {
   @IBOutlet private weak var infoBarPanel: UIView!
   @IBOutlet private weak var favoritesPanel: UIView!
 
+  @IBOutlet private weak var tagsLabel: UILabel!
+  @IBOutlet private weak var tagsArrow: ArrowView!
   @IBOutlet private weak var effectsLabel: UILabel!
   @IBOutlet private weak var effectsArrow: ArrowView!
   @IBOutlet private weak var keySlideLabel: UILabel!

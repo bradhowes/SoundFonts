@@ -328,10 +328,10 @@ all notes (Panic mode)</string>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="hze-Oj-zhn"/>
+                                                <exclude reference="7sB-7A-i8C"/>
                                                 <exclude reference="qFp-66-96v"/>
                                                 <exclude reference="Dae-Tm-2vp"/>
                                                 <exclude reference="Qi2-ag-KEW"/>
-                                                <exclude reference="7sB-7A-i8C"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact">
@@ -348,10 +348,10 @@ all notes (Panic mode)</string>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
                                             <mask key="constraints">
+                                                <include reference="7sB-7A-i8C"/>
                                                 <exclude reference="o0J-eh-JMB"/>
                                                 <include reference="qFp-66-96v"/>
                                                 <include reference="Dae-Tm-2vp"/>
-                                                <include reference="7sB-7A-i8C"/>
                                             </mask>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular">
@@ -388,14 +388,16 @@ all notes (Panic mode)</string>
                     </view>
                     <size key="freeformSize" width="390" height="502"/>
                     <connections>
-                        <outlet property="effectsArrow" destination="UTx-ye-aGc" id="3cG-W1-kSa"/>
-                        <outlet property="effectsLabel" destination="csw-xS-Cbe" id="bVg-Xm-h7I"/>
+                        <outlet property="effectsArrow" destination="eXp-24-NgL" id="nnJ-Vf-kUE"/>
+                        <outlet property="effectsLabel" destination="ymw-jL-grM" id="4pb-Ea-T8f"/>
                         <outlet property="favoritesPanel" destination="HNc-EK-vQh" id="lht-xp-pdE"/>
                         <outlet property="fontPresetPanel" destination="Jp9-dD-lbO" id="sh6-wL-Cr4"/>
                         <outlet property="infoBarPanel" destination="MoK-A6-2A2" id="eZ1-cw-k9h"/>
                         <outlet property="keyRangeArrow" destination="xk9-hi-fal" id="bZ5-XH-JRb"/>
                         <outlet property="keyRangeLabel" destination="x4u-Am-pP5" id="50D-pP-CKd"/>
                         <outlet property="keySlideLabel" destination="Glj-gY-jrI" id="baW-f6-jlF"/>
+                        <outlet property="tagsArrow" destination="UTx-ye-aGc" id="3cG-W1-kSa"/>
+                        <outlet property="tagsLabel" destination="csw-xS-Cbe" id="bVg-Xm-h7I"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QCi-Yg-u9p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
