@@ -212,6 +212,7 @@ public final class SettingsViewController: UIViewController {
 
       midiChannelStackView.isHidden = true
       bluetoothMIDIConnectStackView.isHidden = true
+      backgroundMIDIProcessingModeStackView.isHidden = true
 
       divider2.isHidden = true
       divider3.isHidden = true
