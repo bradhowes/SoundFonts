@@ -57,18 +57,3 @@ The parsing is really simplistic:
 # 2.21.0
 
 * Pitch bend range can now be set, both globally and per preset.
-
-# 1.0.0
-
-* One
-* Two
-* Three
-* Four
-* Five
-* Six
-* Seven
-* Eight
-* Nine
-* Ten
-
-
