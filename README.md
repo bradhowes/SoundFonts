@@ -11,7 +11,7 @@
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/landscape.png?raw=true" alt="App shown in landscape orientation on iPhone"/>
 </p>
 
-This is an iOS application that acts as a polyphonic synthesizer. It uses
+This is an iOS / macOS application that acts as a polyphonic synthesizer. It uses
 an `AVAudioUnitSampler` instance to generate the sounds for touched keys. The sounds that are available come from
 _sound font_ files such as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free
 (and of variable quality). There are four sound font files that are bundled with the application, and more can
