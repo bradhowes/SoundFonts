@@ -157,7 +157,7 @@ extension MIDI {
   private func createVirtualDestination() -> Bool {
     let err = MIDIDestinationCreateWithBlock(client, inputPortName as CFString,
                                              &virtualMidiIn) { [weak self] packetList, uniqueId in
-      guard let self = self else { return }
+      guard let self = self, uniqueId != nil else { return }
       guard let uniqueId = uniqueId?.assumingMemoryBound(to: MIDIUniqueID.self).pointee else { fatalError() }
       self.processPackets(packetList: packetList.pointee, uniqueId: uniqueId)
     }
