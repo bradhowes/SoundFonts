@@ -8,7 +8,7 @@ The parsing is really simplistic:
 
 # 2.27.3
 
-* Restore support for macOS (Catalyst) including AUv3 access in GarageBand on macOS.
+* Restore support for macOS Catalyst, including AUv3 access in GarageBand.
 * Cosmetic improvements for AUv3 interface.
 * Fix crash in app running on macOS when GarageBand starts SoundFonts AUv3 component.
 
