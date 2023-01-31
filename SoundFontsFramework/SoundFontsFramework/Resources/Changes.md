@@ -6,6 +6,12 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.27.3
+
+* Restore support for macOS (Catalyst) including AUv3 access in GarageBand on macOS.
+* Cosmetic improvements for AUv3 interface.
+* Fix crash in app running on macOS when GarageBand starts SoundFonts AUv3 component.
+
 # 2.27.2
 
 * Allow MIDI processing and audio generation while app is in background.
