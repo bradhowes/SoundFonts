@@ -5,38 +5,62 @@ import UIKit
 @objc
 public final class TuningComponent: NSObject {
 
-  static private let shiftSharpLookup: [Int: String] = [
-    100: "A♯",
-    200: "B",
-    300: "C",
-    400: "C♯",
-    500: "D",
-    600: "D♯",
-    700: "E",
-    800: "F",
-    900: "F♯",
-    1000: "G",
-    1100: "G♯"
-  ]
-
-  static private let shiftFlatLookup: [Int: String] = [
-    100: "B♭",
-    200: "B",
-    300: "C",
-    400: "D♭",
-    500: "D",
-    600: "E♭",
-    700: "E",
-    800: "F",
-    900: "G♭",
-    1000: "G",
-    1100: "A♭"
+  static private let shiftA4Lookup: [String] = [
+    "A2",
+    "B2♭",
+    "B2",
+    "C3",
+    "D3♭",
+    "D3",
+    "E3♭",
+    "E3",
+    "F3",
+    "G3♭",
+    "G3",
+    "A3♭",
+    "A3",
+    "B3♭",
+    "B3",
+    "C4",
+    "D4♭",
+    "D4",
+    "E4♭",
+    "E4",
+    "F4",
+    "G4♭",
+    "G4",
+    "A4♭",
+    "A4",
+    "A4♯",
+    "B4",
+    "C5",
+    "C5♯",
+    "D5",
+    "D5♯",
+    "E5",
+    "F5",
+    "F5♯",
+    "G5",
+    "G5♯",
+    "A5",
+    "A5♯",
+    "B5",
+    "C6",
+    "C6♯",
+    "D6",
+    "D6♯",
+    "E6",
+    "F6",
+    "F6♯",
+    "G6",
+    "G6♯",
+    "A6"
   ]
 
   private let view: UIView
   private let scrollView: UIScrollView
   private let transposeValue: UILabel
-  private let transposeStepper: UIStepper
+  private let shiftA4Stepper: UIStepper
   private let standardTuningButton: UIButton
   private let scientificTuningButton: UIButton
   private let tuningCents: UITextField
@@ -77,7 +101,7 @@ public final class TuningComponent: NSObject {
     self.view = view
     self.scrollView = scrollView
     self.transposeValue = transposeValue
-    self.transposeStepper = transposeStepper
+    self.shiftA4Stepper = transposeStepper
     self.standardTuningButton = standardTuningButton
     self.scientificTuningButton = scientificTuningButton
     self.tuningCents = tuningCents
@@ -86,7 +110,7 @@ public final class TuningComponent: NSObject {
     self.isActive = isActive
     super.init()
 
-    transposeStepper.addClosure(transposeChanged)
+    transposeStepper.addClosure(for: .valueChanged, shiftA4Changed)
     standardTuningButton.addClosure(useStandardTuning)
     scientificTuningButton.addClosure(useScientificTuning)
 
@@ -111,16 +135,16 @@ public final class TuningComponent: NSObject {
 extension TuningComponent {
 
   public func updateState(cents: Float, transpose: Int) {
-    transposeStepper.value = Double(transpose)
+    shiftA4Stepper.value = Double(transpose)
     setTuningCents(cents)
   }
 }
 
 extension TuningComponent {
 
-  private func transposeChanged(_ stepper: Any) {
+  private func shiftA4Changed(_ stepper: Any) {
     if let stepper = stepper as? UIStepper {
-      setTuningCents(Float(abs(stepper.value)) * 100)
+      setTuningCents(Float(stepper.value) * 100)
     }
   }
 
@@ -143,11 +167,9 @@ extension TuningComponent {
     if Float(transposeCents) == tuningCentsValue {
       if transposeCents == 0 {
         transposeValue.text = "None"
-        transposeStepper.value = 0.0
-      } else if transposeStepper.value < 0 {
-        transposeValue.text = Self.shiftFlatLookup[Int(transposeCents)]
+        shiftA4Stepper.value = 0.0
       } else {
-        transposeValue.text = Self.shiftSharpLookup[Int(transposeCents)]
+        transposeValue.text = Self.shiftA4Lookup[(Int(transposeCents) + 2400) / 100]
       }
     } else {
       transposeValue.text = "—"
