@@ -685,6 +685,8 @@
                         <outlet property="review" destination="NL8-An-Dti" id="Sfa-bh-6RE"/>
                         <outlet property="scientificTuningButton" destination="THj-i9-SWg" id="ede-EJ-tNS"/>
                         <outlet property="scrollView" destination="b5u-sn-F2E" id="YBE-AN-NUe"/>
+                        <outlet property="shiftA4Stepper" destination="bxo-ag-OCZ" id="REy-Zc-rjy"/>
+                        <outlet property="shiftA4Value" destination="Ejj-IK-Kde" id="dS4-ah-xXy"/>
                         <outlet property="showChangeHistoryStackView" destination="DU9-N7-tqE" id="mHf-V4-pcd"/>
                         <outlet property="showChangeslButton" destination="mHN-pb-pNJ" id="lC2-jG-y8h"/>
                         <outlet property="showSolfegeNotes" destination="Ngg-Rs-cwx" id="FxF-mH-RiW"/>
@@ -694,8 +696,6 @@
                         <outlet property="slideKeyboardStackView" destination="Y8y-cK-zGV" id="BXr-jm-6g5"/>
                         <outlet property="solfegeStackView" destination="Tmr-5h-0DY" id="Pf8-GH-5K9"/>
                         <outlet property="standardTuningButton" destination="JYF-gP-rb1" id="DWH-Xt-Nfo"/>
-                        <outlet property="transposeStepper" destination="bxo-ag-OCZ" id="REy-Zc-rjy"/>
-                        <outlet property="transposeValue" destination="Ejj-IK-Kde" id="dS4-ah-xXy"/>
                         <outlet property="tuningStackView" destination="2U6-4F-HCm" id="nev-iD-2NG"/>
                         <outlet property="upperBackground" destination="gJm-Kh-cBE" id="bct-YV-mXV"/>
                         <outlet property="versionReviewStackView" destination="Ln6-wm-AuL" id="Jd3-Ws-lEP"/>

@@ -71,8 +71,8 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var copyFiles: UISwitch!
 
   @IBOutlet private weak var divider5: UIView!
-  @IBOutlet private weak var transposeValue: UILabel!
-  @IBOutlet private weak var transposeStepper: UIStepper!
+  @IBOutlet private weak var shiftA4Value: UILabel!
+  @IBOutlet private weak var shiftA4Stepper: UIStepper!
   @IBOutlet private weak var standardTuningButton: UIButton!
   @IBOutlet private weak var scientificTuningButton: UIButton!
   @IBOutlet private weak var globalTuningCents: UITextField!
@@ -149,13 +149,13 @@ public final class SettingsViewController: UIViewController {
 
     super.viewWillAppear(animated)
 
-    transposeStepper.value = Double(settings.globalTranspose)
+    shiftA4Stepper.value = Double(settings.globalTranspose)
 
     let tuningComponent = TuningComponent(
       tuning: settings.globalTuning,
       view: view, scrollView: scrollView,
-      transposeValue: transposeValue,
-      transposeStepper: transposeStepper,
+      shiftA4Value: shiftA4Value,
+      shiftA4Stepper: shiftA4Stepper,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: globalTuningCents,
@@ -238,7 +238,7 @@ public final class SettingsViewController: UIViewController {
     guard let tuningComponent = self.tuningComponent else { fatalError("unexpected nil tuningComponent") }
 
     settings.globalTuning = tuningComponent.tuning
-    settings.globalTranspose = Int(transposeStepper.value)
+    settings.globalTranspose = Int(shiftA4Stepper.value)
 
     infoBar.updateTuningIndicator()
 

@@ -2,6 +2,9 @@
 
 import UIKit
 
+/**
+ Manager for tuning-related operations. Used by the FavoriteEditor and SettingsViewController.
+ */
 @objc
 public final class TuningComponent: NSObject {
 
@@ -59,7 +62,7 @@ public final class TuningComponent: NSObject {
 
   private let view: UIView
   private let scrollView: UIScrollView
-  private let transposeValue: UILabel
+  private let shiftA4Value: UILabel
   private let shiftA4Stepper: UIStepper
   private let standardTuningButton: UIButton
   private let scientificTuningButton: UIButton
@@ -89,8 +92,8 @@ public final class TuningComponent: NSObject {
     tuning: Float,
     view: UIView,
     scrollView: UIScrollView,
-    transposeValue: UILabel,
-    transposeStepper: UIStepper,
+    shiftA4Value: UILabel,
+    shiftA4Stepper: UIStepper,
     standardTuningButton: UIButton,
     scientificTuningButton: UIButton,
     tuningCents: UITextField,
@@ -100,8 +103,8 @@ public final class TuningComponent: NSObject {
     self.tuningCentsValue = tuning
     self.view = view
     self.scrollView = scrollView
-    self.transposeValue = transposeValue
-    self.shiftA4Stepper = transposeStepper
+    self.shiftA4Value = shiftA4Value
+    self.shiftA4Stepper = shiftA4Stepper
     self.standardTuningButton = standardTuningButton
     self.scientificTuningButton = scientificTuningButton
     self.tuningCents = tuningCents
@@ -110,7 +113,7 @@ public final class TuningComponent: NSObject {
     self.isActive = isActive
     super.init()
 
-    transposeStepper.addClosure(for: .valueChanged, shiftA4Changed)
+    shiftA4Stepper.addClosure(for: .valueChanged, shiftA4Changed)
     standardTuningButton.addClosure(useStandardTuning)
     scientificTuningButton.addClosure(useScientificTuning)
 
@@ -166,13 +169,13 @@ extension TuningComponent {
     let transposeCents = (tuningCentsValue / 100).rounded() * 100.0
     if Float(transposeCents) == tuningCentsValue {
       if transposeCents == 0 {
-        transposeValue.text = "None"
+        shiftA4Value.text = "None"
         shiftA4Stepper.value = 0.0
       } else {
-        transposeValue.text = Self.shiftA4Lookup[(Int(transposeCents) + 2400) / 100]
+        shiftA4Value.text = Self.shiftA4Lookup[(Int(transposeCents) + 2400) / 100]
       }
     } else {
-      transposeValue.text = "—"
+      shiftA4Value.text = "—"
     }
 
     tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
