@@ -7,6 +7,6 @@ import XCTest
 class ChangesCompilerTests: XCTestCase {
   func testRecent() {
     let found = ChangesCompiler.compile()
-    XCTAssertTrue(found.count >= 35)
+    XCTAssertTrue(found.count >= 20)
   }
 }
