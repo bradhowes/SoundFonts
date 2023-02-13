@@ -76,6 +76,8 @@ where T: ControllerConfiguration {
     }
   }
 
+  public let midi: MIDI?
+
   /**
    Create a new instance
 
@@ -84,6 +86,7 @@ where T: ControllerConfiguration {
   public init(inApp: Bool) {
     self.inApp = inApp
     self.settings = Settings()
+    self.midi = inApp ? MIDI(settings: self.settings) : nil
 
     self.consolidatedConfigProvider = .init(inApp: inApp)
 

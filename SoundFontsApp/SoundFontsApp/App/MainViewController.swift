@@ -20,6 +20,7 @@ final class MainViewController: UIViewController {
   private var keyboard: AnyKeyboard!
   private var synth: SynthManager?
   private var infoBar: AnyInfoBar!
+  private var midi: MIDI?
   private var settings: Settings!
   fileprivate var noteInjector: NoteInjector!
 
@@ -178,7 +179,7 @@ extension MainViewController {
       return
     }
 
-    MIDI.sharedInstance.receiver = nil
+    midi?.receiver = nil
     volumeMonitor?.stop()
     synth?.stop()
 
@@ -268,6 +269,7 @@ extension MainViewController: ControllerConfiguration {
 
     soundFonts = router.soundFonts
     infoBar = router.infoBar
+    midi = router.midi
     keyboard = router.keyboard
     activePresetManager = router.activePresetManager
     settings = router.settings
@@ -293,8 +295,9 @@ extension MainViewController: ControllerConfiguration {
     guard let synth = self.synth else { return }
     os_log(.error, log: log, "starting MIDI for synth")
     midiController = MIDIReceiver(synth: synth, keyboard: keyboard, settings: settings)
-    MIDI.sharedInstance.receiver = midiController
+    midi?.receiver = midiController
     infoBar.addEventClosure(.panic) { [weak self] _ in
+      self?.infoBar.setStatusText("All notes off")
       self?.midiController?.stopAllNotes()
     }
     os_log(.debug, log: log, "startMIDI END")

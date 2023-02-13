@@ -29,12 +29,12 @@ extension MIDIPacketList: Sequence {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  public func parse(receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
+  public func parse(midi: MIDI, receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
     os_signpost(.begin, log: log, name: "parse")
     os_log(.debug, log: log, "processPackets - %d", numPackets)
     for packet in self {
       os_signpost(.begin, log: log, name: "sendToController")
-      packet.parse(receiver: receiver, monitor: monitor, uniqueId: uniqueId)
+      packet.parse(midi: midi, receiver: receiver, monitor: monitor, uniqueId: uniqueId)
       os_signpost(.end, log: log, name: "sendToController")
     }
     os_signpost(.end, log: log, name: "parse")
@@ -263,7 +263,7 @@ extension MIDIPacket {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  func parse(receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
+  func parse(midi: MIDI, receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
     let byteCount = Int(self.length)
 
     // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big
@@ -311,7 +311,7 @@ extension MIDIPacket {
         print(status, command.rawValue, channel)
 
         // We have enough information to update the channel that an endpoint is sending on
-        MIDI.sharedInstance.updateChannel(uniqueId: uniqueId, channel: channel)
+        midi.updateChannel(uniqueId: uniqueId, channel: channel)
         os_log(.debug, log: log, "message: %d packetChannel: %d needed: %d", command.rawValue, channel, needed)
 
         // Not enough bytes to continue on

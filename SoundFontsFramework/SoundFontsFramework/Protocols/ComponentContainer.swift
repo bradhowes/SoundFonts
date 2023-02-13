@@ -48,6 +48,8 @@ public protocol ComponentContainer: AnyObject {
   /// The entity for posting alerts to the user
   var alertManager: AlertManager { get }
 
+  var midi: MIDI? { get }
+
   func createAudioComponents()
 
   /**

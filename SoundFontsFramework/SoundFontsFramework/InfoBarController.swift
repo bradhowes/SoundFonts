@@ -42,6 +42,7 @@ public final class InfoBarController: UIViewController {
   private var soundFonts: SoundFontsProvider!
   private var isMainApp: Bool!
   private var settings: Settings!
+  private var midi: MIDI?
 
   private var observers = [NSKeyValueObservation]()
 
@@ -90,7 +91,7 @@ public final class InfoBarController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    monitorToken = MIDI.sharedInstance.addMonitor { data in
+    monitorToken = midi?.addMonitor { data in
       let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == data.channel
       self.updateMIDIIndicator(accepted: accepted)
     }
@@ -145,6 +146,8 @@ extension InfoBarController: ControllerConfiguration {
     activePresetManager = router.activePresetManager
     soundFonts = router.soundFonts
     isMainApp = router.isMainApp
+    midi = router.midi
+
     showActivePreset()
     showEffects.isEnabled = router.isMainApp
     showEffects.isHidden = !router.isMainApp
@@ -302,6 +305,7 @@ extension InfoBarController: SegueHandler {
     viewController.soundFonts = soundFonts
     viewController.isMainApp = isMainApp
     viewController.settings = settings
+    viewController.midi = midi
     viewController.infoBar = self
 
     if !isMainApp {

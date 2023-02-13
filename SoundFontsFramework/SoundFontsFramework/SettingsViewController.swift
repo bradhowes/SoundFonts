@@ -31,6 +31,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var divider1: UIView!
 
   @IBOutlet private weak var midiChannelStackView: UIStackView!
+  @IBOutlet private weak var midiConnectionsStackView: UIStackView!
   @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
   @IBOutlet private weak var backgroundMIDIProcessingModeStackView: UIStackView!
   @IBOutlet private weak var pitchBendStackView: UIStackView!
@@ -91,6 +92,7 @@ public final class SettingsViewController: UIViewController {
   public weak var settings: Settings!
   public weak var soundFonts: SoundFontsProvider!
   public weak var infoBar: AnyInfoBar!
+  public weak var midi: MIDI?
   public var isMainApp = true
 
   private var monitorToken: NotificationObserver?
@@ -101,6 +103,7 @@ public final class SettingsViewController: UIViewController {
     playSamplesStackView,
     copyFilesStackView,
     midiChannelStackView,
+    midiConnectionsStackView,
     slideKeyboardStackView,
     bluetoothMIDIConnectStackView,
     backgroundMIDIProcessingModeStackView,
@@ -184,11 +187,11 @@ public final class SettingsViewController: UIViewController {
       slideKeyboard.isOn = settings.slideKeyboard
 
       updateMIDIConnectionsButton()
-      midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
+      midiConnectionsObserver = midi?.observe(\.activeConnections) { [weak self] _, _ in
         self?.updateMIDIConnectionsButton()
       }
 
-      monitorToken = MIDI.sharedInstance.addMonitor { data in
+      monitorToken = midi?.addMonitor { data in
         let ourChannel = self.settings.midiChannel
         let accepted = ourChannel == -1 || ourChannel == data.channel
         MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
@@ -211,6 +214,7 @@ public final class SettingsViewController: UIViewController {
       slideKeyboardStackView.isHidden = true
 
       midiChannelStackView.isHidden = true
+      midiConnectionsStackView.isHidden = true
       bluetoothMIDIConnectStackView.isHidden = true
       backgroundMIDIProcessingModeStackView.isHidden = true
 
@@ -268,6 +272,7 @@ extension SettingsViewController {
     }
 
     midiChannelStackView.isHidden = isAUv3
+    midiConnectionsStackView.isHidden = isAUv3
     slideKeyboardStackView.isHidden = isAUv3
     bluetoothMIDIConnectStackView.isHidden = isAUv3
     divider1.isHidden = isAUv3
@@ -479,8 +484,9 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
   }
 
   private func updateMIDIConnectionsButton() {
-    let count = MIDI.sharedInstance.activeConnections.count
-    let suffix = count == 1 ? "device" : "devices"
+    guard let midi = self.midi else { return }
+    let count = midi.activeConnections.count
+    let suffix = count == 1 ? "connection" : "connections"
     midiConnections.setTitle("\(count) \(suffix)", for: .normal)
   }
 
@@ -514,10 +520,11 @@ extension SettingsViewController: SegueHandler {
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .midiDevicesTableView:
+      guard let midi = self.midi else { return }
       guard let destination = segue.destination as? MIDIDevicesTableViewController else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
-      destination.configure(MIDI.sharedInstance.devices, settings.midiChannel)
+      destination.configure(midi: midi, activeChannel: settings.midiChannel)
     }
   }
 }

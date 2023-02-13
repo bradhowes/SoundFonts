@@ -8,15 +8,38 @@ import CoreMIDI
  */
 final class MIDIDevicesTableViewController: UITableViewController {
 
-  private var devices = [MIDI.DeviceState]() { didSet { self.tableView.reloadData() } }
+  private var midi: MIDI!
+  private var devices = [MIDI.DeviceState]() {
+    didSet {
+      if self.isViewLoaded {
+        self.tableView.reloadData()
+      }
+    }
+  }
+
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var channelsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
   private var monitorToken: NotificationObserver?
 
-  func configure(_ devices: [MIDI.DeviceState], _ activeChannel: Int) {
-    self.devices = devices
+  func configure(midi: MIDI, activeChannel: Int) {
+    self.midi = midi
+    self.devices = midi.devices
     self.activeChannel = activeChannel
+
+    activeConnectionsObserver = midi.observe(\.activeConnections) { [weak self] _, _ in
+      guard let self = self else { return }
+      DispatchQueue.main.async {
+        self.devices = self.midi.devices
+      }
+    }
+
+    channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
+      guard let self = self else { return }
+      DispatchQueue.main.async {
+        self.devices = self.midi.devices
+      }
+    }
   }
 }
 
@@ -25,20 +48,15 @@ final class MIDIDevicesTableViewController: UITableViewController {
 extension MIDIDevicesTableViewController {
 
   override public func viewDidLoad() {
-    activeConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
-      self?.devices = MIDI.sharedInstance.devices
-    }
-    channelsObserver = MIDI.sharedInstance.observe(\.channels) { [weak self] _, _ in
-      DispatchQueue.main.async {
-        self?.tableView.reloadData()
-      }
-    }
+    let footer = UILabel()
+    tableView.tableFooterView = footer
+    footer.text = "This is a test."
     super.viewDidLoad()
   }
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = MIDI.sharedInstance.addMonitor { data in
+    monitorToken = self.midi.addMonitor { data in
       let accepted = self.accepting(channel: data.channel)
       for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == data.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
@@ -66,22 +84,28 @@ extension MIDIDevicesTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "deviceState", for: indexPath)
+    let cell: MIDIDeviceTableCell = tableView.dequeueReusableCell(at: indexPath)
     let deviceState = devices[indexPath.row]
-    cell.textLabel?.text = deviceState.displayName
-
-    let channelText: String
-    if let channel = MIDI.sharedInstance.channels[deviceState.uniqueId] {
-      channelText = "Chan: \(channel + 1)"
-    } else {
-      channelText = ""
-    }
-
-    cell.detailTextLabel?.text = "\(channelText)"
+    cell.update(midi: midi, device: deviceState)
     return cell
   }
 
   @IBAction func resetMIDI(_ sender: Any) {
+    let ac = UIAlertController(
+      title: "Reset MIDI",
+      message: """
+          This will reset the MIDI state and knowledge for the app. Are you sure you wish to continue?
+          """, preferredStyle: .alert)
+    ac.addAction(
+      UIAlertAction(title: "Yes", style: .default) { _ in
+        self.midi.reset()
+        MIDIRestart()
+      })
+    ac.addAction(
+      UIAlertAction(title: "Cancel", style: .cancel) { _ in
+      })
+    present(ac, animated: true)
+
     MIDIRestart()
   }
 }

@@ -474,7 +474,7 @@ extension SoundFontsAU {
   public override var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
     let block = self.wrapped.scheduleMIDIEventBlock
     let log = self.log
-    return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
+    return { when, channel, count, bytes in
       os_log(
         .debug, log: log,
         "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
@@ -486,7 +486,23 @@ extension SoundFontsAU {
   public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
   public override var internalRenderBlock: AUInternalRenderBlock {
-    os_log(.debug, log: log, "internalRenderBlock")
-    return wrapped.internalRenderBlock
+    let block = self.wrapped.internalRenderBlock
+    let log = self.log
+    return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput in
+      var eventPtr = realtimeEventListHead?.pointee
+      while let event = eventPtr {
+        switch event.head.eventType {
+        case .parameter: os_log(.debug, log: log, "internalRenderBlock - parameter")
+        case .parameterRamp: os_log(.debug, log: log, "internalRenderBlock - parameterRamp")
+        case .MIDI: os_log(.debug, log: log, "internalRenderBlock - MIDI")
+        case .midiSysEx: os_log(.debug, log: log, "internalRenderBlock - midiSysEx")
+        case .midiEventList: os_log(.debug, log: log, "internalRenderBlock - midiEventList")
+        @unknown default: fatalError()
+        }
+        eventPtr = event.head.next?.pointee
+      }
+
+      return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
+    }
   }
 }
