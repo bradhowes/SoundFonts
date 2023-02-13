@@ -12,6 +12,7 @@ public final class AVSF2Engine {
   public var synthGain: Float = 1.0
   public var synthStereoPan: Float = 0.0
   public var synthGlobalTuning: Float = 0.0
+  public var midiChannel: Int = 0
 
   public init() {
     self.avAudioUnit = Self.instantiate()

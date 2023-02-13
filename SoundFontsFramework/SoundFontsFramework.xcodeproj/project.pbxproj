@@ -606,6 +606,7 @@
 				BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */,
 				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
+				BDFA98EF280C60880069A46F /* SoundFontsAU.swift */,
 				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
 			);
 			path = Audio;
@@ -770,12 +771,11 @@
 		BD2454D627847074004B445A /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */,
 				BDA5ACF0265D4266000AE48E /* DelayEffect.swift */,
 				BDFA98ED280C5C4C0069A46F /* DelayAU.swift */,
 				BDA5ACEF265D4266000AE48E /* ReverbEffect.swift */,
 				BDFA98EB280C55B80069A46F /* ReverbAU.swift */,
-				BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */,
-				BDFA98EF280C60880069A46F /* SoundFontsAU.swift */,
 			);
 			path = Effects;
 			sourceTree = "<group>";
