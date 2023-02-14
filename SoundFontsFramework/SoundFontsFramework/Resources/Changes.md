@@ -9,6 +9,9 @@ The parsing is really simplistic:
 # 2.27.4
 
 * Simplify shift A4 behavior.
+* Fix reporting of channel info in connection view
+* New controls to manage MIDI device connections
+* New control to auto-connect to new MIDI devices
 
 # 2.27.3
 
