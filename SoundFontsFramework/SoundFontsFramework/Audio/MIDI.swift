@@ -66,7 +66,8 @@ public final class MIDI: NSObject {
       let uniqueId = endpoint.uniqueId
       let displayName = endpoint.displayName
       let connected = activeConnections.contains(uniqueId)
-      let autoConnect = settings.get(key: connectedSettingKey(for: uniqueId), defaultValue: false)
+      let autoConnectDefault = settings.autoConnectNewMIDIDeviceEnabled
+      let autoConnect = settings.get(key: connectedSettingKey(for: uniqueId), defaultValue: autoConnectDefault)
       let channel = channels[uniqueId]
       os_log(.debug, log: log, "DeviceEntry(%d '%{public}s' %d", uniqueId, displayName, connected)
       return DeviceState(endpoint: endpoint, uniqueId: uniqueId, displayName: displayName, autoConnect: autoConnect,
@@ -157,7 +158,8 @@ extension MIDI {
     }
 
     let key = connectedSettingKey(for: uniqueId)
-    let autoConnect = settings.get(key: key, defaultValue: false)
+    let autoConnectDefault = settings.autoConnectNewMIDIDeviceEnabled
+    let autoConnect = settings.get(key: key, defaultValue: autoConnectDefault)
     os_log(.debug, log: log, "autoconnect for %{public}s - %d'", key, autoConnect)
     if autoConnect {
       establishConnection(uniqueId: uniqueId)

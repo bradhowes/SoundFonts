@@ -32,6 +32,7 @@ public final class SettingsViewController: UIViewController {
 
   @IBOutlet private weak var midiChannelStackView: UIStackView!
   @IBOutlet private weak var midiConnectionsStackView: UIStackView!
+  @IBOutlet private weak var midiAutoConnectStackView: UIStackView!
   @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
   @IBOutlet private weak var backgroundMIDIProcessingModeStackView: UIStackView!
   @IBOutlet private weak var pitchBendStackView: UIStackView!
@@ -64,6 +65,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var midiChannel: UILabel!
   @IBOutlet private weak var midiConnections: UIButton!
   @IBOutlet private weak var midiChannelStepper: UIStepper!
+  @IBOutlet private weak var midiDeviceAutoConnectEnabled: UISwitch!
 
   @IBOutlet private weak var pitchBendRange: UILabel!
   @IBOutlet private weak var pitchBendStepper: UIStepper!
@@ -104,6 +106,7 @@ public final class SettingsViewController: UIViewController {
     copyFilesStackView,
     midiChannelStackView,
     midiConnectionsStackView,
+    midiAutoConnectStackView,
     slideKeyboardStackView,
     bluetoothMIDIConnectStackView,
     backgroundMIDIProcessingModeStackView,
@@ -200,6 +203,8 @@ public final class SettingsViewController: UIViewController {
       midiChannelStepper.value = Double(settings.midiChannel)
       updateMidiChannel()
       backgroundMIDIProcessingMode.isOn = settings.backgroundMIDIProcessingEnabled
+      midiDeviceAutoConnectEnabled.isOn = settings.autoConnectNewMIDIDeviceEnabled
+
       slideKeyboard.isOn = settings.slideKeyboard
 
       copyFiles.isOn = settings.copyFilesWhenAdding
@@ -215,6 +220,7 @@ public final class SettingsViewController: UIViewController {
 
       midiChannelStackView.isHidden = true
       midiConnectionsStackView.isHidden = true
+      midiAutoConnectStackView.isHidden = true
       bluetoothMIDIConnectStackView.isHidden = true
       backgroundMIDIProcessingModeStackView.isHidden = true
 
@@ -273,6 +279,8 @@ extension SettingsViewController {
 
     midiChannelStackView.isHidden = isAUv3
     midiConnectionsStackView.isHidden = isAUv3
+    midiAutoConnectStackView.isHidden = isAUv3
+
     slideKeyboardStackView.isHidden = isAUv3
     bluetoothMIDIConnectStackView.isHidden = isAUv3
     divider1.isHidden = isAUv3
@@ -329,6 +337,10 @@ extension SettingsViewController {
 
   @IBAction func midiChannelStep(_ sender: UIStepper) {
     updateMidiChannel()
+  }
+
+  @IBAction func toggleAutoConnectNewMIDIDeviceEnabled(_ sender: UISwitch) {
+    settings.autoConnectNewMIDIDeviceEnabled = sender.isOn
   }
 
   @IBAction func toggleBackgroundMIDIProcessingEnabled(_ sender: Any) {

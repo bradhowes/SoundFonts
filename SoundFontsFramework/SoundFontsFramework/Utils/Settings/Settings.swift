@@ -215,6 +215,12 @@ public extension Settings {
     get { self[.backgroundMIDIProcessingEnabled] }
     set { self[.backgroundMIDIProcessingEnabled] = newValue }
   }
+  /// If true, auto-connect to new MIDI devices
+  var autoConnectNewMIDIDeviceEnabled: Bool {
+    get { self[.autoConnectNewMIDIDeviceEnabled] }
+    set { self[.autoConnectNewMIDIDeviceEnabled] = newValue }
+  }
+
   /// When true, the effects panel is visible. Used to restore UI state when relaunching the app.
   var showEffects: Bool {
     get { self[.showEffects] }
