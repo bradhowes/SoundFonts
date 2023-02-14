@@ -199,7 +199,7 @@ class MIDIPacketTesting: XCTestCase {
 
     let expectation = self.expectation(description: "saw packets")
     var channels = Set<Int>()
-    let _ = monitor.addMonitor { data in
+    let skippy = monitor.addMonitor { data in
       channels.insert(data.channel)
       if channels.count == 2 {
         expectation.fulfill()
