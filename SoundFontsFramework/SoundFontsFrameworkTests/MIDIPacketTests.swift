@@ -73,39 +73,44 @@ class MIDIPacketTesting: XCTestCase {
   }
 
   func testParser() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     receiver.channel = -1 // OMNI mode
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2:32)])
   }
 
   func testParserReceivingOnChannelMatch() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     receiver.channel = 1
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2: 32)])
   }
 
   func testParserSkippingUnknownMessage() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     let bogus = MIDIPacket.Builder(timestamp: 0, data: [0xF4, 0x91, 64, 32]).packet
-    bogus.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    bogus.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
 
   func testParserSkippingIncompleteMessage() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64]).packet
-    noteOn.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
 
   func testParserMultipleMessages() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     let noteOnOff = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
-    noteOnOff.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    noteOnOff.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [
       Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
       Receiver.Event(cmd: 0x80, data1: 64, data2: 0)
@@ -162,6 +167,7 @@ class MIDIPacketTesting: XCTestCase {
 
   func testListsParsing() {
     let receiver = Receiver()
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
 
     var builder = MIDIPacketList.Builder()
     builder.add(packet: MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
@@ -169,7 +175,7 @@ class MIDIPacketTesting: XCTestCase {
 
     let list = builder.packetList
     XCTAssertEqual(list.numPackets, 2)
-    list.parse(receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 0)
+    list.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 0)
 
     XCTAssertEqual(receiver.received, [
       Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
@@ -182,6 +188,7 @@ class MIDIPacketTesting: XCTestCase {
 
   func testMonitoringTraffic() {
     let monitor = MIDIActivityNotifier()
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
 
     var builder = MIDIPacketList.Builder()
     builder.add(packet: MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
@@ -192,7 +199,7 @@ class MIDIPacketTesting: XCTestCase {
 
     let expectation = self.expectation(description: "saw packets")
     var channels = Set<Int>()
-    let token = monitor.addMonitor { data in
+    let _ = monitor.addMonitor { data in
       channels.insert(data.channel)
       if channels.count == 2 {
         expectation.fulfill()
@@ -200,7 +207,7 @@ class MIDIPacketTesting: XCTestCase {
     }
 
     let uniqueId: MIDIUniqueID = 123
-    list.parse(receiver: nil, monitor: monitor, uniqueId: uniqueId)
+    list.parse(midi: midi, receiver: nil, monitor: monitor, uniqueId: uniqueId)
 
     wait(for: [expectation], timeout: 1.0)
     XCTAssertEqual(channels, Set<Int>([1, 2]))
