@@ -165,6 +165,8 @@
 		BDA5ACF7265D427C000AE48E /* FontActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF5265D427C000AE48E /* FontActionManager.swift */; };
 		BDA5ACF8265D427C000AE48E /* EventClosureMangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */; };
 		BDA5ACFA265D4284000AE48E /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF9265D4284000AE48E /* Icon.swift */; };
+		BDB2DB5B299EA524009105F7 /* MIDIEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2DB5A299EA524009105F7 /* MIDIEventList.swift */; };
+		BDB2DB5D299EABF2009105F7 /* MIDIEventPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */; };
 		BDB3BFA0270C53D700C4257A /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB3BF9E270C534800C4257A /* MIDI.swift */; };
 		BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */; };
 		BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406225CC29120051B4E4 /* Presets.storyboard */; };
@@ -422,6 +424,8 @@
 		BDA5ACF5265D427C000AE48E /* FontActionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontActionManager.swift; sourceTree = "<group>"; };
 		BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventClosureMangement.swift; sourceTree = "<group>"; };
 		BDA5ACF9265D4284000AE48E /* Icon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
+		BDB2DB5A299EA524009105F7 /* MIDIEventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIEventList.swift; sourceTree = "<group>"; };
+		BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIEventPacketTests.swift; sourceTree = "<group>"; };
 		BDB3BF9E270C534800C4257A /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
 		BDB7405E25CC29120051B4E4 /* Delay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Delay.storyboard; sourceTree = "<group>"; };
 		BDB7405F25CC29120051B4E4 /* Favorites.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Favorites.storyboard; sourceTree = "<group>"; };
@@ -672,6 +676,7 @@
 				BDD913F32508DEEE0068E3CE /* DispatchQueue.swift */,
 				BD074C2223CDAF51001987E9 /* FileManager.swift */,
 				BD074C2323CDAF51001987E9 /* Foundation.swift */,
+				BDB2DB5A299EA524009105F7 /* MIDIEventList.swift */,
 				BD1B8CDA270CB1E200C6BF15 /* MIDIPacketList.swift */,
 				BDEEDC7825DC102500FEA219 /* NSLayout.swift */,
 				BDD5FA7025043C3700367F0B /* NSManagedObjectContext.swift */,
@@ -892,6 +897,7 @@
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
 				BD1A2A8A26696AD2009E2338 /* IconTests.swift */,
 				BD1A2A882668E347009E2338 /* BundleTests.swift */,
+				BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */,
 				BD1B8CDC270D808C00C6BF15 /* MIDIPacketTests.swift */,
 				BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */,
 				BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */,
@@ -1198,6 +1204,7 @@
 				BD074C8123CDAF51001987E9 /* SelectedSoundFontManager.swift in Sources */,
 				BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */,
 				BDEA0BAD255B65FF0097F1CE /* AlertManager.swift in Sources */,
+				BDB2DB5B299EA524009105F7 /* MIDIEventList.swift in Sources */,
 				BD074C7723CDAF51001987E9 /* String.swift in Sources */,
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* Preset.swift in Sources */,
@@ -1338,6 +1345,7 @@
 				BD23948A25540855004E5E0D /* KeyTests.swift in Sources */,
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
+				BDB2DB5D299EABF2009105F7 /* MIDIEventPacketTests.swift in Sources */,
 				BD1A2A812668A9C7009E2338 /* ReusableViewTests.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
 				BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */,

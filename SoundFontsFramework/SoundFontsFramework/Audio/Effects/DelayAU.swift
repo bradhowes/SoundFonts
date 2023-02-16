@@ -252,11 +252,9 @@ extension DelayAU {
           _currentPreset = preset
         }
       } else {
-        if #available(iOS 13.0, *) {
-          if let fullState = try? presetState(for: preset) {
-            self.fullState = fullState
-            _currentPreset = preset
-          }
+        if let fullState = try? presetState(for: preset) {
+          self.fullState = fullState
+          _currentPreset = preset
         }
       }
     }

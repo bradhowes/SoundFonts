@@ -130,11 +130,7 @@ extension SoundFontsViewController {
       documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"],
       in: settings.copyFilesWhenAdding ? .import : .open)
     documentPicker.delegate = self
-    if #available(iOS 13, *) {
-      documentPicker.modalPresentationStyle = .automatic
-    } else {
-      documentPicker.modalPresentationStyle = .overFullScreen
-    }
+    documentPicker.modalPresentationStyle = .automatic
     documentPicker.allowsMultipleSelection = true
     present(documentPicker, animated: true)
   }

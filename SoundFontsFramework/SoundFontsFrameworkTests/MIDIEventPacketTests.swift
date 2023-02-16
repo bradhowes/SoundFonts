@@ -4,7 +4,7 @@
 import CoreMIDI
 import XCTest
 
-class MIDIPacketTesting: XCTestCase {
+class MIDIEventPacketTesting: XCTestCase {
 
   class Receiver: AnyMIDIReceiver {
 
@@ -44,7 +44,7 @@ class MIDIPacketTesting: XCTestCase {
   }
 
   func testBuilder() {
-    let builder = MIDIPacket.Builder(timestamp: 123, data: [1, 2, 3])
+    let builder = MIDIEventPacket.Builder(timestamp: 123, data: [1, 2, 3])
     let packet = builder.packet
     XCTAssertEqual(packet.length, 3)
     XCTAssertEqual(packet.timeStamp, 123)
@@ -54,7 +54,7 @@ class MIDIPacketTesting: XCTestCase {
   }
 
   func testAdd() {
-    var builder = MIDIPacket.Builder(timestamp: 456, data: [1, 2, 3])
+    var builder = MIDIEventPacket.Builder(timestamp: 456, data: [1, 2, 3])
     builder.add(data: [4, 5, 6, 7])
     builder.add(data: [])
     builder.add(data: [8])
@@ -76,7 +76,7 @@ class MIDIPacketTesting: XCTestCase {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     receiver.channel = -1 // OMNI mode
-    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
+    let noteOn = MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
     noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2:32)])
   }
@@ -85,7 +85,7 @@ class MIDIPacketTesting: XCTestCase {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     receiver.channel = 1
-    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
+    let noteOn = MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
     noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2: 32)])
   }
@@ -93,7 +93,7 @@ class MIDIPacketTesting: XCTestCase {
   func testParserSkippingUnknownMessage() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
-    let bogus = MIDIPacket.Builder(timestamp: 0, data: [0xF4, 0x91, 64, 32]).packet
+    let bogus = MIDIEventPacket.Builder(timestamp: 0, data: [0xF4, 0x91, 64, 32]).packet
     bogus.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
@@ -101,7 +101,7 @@ class MIDIPacketTesting: XCTestCase {
   func testParserSkippingIncompleteMessage() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
-    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64]).packet
+    let noteOn = MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64]).packet
     noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
@@ -109,7 +109,7 @@ class MIDIPacketTesting: XCTestCase {
   func testParserMultipleMessages() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
-    let noteOnOff = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
+    let noteOnOff = MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
     noteOnOff.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
     XCTAssertEqual(receiver.received, [
       Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
@@ -118,18 +118,18 @@ class MIDIPacketTesting: XCTestCase {
   }
 
   func testAlignments() {
-    XCTAssertEqual(MIDIPacket.Builder(timestamp: 0, data: []).packet.alignedByteSize, 12)
-    XCTAssertEqual(MIDIPacket.Builder(timestamp: 0, data: [1]).packet.alignedByteSize, 12)
-    XCTAssertEqual(MIDIPacket.Builder(timestamp: 0, data: [1, 2]).packet.alignedByteSize, 12)
-    XCTAssertEqual(MIDIPacket.Builder(timestamp: 0, data: [1, 2, 3]).packet.alignedByteSize, 16)
-    XCTAssertEqual(MIDIPacket.Builder(timestamp: 0, data: [1, 2, 3, 4]).packet.alignedByteSize, 16)
+    XCTAssertEqual(MIDIEventPacket.Builder(timestamp: 0, data: []).packet.alignedByteSize, 12)
+    XCTAssertEqual(MIDIEventPacket.Builder(timestamp: 0, data: [1]).packet.alignedByteSize, 12)
+    XCTAssertEqual(MIDIEventPacket.Builder(timestamp: 0, data: [1, 2]).packet.alignedByteSize, 12)
+    XCTAssertEqual(MIDIEventPacket.Builder(timestamp: 0, data: [1, 2, 3]).packet.alignedByteSize, 16)
+    XCTAssertEqual(MIDIEventPacket.Builder(timestamp: 0, data: [1, 2, 3, 4]).packet.alignedByteSize, 16)
   }
 
   func testListBuilder() {
-    let a = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
-    let b = MIDIPacket.Builder(timestamp: 1, data: [0x91, 65, 33, 0x81, 65, 10, 0x81, 66, 0]).packet
+    let a = MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
+    let b = MIDIEventPacket.Builder(timestamp: 1, data: [0x91, 65, 33, 0x81, 65, 10, 0x81, 66, 0]).packet
 
-    var builder = MIDIPacketList.Builder()
+    var builder = MIDIEventList.Builder()
     builder.add(packet: a)
     builder.add(packet: b)
 
@@ -169,9 +169,9 @@ class MIDIPacketTesting: XCTestCase {
     let receiver = Receiver()
     let midi = MIDI(settings: Settings(suiteName: "blah"))
 
-    var builder = MIDIPacketList.Builder()
-    builder.add(packet: MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
-    builder.add(packet: MIDIPacket.Builder(timestamp: 1, data: [0x91, 65, 33, 0x81, 65, 10, 0x81, 66, 0]).packet)
+    var builder = MIDIEventList.Builder()
+    builder.add(packet: MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
+    builder.add(packet: MIDIEventPacket.Builder(timestamp: 1, data: [0x91, 65, 33, 0x81, 65, 10, 0x81, 66, 0]).packet)
 
     let list = builder.packetList
     XCTAssertEqual(list.numPackets, 2)
@@ -190,9 +190,9 @@ class MIDIPacketTesting: XCTestCase {
     let monitor = MIDIActivityNotifier()
     let midi = MIDI(settings: Settings(suiteName: "blah"))
 
-    var builder = MIDIPacketList.Builder()
-    builder.add(packet: MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
-    builder.add(packet: MIDIPacket.Builder(timestamp: 1, data: [0x91, 65, 33, 0x81, 65, 10, 0x82, 66, 0]).packet)
+    var builder = MIDIEventList.Builder()
+    builder.add(packet: MIDIEventPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet)
+    builder.add(packet: MIDIEventPacket.Builder(timestamp: 1, data: [0x91, 65, 33, 0x81, 65, 10, 0x82, 66, 0]).packet)
 
     let list = builder.packetList
     XCTAssertEqual(list.numPackets, 2)

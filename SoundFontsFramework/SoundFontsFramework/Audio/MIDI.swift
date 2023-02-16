@@ -18,6 +18,7 @@ public final class MIDI: NSObject {
 
   private var client: MIDIClientRef = MIDIClientRef()
   private var virtualMidiIn: MIDIEndpointRef = MIDIEndpointRef()
+  private var virtualMidiOut: MIDIEndpointRef = MIDIEndpointRef()
   private var inputPort: MIDIPortRef = MIDIPortRef()
 
   /// Dynamic collection of all of the known MIDI sources
@@ -104,6 +105,7 @@ public final class MIDI: NSObject {
    */
   deinit {
     if inputPort != MIDIPortRef() { MIDIPortDispose(inputPort) }
+    if virtualMidiOut != MIDIEndpointRef() { MIDIEndpointDispose(virtualMidiOut) }
     if virtualMidiIn != MIDIEndpointRef() { MIDIEndpointDispose(virtualMidiIn) }
     if client != MIDIClientRef() { MIDIClientDispose(client) }
   }
@@ -136,7 +138,7 @@ extension MIDI {
       }
     }
 
-    logErr("MIDIClientCreateWithBlock", err)
+    loggedErr("MIDIClientCreateWithBlock", err)
   }
 
   private func updateConnections() {
@@ -184,7 +186,7 @@ extension MIDI {
     activeConnections.insert(uniqueId)
     let refCon = UnsafeMutablePointer<MIDIUniqueID>.allocate(capacity: 1)
     refCon.initialize(to: uniqueId)
-    logErr("MIDIPortConnectSource", MIDIPortConnectSource(inputPort, device.endpoint, refCon))
+    loggedErr("MIDIPortConnectSource", MIDIPortConnectSource(inputPort, device.endpoint, refCon))
   }
 
   public func removeConnection(uniqueId: MIDIUniqueID) {
@@ -200,32 +202,49 @@ extension MIDI {
     }
 
     os_log(.debug, log: log, "disconnecting endpoint %d '%{public}s'", uniqueId, endpoint.displayName)
-    logErr("MIDIPortDisconnectSource", MIDIPortDisconnectSource(inputPort, endpoint))
+    loggedErr("MIDIPortDisconnectSource", MIDIPortDisconnectSource(inputPort, endpoint))
+  }
+
+  private func createVirtualSource() -> Bool {
+    let err = MIDISourceCreate(client, inputPortName as CFString, &virtualMidiOut)
+    return !loggedErr("MIDISourceCreate", err)
   }
 
   private func createVirtualDestination() -> Bool {
-    let err = MIDIDestinationCreateWithBlock(client, inputPortName as CFString,
-                                             &virtualMidiIn) { [weak self] packetList, uniqueId in
-      guard let self = self, uniqueId != nil else { return }
-      guard let uniqueId = uniqueId?.assumingMemoryBound(to: MIDIUniqueID.self).pointee else { fatalError() }
-      self.processPackets(packetList: packetList.pointee, uniqueId: uniqueId)
-    }
-    guard !logErr("MIDIDestinationCreateWithBlock", err) else {
-      return false
+    if #available(iOS 14.0, *) {
+      let err = MIDIDestinationCreateWithProtocol(client, inputPortName as CFString, ._1_0,
+                                                  &virtualMidiIn) { [weak self] eventList, uniqueId in
+        guard let self = self, uniqueId != nil else { return }
+        guard let uniqueId = uniqueId?.assumingMemoryBound(to: MIDIUniqueID.self).pointee else { fatalError() }
+        self.processPackets(eventList: eventList.pointee, uniqueId: uniqueId)
+      }
+      guard !loggedErr("MIDIDestinationCreateWithBlock", err) else {
+        return false
+      }
+    } else {
+      let err = MIDIDestinationCreateWithBlock(client, inputPortName as CFString,
+                                               &virtualMidiIn) { [weak self] packetList, uniqueId in
+        guard let self = self, uniqueId != nil else { return }
+        guard let uniqueId = uniqueId?.assumingMemoryBound(to: MIDIUniqueID.self).pointee else { fatalError() }
+        self.processPackets(packetList: packetList.pointee, uniqueId: uniqueId)
+      }
+      guard !loggedErr("MIDIDestinationCreateWithBlock", err) else {
+        return false
+      }
     }
 
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID)",
+    loggedErr("MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID)",
            MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyUniqueID, ourUniqueId))
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec)",
+    loggedErr("MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec)",
            MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyAdvanceScheduleTimeMuSec, 1))
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesClock)",
+    loggedErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesClock)",
            MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyReceivesClock, 1))
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesNotes)",
+    loggedErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesNotes)",
            MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyReceivesNotes, 1))
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesProgramChanges)",
+    loggedErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesProgramChanges)",
            MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyReceivesProgramChanges, 1))
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyMaxReceiveChannels)",
-           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyMaxReceiveChannels, 16))
+    loggedErr("MIDIObjectSetIntegerProperty(kMIDIPropertyMaxReceiveChannels)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyMaxReceiveChannels, 1))
 
     return true
   }
@@ -238,7 +257,7 @@ extension MIDI {
       self.processPackets(packetList: packetList.pointee, uniqueId: uniqueId)
     }
 
-    logErr("MIDIInputPortCreateWithBlock", err)
+    loggedErr("MIDIInputPortCreateWithBlock", err)
     return err == noErr
   }
 
@@ -257,20 +276,25 @@ extension MIDI {
     os_log(.debug, log: log, "processPackets - numPackets: %d uniqueId: %d", packetList.numPackets, uniqueId)
     packetList.parse(midi: self, receiver: receiver, monitor: activityNotifier, uniqueId: uniqueId)
   }
+
+  private func processPackets(eventList: MIDIEventList, uniqueId: MIDIUniqueID) {
+    os_log(.debug, log: log, "processPackets - numPackets: %d uniqueId: %d", eventList.numPackets, uniqueId)
+    eventList.parse(midi: self, receiver: receiver, monitor: activityNotifier, uniqueId: uniqueId)
+  }
 }
 
 private extension MIDIObjectRef {
 
   var displayName: String {
     var param: Unmanaged<CFString>?
-    let failed = logErr("MIDIObjectGetStringProperty(kMIDIPropertyDisplayName)",
+    let failed = loggedErr("MIDIObjectGetStringProperty(kMIDIPropertyDisplayName)",
                         MIDIObjectGetStringProperty(self, kMIDIPropertyDisplayName, &param))
     return failed ? "nil" : param!.takeRetainedValue() as String
   }
 
   var uniqueId: MIDIUniqueID {
     var param: MIDIUniqueID = MIDIUniqueID()
-    logErr("MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID)",
+    loggedErr("MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID)",
            MIDIObjectGetIntegerProperty(self, kMIDIPropertyUniqueID, &param))
     return param
   }
@@ -317,8 +341,15 @@ private extension OSStatus {
   }
 }
 
+/**
+ Log an error message if the given `OSStatus` value is not `noErr`.
+
+ - parameter name: the name of the function that return the result
+ - parameter err: the result from the funtion
+ - returns: `true` if logged
+ */
 @discardableResult
-private func logErr(_ name: String, _ err: OSStatus) -> Bool {
+private func loggedErr(_ name: String, _ err: OSStatus) -> Bool {
   if err != noErr {
     os_log(.error, log: log, "%{public}s - %d %{public}s", name, err, err.tag)
     return true

@@ -291,10 +291,8 @@ extension SF2EngineAU {
       _currentPreset = preset
 
       if preset.number < 0 {
-        if #available(iOS 13.0, *) {
-          if let fullState = try? presetState(for: preset) {
-            self.fullState = fullState
-          }
+        if let fullState = try? presetState(for: preset) {
+          self.fullState = fullState
         }
       }
     }

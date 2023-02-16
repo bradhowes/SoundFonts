@@ -385,11 +385,9 @@ extension SoundFontsAU {
     // There are no factory presets (should there be?) so this only applies to user presets.
     guard preset.number < 0 else  { return }
 
-    if #available(iOS 13.0, *) {
-      guard let state = try? wrapped.presetState(for: preset) else { return }
-      os_log(.debug, log: log, "state: %{public}s", state.debugDescription)
-      fullState = state
-    }
+    guard let state = try? wrapped.presetState(for: preset) else { return }
+    os_log(.debug, log: log, "state: %{public}s", state.debugDescription)
+    fullState = state
   }
 
   public override var currentPreset: AUAudioUnitPreset? {
@@ -401,11 +399,9 @@ extension SoundFontsAU {
       }
 
       if preset.number < 0 {
-        if #available(iOS 13.0, *) {
-          if let fullState = try? wrapped.presetState(for: preset) {
-            self.fullState = fullState
-            _currentPreset = preset
-          }
+        if let fullState = try? wrapped.presetState(for: preset) {
+          self.fullState = fullState
+          _currentPreset = preset
         }
       }
     }
@@ -486,6 +482,7 @@ extension SoundFontsAU {
   public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
   public override var internalRenderBlock: AUInternalRenderBlock {
+#if DEBUG_INTERNAL_RENDER_BLOCK
     let block = self.wrapped.internalRenderBlock
     let log = self.log
     return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput in
@@ -501,8 +498,10 @@ extension SoundFontsAU {
         }
         eventPtr = event.head.next?.pointee
       }
-
       return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
     }
+#else
+    return self.wrapped.internalRenderBlock
+#endif
   }
 }
