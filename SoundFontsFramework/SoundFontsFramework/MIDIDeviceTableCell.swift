@@ -5,7 +5,7 @@ import CoreMIDI
 
 public final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadableView {
   private var midi: MIDI!
-  private var uniqueId: MIDIUniqueID = -1
+  private var endpoint: MIDIEndpointRef = MIDIEndpointRef()
 
   @IBOutlet weak var name: UILabel!
   let autoConnect = UISwitch()
@@ -20,7 +20,7 @@ public final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadab
 
   public func update(midi: MIDI, device: MIDI.DeviceState) {
     self.midi = midi
-    self.uniqueId = device.uniqueId
+    self.endpoint = device.endpoint
     var name = device.displayName
     if let channel = device.channel {
       name += " - channel \(channel + 1)"
@@ -34,9 +34,9 @@ public final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadab
 
   @IBAction func connectedStateChanged(_ sender: UISwitch) {
     if sender.isOn {
-      midi.connect(uniqueId: uniqueId)
+      midi.connect(endpoint: endpoint)
     } else {
-      midi.disconnect(uniqueId: uniqueId)
+      midi.disconnect(endpoint: endpoint)
     }
   }
 }

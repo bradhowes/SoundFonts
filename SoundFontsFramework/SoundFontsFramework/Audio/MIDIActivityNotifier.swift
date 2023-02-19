@@ -5,13 +5,13 @@ import CoreMIDI
 public final class MIDIActivityNotifier: NSObject {
 
   public struct Data: CustomStringConvertible {
-    public var description: String { "\(uniqueId),\(channel)" }
+    public var description: String { "\(endpoint),\(channel)" }
 
-    let uniqueId: MIDIUniqueID
+    let endpoint: MIDIEndpointRef
     let channel: Int
 
-    public init(uniqueId: MIDIUniqueID, channel: Int) {
-      self.uniqueId = uniqueId
+    public init(endpoint: MIDIEndpointRef, channel: Int) {
+      self.endpoint = endpoint
       self.channel = channel
     }
   }
@@ -26,12 +26,12 @@ public final class MIDIActivityNotifier: NSObject {
     notification.registerOnMain(block: block)
   }
 
-  public func showActivity(uniqueId: MIDIUniqueID, channel: Int) {
+  public func showActivity(endpoint: MIDIEndpointRef, channel: Int) {
     let now = Date()
     if channel != lastChannel || now.timeIntervalSince(lastNotificationTime) > 0.5 {
       lastNotificationTime = now
       lastChannel = channel
-      serialQueue.async { self.notification.post(value: .init(uniqueId: uniqueId, channel: channel)) }
+      serialQueue.async { self.notification.post(value: .init(endpoint: endpoint, channel: channel)) }
     }
   }
 }

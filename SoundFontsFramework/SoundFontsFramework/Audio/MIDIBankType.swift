@@ -1,3 +1,5 @@
+// Copyright © 2023 Brad Howes. All rights reserved.
+
 import AVFoundation
 
 /// There are two types of MIDI banks in the General MIDI standard: melody and percussion

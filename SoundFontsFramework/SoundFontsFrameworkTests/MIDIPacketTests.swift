@@ -8,7 +8,6 @@ class MIDIPacketTesting: XCTestCase {
 
   class Receiver: AnyMIDIReceiver {
 
-    func stopAllNotes() {}
     func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {}
     func setController(controller: UInt8, value: UInt8, channel: UInt8) {}
     func changeProgram(program: UInt8, channel: UInt8) {}
@@ -19,20 +18,25 @@ class MIDIPacketTesting: XCTestCase {
     func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {}
 
     struct Event: Equatable {
-      let cmd: UInt8
+      let cmd: MIDI1Msg
       let data1: UInt8
       let data2: UInt8
+      let channel: UInt8
     }
 
     var channel: Int = -1
     var received = [Event]()
 
     func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-      received.append(Event(cmd: 0x90, data1: note, data2: velocity))
+      received.append(Event(cmd: .noteOn, data1: note, data2: velocity, channel: channel))
     }
 
     func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-      received.append(Event(cmd: 0x80, data1: note, data2: velocity)) }
+      received.append(Event(cmd: .noteOff, data1: note, data2: velocity, channel: channel)) }
+
+    func stopAllNotes() {
+      received.append(Event(cmd: .reset, data1: 0x00, data2: 0x00, channel: 0x00))
+    }
   }
 
   class Monitor: MIDIMonitor {
@@ -72,48 +76,71 @@ class MIDIPacketTesting: XCTestCase {
     XCTAssertEqual(packet.data.7, 8)
   }
 
-  func testParser() {
+  func testParseReset() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
-    receiver.channel = -1 // OMNI mode
-    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
-    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2:32)])
+    let noteOn = MIDIPacket.Builder(timestamp: 0, msg: .reset).packet
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
+    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: .reset, data1: 0, data2:0, channel: 0)])
   }
 
-  func testParserReceivingOnChannelMatch() {
+  func testParseNoteOn() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
-    receiver.channel = 1
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32]).packet
-    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
-    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: 0x90, data1: 64, data2: 32)])
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
+    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: .noteOn, data1: 64, data2:32, channel: 1)])
   }
 
-  func testParserSkippingUnknownMessage() {
+  func testParseNoteOff() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
+    let receiver = Receiver()
+    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x81, 62, 30]).packet
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
+    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: .noteOff, data1: 62, data2: 0, channel: 1)])
+  }
+
+  func testParseZeroVelocityNoteOnAsNoteOff() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
+    let receiver = Receiver()
+    let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 0]).packet
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
+    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: .noteOff, data1: 64, data2: 0, channel: 1)])
+  }
+
+  func testParseWithRunningStatus() {
+    let midi = MIDI(settings: Settings(suiteName: "blah"))
+    let receiver = Receiver()
+    let noteOnOff = MIDIPacket.Builder(timestamp: 0, data: [0x90, 0x3C, 0x7F, 0x3C, 0x00]).packet
+    noteOnOff.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
+    XCTAssertEqual(receiver.received, [Receiver.Event(cmd: .noteOn, data1: 0x3C, data2: 0x7F, channel: 0),
+                                       Receiver.Event(cmd: .noteOff, data1: 0x3C, data2: 0x00, channel: 0)])
+  }
+
+  func testParserSkipsUnknownMessage() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     let bogus = MIDIPacket.Builder(timestamp: 0, data: [0xF4, 0x91, 64, 32]).packet
-    bogus.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    bogus.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
 
-  func testParserSkippingIncompleteMessage() {
+  func testParserSkipsIncompleteMessage() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     let noteOn = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64]).packet
-    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    noteOn.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
     XCTAssertTrue(receiver.received.isEmpty)
   }
 
-  func testParserMultipleMessages() {
+  func testParseMultipleMessages() {
     let midi = MIDI(settings: Settings(suiteName: "blah"))
     let receiver = Receiver()
     let noteOnOff = MIDIPacket.Builder(timestamp: 0, data: [0x91, 64, 32, 0x81, 64, 0]).packet
-    noteOnOff.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 123)
+    noteOnOff.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 123)
     XCTAssertEqual(receiver.received, [
-      Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
-      Receiver.Event(cmd: 0x80, data1: 64, data2: 0)
+      Receiver.Event(cmd: .noteOn, data1: 64, data2: 32, channel: 1),
+      Receiver.Event(cmd: .noteOff, data1: 64, data2: 0, channel: 1)
     ])
   }
 
@@ -175,14 +202,14 @@ class MIDIPacketTesting: XCTestCase {
 
     let list = builder.packetList
     XCTAssertEqual(list.numPackets, 2)
-    list.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), uniqueId: 0)
+    list.parse(midi: midi, receiver: receiver, monitor: MIDIActivityNotifier(), endpoint: 0)
 
     XCTAssertEqual(receiver.received, [
-      Receiver.Event(cmd: 0x90, data1: 64, data2: 32),
-      Receiver.Event(cmd: 0x80, data1: 64, data2: 0),
-      Receiver.Event(cmd: 0x90, data1: 65, data2: 33),
-      Receiver.Event(cmd: 0x80, data1: 65, data2: 10),
-      Receiver.Event(cmd: 0x80, data1: 66, data2: 0)
+      Receiver.Event(cmd: .noteOn, data1: 64, data2: 32, channel: 1),
+      Receiver.Event(cmd: .noteOff, data1: 64, data2: 0, channel: 1),
+      Receiver.Event(cmd: .noteOn, data1: 65, data2: 33, channel: 1),
+      Receiver.Event(cmd: .noteOff, data1: 65, data2: 0, channel: 1),
+      Receiver.Event(cmd: .noteOff, data1: 66, data2: 0, channel: 1)
     ])
   }
 
@@ -208,8 +235,8 @@ class MIDIPacketTesting: XCTestCase {
 
     XCTAssertNotNil(skippy)
 
-    let uniqueId: MIDIUniqueID = 123
-    list.parse(midi: midi, receiver: nil, monitor: monitor, uniqueId: uniqueId)
+    let endpoint: MIDIEndpointRef = 123
+    list.parse(midi: midi, receiver: nil, monitor: monitor, endpoint: endpoint)
 
     wait(for: [expectation], timeout: 1.0)
     XCTAssertEqual(channels, Set<Int>([1, 2]))

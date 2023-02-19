@@ -58,7 +58,7 @@ extension MIDIDevicesTableViewController {
     super.viewWillAppear(animated)
     monitorToken = self.midi.addMonitor { data in
       let accepted = self.accepting(channel: data.channel)
-      for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == data.uniqueId {
+      for (row, deviceState) in self.devices.enumerated() where deviceState.endpoint == data.endpoint {
         let indexPath = IndexPath(row: row, section: 0)
         if let cell = self.tableView.cellForRow(at: indexPath) {
           let layer = cell.contentView.layer

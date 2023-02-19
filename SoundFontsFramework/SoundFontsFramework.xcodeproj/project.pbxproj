@@ -142,6 +142,7 @@
 		BD62CF5F253DE22D00DBDC1B /* GuideView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */; };
 		BD6476322665120700FDD94B /* PresetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6476312665120700FDD94B /* PresetsTableViewController.swift */; };
 		BD6476342665167300FDD94B /* PresetsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6476332665167300FDD94B /* PresetsTableView.storyboard */; };
+		BD65780229A21E1900A4C47C /* UInt8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD65780129A21E1900A4C47C /* UInt8Tests.swift */; };
 		BD6E057825CC6F6E004058D9 /* Intro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057725CC6F6E004058D9 /* Intro.storyboard */; };
 		BD6E057E25CC74B1004058D9 /* Done.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057D25CC74B1004058D9 /* Done.storyboard */; };
 		BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */; };
@@ -165,6 +166,8 @@
 		BDA5ACF7265D427C000AE48E /* FontActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF5265D427C000AE48E /* FontActionManager.swift */; };
 		BDA5ACF8265D427C000AE48E /* EventClosureMangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */; };
 		BDA5ACFA265D4284000AE48E /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF9265D4284000AE48E /* Icon.swift */; };
+		BDABD85929A2018800B8D585 /* MIDI1Msg.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDABD85829A2018800B8D585 /* MIDI1Msg.swift */; };
+		BDABD85B29A2025200B8D585 /* UInt8.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDABD85A29A2025200B8D585 /* UInt8.swift */; };
 		BDB2DB5B299EA524009105F7 /* MIDIEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2DB5A299EA524009105F7 /* MIDIEventList.swift */; };
 		BDB2DB5D299EABF2009105F7 /* MIDIEventPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */; };
 		BDB3BFA0270C53D700C4257A /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB3BF9E270C534800C4257A /* MIDI.swift */; };
@@ -391,6 +394,7 @@
 		BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GuideView.storyboard; sourceTree = "<group>"; };
 		BD6476312665120700FDD94B /* PresetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewController.swift; sourceTree = "<group>"; };
 		BD6476332665167300FDD94B /* PresetsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PresetsTableView.storyboard; sourceTree = "<group>"; };
+		BD65780129A21E1900A4C47C /* UInt8Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt8Tests.swift; sourceTree = "<group>"; };
 		BD6E057725CC6F6E004058D9 /* Intro.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Intro.storyboard; sourceTree = "<group>"; };
 		BD6E057D25CC74B1004058D9 /* Done.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Done.storyboard; sourceTree = "<group>"; };
 		BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattersTests.swift; sourceTree = "<group>"; };
@@ -424,6 +428,8 @@
 		BDA5ACF5265D427C000AE48E /* FontActionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontActionManager.swift; sourceTree = "<group>"; };
 		BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventClosureMangement.swift; sourceTree = "<group>"; };
 		BDA5ACF9265D4284000AE48E /* Icon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
+		BDABD85829A2018800B8D585 /* MIDI1Msg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDI1Msg.swift; sourceTree = "<group>"; };
+		BDABD85A29A2025200B8D585 /* UInt8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt8.swift; sourceTree = "<group>"; };
 		BDB2DB5A299EA524009105F7 /* MIDIEventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIEventList.swift; sourceTree = "<group>"; };
 		BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIEventPacketTests.swift; sourceTree = "<group>"; };
 		BDB3BF9E270C534800C4257A /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
@@ -599,6 +605,7 @@
 				BDB3BF9E270C534800C4257A /* MIDI.swift */,
 				BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */,
 				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
+				BDABD85829A2018800B8D585 /* MIDI1Msg.swift */,
 				BD0F940A25728E610065C147 /* MIDIReceiver.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
@@ -695,6 +702,7 @@
 				BD074C2423CDAF51001987E9 /* UITableView.swift */,
 				BD1F11BB23FE690300AE9F3D /* UIViewController.swift */,
 				BD074C2523CDAF51001987E9 /* UserDefaults.swift */,
+				BDABD85A29A2025200B8D585 /* UInt8.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -896,6 +904,7 @@
 				BD23948925540855004E5E0D /* KeyTests.swift */,
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
 				BD1A2A8A26696AD2009E2338 /* IconTests.swift */,
+				BD65780129A21E1900A4C47C /* UInt8Tests.swift */,
 				BD1A2A882668E347009E2338 /* BundleTests.swift */,
 				BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */,
 				BD1B8CDC270D808C00C6BF15 /* MIDIPacketTests.swift */,
@@ -1217,6 +1226,7 @@
 				BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */,
 				BD074C7B23CDAF51001987E9 /* Foundation.swift in Sources */,
 				BD1C22F125CDC781007C114F /* TutorialViewController.swift in Sources */,
+				BDABD85929A2018800B8D585 /* MIDI1Msg.swift in Sources */,
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
 				BDEB12642620939B003CE8EE /* ChangesPageViewController.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
@@ -1264,6 +1274,7 @@
 				BDBF893E25B4C7AC00B58E23 /* ActiveTagManager.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD44E6112791A020004E0543 /* PresetsTableRowVisibilityEditor.swift in Sources */,
+				BDABD85B29A2025200B8D585 /* UInt8.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
 				BDBF896625B58AEF00B58E23 /* TagCollection.swift in Sources */,
 				BDA5ACEE265D422C000AE48E /* DonePageViewController.swift in Sources */,
@@ -1362,6 +1373,7 @@
 				BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */,
 				BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */,
 				BD1A2A852668AD07009E2338 /* NibLoadableViewTests.swift in Sources */,
+				BD65780229A21E1900A4C47C /* UInt8Tests.swift in Sources */,
 				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,
 				BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */,

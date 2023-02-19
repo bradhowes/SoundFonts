@@ -29,12 +29,12 @@ extension MIDIPacketList: Sequence {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  public func parse(midi: MIDI, receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
+  public func parse(midi: MIDI, receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, endpoint: MIDIEndpointRef) {
     os_signpost(.begin, log: log, name: "parse")
     os_log(.debug, log: log, "processPackets - %d", numPackets)
     for packet in self {
       os_signpost(.begin, log: log, name: "sendToController")
-      packet.parse(midi: midi, receiver: receiver, monitor: monitor, uniqueId: uniqueId)
+      packet.parse(midi: midi, receiver: receiver, monitor: monitor, endpoint: endpoint)
       os_signpost(.end, log: log, name: "sendToController")
     }
     os_signpost(.end, log: log, name: "parse")
@@ -91,59 +91,6 @@ extension MIDIPacketList {
 
 extension MIDIPacket {
 
-  /// These are the only MIDI messages we support for now.saf
-  public enum MsgKind: UInt8 {
-    case noteOff = 0x80
-    case noteOn = 0x90
-    case polyphonicKeyPressure = 0xA0
-    case controlChange = 0xB0
-    case programChange = 0xC0
-    case channelPressure = 0xD0
-    case pitchBendChange = 0xE0
-    case systemExclusive = 0xF0
-    case timeCodeQuarterFrame = 0xF1
-    case songPositionPointer = 0xF2
-    case songSelect = 0xF3
-    case tuneRequest = 0xF6
-    case timingClock = 0xF8
-    case startCurrentSequence = 0xFA
-    case continueCurrentSequence = 0xFB
-    case stopCurrentSequence = 0xFC
-    case activeSensing = 0xFE
-    case reset = 0xFF
-
-    init?(_ raw: UInt8) {
-      let highNibble = raw & 0xF0
-      self.init(rawValue: highNibble == 0xF0 ? raw : highNibble)
-    }
-
-    var byteCount: Int {
-      switch self {
-      case .noteOff: return 2
-      case .noteOn: return 2
-      case .polyphonicKeyPressure: return 2
-      case .controlChange: return 2
-      case .programChange: return 1
-      case .channelPressure: return 1
-      case .pitchBendChange: return 2
-      case .systemExclusive: return 65_537 // Make too large to put in MIDIPacket
-      case .timeCodeQuarterFrame: return 1
-      case .songPositionPointer: return 2
-      case .songSelect: return 1
-      case .tuneRequest: return 0
-      case .timingClock: return 0
-      case .startCurrentSequence: return 0
-      case .continueCurrentSequence: return 0
-      case .stopCurrentSequence: return 0
-      case .activeSensing: return 0
-      case .reset: return 0
-      }
-    }
-  }
-}
-
-extension MIDIPacket {
-
   /**
    Builder of MIDIPacket instances from a collection of UInt8 values
    */
@@ -151,7 +98,6 @@ extension MIDIPacket {
 
     /// The timestamp for all of the MIDI events recorded in the data
     public let timestamp: MIDITimeStamp
-
     private var data = [UInt8]()
 
     /**
@@ -171,7 +117,7 @@ extension MIDIPacket {
      - parameter timestamp: the timestamp for all of the events in the packet
      - parameter msg: the MIDI command to add
      */
-    public init(timestamp: MIDITimeStamp, msg: MsgKind) {
+    public init(timestamp: MIDITimeStamp, msg: MIDI1Msg) {
       self.timestamp = timestamp
       self.data = [msg.rawValue]
     }
@@ -183,7 +129,7 @@ extension MIDIPacket {
      - parameter msg: the MIDI command to add
      - parameter data1: the first data value
      */
-    public init(timestamp: MIDITimeStamp, msg: MsgKind, data1: UInt8) {
+    public init(timestamp: MIDITimeStamp, msg: MIDI1Msg, data1: UInt8) {
       self.timestamp = timestamp
       self.data = [msg.rawValue, data1]
     }
@@ -196,7 +142,7 @@ extension MIDIPacket {
      - parameter data1: the first data value
      - parameter data2: the second data value
      */
-    public init(timestamp: MIDITimeStamp, msg: MsgKind, data1: UInt8, data2: UInt8) {
+    public init(timestamp: MIDITimeStamp, msg: MIDI1Msg, data1: UInt8, data2: UInt8) {
       self.timestamp = timestamp
       self.data = [msg.rawValue, data1, data2]
     }
@@ -215,7 +161,7 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-    public mutating func add(msgKind: MsgKind) {
+    public mutating func add(msgKind: MIDI1Msg) {
       self.data.append(msgKind.rawValue)
     }
 
@@ -224,7 +170,7 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-   public mutating func add(msgKind: MsgKind, data1: UInt8) {
+   public mutating func add(msgKind: MIDI1Msg, data1: UInt8) {
       self.data.append(contentsOf: [msgKind.rawValue, data1])
     }
 
@@ -233,7 +179,7 @@ extension MIDIPacket {
 
      - parameter data: MIDI data to add to the packet
      */
-    public mutating func add(msgKind: MsgKind, data1: UInt8, data2: UInt8) {
+    public mutating func add(msgKind: MIDI1Msg, data1: UInt8, data2: UInt8) {
       self.data.append(contentsOf: [msgKind.rawValue, data1, data2])
     }
 
@@ -263,7 +209,7 @@ extension MIDIPacket {
    - parameter monitor: optional entity to monitor MIDI traffic
    - parameter uniqueId: the unique ID of the MIDI endpoint that sent the messages
    */
-  func parse(midi: MIDI, receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, uniqueId: MIDIUniqueID) {
+  func parse(midi: MIDI, receiver: AnyMIDIReceiver?, monitor: MIDIActivityNotifier, endpoint: MIDIEndpointRef) {
     let byteCount = Int(self.length)
 
     // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big
@@ -278,40 +224,35 @@ extension MIDIPacket {
     // Visit the individual bytes until all consumed. If there is something we don't understand, we stop processing the
     // packet.
     withUnsafeBytes(of: self.data) { ptr in
-      var runningStatus: MsgKind?
-      var channel: UInt8 = 0
       var index: Int = 0
+      var runningStatus: UInt8 = 0
+
       while index < byteCount {
-        let status = ptr[index]
+        var status = ptr[index]
         index += 1
 
-        // Support 'running status' by reusing the last byte with the high bit set when we have a byte that does not
-        // not have it set but it should.
-        let command: MsgKind
-        if let tmp = MsgKind(status) {
-
-          // New MIDI command
+        let command: MIDI1Msg
+        if let tmp = MIDI1Msg(status) {
           command = tmp
-          channel = status & 0x0F
-          runningStatus = tmp
-
-        } else if let tmp = runningStatus {
-
-          // Reuse last MIDI command
+          runningStatus = command.hasChannel ? status : 0
+        } else if let tmp = MIDI1Msg(runningStatus) {
+          command = tmp
+          status = runningStatus
           index -= 1
-          command = tmp
         } else {
-
-          // Cannot continue with the packet
           os_log(.error, log: log, "packet - missing command")
           return
         }
 
-        let needed = command.byteCount
-        print(status, command.rawValue, channel)
+        let channel = command.hasChannel ? status.nibbleLow : 0
 
         // We have enough information to update the channel that an endpoint is sending on
-        midi.updateChannel(uniqueId: uniqueId, channel: channel)
+        if command.hasChannel {
+          midi.updateChannel(endpoint: endpoint, channel: channel)
+        }
+
+        let needed = command.byteCount
+
         os_log(.debug, log: log, "message: %d packetChannel: %d needed: %d", command.rawValue, channel, needed)
 
         // Not enough bytes to continue on
@@ -321,21 +262,32 @@ extension MIDIPacket {
         }
 
         if let receiver = receiver {
+          func note() -> UInt8 { ptr[index] }
+          func velocity() -> UInt8 { ptr[index + 1] }
+
           switch command {
           case .noteOff:
-            receiver.stopNote(note: ptr[index], velocity: ptr[index + 1], channel: channel)
+            receiver.stopNote(note: note(), velocity: 0, channel: channel)
           case .noteOn:
-            receiver.startNote(note: ptr[index], velocity: ptr[index + 1], channel: channel)
+            let vel = velocity()
+            if vel == 0 {
+              receiver.stopNote(note: note(), velocity: 0, channel: channel)
+            } else {
+              receiver.startNote(note: note(), velocity: vel, channel: channel)
+            }
           case .polyphonicKeyPressure:
-            receiver.setNotePressure(note: ptr[index], pressure: ptr[index + 1], channel: channel)
+            receiver.setNotePressure(note: note(), pressure: velocity(), channel: channel)
           case .controlChange:
-            receiver.setController(controller: ptr[index], value: ptr[index + 1], channel: channel)
+            let id = ptr[index]
+            let value = ptr[index + 1]
+            receiver.setController(controller: id, value: value, channel: channel)
           case .programChange:
             receiver.changeProgram(program: ptr[index], channel: channel)
           case .channelPressure:
             receiver.setPressure(pressure: ptr[index], channel: channel)
           case .pitchBendChange:
-            receiver.setPitchBend(value: UInt16(ptr[index + 1]) << 7 + UInt16(ptr[index]), channel: channel)
+            let value = UInt16(ptr[index + 1]) << 7 + UInt16(ptr[index])
+            receiver.setPitchBend(value: value, channel: channel)
           case .systemExclusive: break
           case .timeCodeQuarterFrame: break
           case .songPositionPointer: break
@@ -346,12 +298,11 @@ extension MIDIPacket {
           case .continueCurrentSequence: break
           case .stopCurrentSequence: break
           case .activeSensing: break
-          case .reset:
-            receiver.stopAllNotes()
+          case .reset: receiver.stopAllNotes()
           }
         }
 
-        monitor.showActivity(uniqueId: uniqueId, channel: Int(channel))
+        monitor.showActivity(endpoint: endpoint, channel: Int(channel))
 
         index += needed
       }
