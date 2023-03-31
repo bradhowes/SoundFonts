@@ -2,43 +2,36 @@
 
 import UIKit
 import CoreMIDI
+import MorkAndMIDI
 
 /**
  A table view that shows the known MIDI devices.
  */
 final class MIDIDevicesTableViewController: UITableViewController {
 
+  private var settings: Settings!
   private var midi: MIDI!
-  private var devices = [MIDI.DeviceState]() {
-    didSet {
-      if self.isViewLoaded {
-        self.tableView.reloadData()
-      }
-    }
-  }
+  private var midiMonitor: MIDIMonitor!
 
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var channelsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
   private var monitorToken: NotificationObserver?
 
-  func configure(midi: MIDI, activeChannel: Int) {
+  func configure(settings: Settings, midi: MIDI, midiMonitor: MIDIMonitor, activeChannel: Int) {
+    self.settings = settings
     self.midi = midi
-    self.devices = midi.devices
+    self.midiMonitor = midiMonitor
     self.activeChannel = activeChannel
 
     activeConnectionsObserver = midi.observe(\.activeConnections) { [weak self] _, _ in
       guard let self = self else { return }
-      DispatchQueue.main.async {
-        self.devices = self.midi.devices
-      }
+      DispatchQueue.main.async { self.tableView.reloadData() }
     }
 
     channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
       guard let self = self else { return }
-      DispatchQueue.main.async {
-        self.devices = self.midi.devices
-      }
+      DispatchQueue.main.async { self.tableView.reloadData() }
     }
   }
 }
@@ -56,9 +49,9 @@ extension MIDIDevicesTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = self.midi.addMonitor { data in
-      let accepted = self.accepting(channel: data.channel)
-      for (row, deviceState) in self.devices.enumerated() where deviceState.endpoint == data.endpoint {
+    monitorToken = self.midiMonitor.addMonitor { payload in
+      let accepted = self.accepting(channel: payload.channel)
+      for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
         if let cell = self.tableView.cellForRow(at: indexPath) {
           let layer = cell.contentView.layer
@@ -80,13 +73,17 @@ extension MIDIDevicesTableViewController {
 extension MIDIDevicesTableViewController {
 
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    devices.count
+    midi.sourceConnections.count
   }
+
+  private func connectedSettingKey(for uniqueId: MIDIUniqueID) -> String { "midiAudoConnect_\(uniqueId)" }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIDeviceTableCell = tableView.dequeueReusableCell(at: indexPath)
-    let deviceState = devices[indexPath.row]
-    cell.update(midi: midi, device: deviceState)
+    let source = midi.sourceConnections[indexPath.row]
+    let autoConnectDefault = settings.autoConnectNewMIDIDeviceEnabled
+    let autoConnect = settings.get(key: connectedSettingKey(for: source.uniqueId), defaultValue: autoConnectDefault)
+    cell.update(midi: midi, sourceConnection: source, autoConnect: autoConnect)
     return cell
   }
 
@@ -98,8 +95,9 @@ extension MIDIDevicesTableViewController {
           """, preferredStyle: .alert)
     ac.addAction(
       UIAlertAction(title: "Yes", style: .default) { _ in
-        self.midi.reset()
+        self.midi.stop()
         MIDIRestart()
+        self.midi.start()
       })
     ac.addAction(
       UIAlertAction(title: "Cancel", style: .cancel) { _ in

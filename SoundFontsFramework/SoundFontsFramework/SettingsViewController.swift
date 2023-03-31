@@ -1,6 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import CoreAudioKit
+import MorkAndMIDI
 import MessageUI
 import UIKit
 import os
@@ -95,8 +96,8 @@ public final class SettingsViewController: UIViewController {
   public weak var soundFonts: SoundFontsProvider!
   public weak var infoBar: AnyInfoBar!
   public weak var midi: MIDI?
+  public weak var midiMonitor: MIDIMonitor?
   public var isMainApp = true
-
   private var monitorToken: NotificationObserver?
   private var midiConnectionsObserver: NSKeyValueObservation!
   private var tuningComponent: TuningComponent?
@@ -194,7 +195,7 @@ public final class SettingsViewController: UIViewController {
         self?.updateMIDIConnectionsButton()
       }
 
-      monitorToken = midi?.addMonitor { data in
+      monitorToken = midiMonitor?.addMonitor { data in
         let ourChannel = self.settings.midiChannel
         let accepted = ourChannel == -1 || ourChannel == data.channel
         MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
@@ -532,11 +533,15 @@ extension SettingsViewController: SegueHandler {
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .midiDevicesTableView:
-      guard let midi = self.midi else { return }
-      guard let destination = segue.destination as? MIDIDevicesTableViewController else {
+      guard
+        let midi = self.midi,
+        let midiMonitor = self.midiMonitor,
+        let destination = segue.destination as? MIDIDevicesTableViewController
+      else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
-      destination.configure(midi: midi, activeChannel: settings.midiChannel)
+      destination.configure(settings: settings, midi: midi, midiMonitor: midiMonitor,
+                            activeChannel: settings.midiChannel)
     }
   }
 }

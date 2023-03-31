@@ -7,8 +7,7 @@ internal struct TouchKeyMap {
   private let noteVelocity: UInt8
   private let noteChannel: UInt8
 
-  /// The entity that processes key touches as MIDI notes
-  var processor: KeyboardNoteProcessor?
+  var processor: SynthManager?
 
   /**
    Construct new entity.
@@ -66,12 +65,12 @@ extension TouchKeyMap {
   private func activateKey(_ key: Key) {
     guard !key.pressed else { return }
     key.pressed = true
-    processor?.startNote(note: UInt8(key.note.midiNoteValue), velocity: noteVelocity, channel: noteChannel)
+    processor?.synth?.noteOn(note: UInt8(key.note.midiNoteValue), velocity: noteVelocity)
   }
 
   private func releaseKey(_ key: Key) {
     guard key.pressed else { return }
     key.pressed = false
-    processor?.stopNote(note: UInt8(key.note.midiNoteValue), velocity: 0, channel: noteChannel)
+    processor?.synth?.noteOff(note: UInt8(key.note.midiNoteValue), velocity: 0)
   }
 }

@@ -1,6 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import MorkAndMIDI
 
 /// Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
 /// application launch. Each view controller is responsible for establishing the connections in their
@@ -71,12 +72,14 @@ where T: ControllerConfiguration {
   private var _synth: SynthManager? {
     didSet {
       if let synth = _synth {
-        notify(.synthAvailable(synth))
+        notify(.synthManagerAvailable(synth))
       }
     }
   }
 
   public let midi: MIDI?
+
+  public let midiMonitor: MIDIMonitor?
 
   /**
    Create a new instance
@@ -86,7 +89,10 @@ where T: ControllerConfiguration {
   public init(inApp: Bool) {
     self.inApp = inApp
     self.settings = Settings()
-    self.midi = inApp ? MIDI(settings: self.settings) : nil
+
+    self.midi = inApp ? MIDI(clientName: "SoundFonts", uniqueId: 44_659, midiProtocol: ._1_0) : nil
+    self.midiMonitor = inApp ? MIDIMonitor(settings: settings) : nil
+    self.midi?.monitor = self.midiMonitor
 
     self.consolidatedConfigProvider = .init(inApp: inApp)
 
@@ -110,12 +116,12 @@ where T: ControllerConfiguration {
   public func createAudioComponents() {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
-        let synth = SynthManager(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
-                          delay: DelayEffect(), settings: self.settings)
+        let synth = SynthManager(mode: .standalone, activePresetManager: self.activePresetManager,
+                                 reverb: ReverbEffect(), delay: DelayEffect(), settings: self.settings)
         self.accessQueue.sync { self._synth = synth }
       }
     } else {
-      self._synth = SynthManager(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
+      self._synth = SynthManager(mode: .audioUnit, activePresetManager: activePresetManager, reverb: nil, delay: nil,
                                  settings: settings)
     }
   }

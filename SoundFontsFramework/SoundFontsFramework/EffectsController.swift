@@ -311,7 +311,7 @@ extension EffectsController {
 
   private func routerChangeNotificationInBackground(_ event: ComponentContainerEvent) {
     switch event {
-    case .synthAvailable(let synth):
+    case .synthManagerAvailable(let synth):
       DispatchQueue.main.async {
         self.synth = synth
         self.updateState()

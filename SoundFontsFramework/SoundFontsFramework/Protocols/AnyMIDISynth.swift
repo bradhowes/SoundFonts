@@ -2,75 +2,31 @@
 
 import AVFoundation
 import SoundFontInfoLib
+import MorkAndMIDI
 
 /**
  Protocol for any entity that acts as a MIDI synth.
  */
-public protocol AnyMIDISynth: AnyMIDIReceiver, PresetLoader {
-
+public protocol AnyMIDISynth: PresetLoader {
   var avAudioUnit: AVAudioUnitMIDIInstrument { get }
-
   var synthGain: Float { get set }
   var synthStereoPan: Float { get set }
   var synthGlobalTuning: Float { get set }
 
-  func reset()
-}
+  func noteOff(note: UInt8, velocity: UInt8)
+  func noteOn(note: UInt8, velocity: UInt8)
+  func polyphonicKeyPressure(note: UInt8, pressure: UInt8)
+  func controlChange(controller: UInt8, value: UInt8)
+  func programChange(program: UInt8)
+  func channelPressure(pressure: UInt8)
+  func pitchBendChange(value: UInt16)
 
-public extension MIDIPacket {
-  func post(on block: AUScheduleMIDIEventBlock) {
-    withUnsafePointer(to: data.0) { ptr in
-      block(AUEventSampleTimeImmediate, 0, Int(self.length), ptr)
-    }
-  }
-}
-
-extension AVSF2Engine: AnyMIDISynth {
-
-  @inlinable
-  public func reset() {
-    AudioUnitReset(avAudioUnit.audioUnit, kAudioUnitScope_Global, 0)
-    avAudioUnit.reset()
-  }
-
-  public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
-    sf2Engine.load(url)
-    sf2Engine.selectPreset(Int32(preset.program))
-    return nil
-  }
-
-  @inlinable
-  public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    guard let midiBlock = self.sf2Engine.scheduleMIDIEventBlock else { fatalError("nil MIDI schedule block") }
-    let packet = MIDIPacket.Builder(timestamp: 0, msg: .noteOn, data1: note, data2: velocity).packet
-    packet.post(on: midiBlock)
-  }
-
-  @inlinable
-  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    guard let midiBlock = self.sf2Engine.scheduleMIDIEventBlock else { fatalError("nil MIDI schedule block") }
-    let packet = MIDIPacket.Builder(timestamp: 0, msg: .noteOff, data1: note, data2: velocity).packet
-    packet.post(on: midiBlock)
-  }
-
-  @inlinable
-  public func stopAllNotes() {
-    guard let midiBlock = self.sf2Engine.scheduleMIDIEventBlock else { fatalError("nil MIDI schedule block") }
-    let packet = MIDIPacket.Builder(timestamp: 0, msg: .reset).packet
-    packet.post(on: midiBlock)
-  }
-
-  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {}
-  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {}
-  public func changeProgram(program: UInt8, channel: UInt8) {}
-  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {}
-  public func setPressure(pressure: UInt8, channel: UInt8) {}
-  public func setPitchBend(value: UInt16, channel: UInt8) {}
-  public func processMIDIEvent(status: UInt8, data1: UInt8) {}
-  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {}
+  func stopAllNotes()
+  func setPitchBendRange(value: UInt8)
 }
 
 extension AVAudioUnitSampler: AnyMIDISynth {
+  public var avAudioUnit: AVAudioUnitMIDIInstrument { self }
 
   public var synthGain: Float {
     get { self.masterGain }
@@ -87,57 +43,51 @@ extension AVAudioUnitSampler: AnyMIDISynth {
     set { self.globalTuning = newValue }
   }
 
-  public var avAudioUnit: AVAudioUnitMIDIInstrument { self }
+  public func setPitchBendRange(value: UInt8) {
+    guard value < 25 else { return }
+    sendMIDIEvent(0xB0, data1: 101, data2: 0)
+    sendMIDIEvent(0xB0, data1: 100, data2: 0)
+    sendMIDIEvent(0xB0, data1: 6, data2: value)
+    sendMIDIEvent(0xB0, data1: 38, data2: 0)
+  }
 
-  @inlinable
   public func stopAllNotes() {
     AudioUnitReset(self.audioUnit, kAudioUnitScope_Global, 0)
-    self.reset()
+    reset()
   }
 
   @inlinable
-  public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    startNote(note, withVelocity: velocity, onChannel: channel)
+  public func noteOff(note: UInt8, velocity: UInt8) {
+    stopNote(note, onChannel: 0)
   }
 
   @inlinable
-  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    stopNote(note, onChannel: channel)
+  public func noteOn(note: UInt8, velocity: UInt8) {
+    startNote(note, withVelocity: velocity, onChannel: 0)
   }
 
   @inlinable
-  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
-    sendController(controller, withValue: value, onChannel: channel)
+  public func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
+    sendPressure(forKey: note, withValue: pressure, onChannel: 0)
   }
 
   @inlinable
-  public func setPitchBend(value: UInt16, channel: UInt8) { sendPitchBend(value, onChannel: channel) }
-
-  @inlinable
-  public func setPressure(pressure: UInt8, channel: UInt8) { sendPressure(pressure, onChannel: channel) }
-
-  @inlinable
-  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {
-    sendPressure(forKey: note, withValue: pressure, onChannel: channel)
+  public func controlChange(controller: UInt8, value: UInt8) {
+    sendController(controller, withValue: value, onChannel: 0)
   }
 
   @inlinable
-  public func changeProgram(program: UInt8, channel: UInt8) {
-    sendProgramChange(program, onChannel: channel)
+  public func pitchBendChange(value: UInt16) {
+    sendPitchBend(value, onChannel: 0)
   }
 
   @inlinable
-  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {
-    sendProgramChange(program, bankMSB: bankMSB, bankLSB: bankLSB, onChannel: channel)
+  public func channelPressure(pressure: UInt8) {
+    sendPressure(pressure, onChannel: 0)
   }
 
   @inlinable
-  public func processMIDIEvent(status: UInt8, data1: UInt8) {
-    sendMIDIEvent(status, data1: data1)
-  }
-
-  @inlinable
-  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {
-    sendMIDIEvent(status, data1: data1, data2: data2)
+  public func programChange(program: UInt8) {
+    sendProgramChange(program, onChannel: 0)
   }
 }

@@ -120,7 +120,7 @@ final public class FavoriteEditor: UIViewController {
     notesTextView.delegate = self
 
     lowestNoteStepper.minimumValue = 0
-    lowestNoteStepper.maximumValue = Double(MIDI.maxMidiValue)
+    lowestNoteStepper.maximumValue = 12 * 9
 
     gainSlider.minimumValue = -90.0  // db
     gainSlider.maximumValue = 12  // db

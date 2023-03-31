@@ -1,15 +1,16 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import UIKit
+import MorkAndMIDI
 
 /// State change events that can happen with a ComponentContainer.
 public enum ComponentContainerEvent: CustomStringConvertible {
   /// The sampler is ready for use.
-  case synthAvailable(SynthManager)
+  case synthManagerAvailable(SynthManager)
 
   public var description: String {
     switch self {
-    case .synthAvailable: return "<ComponentContainerEvent: synthAvailable>"
+    case .synthManagerAvailable: return "<ComponentContainerEvent: synthAvailable>"
     }
   }
 }
@@ -49,6 +50,10 @@ public protocol ComponentContainer: AnyObject {
   var alertManager: AlertManager { get }
 
   var midi: MIDI? { get }
+
+  var askForReview: AskForReview? { get }
+
+  var midiMonitor: MIDIMonitor? { get }
 
   func createAudioComponents()
 

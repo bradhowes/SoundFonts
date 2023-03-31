@@ -4,53 +4,10 @@ import AVFoundation
 import AudioToolbox
 import Foundation
 import os
-
 import SoundFontInfoLib
 
-/// Failure modes for a synth
-public enum SynthStartFailure: Error, Equatable, CustomStringConvertible {
-  /// No synth is available
-  case noSynth
-  /// Failed to active a session
-  case sessionActivating(error: NSError)
-  /// Failed to start audio engine
-  case engineStarting(error: NSError)
-  /// Failed to load a preset
-  case presetLoading(error: NSError)
-  /// The system error associated with a failure.
-  var error: NSError {
-    switch self {
-    case .noSynth: return NSError()
-    case .sessionActivating(let err): return err
-    case .engineStarting(let err): return err
-    case .presetLoading(let err): return err
-    }
-  }
-
-  public var description: String {
-    switch self {
-    case .noSynth: return "<SynthStartFailure: no synth>"
-    case .sessionActivating(error: let error):
-      return "<SynthStartFailure: sessionActivating - \(error.localizedDescription)>"
-    case .engineStarting(error: let error):
-      return "<SynthStartFailure: engineStarting - \(error.localizedDescription)>"
-    case .presetLoading(error: let error):
-      return "<SynthStartFailure: presetLoading - \(error.localizedDescription)>"
-    }
-  }
-}
-
-extension Result: CustomStringConvertible {
-  public var description: String {
-    switch self {
-    case .success(let value): return "<Result: success \(value)>"
-    case .failure(let value): return "<Result: failure \(value)>"
-    }
-  }
-}
-
 /**
- This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
+ This class manages the actual synth.
  */
 public final class SynthManager {
   private static let log = Logging.logger("Synth")
@@ -58,13 +15,10 @@ public final class SynthManager {
 
   /// The notification that tuning value has changed for the sampler
   public static let tuningChangedNotification = TypedNotification<Float>(name: .tuningChanged)
-
   /// The notification that gain value has changed for the sampler
   public static let gainChangedNotification = TypedNotification<Float>(name: .gainChanged)
-
   /// The notification that pan value has changed for the sampler
   public static let panChangedNotification = TypedNotification<Float>(name: .panChanged)
-
   /// The notification that pitch bend range has changed for the sampler
   public static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
 
@@ -76,8 +30,9 @@ public final class SynthManager {
     case audioUnit
   }
 
-  /// The internal AVAudioUnitSampler that does the actual sound generation
+  /// The internal AVAudioUnitSampler that does the actual sound generation. NOTE: due to
   public private(set) var synth: AnyMIDISynth?
+
   public var avAudioUnit: AVAudioUnitMIDIInstrument? { synth?.avAudioUnit }
   private var auAudioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
 
@@ -185,7 +140,7 @@ public final class SynthManager {
       engine.stop()
       if let synth = self.synth {
         os_log(.debug, log: log, "resetting sampler")
-        synth.reset()
+        synth.stopAllNotes()
         os_log(.debug, log: log, "detaching sampler")
         engine.detach(synth.avAudioUnit)
         os_log(.debug, log: log, "dropping sampler")
@@ -200,7 +155,7 @@ public final class SynthManager {
 
     if let sampler = self.synth {
       os_log(.debug, log: log, "resetting sampler")
-      sampler.reset()
+      sampler.stopAllNotes()
       os_log(.debug, log: log, "dropping sampler")
       self.synth = nil
     }
@@ -310,104 +265,11 @@ extension SynthManager {
    */
   public func setPitchBendRange(value: UInt8) {
     os_log(.debug, log: log, "setPitchBendRange BEGIN - %d", value)
-    guard value < 25 else {
-      os_log(.error, log: log, "setPitchBendRange END - invalid value: %d", value)
-      return
-    }
-
-    synth?.processMIDIEvent(status: 0xB0, data1: 101, data2: 0)
-    synth?.processMIDIEvent(status: 0xB0, data1: 100, data2: 0)
-    synth?.processMIDIEvent(status: 0xB0, data1: 6, data2: UInt8(value))
-    synth?.processMIDIEvent(status: 0xB0, data1: 38, data2: 0)
-
+    synth?.setPitchBendRange(value: value)
     os_log(.debug, log: log, "setPitchBendRange END")
   }
-}
 
-extension SynthManager: KeyboardNoteProcessor {
-
-  /**
-   Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
-
-   - parameter midiValue: MIDI value that indicates the pitch to play
-   - parameter velocity: how loud to play the note (1-127)
-   */
-  public func startNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "startNote - %d %d", note, velocity)
-    guard velocity > 0 else {
-      stopNote(note: note, velocity: velocity, channel: channel)
-      return
-    }
-
-    guard isRendering else { return }
-    synth?.startNote(note: note, velocity: velocity, channel: channel)
-  }
-
-  /**
-   Stop playing a sound at the given pitch.
-
-   - parameter midiValue: MIDI value that indicates the pitch to stop
-   */
-  public func stopNote(note: UInt8, velocity: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "stopNote - %d %d", note, pendingPresetChanges)
-    guard isRendering else { return }
-    synth?.stopNote(note: note, velocity: velocity, channel: channel)
-  }
-}
-
-extension SynthManager: AnyMIDIReceiver {
-
-  public func stopAllNotes() {
-    synth?.stopAllNotes()
-  }
-
-  public func changeProgram(program: UInt8, channel: UInt8) {}
-
-  public func changeProgram(program: UInt8, bankMSB: UInt8, bankLSB: UInt8, channel: UInt8) {}
-
-  public func processMIDIEvent(status: UInt8, data1: UInt8) {}
-
-  public func processMIDIEvent(status: UInt8, data1: UInt8, data2: UInt8) {}
-
-  /**
-   After-touch for the given playing note.
-
-   - parameter midiValue: MIDI value that indicates the pitch being played
-   - parameter pressure: the after-touch pressure value for the key
-   */
-  public func setNotePressure(note: UInt8, pressure: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "setKeyPressure - %d %d", note, pressure)
-    guard isRendering else { return }
-    synth?.setNotePressure(note: note, pressure: pressure, channel: channel)
-  }
-
-  /**
-   After-touch for the whole channel.
-
-   - parameter pressure: the after-touch pressure value for all of the playing keys
-   */
-  public func setPressure(pressure: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "setPressure - %d", pressure)
-    guard isRendering else { return }
-    synth?.setPressure(pressure: pressure, channel: channel)
-  }
-
-  /**
-   Pitch-bend controller value.
-
-   - parameter value: the controller value. Middle is 0x200
-   */
-  public func setPitchBend(value: UInt16, channel: UInt8) {
-    os_log(.debug, log: log, "setPitchBend - %d", value)
-    guard isRendering else { return }
-    synth?.setPitchBend(value: value, channel: channel)
-  }
-
-  public func setController(controller: UInt8, value: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "setController - %d %d", controller, value)
-    guard isRendering else { return }
-    synth?.setController(controller: controller, value: value, channel: channel)
-  }
+  public func stopAllNotes() { synth?.stopAllNotes()  }
 }
 
 extension SynthManager {

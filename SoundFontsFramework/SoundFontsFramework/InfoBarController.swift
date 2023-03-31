@@ -2,6 +2,7 @@
 
 import UIKit
 import os
+import MorkAndMIDI
 
 /// Manager of the strip informational strip between the keyboard and the SoundFont presets / favorites screens. Supports
 /// left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
@@ -43,6 +44,7 @@ public final class InfoBarController: UIViewController {
   private var isMainApp: Bool!
   private var settings: Settings!
   private var midi: MIDI?
+  private var midiMonitor: MIDIMonitor?
 
   private var observers = [NSKeyValueObservation]()
 
@@ -91,8 +93,8 @@ public final class InfoBarController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    monitorToken = midi?.addMonitor { data in
-      let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == data.channel
+    monitorToken = midiMonitor?.addMonitor { payload in
+      let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == payload.channel
       self.updateMIDIIndicator(accepted: accepted)
     }
 
@@ -147,6 +149,7 @@ extension InfoBarController: ControllerConfiguration {
     soundFonts = router.soundFonts
     isMainApp = router.isMainApp
     midi = router.midi
+    midiMonitor = router.midiMonitor
 
     showActivePreset()
     showEffects.isEnabled = router.isMainApp
@@ -306,6 +309,7 @@ extension InfoBarController: SegueHandler {
     viewController.isMainApp = isMainApp
     viewController.settings = settings
     viewController.midi = midi
+    viewController.midiMonitor = midiMonitor
     viewController.infoBar = self
 
     if !isMainApp {

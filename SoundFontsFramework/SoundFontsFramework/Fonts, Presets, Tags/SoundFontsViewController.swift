@@ -1,5 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
+import UniformTypeIdentifiers
 import UIKit
 import os
 
@@ -126,9 +127,9 @@ extension SoundFontsViewController {
 extension SoundFontsViewController {
 
   private func showSoundFontPicker(_ button: AnyObject) {
-    let documentPicker = UIDocumentPickerViewController(
-      documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"],
-      in: settings.copyFilesWhenAdding ? .import : .open)
+    let types = ["com.braysoftware.sf2", "com.soundblaster.soundfont"].compactMap { UTType($0) }
+    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: types,
+                                                        asCopy: settings.copyFilesWhenAdding)
     documentPicker.delegate = self
     documentPicker.modalPresentationStyle = .automatic
     documentPicker.allowsMultipleSelection = true

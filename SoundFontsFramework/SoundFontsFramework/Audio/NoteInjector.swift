@@ -9,7 +9,6 @@ public final class NoteInjector {
   private let note: UInt8 = 69  // A4
   private let noteOnDuration = 0.5
   private let noteVelocity: UInt8 = 32
-  private let noteChannel: UInt8 = 0
   private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInitiated,
                                            target: DispatchQueue.global(qos: .userInitiated))
   private let settings: Settings
@@ -24,19 +23,18 @@ public final class NoteInjector {
 
    - parameter synth: the synth to command
    */
-  public func post(to synth: SynthManager) {
+  public func post(to synth: AnyMIDISynth) {
     guard settings.playSample == true else { return }
     workItems.forEach { $0.cancel() }
 
     let note = self.note
     let noteVelocity = self.noteVelocity
-    let noteChannel = self.noteChannel
-    let noteOn = DispatchWorkItem { synth.startNote(note: note, velocity: noteVelocity, channel: noteChannel) }
+    let noteOn = DispatchWorkItem { synth.noteOn(note: note, velocity: noteVelocity) }
 
     // NOTE: for some reason, executing this without any delay does not work.
     playingQueue.asyncAfter(deadline: .now() + 0.025, execute: noteOn)
 
-    let noteOff = DispatchWorkItem { synth.stopNote(note: note, velocity: 0, channel: noteChannel) }
+    let noteOff = DispatchWorkItem { synth.noteOff(note: note, velocity: 0) }
     playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
     workItems = [noteOn, noteOff]

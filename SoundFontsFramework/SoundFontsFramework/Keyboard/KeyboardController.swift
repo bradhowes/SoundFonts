@@ -119,8 +119,8 @@ extension KeyboardController: ControllerConfiguration {
   }
 
   private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
-    if case let .synthAvailable(synth) = event {
-      touchedKeys.processor = synth
+    if case let .synthManagerAvailable(synthManager) = event {
+      touchedKeys.processor = synthManager
     }
   }
 
@@ -277,12 +277,14 @@ extension KeyboardController: AnyKeyboard {
 
 extension KeyboardController {
 
+  private var maxMidiValue: Int { 12 * 9 } // C8
+
   private func createKeys() {
     os_log(.debug, log: self.log, "createKeys BEGIN")
     var blackKeys = [Key]()
     for each in KeyParamsSequence(
       keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
-      lastMidiNote: MIDI.maxMidiValue)
+      lastMidiNote: maxMidiValue)
     {
       let key = Key(frame: each.0, note: each.1, settings: settings)
       if key.note.accented {
@@ -304,7 +306,7 @@ extension KeyboardController {
       allKeys,
       KeyParamsSequence(
         keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height,
-        firstMidiNote: 0, lastMidiNote: MIDI.maxMidiValue))
+        firstMidiNote: 0, lastMidiNote: maxMidiValue))
     {
       key.frame = def.0
     }
@@ -370,10 +372,10 @@ extension KeyboardController {
   private func shiftKeyboardUp(_ sender: AnyObject) {
     os_log(.debug, log: log, "shiftKeyBoardUp")
     precondition(!allKeys.isEmpty)
-    if lastMidiNoteValue < MIDI.maxMidiValue {
+    if lastMidiNoteValue < maxMidiValue {
       let shift: Int = {
         (firstMidiNoteValue % 12 == 0)
-          ? min(12, MIDI.maxMidiValue - lastMidiNoteValue) : (12 - firstMidiNoteValue % 12)
+          ? min(12, maxMidiValue - lastMidiNoteValue) : (12 - firstMidiNoteValue % 12)
       }()
       shiftKeys(by: shift)
     }

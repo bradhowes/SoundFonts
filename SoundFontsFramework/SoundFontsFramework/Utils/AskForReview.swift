@@ -62,6 +62,7 @@ public final class AskForReview: NSObject {
 
   private var countDown = 3
   private var observer: NSObjectProtocol?
+  public var windowScene: UIWindowScene?
 
   /**
    Construct new (sole) instance
@@ -112,7 +113,8 @@ public final class AskForReview: NSObject {
     }
 
     DispatchQueue.main.async {
-      SKStoreReviewController.requestReview()
+      guard let windowScene = self.windowScene else { return }
+      SKStoreReviewController.requestReview(in: windowScene)
       self.lastReviewRequestVersion = currentVersion
       self.lastReviewRequestDate = now
     }

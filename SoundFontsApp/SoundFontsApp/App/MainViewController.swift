@@ -2,6 +2,7 @@
 
 import AVKit
 import SoundFontsFramework
+import MorkAndMIDI
 import UIKit
 import os
 
@@ -18,7 +19,7 @@ final class MainViewController: UIViewController {
   private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
   private var keyboard: AnyKeyboard!
-  private var synth: SynthManager?
+  private var synthManager: SynthManager?
   private var infoBar: AnyInfoBar!
   private var midi: MIDI?
   private var settings: Settings!
@@ -72,11 +73,18 @@ final class MainViewController: UIViewController {
       }
     }
 
+    router?.askForReview?.windowScene = view.window?.windowScene
+
 #if TEST_MEDIA_SERVICES_RESTART // See Development.xcconfig
     resetTimers.append(Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
       NotificationCenter.default.post(name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
     })
 #endif
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    router?.askForReview?.windowScene = nil
   }
 
   override func willTransition(to newCollection: UITraitCollection,
@@ -125,14 +133,14 @@ extension MainViewController {
    */
   func startAudioSession() {
     os_log(.debug, log: log, "startAudioSession BEGIN")
-    guard let synth = self.synth else {
+    guard let synthManager = self.synthManager else {
       // The synth has not loaded yet, so we postpone until it is.
       os_log(.debug, log: log, "startAudioSession END - no synth")
       startRequested = true
       return
     }
 
-    DispatchQueue.global(qos: .userInitiated).async { self.startAudioSessionInBackground(synth) }
+    DispatchQueue.global(qos: .userInitiated).async { self.startAudioSessionInBackground(synthManager) }
     os_log(.debug, log: log, "startAudioSession END")
   }
 
@@ -174,14 +182,14 @@ extension MainViewController {
    */
   func stopAudio() {
     os_log(.debug, log: log, "stopAudio BEGIN")
-    guard synth != nil else {
+    guard synthManager != nil else {
       os_log(.debug, log: log, "stopAudio END - no synth")
       return
     }
 
     midi?.receiver = nil
     volumeMonitor?.stop()
-    synth?.stop()
+    synthManager?.stop()
 
     let session = AVAudioSession.sharedInstance()
     do {
@@ -292,32 +300,33 @@ extension MainViewController: ControllerConfiguration {
 
   private func startMIDI() {
     os_log(.debug, log: log, "startMIDI BEGIN")
-    guard let synth = self.synth else { return }
+    guard let synthManager = self.synthManager else { return }
     os_log(.error, log: log, "starting MIDI for synth")
-    midiController = MIDIReceiver(synth: synth, keyboard: keyboard, settings: settings)
+    midiController = MIDIReceiver(synthManager: synthManager, keyboard: keyboard, settings: settings)
     midi?.receiver = midiController
     infoBar.addEventClosure(.panic) { [weak self] _ in
       self?.infoBar.setStatusText("All notes off")
       self?.midiController?.stopAllNotes()
     }
+    midi?.start()
     os_log(.debug, log: log, "startMIDI END")
   }
 
   private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
     os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
     switch event {
-    case .synthAvailable(let synth): setSynthInBackground(synth)
+    case .synthManagerAvailable(let synthManager): setSynthInBackground(synthManager)
     }
   }
 
-  private func setSynthInBackground(_ synth: SynthManager) {
+  private func setSynthInBackground(_ synthManager: SynthManager) {
     os_log(.debug, log: log, "setSynthInBackground BEGIN")
-    self.synth = synth
+    self.synthManager = synthManager
 
     // If we were started but did not have the synth available, now we can continue starting the audio session.
     if startRequested {
       startRequested = false
-      self.startAudioSessionInBackground(synth)
+      self.startAudioSessionInBackground(synthManager)
     }
 
     os_log(.debug, log: log, "setSynthInBackground END")
@@ -335,9 +344,12 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "useActivePresetInBackground BEGIN - %{public}s", activePresetKind.description)
     volumeMonitor?.validActivePreset = activePresetKind != .none
     midiController?.stopAllNotes()
-    guard let synth = self.synth else { return }
-    let result = synth.loadActivePreset {
-      if playSample { self.noteInjector.post(to: synth) }
+
+    guard let synthManager = self.synthManager else { return }
+    let result = synthManager.loadActivePreset {
+      if let synth = synthManager.synth, playSample {
+        self.noteInjector.post(to: synth)
+      }
     }
 
     if case let .failure(what) = result, what != .noSynth {
@@ -365,7 +377,7 @@ extension MainViewController: ControllerConfiguration {
   private func recreateSynth() {
     os_log(.error, log: log, "recreateSynth - BEGIN")
     self.stopAudio()
-    self.synth = nil
+    self.synthManager = nil
     router?.createAudioComponents()
     self.startAudioSession()
     os_log(.error, log: log, "recreateSynth - END")
