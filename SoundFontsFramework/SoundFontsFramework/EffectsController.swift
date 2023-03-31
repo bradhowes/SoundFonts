@@ -33,9 +33,9 @@ public final class EffectsController: UIViewController {
   private var favorites: FavoritesProvider!
   private var settings: Settings!
 
-  private var synth: SynthManager?
-  private var reverbEffect: ReverbEffect? { synth?.reverbEffect }
-  private var delayEffect: DelayEffect? { synth?.delayEffect }
+  private var audioEngine: AudioEngine?
+  private var reverbEffect: ReverbEffect? { audioEngine?.reverbEffect }
+  private var delayEffect: DelayEffect? { audioEngine?.delayEffect }
 
   public override func viewDidLoad() {
 
@@ -191,8 +191,8 @@ extension EffectsController: ControllerConfiguration {
     router.subscribe(self, notifier: routerChangeNotificationInBackground)
     activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
 
-    if let synth = router.synth {
-      self.synth = synth
+    if let audioEngine = router.audioEngine {
+      self.audioEngine = audioEngine
       updateState()
     }
   }
@@ -311,9 +311,9 @@ extension EffectsController {
 
   private func routerChangeNotificationInBackground(_ event: ComponentContainerEvent) {
     switch event {
-    case .synthManagerAvailable(let synth):
+    case .audioEngineAvailable(let audioEngine):
       DispatchQueue.main.async {
-        self.synth = synth
+        self.audioEngine = audioEngine
         self.updateState()
       }
     }

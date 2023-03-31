@@ -5,12 +5,12 @@ import MorkAndMIDI
 
 /// State change events that can happen with a ComponentContainer.
 public enum ComponentContainerEvent: CustomStringConvertible {
-  /// The sampler is ready for use.
-  case synthManagerAvailable(SynthManager)
+  /// The audio engine is ready for use.
+  case audioEngineAvailable(AudioEngine)
 
   public var description: String {
     switch self {
-    case .synthManagerAvailable: return "<ComponentContainerEvent: synthAvailable>"
+    case .audioEngineAvailable: return "<ComponentContainerEvent: audioEngineAvailable>"
     }
   }
 }
@@ -23,7 +23,7 @@ public protocol ComponentContainer: AnyObject {
   /// User settings for the app
   var settings: Settings { get }
   /// The Sampler that is used to generate sounds
-  var synth: SynthManager? { get }
+  var audioEngine: AudioEngine? { get }
   /// The collection of installed sound font files
   var soundFonts: SoundFontsProvider { get }
   /// The collection of favorite presets

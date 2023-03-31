@@ -439,7 +439,7 @@ extension SettingsViewController {
     os_log(.debug, log: log, "new pitch-bend range %d", value)
     pitchBendRange.text = "\(value)"
     settings.pitchBendRange = Int(value)
-    SynthManager.pitchBendRangeChangedNotification.post(value: value)
+    AudioEngine.pitchBendRangeChangedNotification.post(value: value)
   }
 
   private func postNotice(msg: String) {

@@ -19,7 +19,7 @@ final class MainViewController: UIViewController {
   private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
   private var keyboard: AnyKeyboard!
-  private var synthManager: SynthManager?
+  private var audioEngine: AudioEngine?
   private var infoBar: AnyInfoBar!
   private var midi: MIDI?
   private var settings: Settings!
@@ -133,7 +133,7 @@ extension MainViewController {
    */
   func startAudioSession() {
     os_log(.debug, log: log, "startAudioSession BEGIN")
-    guard let synthManager = self.synthManager else {
+    guard let synthManager = self.audioEngine else {
       // The synth has not loaded yet, so we postpone until it is.
       os_log(.debug, log: log, "startAudioSession END - no synth")
       startRequested = true
@@ -182,14 +182,14 @@ extension MainViewController {
    */
   func stopAudio() {
     os_log(.debug, log: log, "stopAudio BEGIN")
-    guard synthManager != nil else {
+    guard audioEngine != nil else {
       os_log(.debug, log: log, "stopAudio END - no synth")
       return
     }
 
     midi?.receiver = nil
     volumeMonitor?.stop()
-    synthManager?.stop()
+    audioEngine?.stop()
 
     let session = AVAudioSession.sharedInstance()
     do {
@@ -208,7 +208,7 @@ extension MainViewController {
 
 extension MainViewController: ControllerConfiguration {
 
-  private func startAudioSessionInBackground(_ synth: SynthManager) {
+  private func startAudioSessionInBackground(_ audioEngine: AudioEngine) {
     os_log(.debug, log: log, "startAudioSessionInBackground BEGIN")
 
     let sampleRate: Double = 44100.0
@@ -260,7 +260,7 @@ extension MainViewController: ControllerConfiguration {
     dump(route: session.currentRoute)
 
     os_log(.debug, log: log, "startAudioSessionInBackground - starting synth")
-    let result = synth.start()
+    let result = audioEngine.start()
 
     DispatchQueue.main.async { self.finishStart(result) }
     os_log(.debug, log: log, "startAudioSessionInBackground END")
@@ -289,8 +289,8 @@ extension MainViewController: ControllerConfiguration {
 
     router.activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
     router.subscribe(self, notifier: routerChangedNotificationInBackground)
-    if let synth = router.synth {
-      activePresetManager.runOnNotifyQueue { self.setSynthInBackground(synth) }
+    if let audioEngine = router.audioEngine {
+      activePresetManager.runOnNotifyQueue { self.setAudioEngineInBackground(audioEngine) }
     }
     
     activePresetManager.restoreActive(settings.lastActivePreset)
@@ -300,9 +300,9 @@ extension MainViewController: ControllerConfiguration {
 
   private func startMIDI() {
     os_log(.debug, log: log, "startMIDI BEGIN")
-    guard let synthManager = self.synthManager else { return }
+    guard let audioEngine = self.audioEngine else { return }
     os_log(.error, log: log, "starting MIDI for synth")
-    midiController = MIDIReceiver(synthManager: synthManager, keyboard: keyboard, settings: settings)
+    midiController = MIDIReceiver(audioEngine: audioEngine, keyboard: keyboard, settings: settings)
     midi?.receiver = midiController
     infoBar.addEventClosure(.panic) { [weak self] _ in
       self?.infoBar.setStatusText("All notes off")
@@ -315,18 +315,18 @@ extension MainViewController: ControllerConfiguration {
   private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
     os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
     switch event {
-    case .synthManagerAvailable(let synthManager): setSynthInBackground(synthManager)
+    case .audioEngineAvailable(let audioEngine): setAudioEngineInBackground(audioEngine)
     }
   }
 
-  private func setSynthInBackground(_ synthManager: SynthManager) {
+  private func setAudioEngineInBackground(_ audioEngine: AudioEngine) {
     os_log(.debug, log: log, "setSynthInBackground BEGIN")
-    self.synthManager = synthManager
+    self.audioEngine = audioEngine
 
     // If we were started but did not have the synth available, now we can continue starting the audio session.
     if startRequested {
       startRequested = false
-      self.startAudioSessionInBackground(synthManager)
+      self.startAudioSessionInBackground(audioEngine)
     }
 
     os_log(.debug, log: log, "setSynthInBackground END")
@@ -345,7 +345,7 @@ extension MainViewController: ControllerConfiguration {
     volumeMonitor?.validActivePreset = activePresetKind != .none
     midiController?.stopAllNotes()
 
-    guard let synthManager = self.synthManager else { return }
+    guard let synthManager = self.audioEngine else { return }
     let result = synthManager.loadActivePreset {
       if let synth = synthManager.synth, playSample {
         self.noteInjector.post(to: synth)
@@ -359,7 +359,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "useActivePresetInBackground END")
   }
 
-  private func finishStart(_ result: SynthManager.StartResult) {
+  private func finishStart(_ result: AudioEngine.StartResult) {
     os_log(.debug, log: log, "finishStart BEGIN - %{public}s", result.description)
 
     switch result {
@@ -377,7 +377,7 @@ extension MainViewController: ControllerConfiguration {
   private func recreateSynth() {
     os_log(.error, log: log, "recreateSynth - BEGIN")
     self.stopAudio()
-    self.synthManager = nil
+    self.audioEngine = nil
     router?.createAudioComponents()
     self.startAudioSession()
     os_log(.error, log: log, "recreateSynth - END")

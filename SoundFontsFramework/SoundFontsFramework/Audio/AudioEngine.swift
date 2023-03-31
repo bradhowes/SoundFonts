@@ -9,8 +9,8 @@ import SoundFontInfoLib
 /**
  This class manages the actual synth.
  */
-public final class SynthManager {
-  private static let log = Logging.logger("Synth")
+public final class AudioEngine {
+  private static let log = Logging.logger("AudioEngine")
   private var log: OSLog { Self.log }
 
   /// The notification that tuning value has changed for the sampler
@@ -223,7 +223,7 @@ public final class SynthManager {
   }
 }
 
-extension SynthManager {
+extension AudioEngine {
 
   /**
    Set the AVAudioUnitSampler tuning value
@@ -272,7 +272,7 @@ extension SynthManager {
   public func stopAllNotes() { synth?.stopAllNotes()  }
 }
 
-extension SynthManager {
+extension AudioEngine {
 
   private func startEngine(_ synth: AnyMIDISynth) -> StartResult {
 

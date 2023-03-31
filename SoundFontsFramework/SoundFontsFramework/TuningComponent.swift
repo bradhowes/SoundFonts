@@ -181,7 +181,7 @@ extension TuningComponent {
     tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
     tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: centsToFrequency(tuningCentsValue)))
     if isActive {
-      SynthManager.tuningChangedNotification.post(value: tuningCentsValue)
+      AudioEngine.tuningChangedNotification.post(value: tuningCentsValue)
     }
   }
 }

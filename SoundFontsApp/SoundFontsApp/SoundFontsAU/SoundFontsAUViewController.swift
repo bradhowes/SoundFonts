@@ -5,7 +5,7 @@ import SoundFontsFramework
 import os.log
 
 public enum SoundFontsAUFailure: Error {
-  case missingSynth
+  case missingAudioEngine
   case unableToStart
 }
 
@@ -36,13 +36,13 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     os_log(.debug, log: log, "createAudioUnit BEGIN - %{public}s", String.pointer(self))
 
-    guard let synth = components.synth else {
-      os_log(.fault, log: log, "missing synth instance")
-      throw SoundFontsAUFailure.missingSynth
+    guard let audioEngine = components.audioEngine else {
+      os_log(.fault, log: log, "missing audioEngine instance")
+      throw SoundFontsAUFailure.missingAudioEngine
     }
 
     let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
-                                     synth: synth,
+                                     audioEngine: audioEngine,
                                      identity: components.identity,
                                      activePresetManager: components.activePresetManager,
                                      settings: components.settings)

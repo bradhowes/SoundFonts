@@ -14,12 +14,12 @@ public final class MIDIReceiver {
   public private(set) var channel: Int
   public private(set) var group: Int
 
-  private var synth: AnyMIDISynth? { synthManager.synth }
-
-  private let synthManager: SynthManager
+  private let audioEngine: AudioEngine
   private let keyboard: AnyKeyboard?
   private let settings: Settings
   private var observer: NSKeyValueObservation?
+
+  private var synth: AnyMIDISynth? { audioEngine.synth }
 
   /**
    Construct new controller for a synth and keyboard
@@ -27,8 +27,8 @@ public final class MIDIReceiver {
    - parameter synth: the synth to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(synthManager: SynthManager, keyboard: AnyKeyboard?, settings: Settings) {
-    self.synthManager = synthManager
+  public init(audioEngine: AudioEngine, keyboard: AnyKeyboard?, settings: Settings) {
+    self.audioEngine = audioEngine
     self.keyboard = keyboard
     self.settings = settings
     self.channel = settings.midiChannel

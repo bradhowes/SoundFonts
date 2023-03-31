@@ -7,7 +7,7 @@ internal struct TouchKeyMap {
   private let noteVelocity: UInt8
   private let noteChannel: UInt8
 
-  var processor: SynthManager?
+  var processor: AudioEngine?
 
   /**
    Construct new entity.

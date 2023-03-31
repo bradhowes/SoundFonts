@@ -12,7 +12,7 @@ import os
  */
 public final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let synth: SynthManager
+  private let audioEngine: AudioEngine
   private let identity: Int
   private let activePresetManager: ActivePresetManager
   private let settings: Settings
@@ -32,16 +32,16 @@ public final class SoundFontsAU: AUAudioUnit {
    Construct a new AUv3 component.
 
    - parameter componentDescription: the definition used when locating the component to create
-   - parameter synth: the Synth instance to use for actually rendering audio
+   - parameter audioEngine: the Synth instance to use for actually rendering audio
    - parameter identity: the (pseudo) unique identity for this instance
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, synth: SynthManager, identity: Int,
+  public init(componentDescription: AudioComponentDescription, audioEngine: AudioEngine, identity: Int,
               activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU[\(identity)]")
     self.log = log
-    self.synth = synth
+    self.audioEngine = audioEngine
     self.identity = identity
     self.activePresetManager = activePresetManager
     self.settings = settings
@@ -51,7 +51,7 @@ public final class SoundFontsAU: AUAudioUnit {
            componentDescription.componentSubType)
     os_log(.debug, log: log, "starting synth")
 
-    switch synth.start() {
+    switch audioEngine.start() {
     case let .success(synth): self.wrapped = synth.avAudioUnit.auAudioUnit
     case .failure(let what):
       os_log(.debug, log: log, "failed to start synth - %{public}s", what.localizedDescription)
@@ -183,7 +183,7 @@ extension SoundFontsAU {
       return
     }
 
-    guard let sampler = synth.avAudioUnit as? AVAudioUnitSampler else {
+    guard let sampler = audioEngine.avAudioUnit as? AVAudioUnitSampler else {
       os_log(.error, log: log, "reloadActivePreset END - no sampler available")
       return
     }

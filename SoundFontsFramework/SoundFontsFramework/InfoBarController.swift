@@ -79,7 +79,7 @@ public final class InfoBarController: UIViewController {
     panner.maximumNumberOfTouches = 1
     touchView.addGestureRecognizer(panner)
 
-    tuningChangedNotifier = SynthManager.tuningChangedNotification.registerOnAny(block: updateTuningIndicator(_:))
+    tuningChangedNotifier = AudioEngine.tuningChangedNotification.registerOnAny(block: updateTuningIndicator(_:))
     presetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: updateIndicators(_:))
 
     addButtonLongPressGesture.minimumPressDuration = 0.5

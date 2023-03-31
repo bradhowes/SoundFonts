@@ -23,7 +23,7 @@
 		BD074C5123CDAF51001987E9 /* SoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEC23CDAF51001987E9 /* SoundFont.swift */; };
 		BD074C5223CDAF51001987E9 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BED23CDAF51001987E9 /* Preset.swift */; };
 		BD074C5323CDAF51001987E9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEE23CDAF51001987E9 /* Note.swift */; };
-		BD074C5423CDAF51001987E9 /* SynthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* SynthManager.swift */; };
+		BD074C5423CDAF51001987E9 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* AudioEngine.swift */; };
 		BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */; };
 		BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */; };
 		BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */; };
@@ -268,7 +268,7 @@
 		BD074BEC23CDAF51001987E9 /* SoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFont.swift; sourceTree = "<group>"; };
 		BD074BED23CDAF51001987E9 /* Preset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
 		BD074BEE23CDAF51001987E9 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		BD074BEF23CDAF51001987E9 /* SynthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynthManager.swift; sourceTree = "<group>"; };
+		BD074BEF23CDAF51001987E9 /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontAndPreset.swift; sourceTree = "<group>"; };
 		BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewManager.swift; sourceTree = "<group>"; };
@@ -600,6 +600,7 @@
 				BD2454D627847074004B445A /* Effects */,
 				BDBF897E25B5939400B58E23 /* Tags */,
 				BD2F4B302780F9EB0064E31B /* Configuration File */,
+				BD074BEF23CDAF51001987E9 /* AudioEngine.swift */,
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BDB3BF9E270C534800C4257A /* MIDI.swift */,
 				BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */,
@@ -613,7 +614,6 @@
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
-				BD074BEF23CDAF51001987E9 /* SynthManager.swift */,
 				BD95018229D767160065D837 /* SynthStartFailure.swift */,
 				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */,
@@ -1339,7 +1339,7 @@
 				BDA5ACF7265D427C000AE48E /* FontActionManager.swift in Sources */,
 				BD074C5323CDAF51001987E9 /* Note.swift in Sources */,
 				BDFE80082983368D00F400A7 /* MIDIActivityNotifier.swift in Sources */,
-				BD074C5423CDAF51001987E9 /* SynthManager.swift in Sources */,
+				BD074C5423CDAF51001987E9 /* AudioEngine.swift in Sources */,
 				BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,

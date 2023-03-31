@@ -113,14 +113,12 @@ extension KeyboardController: ControllerConfiguration {
     router.favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
     router.subscribe(self, notifier: routerChangedNotificationInBackground)
 
-    if let synth = router.synth {
-      touchedKeys.processor = synth
-    }
+    touchedKeys.processor = router.audioEngine
   }
 
   private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
-    if case let .synthManagerAvailable(synthManager) = event {
-      touchedKeys.processor = synthManager
+    if case let .audioEngineAvailable(audioEngine) = event {
+      touchedKeys.processor = audioEngine
     }
   }
 
