@@ -4,40 +4,35 @@ import UIKit
 import CoreMIDI
 import MorkAndMIDI
 
-public final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadableView {
-  private var midi: MIDI!
+final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadableView {
+  private weak var controller: MIDIDevicesTableViewController?
   private var uniqueId: MIDIUniqueID = .init()
 
   @IBOutlet weak var name: UILabel!
-  let autoConnect = UISwitch()
+  let connected = UISwitch()
 
   public override func awakeFromNib() {
     super.awakeFromNib()
     translatesAutoresizingMaskIntoConstraints = true
-
-    autoConnect.tintColor = UIColor.systemTeal
-    autoConnect.addTarget(self, action: #selector(connectedStateChanged(_:)), for: .valueChanged)
+    connected.tintColor = UIColor.systemTeal
+    connected.addTarget(self, action: #selector(connectedStateChanged(_:)), for: .valueChanged)
   }
 
-  public func update(midi: MIDI, sourceConnection: MIDI.SourceConnectionState, autoConnect: Bool) {
-    self.midi = midi
+  public func update(controller: MIDIDevicesTableViewController, sourceConnection: MIDI.SourceConnectionState,
+                     connected: Bool) {
+    self.controller = controller
     var name = sourceConnection.displayName
     if let channel = sourceConnection.channel {
       name += " - channel \(channel + 1)"
     }
 
     self.name.text = name
-    self.autoConnect.isOn = autoConnect
-    self.accessoryView = self.autoConnect
+    self.uniqueId = sourceConnection.uniqueId
+    self.connected.isOn = connected
+    self.accessoryView = self.connected
   }
 
   @IBAction func connectedStateChanged(_ sender: UISwitch) {
-    if sender.isOn {
-      if !midi.connect(to: uniqueId) {
-        sender.isOn = false
-      }
-    } else {
-      midi.disconnect(from: uniqueId)
-    }
+    controller?.changeConnectedState(uniqueId: uniqueId, connect: sender.isOn)
   }
 }

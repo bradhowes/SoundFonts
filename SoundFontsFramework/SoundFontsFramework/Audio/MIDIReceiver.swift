@@ -101,18 +101,22 @@ extension MIDIReceiver: Receiver {
 
   public func controlChange(controller: UInt8, value: UInt8) {
     synth?.controlChange(controller: controller, value: value)
+    os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
   }
 
   public func controlChange2(controller: UInt8, value: UInt32) {
     synth?.controlChange(controller: controller, value: value.b0)
+    os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
   }
 
   public func programChange(program: UInt8) {
     synth?.programChange(program: program)
+    os_log(.debug, log: log, "programChange: %d", program)
   }
 
   public func programChange2(program: UInt8, bank: UInt16) {
     synth?.programChange(program: program)
+    os_log(.debug, log: log, "programChange: %d", program)
   }
 
   public func channelPressure(pressure: UInt8) {
@@ -125,6 +129,7 @@ extension MIDIReceiver: Receiver {
 
   public func pitchBendChange(value: UInt16) {
     synth?.pitchBendChange(value: value)
+    os_log(.debug, log: log, "pitchBendChange: %d", value)
   }
 
   public func pitchBendChange2(value: UInt32) {

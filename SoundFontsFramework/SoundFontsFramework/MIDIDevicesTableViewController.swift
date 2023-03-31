@@ -8,18 +8,14 @@ import MorkAndMIDI
  A table view that shows the known MIDI devices.
  */
 final class MIDIDevicesTableViewController: UITableViewController {
-
-  private var settings: Settings!
   private var midi: MIDI!
   private var midiMonitor: MIDIMonitor!
-
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var channelsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
   private var monitorToken: NotificationObserver?
 
-  func configure(settings: Settings, midi: MIDI, midiMonitor: MIDIMonitor, activeChannel: Int) {
-    self.settings = settings
+  func configure(midi: MIDI, midiMonitor: MIDIMonitor, activeChannel: Int) {
     self.midi = midi
     self.midiMonitor = midiMonitor
     self.activeChannel = activeChannel
@@ -76,14 +72,10 @@ extension MIDIDevicesTableViewController {
     midi.sourceConnections.count
   }
 
-  private func connectedSettingKey(for uniqueId: MIDIUniqueID) -> String { "midiAudoConnect_\(uniqueId)" }
-
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIDeviceTableCell = tableView.dequeueReusableCell(at: indexPath)
     let source = midi.sourceConnections[indexPath.row]
-    let autoConnectDefault = settings.autoConnectNewMIDIDeviceEnabled
-    let autoConnect = settings.get(key: connectedSettingKey(for: source.uniqueId), defaultValue: autoConnectDefault)
-    cell.update(midi: midi, sourceConnection: source, autoConnect: autoConnect)
+    cell.update(controller: self, sourceConnection: source, connected: source.connected)
     return cell
   }
 
@@ -105,6 +97,16 @@ extension MIDIDevicesTableViewController {
     present(ac, animated: true)
 
     MIDIRestart()
+  }
+
+  func changeConnectedState(uniqueId: MIDIUniqueID, connect: Bool) {
+    if connect {
+      midiMonitor.setAutoConnectState(for: uniqueId, autoConnect: true)
+      _ = midi.connect(to: uniqueId)
+    } else {
+      midiMonitor.setAutoConnectState(for: uniqueId, autoConnect: false)
+      midi.disconnect(from: uniqueId)
+    }
   }
 }
 

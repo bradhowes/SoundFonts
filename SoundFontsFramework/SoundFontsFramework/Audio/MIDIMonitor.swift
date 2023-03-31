@@ -1,10 +1,4 @@
-//
-//  InfoBarMIDINotifier.swift
-//  SoundFontsFramework
-//
-//  Created by Brad Howes on 31/03/2023.
-//  Copyright © 2023 Brad Howes. All rights reserved.
-//
+// Copyright © 2023 Brad Howes. All rights reserved.
 
 import CoreMIDI
 import MorkAndMIDI
@@ -49,12 +43,20 @@ public class MIDIMonitor {
   public func addMonitor(block: @escaping (MIDIActivityNotifier.Payload) -> Void) -> NotificationObserver {
     activityNotifier.addMonitor(block: block)
   }
+
+  public func setAutoConnectState(for uniqueId: MIDIUniqueID, autoConnect: Bool) {
+    settings.set(key: connectedSettingKey(for: uniqueId), value: autoConnect)
+  }
+
+  private func connectedSettingKey(for uniqueId: MIDIUniqueID) -> String { "midiAudoConnect_\(uniqueId)" }
 }
 
 extension MIDIMonitor: Monitor {
 
-  public func shouldConnect(to endpoint: MIDIEndpointRef) -> Bool {
-    return true
+  public func shouldConnect(to uniqueId: MIDIUniqueID) -> Bool {
+    let autoConnectDefault = settings.autoConnectNewMIDIDeviceEnabled
+    let autoConnect = settings.get(key: connectedSettingKey(for: uniqueId), defaultValue: autoConnectDefault)
+    return autoConnect
   }
 
   public func didSee(uniqueId: MIDIUniqueID, group: Int, channel: Int) {
@@ -69,7 +71,7 @@ extension MIDIMonitor {
   public func willDelete(inputPort: MIDIPortRef) {}
   public func didStart() {}
   public func didStop() {}
-  public func didConnect(to endpoint: MIDIEndpointRef) {}
+  public func didConnect(to uniqueId: MIDIUniqueID) {}
   public func willUpdateConnections() {}
   public func didUpdateConnections(connected: any Sequence<MIDIEndpointRef>, disappeared: any Sequence<MIDIUniqueID>) {}
 

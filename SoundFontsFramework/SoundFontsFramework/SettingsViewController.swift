@@ -540,8 +540,7 @@ extension SettingsViewController: SegueHandler {
       else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
-      destination.configure(settings: settings, midi: midi, midiMonitor: midiMonitor,
-                            activeChannel: settings.midiChannel)
+      destination.configure(midi: midi, midiMonitor: midiMonitor, activeChannel: settings.midiChannel)
     }
   }
 }
