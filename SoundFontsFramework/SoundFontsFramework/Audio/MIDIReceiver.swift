@@ -7,7 +7,7 @@ import MorkAndMIDI
  A MIDI receiver that processes MIDI events from an external source. Shows the keys being played if given a Keyboard,
  and forwards MIDI commands to a synth.
  */
-public final class MIDIReceiver {
+public class MIDIReceiver {
   private lazy var log = Logging.logger("MIDIController")
 
   public final class ActivityNotifier: NSObject {

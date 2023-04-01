@@ -46,7 +46,7 @@ class AVSF2EngineTests: XCTestCase {
 
       au.maximumFramesToRender = 512
       au.load(self.urls[0])
-      // au.selectPreset(0)
+      au.selectPreset(125)
 
       let engine = AVAudioEngine()
       engine.attach(avAudioUnit)

@@ -92,7 +92,6 @@
 		BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A882668E347009E2338 /* BundleTests.swift */; };
 		BD1A2A8B26696AD2009E2338 /* IconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8A26696AD2009E2338 /* IconTests.swift */; };
 		BD1B8CD7270C5EB400C6BF15 /* MIDIConnectionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1B8CD6270C5EB400C6BF15 /* MIDIConnectionsTableViewController.swift */; };
-		BD1B8CDD270D808C00C6BF15 /* MIDIPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1B8CDC270D808C00C6BF15 /* MIDIPacketTests.swift */; };
 		BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22B025CC913C007C114F /* Settings.storyboard */; };
 		BD1C22E525CDC4A8007C114F /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */; };
 		BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */; };
@@ -173,7 +172,6 @@
 		BDA5ACF8265D427C000AE48E /* EventClosureMangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */; };
 		BDA5ACFA265D4284000AE48E /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF9265D4284000AE48E /* Icon.swift */; };
 		BDABD85B29A2025200B8D585 /* UInt8.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDABD85A29A2025200B8D585 /* UInt8.swift */; };
-		BDB2DB5D299EABF2009105F7 /* MIDIEventPacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */; };
 		BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */; };
 		BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406225CC29120051B4E4 /* Presets.storyboard */; };
 		BDB7408125CC29690051B4E4 /* TagsList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406525CC29120051B4E4 /* TagsList.storyboard */; };
@@ -343,7 +341,6 @@
 		BD1A2A882668E347009E2338 /* BundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleTests.swift; sourceTree = "<group>"; };
 		BD1A2A8A26696AD2009E2338 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		BD1B8CD6270C5EB400C6BF15 /* MIDIConnectionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIConnectionsTableViewController.swift; sourceTree = "<group>"; };
-		BD1B8CDC270D808C00C6BF15 /* MIDIPacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIPacketTests.swift; sourceTree = "<group>"; };
 		BD1C22B025CC913C007C114F /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TutorialContentPager.storyboard; sourceTree = "<group>"; };
@@ -437,7 +434,6 @@
 		BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventClosureMangement.swift; sourceTree = "<group>"; };
 		BDA5ACF9265D4284000AE48E /* Icon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		BDABD85A29A2025200B8D585 /* UInt8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt8.swift; sourceTree = "<group>"; };
-		BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIEventPacketTests.swift; sourceTree = "<group>"; };
 		BDB7405E25CC29120051B4E4 /* Delay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Delay.storyboard; sourceTree = "<group>"; };
 		BDB7405F25CC29120051B4E4 /* Favorites.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Favorites.storyboard; sourceTree = "<group>"; };
 		BDB7406025CC29120051B4E4 /* InfoBar1.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InfoBar1.storyboard; sourceTree = "<group>"; };
@@ -916,8 +912,6 @@
 				BD1A2A8A26696AD2009E2338 /* IconTests.swift */,
 				BD65780129A21E1900A4C47C /* UInt8Tests.swift */,
 				BD1A2A882668E347009E2338 /* BundleTests.swift */,
-				BDB2DB5C299EABF2009105F7 /* MIDIEventPacketTests.swift */,
-				BD1B8CDC270D808C00C6BF15 /* MIDIPacketTests.swift */,
 				BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */,
 				BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */,
 				BD1A2A822668AB75009E2338 /* PresetConfigTests.swift */,
@@ -1378,7 +1372,6 @@
 				BD23948A25540855004E5E0D /* KeyTests.swift in Sources */,
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
-				BDB2DB5D299EABF2009105F7 /* MIDIEventPacketTests.swift in Sources */,
 				BD1A2A812668A9C7009E2338 /* ReusableViewTests.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
 				BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */,
@@ -1402,7 +1395,6 @@
 				BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */,
 				BD1A2A792668171F009E2338 /* ActivePresetKindTests.swift in Sources */,
 				BD1A2A832668AB75009E2338 /* PresetConfigTests.swift in Sources */,
-				BD1B8CDD270D808C00C6BF15 /* MIDIPacketTests.swift in Sources */,
 				BDCC40112418336200D8D849 /* NoteTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

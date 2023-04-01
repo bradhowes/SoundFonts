@@ -77,7 +77,7 @@ class SF2EngineTests: XCTestCase {
 
     let synth = try SF2EngineAU.init(componentDescription: acd, options: [])
     synth.engine.load(urls[0])
-    synth.engine.selectPreset(0)
+    synth.engine.selectPreset(125)
     try synth.allocateRenderResources()
     let renderProc = synth.internalRenderBlock
 
@@ -167,7 +167,7 @@ class SF2EngineTests: XCTestCase {
 
     let synth = try SF2EngineAU.init(componentDescription: acd, options: [])
     synth.engine.load(urls[0])
-    synth.engine.selectPreset(0)
+    synth.engine.selectPreset(125)
     try synth.allocateRenderResources()
     let renderProc = synth.internalRenderBlock
 

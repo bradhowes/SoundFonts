@@ -6,10 +6,14 @@ import Foundation
 import os
 import SoundFontInfoLib
 
+public protocol SynthProvider {
+  var synth: AnyMIDISynth? {get}
+}
+
 /**
  This class manages the actual synth.
  */
-public final class AudioEngine {
+public final class AudioEngine: SynthProvider {
   private static let log = Logging.logger("AudioEngine")
   private var log: OSLog { Self.log }
 
