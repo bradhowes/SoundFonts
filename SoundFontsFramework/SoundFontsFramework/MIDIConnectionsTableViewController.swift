@@ -7,7 +7,7 @@ import MorkAndMIDI
 /**
  A table view that shows the known MIDI devices.
  */
-final class MIDIDevicesTableViewController: UITableViewController {
+final class MIDIConnectionsTableViewController: UITableViewController {
   private var midi: MIDI!
   private var midiMonitor: MIDIMonitor!
   private var activeConnectionsObserver: NSKeyValueObservation?
@@ -34,7 +34,7 @@ final class MIDIDevicesTableViewController: UITableViewController {
 
 // MARK: - View Management
 
-extension MIDIDevicesTableViewController {
+extension MIDIConnectionsTableViewController {
 
   override public func viewDidLoad() {
     let footer = UILabel()
@@ -66,14 +66,14 @@ extension MIDIDevicesTableViewController {
 
 // MARK: - Table View Methods
 
-extension MIDIDevicesTableViewController {
+extension MIDIConnectionsTableViewController {
 
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     midi.sourceConnections.count
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell: MIDIDeviceTableCell = tableView.dequeueReusableCell(at: indexPath)
+    let cell: MIDIConnectionTableCell = tableView.dequeueReusableCell(at: indexPath)
     let source = midi.sourceConnections[indexPath.row]
     cell.update(controller: self, sourceConnection: source, connected: source.connected)
     return cell
@@ -112,7 +112,7 @@ extension MIDIDevicesTableViewController {
 
 // MARK: - MIDIMonitor Methods
 
-extension MIDIDevicesTableViewController {
+extension MIDIConnectionsTableViewController {
 
   private func accepting(channel: Int) -> Bool {
     activeChannel == -1 || activeChannel == channel

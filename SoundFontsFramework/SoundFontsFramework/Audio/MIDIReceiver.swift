@@ -10,13 +10,43 @@ import MorkAndMIDI
 public final class MIDIReceiver {
   private lazy var log = Logging.logger("MIDIController")
 
+  public final class ActivityNotifier: NSObject {
+
+    public struct Payload: CustomStringConvertible {
+      public var description: String { "\(controller)" }
+      let controller: Int
+    }
+
+    private let notification = TypedNotification<Payload>(name: "Activity")
+    private let serialQueue = DispatchQueue(label: "MIDIReceiver.Activity", qos: .userInteractive, attributes: [],
+                                            autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
+
+    private var lastController: Int = -1
+    private var lastNotificationTime: Date = .distantPast
+
+    public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
+      notification.registerOnMain(block: block)
+    }
+
+    public func showActivity(controller: Int) {
+      let now = Date()
+      if controller != lastController || now.timeIntervalSince(lastNotificationTime) > 0.5 {
+        lastNotificationTime = now
+        lastController = controller
+        serialQueue.async { self.notification.post(value: .init(controller: controller)) }
+      }
+    }
+  }
+
+  private let settings: Settings
+  private let activityNotifier = ActivityNotifier()
+
   /// Current MIDI channel to listen to for MIDI. A value of -1 means OMNI -- accept all messages
   public private(set) var channel: Int
   public private(set) var group: Int
 
   private let audioEngine: AudioEngine
   private let keyboard: AnyKeyboard?
-  private let settings: Settings
   private var observer: NSKeyValueObservation?
 
   private var synth: AnyMIDISynth? { audioEngine.synth }
@@ -41,9 +71,23 @@ public final class MIDIReceiver {
     // synth.stopAllNotes()
   }
 
+  public func addMonitor(block: @escaping (ActivityNotifier.Payload) -> Void) -> NotificationObserver {
+    activityNotifier.addMonitor(block: block)
+  }
+
+  private func controllerSettingKey(for controller: UInt8) -> String { "controllerAllowed\(controller)" }
+
+  func controllerAllowed(_ controller: UInt8) -> Bool {
+    settings.get(key: controllerSettingKey(for: controller), defaultValue: true)
+  }
+
+  func allowedStateChanged(controller: UInt8, allowed: Bool) {
+    settings.set(key: controllerSettingKey(for: controller), value: allowed)
+  }
+
   private func monitorMIDIChannelValue() {
 
-    // Watch for changes in the MIDI channel setting so we can continue to properly filter MIDI events after use changes
+    // Watch for changes in the MIDI channel setting so we can continue to properly filter MIDI events after user changes
     // it in the Settings panel.
     self.observer = settings.observe(\.midiChannel) { [weak self] _, _ in
       guard let self = self else { return }
@@ -100,6 +144,7 @@ extension MIDIReceiver: Receiver {
   }
 
   public func controlChange(controller: UInt8, value: UInt8) {
+    guard controllerAllowed(controller) else { return }
     synth?.controlChange(controller: controller, value: value)
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
   }

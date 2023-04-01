@@ -3,9 +3,10 @@
 import CoreMIDI
 import MorkAndMIDI
 
-public class MIDIMonitor {
+public final class MIDIMonitor {
+  private lazy var log = Logging.logger("MIDIMonitor")
 
-  public final class MIDIActivityNotifier: NSObject {
+  public final class ActivityNotifier: NSObject {
 
     public struct Payload: CustomStringConvertible {
       public var description: String { "\(uniqueId),\(channel)" }
@@ -34,13 +35,13 @@ public class MIDIMonitor {
   }
 
   private let settings: Settings
-  private let activityNotifier = MIDIActivityNotifier()
+  private let activityNotifier = ActivityNotifier()
 
   public init(settings: Settings) {
     self.settings = settings
   }
 
-  public func addMonitor(block: @escaping (MIDIActivityNotifier.Payload) -> Void) -> NotificationObserver {
+  public func addMonitor(block: @escaping (ActivityNotifier.Payload) -> Void) -> NotificationObserver {
     activityNotifier.addMonitor(block: block)
   }
 

@@ -4,8 +4,8 @@ import UIKit
 import CoreMIDI
 import MorkAndMIDI
 
-final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadableView {
-  private weak var controller: MIDIDevicesTableViewController?
+final class MIDIConnectionTableCell: UITableViewCell, ReusableView, NibLoadableView {
+  private weak var controller: MIDIConnectionsTableViewController?
   private var uniqueId: MIDIUniqueID = .init()
 
   @IBOutlet weak var name: UILabel!
@@ -18,7 +18,7 @@ final class MIDIDeviceTableCell: UITableViewCell, ReusableView, NibLoadableView 
     connected.addTarget(self, action: #selector(connectedStateChanged(_:)), for: .valueChanged)
   }
 
-  public func update(controller: MIDIDevicesTableViewController, sourceConnection: MIDI.SourceConnectionState,
+  public func update(controller: MIDIConnectionsTableViewController, sourceConnection: MIDI.SourceConnectionState,
                      connected: Bool) {
     self.controller = controller
     var name = sourceConnection.displayName

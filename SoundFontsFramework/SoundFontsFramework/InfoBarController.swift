@@ -310,6 +310,7 @@ extension InfoBarController: SegueHandler {
     viewController.settings = settings
     viewController.midi = midi
     viewController.midiMonitor = midiMonitor
+//    viewController.midiReceiver = midi?.receiver as? MIDIReceiver
     viewController.infoBar = self
 
     if !isMainApp {

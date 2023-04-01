@@ -34,6 +34,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var midiChannelStackView: UIStackView!
   @IBOutlet private weak var midiConnectionsStackView: UIStackView!
   @IBOutlet private weak var midiAutoConnectStackView: UIStackView!
+  @IBOutlet private weak var midiControllersStackView: UIStackView!
   @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
   @IBOutlet private weak var backgroundMIDIProcessingModeStackView: UIStackView!
   @IBOutlet private weak var pitchBendStackView: UIStackView!
@@ -67,6 +68,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var midiConnections: UIButton!
   @IBOutlet private weak var midiChannelStepper: UIStepper!
   @IBOutlet private weak var midiDeviceAutoConnectEnabled: UISwitch!
+  @IBOutlet private weak var midiControllers: UIButton!
 
   @IBOutlet private weak var pitchBendRange: UILabel!
   @IBOutlet private weak var pitchBendStepper: UIStepper!
@@ -97,6 +99,7 @@ public final class SettingsViewController: UIViewController {
   public weak var infoBar: AnyInfoBar!
   public weak var midi: MIDI?
   public weak var midiMonitor: MIDIMonitor?
+  public weak var midiReceiver: MIDIReceiver?
   public var isMainApp = true
   private var monitorToken: NotificationObserver?
   private var midiConnectionsObserver: NSKeyValueObservation!
@@ -108,6 +111,7 @@ public final class SettingsViewController: UIViewController {
     midiChannelStackView,
     midiConnectionsStackView,
     midiAutoConnectStackView,
+    midiControllersStackView,
     slideKeyboardStackView,
     bluetoothMIDIConnectStackView,
     backgroundMIDIProcessingModeStackView,
@@ -192,13 +196,13 @@ public final class SettingsViewController: UIViewController {
 
       updateMIDIConnectionsButton()
       midiConnectionsObserver = midi?.observe(\.activeConnections) { [weak self] _, _ in
-        self?.updateMIDIConnectionsButton()
+        DispatchQueue.main.async { [weak self] in self?.updateMIDIConnectionsButton() }
       }
 
       monitorToken = midiMonitor?.addMonitor { data in
         let ourChannel = self.settings.midiChannel
         let accepted = ourChannel == -1 || ourChannel == data.channel
-        MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
+        MIDIConnectionsTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
       }
 
       midiChannelStepper.value = Double(settings.midiChannel)
@@ -528,6 +532,7 @@ extension SettingsViewController: SegueHandler {
   /// Segues that we support.
   public enum SegueIdentifier: String {
     case midiDevicesTableView
+    case midiControllersTableView
   }
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -536,11 +541,20 @@ extension SettingsViewController: SegueHandler {
       guard
         let midi = self.midi,
         let midiMonitor = self.midiMonitor,
-        let destination = segue.destination as? MIDIDevicesTableViewController
+        let destination = segue.destination as? MIDIConnectionsTableViewController
       else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
       destination.configure(midi: midi, midiMonitor: midiMonitor, activeChannel: settings.midiChannel)
+
+    case .midiControllersTableView:
+      guard
+        let midiReceiver = self.midi?.receiver as? MIDIReceiver,
+        let destination = segue.destination as? MIDIControllersTableViewController
+      else {
+        fatalError("expected MIDIDevicesTableViewController for segue destination")
+      }
+      destination.configure(midiReceiver: midiReceiver)
     }
   }
 }
