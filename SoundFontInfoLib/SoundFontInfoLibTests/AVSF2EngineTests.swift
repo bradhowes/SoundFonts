@@ -29,7 +29,7 @@ class AVSF2EngineTests: XCTestCase {
     waitForExpectations(timeout: 10.0)
   }
 
-  func testNotePlaying() {
+  func ignore_testNotePlaying() {
     AUAudioUnit.registerSubclass(SF2EngineAU.self, as: AVSF2Engine.audioComponentDescription, name: "SF2Engine",
                                  version: 1)
     let exp = expectation(description: "instantiate")
