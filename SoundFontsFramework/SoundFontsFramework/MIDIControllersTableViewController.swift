@@ -30,11 +30,8 @@ extension MIDIControllersTableViewController {
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     monitorToken = self.midiReceiver.addMonitor { payload in
-      let indexPath = IndexPath(row: payload.controller, section: 0)
-      if let cell = self.tableView.cellForRow(at: indexPath) {
-        let layer = cell.contentView.layer
-        Self.midiSeenLayerChange(layer, true)
-      }
+      let indexPath = IndexPath(row: Int(payload.controller), section: 0)
+      self.tableView.reloadRows(at: [indexPath], with: .none)
     }
   }
 
@@ -60,12 +57,15 @@ extension MIDIControllersTableViewController {
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIControllerTableCell = tableView.dequeueReusableCell(at: indexPath)
-    let identifier = UInt8(indexPath.row)
-    let name: String? = MIDICC(rawValue: identifier)?.name
-    cell.identifier.text = "\(identifier)"
-    cell.name.text = name ?? ""
-    cell.value.text = "\(identifier)"
-    cell.used.isOn = midiReceiver.controllerAllowed(identifier)
+    let midiControllerState = midiReceiver.midiControllerState[indexPath.row]
+    cell.identifier.text = "\(indexPath.row)"
+    cell.name.text = midiControllerState.name
+    cell.value.text = midiControllerState.lastValue >= 0 ? "\(midiControllerState.lastValue)" : ""
+    cell.used.isOn = midiControllerState.allowed
+    cell.used.tag = indexPath.row
+    if cell.used.target(forAction: #selector(allowedStateChanged(_:)), withSender: cell.used) == nil {
+      cell.used.addTarget(self, action: #selector(allowedStateChanged(_:)), for: .valueChanged)
+    }
     return cell
   }
 
@@ -83,7 +83,8 @@ extension MIDIControllersTableViewController {
     }
   }
 
-  func allowedStateChanged(controller: Int, allowed: Bool) {
+  @IBAction func allowedStateChanged(_ sender: UISwitch) {
+    midiReceiver.allowedStateChanged(controller: UInt8(sender.tag), allowed: sender.isOn)
   }
 
   private func controllerAllowedSettingName(controller: Int) -> String { "controllerAllowed\(controller)" }
@@ -99,47 +100,5 @@ extension MIDIControllersTableViewController {
     animator.fromValue = color.cgColor
     animator.toValue = UIColor.clear.cgColor
     layer.add(animator, forKey: "MIDI Seen")
-  }
-}
-
-private enum MIDICC: UInt8 {
-  case bankSelect = 0
-  case modulationWheel = 1
-  case breathController = 2
-  case footPedal = 4
-  case portamentoTime = 5
-  case volume = 7
-  case balance = 8
-  case pan = 10
-  case expression = 11
-  case effectController1 = 12
-  case effectController2 = 13
-  case damperPedal = 64
-  case portamentoSwitch = 65
-  case sostenutoPedal = 66
-  case softPedal = 67
-  case legatoSwitch = 68
-  case hold2 = 69
-
-  var name: String {
-    switch self {
-    case .bankSelect: return "Bank Select"
-    case .modulationWheel: return "Modulation Wheel"
-    case .breathController: return "Breath Controller"
-    case .footPedal: return "Foot Pedal"
-    case .portamentoTime: return "Portamento Time"
-    case .volume: return "Volume"
-    case .balance: return "Balance"
-    case .pan: return "Pan"
-    case .expression: return "Expression"
-    case .effectController1: return "Effect Controller 1"
-    case .effectController2: return "Effect Controller 2"
-    case .damperPedal: return "Damper Pedal"
-    case .portamentoSwitch: return "Portamento Switch"
-    case .sostenutoPedal: return "Sostenuto Pedal"
-    case .softPedal: return "Soft Pedal"
-    case .legatoSwitch: return "Legato Switch"
-    case .hold2: return "Hold 2"
-    }
   }
 }

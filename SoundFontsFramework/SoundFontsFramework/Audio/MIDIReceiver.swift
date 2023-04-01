@@ -14,32 +14,26 @@ public final class MIDIReceiver {
 
     public struct Payload: CustomStringConvertible {
       public var description: String { "\(controller)" }
-      let controller: Int
+      let controller: UInt8
     }
 
     private let notification = TypedNotification<Payload>(name: "Activity")
     private let serialQueue = DispatchQueue(label: "MIDIReceiver.Activity", qos: .userInteractive, attributes: [],
                                             autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
 
-    private var lastController: Int = -1
-    private var lastNotificationTime: Date = .distantPast
-
     public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
       notification.registerOnMain(block: block)
     }
 
-    public func showActivity(controller: Int) {
-      let now = Date()
-      if controller != lastController || now.timeIntervalSince(lastNotificationTime) > 0.5 {
-        lastNotificationTime = now
-        lastController = controller
-        serialQueue.async { self.notification.post(value: .init(controller: controller)) }
-      }
+    public func showActivity(controller: UInt8) {
+      serialQueue.async { self.notification.post(value: .init(controller: controller)) }
     }
   }
 
   private let settings: Settings
   private let activityNotifier = ActivityNotifier()
+
+  private(set) var midiControllerState: [MIDIControllerState] = []
 
   /// Current MIDI channel to listen to for MIDI. A value of -1 means OMNI -- accept all messages
   public private(set) var channel: Int
@@ -64,6 +58,10 @@ public final class MIDIReceiver {
     self.channel = settings.midiChannel
     self.group = -1
     monitorMIDIChannelValue()
+
+    midiControllerState = (UInt8(0)...UInt8(127)).map {
+      MIDIControllerState(identifier: $0, allowed: controllerAllowed($0))
+    }
   }
 
   public func stopAllNotes() {
@@ -77,12 +75,13 @@ public final class MIDIReceiver {
 
   private func controllerSettingKey(for controller: UInt8) -> String { "controllerAllowed\(controller)" }
 
-  func controllerAllowed(_ controller: UInt8) -> Bool {
+  private func controllerAllowed(_ controller: UInt8) -> Bool {
     settings.get(key: controllerSettingKey(for: controller), defaultValue: true)
   }
 
   func allowedStateChanged(controller: UInt8, allowed: Bool) {
     settings.set(key: controllerSettingKey(for: controller), value: allowed)
+    midiControllerState[Int(controller)].allowed = allowed
   }
 
   private func monitorMIDIChannelValue() {
@@ -144,9 +143,15 @@ extension MIDIReceiver: Receiver {
   }
 
   public func controlChange(controller: UInt8, value: UInt8) {
-    guard controllerAllowed(controller) else { return }
-    synth?.controlChange(controller: controller, value: value)
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
+
+    let midiControllerIndex = Int(controller)
+    midiControllerState[midiControllerIndex].lastValue = Int(value)
+    activityNotifier.showActivity(controller: controller)
+
+    if midiControllerState[midiControllerIndex].allowed {
+      synth?.controlChange(controller: controller, value: value)
+    }
   }
 
   public func controlChange2(controller: UInt8, value: UInt32) {
