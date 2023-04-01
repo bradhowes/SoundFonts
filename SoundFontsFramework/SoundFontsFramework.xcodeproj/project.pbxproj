@@ -108,6 +108,7 @@
 		BD28D73927958CE4000A57DE /* FontsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD28D73827958CE4000A57DE /* FontsTableViewController.swift */; };
 		BD2F4B24277F28EE0064E31B /* SettingSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4B23277F28EE0064E31B /* SettingSerializable.swift */; };
 		BD2F4B26277F2B230064E31B /* SettingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4B25277F2B230064E31B /* SettingKeys.swift */; };
+		BD3CADD329D8644D008C957D /* MorkAndMIDI in Frameworks */ = {isa = PBXBuildFile; productRef = BD3CADD229D8644D008C957D /* MorkAndMIDI */; };
 		BD3D13AB279721DC009FED96 /* FontsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */; };
 		BD3D13AD27973608009FED96 /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3D13AC27973608009FED96 /* TagsTableViewController.swift */; };
 		BD3D13AF279737D3009FED96 /* TagsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */; };
@@ -157,7 +158,6 @@
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
 		BD9494362813A656000E0BFF /* AnyMIDISynth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9494352813A656000E0BFF /* AnyMIDISynth.swift */; };
-		BD95017F29D711460065D837 /* MorkAndMIDI in Frameworks */ = {isa = PBXBuildFile; productRef = BD95017E29D711460065D837 /* MorkAndMIDI */; };
 		BD95018129D715A90065D837 /* MIDIMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD95018029D715A90065D837 /* MIDIMonitor.swift */; };
 		BD95018329D767160065D837 /* SynthStartFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD95018229D767160065D837 /* SynthStartFailure.swift */; };
 		BD9AC9A3256718ED00B47F12 /* AUParameterHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */; };
@@ -491,7 +491,6 @@
 		BDE03BB125706F2F00F904E3 /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		BDE150B0250B460200728402 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		BDE150B3250CC43A00728402 /* ManagedAppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAppState.swift; sourceTree = "<group>"; };
-		BDE2102829D7105D00824557 /* MorkAndMIDI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MorkAndMIDI; path = ../../MorkAndMIDI; sourceTree = "<group>"; };
 		BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		BDEB124A262059CF003CE8EE /* Changes.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Changes.storyboard; sourceTree = "<group>"; };
 		BDEB12542620728B003CE8EE /* Changes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Changes.md; sourceTree = "<group>"; };
@@ -524,7 +523,7 @@
 			files = (
 				BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */,
 				BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */,
-				BD95017F29D711460065D837 /* MorkAndMIDI in Frameworks */,
+				BD3CADD329D8644D008C957D /* MorkAndMIDI in Frameworks */,
 				BDF1C0E02787675600E451C3 /* Tagged in Frameworks */,
 				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 			);
@@ -875,7 +874,6 @@
 		BD5824F723CDABCD0034A31B = {
 			isa = PBXGroup;
 			children = (
-				BDE2102729D7105D00824557 /* Packages */,
 				BD7F6C432790A7BB00C867D8 /* Release.xcconfig */,
 				BD7F6C442790A7BB00C867D8 /* Development.xcconfig */,
 				BD074BD023CDAF51001987E9 /* SoundFontsFramework */,
@@ -1032,14 +1030,6 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		BDE2102729D7105D00824557 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				BDE2102829D7105D00824557 /* MorkAndMIDI */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1071,7 +1061,7 @@
 			packageProductDependencies = (
 				BDA52C19277CB72F0010BBF1 /* DictionaryCoder */,
 				BDF1C0DF2787675600E451C3 /* Tagged */,
-				BD95017E29D711460065D837 /* MorkAndMIDI */,
+				BD3CADD229D8644D008C957D /* MorkAndMIDI */,
 			);
 			productName = SoundFontsFramework;
 			productReference = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */;
@@ -1129,6 +1119,7 @@
 			packageReferences = (
 				BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */,
 				BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */,
+				BD3CADD129D8644D008C957D /* XCRemoteSwiftPackageReference "morkandmidi" */,
 			);
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
 			projectDirPath = "";
@@ -1698,6 +1689,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BD3CADD129D8644D008C957D /* XCRemoteSwiftPackageReference "morkandmidi" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bradhowes/morkandmidi.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/almazrafi/DictionaryCoder.git";
@@ -1717,8 +1716,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BD95017E29D711460065D837 /* MorkAndMIDI */ = {
+		BD3CADD229D8644D008C957D /* MorkAndMIDI */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = BD3CADD129D8644D008C957D /* XCRemoteSwiftPackageReference "morkandmidi" */;
 			productName = MorkAndMIDI;
 		};
 		BDA52C19277CB72F0010BBF1 /* DictionaryCoder */ = {
