@@ -14,12 +14,30 @@ public extension UITableView {
   }
 
   /**
+   Register a cell view type that implements ReusableView protocol.
+
+   - parameter _: the cell class to register (ignored)
+   */
+  func registerHeaderFooter<T: UITableViewHeaderFooterView>(_: T.Type) where T: ReusableView {
+    register(T.self, forHeaderFooterViewReuseIdentifier: T.reuseIdentifier)
+  }
+
+  /**
    Register a cell view type that implements the NibLoadableView protocol.
 
    - parameter _: the cell class to register (ignored)
    */
   func register<T: UITableViewCell>(_: T.Type) where T: ReusableView, T: NibLoadableView {
     register(T.nib, forCellReuseIdentifier: T.reuseIdentifier)
+  }
+
+  /**
+   Register a cell view type that implements the NibLoadableView protocol.
+
+   - parameter _: the cell class to register (ignored)
+   */
+  func registerHeaderFooter<T: UITableViewHeaderFooterView>(_: T.Type) where T: ReusableView, T: NibLoadableView {
+    register(T.nib, forHeaderFooterViewReuseIdentifier: T.reuseIdentifier)
   }
 
   /**
@@ -35,6 +53,21 @@ public extension UITableView {
       fatalError("could not dequeue cell with identifier \(ident)")
     }
     return cell
+  }
+
+  /**
+   Obtain a cell view to use to render cell content in a collection view.
+
+   - parameter indexPath: the location of the cell that is being rendered
+   - returns: instance of a T class
+   */
+  @inlinable
+  func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T where T: ReusableView {
+    let ident = T.reuseIdentifier
+    guard let view = dequeueReusableHeaderFooterView(withIdentifier: ident) as? T else {
+      fatalError("could not dequeue cell with identifier \(ident)")
+    }
+    return view
   }
 
   /**

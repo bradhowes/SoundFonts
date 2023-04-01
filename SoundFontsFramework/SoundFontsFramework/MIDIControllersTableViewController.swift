@@ -8,6 +8,7 @@ import MorkAndMIDI
  A table view that shows the known MIDI devices.
  */
 final class MIDIControllersTableViewController: UITableViewController {
+  private let headerView = UIStackView()
   private var midiReceiver: MIDIReceiver!
   private var monitorToken: NotificationObserver?
 
@@ -19,6 +20,12 @@ final class MIDIControllersTableViewController: UITableViewController {
 // MARK: - View Management
 
 extension MIDIControllersTableViewController {
+
+  override public func viewDidLoad() {
+    super.viewDidLoad()
+    tableView.register(MIDIControllerTableCell.self)
+    tableView.registerHeaderFooter(TableHeaderView.self)
+  }
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -42,17 +49,23 @@ extension MIDIControllersTableViewController {
 
 extension MIDIControllersTableViewController {
 
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view: TableHeaderView = tableView.dequeueReusableHeaderFooterView()
+    return view
+  }
+
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     128
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIControllerTableCell = tableView.dequeueReusableCell(at: indexPath)
-    let rawValue = UInt8(indexPath.row)
-    let title: String? = MIDICC(rawValue: rawValue)?.name
-    let subtitle = "CC \(rawValue)"
-    cell.update(receiver: midiReceiver, title: title, subtitle: subtitle, controller: rawValue,
-                allowed: midiReceiver.controllerAllowed(rawValue))
+    let identifier = UInt8(indexPath.row)
+    let name: String? = MIDICC(rawValue: identifier)?.name
+    cell.identifier.text = "\(identifier)"
+    cell.name.text = name ?? ""
+    cell.value.text = "\(identifier)"
+    cell.used.isOn = midiReceiver.controllerAllowed(identifier)
     return cell
   }
 
