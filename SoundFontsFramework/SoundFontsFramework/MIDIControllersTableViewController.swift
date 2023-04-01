@@ -60,7 +60,7 @@ extension MIDIControllersTableViewController {
     let midiControllerState = midiReceiver.midiControllerState[indexPath.row]
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
-    cell.value.text = midiControllerState.lastValue >= 0 ? "\(midiControllerState.lastValue)" : ""
+    cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
     cell.used.isOn = midiControllerState.allowed
     cell.used.tag = indexPath.row
     if cell.used.target(forAction: #selector(allowedStateChanged(_:)), withSender: cell.used) == nil {

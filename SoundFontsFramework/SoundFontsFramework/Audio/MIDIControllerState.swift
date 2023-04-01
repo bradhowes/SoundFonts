@@ -5,13 +5,12 @@ import os
 struct MIDIControllerState {
   let identifier: UInt8
   let name: String
-  var lastValue: Int
+  var lastValue: UInt8?
   var allowed: Bool
 
   init(identifier: UInt8, allowed: Bool) {
     self.identifier = identifier
     self.name = MIDICC(rawValue: identifier)?.name ?? ""
-    self.lastValue = -1
     self.allowed = allowed
   }
 }

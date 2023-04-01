@@ -82,6 +82,9 @@ public final class MIDIReceiver {
   func allowedStateChanged(controller: UInt8, allowed: Bool) {
     settings.set(key: controllerSettingKey(for: controller), value: allowed)
     midiControllerState[Int(controller)].allowed = allowed
+    if let lastValue = midiControllerState[Int(controller)].lastValue, allowed {
+      synth?.controlChange(controller: controller, value: lastValue)
+    }
   }
 
   private func monitorMIDIChannelValue() {
@@ -146,7 +149,7 @@ extension MIDIReceiver: Receiver {
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
 
     let midiControllerIndex = Int(controller)
-    midiControllerState[midiControllerIndex].lastValue = Int(value)
+    midiControllerState[midiControllerIndex].lastValue = value
     activityNotifier.showActivity(controller: controller)
 
     if midiControllerState[midiControllerIndex].allowed {
