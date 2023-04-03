@@ -123,8 +123,8 @@
 		BD44E6152791C094004E0543 /* TagsEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD44E6142791C094004E0543 /* TagsEditor.storyboard */; };
 		BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */; };
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
-		BD4CF05629D81D820097B3B2 /* TableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF05529D81D820097B3B2 /* TableHeaderView.swift */; };
-		BD4CF05829D81F160097B3B2 /* TableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD4CF05729D81F160097B3B2 /* TableHeaderView.xib */; };
+		BD4CF05629D81D820097B3B2 /* MIDIControllerTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF05529D81D820097B3B2 /* MIDIControllerTableHeaderView.swift */; };
+		BD4CF05829D81F160097B3B2 /* MIDIControllerTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD4CF05729D81F160097B3B2 /* MIDIControllerTableHeaderView.xib */; };
 		BD4CF05A29D8299B0097B3B2 /* MIDIControllerTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD4CF05929D8299B0097B3B2 /* MIDIControllerTableCell.xib */; };
 		BD4CF05C29D8327C0097B3B2 /* MIDIControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF05B29D8327C0097B3B2 /* MIDIControllerState.swift */; };
 		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
@@ -155,6 +155,9 @@
 		BD79915425795D2000943515 /* iPhone 12.png in Resources */ = {isa = PBXBuildFile; fileRef = BD79915325795D2000943515 /* iPhone 12.png */; };
 		BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B7C482660D4AF00F0D18D /* TagTests.swift */; };
 		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
+		BD87DC5C29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD87DC5B29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift */; };
+		BD87DC5E29DB5528008F6470 /* MIDIConnectionTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD87DC5D29DB5528008F6470 /* MIDIConnectionTableCell.xib */; };
+		BD87DC6029DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD87DC5F29DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
 		BD9494362813A656000E0BFF /* AnyMIDISynth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9494352813A656000E0BFF /* AnyMIDISynth.swift */; };
@@ -373,8 +376,8 @@
 		BD44E6142791C094004E0543 /* TagsEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TagsEditor.storyboard; sourceTree = "<group>"; };
 		BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingKey.swift; sourceTree = "<group>"; };
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
-		BD4CF05529D81D820097B3B2 /* TableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
-		BD4CF05729D81F160097B3B2 /* TableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableHeaderView.xib; sourceTree = "<group>"; };
+		BD4CF05529D81D820097B3B2 /* MIDIControllerTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIControllerTableHeaderView.swift; sourceTree = "<group>"; };
+		BD4CF05729D81F160097B3B2 /* MIDIControllerTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MIDIControllerTableHeaderView.xib; sourceTree = "<group>"; };
 		BD4CF05929D8299B0097B3B2 /* MIDIControllerTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MIDIControllerTableCell.xib; sourceTree = "<group>"; };
 		BD4CF05B29D8327C0097B3B2 /* MIDIControllerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIControllerState.swift; sourceTree = "<group>"; };
 		BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldKeyboardMonitor.swift; sourceTree = "<group>"; };
@@ -412,6 +415,9 @@
 		BD7DF75E265EE99F0083B246 /* ManagedReverbConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedReverbConfig.swift; sourceTree = "<group>"; };
 		BD7F6C432790A7BB00C867D8 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
 		BD7F6C442790A7BB00C867D8 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
+		BD87DC5B29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIConnectionTableHeaderView.swift; sourceTree = "<group>"; };
+		BD87DC5D29DB5528008F6470 /* MIDIConnectionTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MIDIConnectionTableCell.xib; sourceTree = "<group>"; };
+		BD87DC5F29DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MIDIConnectionTableHeaderView.xib; sourceTree = "<group>"; };
 		BD88BCB124194FA000399DE5 /* NoteInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInjector.swift; sourceTree = "<group>"; };
 		BD88BCB62419952700399DE5 /* Notifiication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiication.swift; sourceTree = "<group>"; };
 		BD8A314F2502E41E0077320F /* SoundFonts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SoundFonts.xcdatamodel; sourceTree = "<group>"; };
@@ -556,10 +562,11 @@
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
 				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
 				BD689B8C29D79C4700C3A5D8 /* MIDIControllerTableCell.swift */,
+				BD4CF05529D81D820097B3B2 /* MIDIControllerTableHeaderView.swift */,
 				BD689B8E29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift */,
 				BDFB371E299A971F00CBEDE3 /* MIDIConnectionTableCell.swift */,
+				BD87DC5B29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift */,
 				BD1B8CD6270C5EB400C6BF15 /* MIDIConnectionsTableViewController.swift */,
-				BD4CF05529D81D820097B3B2 /* TableHeaderView.swift */,
 				BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */,
 				BD88BCB62419952700399DE5 /* Notifiication.swift */,
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
@@ -865,8 +872,10 @@
 				BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */,
 				BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */,
 				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
-				BD4CF05729D81F160097B3B2 /* TableHeaderView.xib */,
+				BD4CF05729D81F160097B3B2 /* MIDIControllerTableHeaderView.xib */,
+				BD87DC5F29DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib */,
 				BD4CF05929D8299B0097B3B2 /* MIDIControllerTableCell.xib */,
+				BD87DC5D29DB5528008F6470 /* MIDIConnectionTableCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1147,6 +1156,7 @@
 				BD62CF5B253DE22D00DBDC1B /* FavoriteEditor.storyboard in Resources */,
 				BD3D13AF279737D3009FED96 /* TagsTableView.storyboard in Resources */,
 				BD62CF5F253DE22D00DBDC1B /* GuideView.storyboard in Resources */,
+				BD87DC5E29DB5528008F6470 /* MIDIConnectionTableCell.xib in Resources */,
 				BDB7408425CC29690051B4E4 /* Reverb.storyboard in Resources */,
 				BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */,
 				BD62CF5D253DE22D00DBDC1B /* InfoBar.storyboard in Resources */,
@@ -1165,7 +1175,7 @@
 				BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */,
 				BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */,
 				BD79915425795D2000943515 /* iPhone 12.png in Resources */,
-				BD4CF05829D81F160097B3B2 /* TableHeaderView.xib in Resources */,
+				BD4CF05829D81F160097B3B2 /* MIDIControllerTableHeaderView.xib in Resources */,
 				BD6E057825CC6F6E004058D9 /* Intro.storyboard in Resources */,
 				BDB7408825CC29690051B4E4 /* Delay.storyboard in Resources */,
 				BD074C5E23CDAF51001987E9 /* (null) in Resources */,
@@ -1178,6 +1188,7 @@
 				BDF4E696286CFD8700443CA9 /* Envelope.storyboard in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
 				BD5B5C3D28C15669000BC5A4 /* FontsEditorTableView.storyboard in Resources */,
+				BD87DC6029DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib in Resources */,
 				BD44E6132791B374004E0543 /* TagsEditorTableView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1245,7 +1256,7 @@
 				BDFA9900280DF07B0069A46F /* PresetLoader.swift in Sources */,
 				BD0FAC802523CAEC00EEF187 /* UIContextualAction.swift in Sources */,
 				BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */,
-				BD4CF05629D81D820097B3B2 /* TableHeaderView.swift in Sources */,
+				BD4CF05629D81D820097B3B2 /* MIDIControllerTableHeaderView.swift in Sources */,
 				BDD2836925BABD1D00B3A59A /* PresetConfig.swift in Sources */,
 				BD074C3E23CDAF51001987E9 /* FavoritesViewController.swift in Sources */,
 				BD074C7423CDAF51001987E9 /* InfoBarController.swift in Sources */,
@@ -1345,6 +1356,7 @@
 				BDFE80082983368D00F400A7 /* MIDIActivityNotifier.swift in Sources */,
 				BD074C5423CDAF51001987E9 /* AudioEngine.swift in Sources */,
 				BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */,
+				BD87DC5C29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,
 				BD074C5123CDAF51001987E9 /* SoundFont.swift in Sources */,

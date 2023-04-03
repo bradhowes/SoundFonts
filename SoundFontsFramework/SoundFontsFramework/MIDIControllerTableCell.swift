@@ -13,6 +13,6 @@ final class MIDIControllerTableCell: UITableViewCell, ReusableView, NibLoadableV
   public override func awakeFromNib() {
     super.awakeFromNib()
     // translatesAutoresizingMaskIntoConstraints = true
-    used.tintColor = UIColor.systemTeal
+    used.onTintColor = UIColor.systemTeal
   }
 }

@@ -37,10 +37,9 @@ final class MIDIConnectionsTableViewController: UITableViewController {
 extension MIDIConnectionsTableViewController {
 
   override public func viewDidLoad() {
-    let footer = UILabel()
-    tableView.tableFooterView = footer
-    footer.text = "This is a test."
     super.viewDidLoad()
+    tableView.register(MIDIConnectionTableCell.self)
+    tableView.registerHeaderFooter(MIDIConnectionTableHeaderView.self)
   }
 
   override public func viewWillAppear(_ animated: Bool) {
@@ -68,6 +67,11 @@ extension MIDIConnectionsTableViewController {
 
 extension MIDIConnectionsTableViewController {
 
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view: MIDIConnectionTableHeaderView = tableView.dequeueReusableHeaderFooterView()
+    return view
+  }
+
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     midi.sourceConnections.count
   }
@@ -75,7 +79,12 @@ extension MIDIConnectionsTableViewController {
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIConnectionTableCell = tableView.dequeueReusableCell(at: indexPath)
     let source = midi.sourceConnections[indexPath.row]
-    cell.update(controller: self, sourceConnection: source, connected: source.connected)
+    cell.name.text = source.displayName
+    cell.connected.isOn = source.connected
+    cell.connected.tag = Int(source.uniqueId)
+    if cell.connected.target(forAction: #selector(connectedStateChanged(_:)), withSender: cell.connected) == nil {
+      cell.connected.addTarget(self, action: #selector(connectedStateChanged(_:)), for: .valueChanged)
+    }
     return cell
   }
 
@@ -99,8 +108,9 @@ extension MIDIConnectionsTableViewController {
     MIDIRestart()
   }
 
-  func changeConnectedState(uniqueId: MIDIUniqueID, connect: Bool) {
-    if connect {
+  @IBAction func connectedStateChanged(_ sender: UISwitch) {
+    let uniqueId = Int32(sender.tag)
+    if sender.isOn {
       midiMonitor.setAutoConnectState(for: uniqueId, autoConnect: true)
       _ = midi.connect(to: uniqueId)
     } else {

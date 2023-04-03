@@ -10,47 +10,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="MIDIControllerTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="MIDIConnectionTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="393" height="48"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krF-vH-tlE" userLabel="Row">
                     <rect key="frame" x="20" y="0.0" width="353" height="48"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="127" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88b-he-hl7" userLabel="ID">
-                            <rect key="frame" x="0.0" y="13.999999999999998" width="34" height="20.333333333333329"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="34" id="uM8-pG-1Qt"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Sustenuto" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nT-kN-UOe" userLabel="Name">
-                            <rect key="frame" x="58.000000000000007" y="13.999999999999998" width="77.666666666666686" height="20.333333333333329"/>
+                            <rect key="frame" x="0.0" y="13.999999999999998" width="288" height="20.333333333333329"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="123" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyE-4S-z8X" userLabel="Value">
-                            <rect key="frame" x="252.33333333333329" y="13.999999999999998" width="27.666666666666657" height="20.333333333333329"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CHA-eD-nhi" userLabel="Used">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CHA-eD-nhi" userLabel="Connected">
                             <rect key="frame" x="304" y="8.6666666666666643" width="51" height="31"/>
                             <color key="tintColor" systemColor="systemTealColor"/>
                         </switch>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstItem="4nT-kN-UOe" firstAttribute="leading" secondItem="88b-he-hl7" secondAttribute="trailing" constant="24" id="6sc-bi-iX1"/>
-                        <constraint firstItem="88b-he-hl7" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="WCu-V3-IO5"/>
-                        <constraint firstItem="jyE-4S-z8X" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="cVe-yi-F6n"/>
-                        <constraint firstItem="88b-he-hl7" firstAttribute="leading" secondItem="krF-vH-tlE" secondAttribute="leading" id="fFJ-fc-ne6"/>
-                        <constraint firstItem="CHA-eD-nhi" firstAttribute="leading" secondItem="jyE-4S-z8X" secondAttribute="trailing" constant="24" id="kX8-hi-zSU"/>
-                        <constraint firstItem="jyE-4S-z8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4nT-kN-UOe" secondAttribute="trailing" constant="16" id="mk8-BG-vIC"/>
+                        <constraint firstItem="CHA-eD-nhi" firstAttribute="leading" secondItem="4nT-kN-UOe" secondAttribute="trailing" constant="16" id="dcf-7b-Otg"/>
+                        <constraint firstItem="4nT-kN-UOe" firstAttribute="leading" secondItem="krF-vH-tlE" secondAttribute="leading" id="eFF-lN-pwD"/>
                         <constraint firstItem="4nT-kN-UOe" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="rva-Tz-plh"/>
                         <constraint firstItem="CHA-eD-nhi" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="sHA-VC-odQ"/>
                         <constraint firstAttribute="trailing" secondItem="CHA-eD-nhi" secondAttribute="trailing" id="vsc-Fw-Slh"/>
@@ -67,10 +48,8 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="identifier" destination="88b-he-hl7" id="q34-di-PCa"/>
-                <outlet property="name" destination="4nT-kN-UOe" id="Ili-N6-RiX"/>
-                <outlet property="used" destination="CHA-eD-nhi" id="dYq-ya-ANK"/>
-                <outlet property="value" destination="jyE-4S-z8X" id="M4G-iX-Z6s"/>
+                <outlet property="connected" destination="CHA-eD-nhi" id="QDk-aJ-eqv"/>
+                <outlet property="name" destination="4nT-kN-UOe" id="kfV-t6-DJH"/>
             </connections>
             <point key="canvasLocation" x="140" y="42"/>
         </view>

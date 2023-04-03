@@ -8,7 +8,6 @@ import MorkAndMIDI
  A table view that shows the known MIDI devices.
  */
 final class MIDIControllersTableViewController: UITableViewController {
-  private let headerView = UIStackView()
   private var midiReceiver: MIDIReceiver!
   private var monitorToken: NotificationObserver?
 
@@ -24,7 +23,7 @@ extension MIDIControllersTableViewController {
   override public func viewDidLoad() {
     super.viewDidLoad()
     tableView.register(MIDIControllerTableCell.self)
-    tableView.registerHeaderFooter(TableHeaderView.self)
+    tableView.registerHeaderFooter(MIDIControllerTableHeaderView.self)
   }
 
   override public func viewWillAppear(_ animated: Bool) {
@@ -47,7 +46,7 @@ extension MIDIControllersTableViewController {
 extension MIDIControllersTableViewController {
 
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view: TableHeaderView = tableView.dequeueReusableHeaderFooterView()
+    let view: MIDIControllerTableHeaderView = tableView.dequeueReusableHeaderFooterView()
     return view
   }
 
