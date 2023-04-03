@@ -8,10 +8,10 @@ The parsing is really simplistic:
 
 # 2.28.0
 
-* Use MorkAndMIDI Swift package for MIDI all MIDI processing
-* Using MIDI 2.0 CoreMIDI API when available.
+* Use MorkAndMIDI Swift package for all MIDI processing
+* Using MIDI v2.0 in CoreMIDI API when available
 * New MIDI controller display in Settings view
-* MIDI controllers can be now be disabled
+* Individual MIDI controller input can be now be disabled
 
 # 2.27.4
 
