@@ -78,9 +78,9 @@ public extension SettingKeys {
   /// The current MIDI channel to use for incoming MIDI events. OMNI mode is a value of -1 (default).
   static let midiChannel = SettingKey("midiChannel", -1)
   /// The MIDI virtual input ID (not user settable)
-  static let virtualMidiInId = SettingKey("virtualMidiInId", 0)
+  static let midiInputPortUniqueId = SettingKey("virtualMidiInId", 44_659)
   /// The MIDI virtual output ID (not user settable)
-  static let virtualMidiOutId = SettingKey("virtualMidiOutId", 0)
+  static let midiOutputPortUniqueId = SettingKey("virtualMidiOutId", 44_660)
   /// Allow MIDI processing and audio generation when app is in background
   static let backgroundMIDIProcessingEnabled = SettingKey("backgroundMIDIProcessingEnabled", false)
   /// Auto-connect new MIDI devices

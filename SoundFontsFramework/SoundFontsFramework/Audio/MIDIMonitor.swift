@@ -54,6 +54,14 @@ public final class MIDIMonitor {
 
 extension MIDIMonitor: Monitor {
 
+  public func didCreate(inputPort: MIDIPortRef) {
+    // Save our unique ID if CoreMIDI had to change it due to a conflict.
+    var uniqueId: Int32 = 0
+    guard MIDIObjectGetIntegerProperty(inputPort, kMIDIPropertyUniqueID, &uniqueId) == noErr else { return }
+    guard Int(uniqueId) != settings[.midiInputPortUniqueId] else { return }
+    settings[.midiInputPortUniqueId] = Int(uniqueId)
+  }
+
   public func shouldConnect(to uniqueId: MIDIUniqueID) -> Bool {
     let autoConnectDefault = settings.autoConnectNewMIDIDeviceEnabled
     let autoConnect = settings.get(key: connectedSettingKey(for: uniqueId), defaultValue: autoConnectDefault)
@@ -66,9 +74,8 @@ extension MIDIMonitor: Monitor {
 }
 
 extension MIDIMonitor {
-  public func didInitialize(uniqueId: MIDIUniqueID) {}
+  public func didInitialize() {}
   public func willUninitialize() {}
-  public func didCreate(inputPort: MIDIPortRef) {}
   public func willDelete(inputPort: MIDIPortRef) {}
   public func didStart() {}
   public func didStop() {}

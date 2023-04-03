@@ -90,7 +90,8 @@ where T: ControllerConfiguration {
     self.inApp = inApp
     self.settings = Settings()
 
-    self.midi = inApp ? MIDI(clientName: "SoundFonts", uniqueId: 44_659, midiProtocol: ._1_0) : nil
+    let uniqueId = Int32(settings[.midiInputPortUniqueId])
+    self.midi = inApp ? MIDI(clientName: "SoundFonts", uniqueId: uniqueId, midiProtocol: ._1_0) : nil
     self.midiMonitor = inApp ? MIDIMonitor(settings: settings) : nil
     self.midi?.monitor = self.midiMonitor
 

@@ -200,15 +200,15 @@ public extension Settings {
     get { self[.midiChannel] }
     set { self[.midiChannel] = newValue }
   }
-  /// The MIDI virtual input ID (not user settable)
-  var virtualMidiInId: Int {
-    get { self[.virtualMidiInId] }
-    set { self[.virtualMidiInId] = newValue }
+  /// The unique ID of the input port (not user settable)
+  var midiInputPortUniqueId: Int {
+    get { self[.midiInputPortUniqueId] }
+    set { self[.midiInputPortUniqueId] = newValue }
   }
   /// The MIDI virtual output ID (not user settable)
-  var virtualMidiOutId: Int {
-    get { self[.virtualMidiOutId] }
-    set { self[.virtualMidiOutId] = newValue }
+  var midiOutputPortUniqueId: Int {
+    get { self[.midiOutputPortUniqueId] }
+    set { self[.midiOutputPortUniqueId] = newValue }
   }
   /// If true, processing MIDI messages when app is in the background
   var backgroundMIDIProcessingEnabled: Bool {
@@ -337,7 +337,6 @@ public extension Settings {
     get { self[.showedHidePresetPrompt] }
     set { self[.showedHidePresetPrompt] = newValue }
   }
-
   @objc dynamic  var settingsVersion: Int {
     get { self[.settingsVersion] }
     set { self[.settingsVersion] = newValue }
