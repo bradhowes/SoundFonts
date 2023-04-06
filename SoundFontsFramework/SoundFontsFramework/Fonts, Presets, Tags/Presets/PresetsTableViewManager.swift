@@ -753,10 +753,6 @@ extension PresetsTableViewManager {
   }
 
   func updateFavoriteCell(_ cell: TableCell, indexPath: IndexPath, key: Favorite.Key, slot: Int) {
-    guard let soundFont = selectedSoundFont else {
-      os_log(.error, log: log, "unexpected nil soundFont")
-      return
-    }
     guard let favorite = favorites.getBy(key: key) else { return }
     os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
            favorite.presetConfig.name, slot)
