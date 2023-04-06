@@ -6,34 +6,6 @@ import MorkAndMIDI
 public final class MIDIMonitor {
   private lazy var log = Logging.logger("MIDIMonitor")
 
-  public final class ActivityNotifier: NSObject {
-
-    public struct Payload: CustomStringConvertible {
-      public var description: String { "\(uniqueId),\(channel)" }
-      let uniqueId: MIDIUniqueID
-      let channel: Int
-    }
-
-    private let notification = TypedNotification<Payload>(name: "MIDIActivity")
-    private let serialQueue = DispatchQueue(label: "MIDIActivity", qos: .userInteractive, attributes: [],
-                                            autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
-    private var lastChannel: Int = -2
-    private var lastNotificationTime: Date = .distantPast
-
-    public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
-      notification.registerOnMain(block: block)
-    }
-
-    public func showActivity(uniqueId: MIDIUniqueID, channel: Int) {
-      let now = Date()
-      if channel != lastChannel || now.timeIntervalSince(lastNotificationTime) > 0.5 {
-        lastNotificationTime = now
-        lastChannel = channel
-        serialQueue.async { self.notification.post(value: .init(uniqueId: uniqueId, channel: channel)) }
-      }
-    }
-  }
-
   private let settings: Settings
   private let activityNotifier = ActivityNotifier()
 
@@ -41,7 +13,13 @@ public final class MIDIMonitor {
     self.settings = settings
   }
 
-  public func addMonitor(block: @escaping (ActivityNotifier.Payload) -> Void) -> NotificationObserver {
+  public struct Payload: CustomStringConvertible {
+    public var description: String { "\(uniqueId),\(channel)" }
+    let uniqueId: MIDIUniqueID
+    let channel: Int
+  }
+
+  public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
     activityNotifier.addMonitor(block: block)
   }
 
@@ -83,4 +61,26 @@ extension MIDIMonitor {
   public func willUpdateConnections() {}
   public func didUpdateConnections(connected: any Sequence<MIDIEndpointRef>, disappeared: any Sequence<MIDIUniqueID>) {}
 
+}
+
+private final class ActivityNotifier: NSObject {
+
+  private let notification = TypedNotification<MIDIMonitor.Payload>(name: "MIDIActivity")
+  private let serialQueue = DispatchQueue(label: "MIDIActivity", qos: .userInteractive, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
+  private var lastChannel: Int = -2
+  private var lastNotificationTime: Date = .distantPast
+
+  public func addMonitor(block: @escaping (MIDIMonitor.Payload) -> Void) -> NotificationObserver {
+    notification.registerOnMain(block: block)
+  }
+
+  public func showActivity(uniqueId: MIDIUniqueID, channel: Int) {
+    let now = Date()
+    if channel != lastChannel || now.timeIntervalSince(lastNotificationTime) > 0.5 {
+      lastNotificationTime = now
+      lastChannel = channel
+      serialQueue.async { self.notification.post(value: .init(uniqueId: uniqueId, channel: channel)) }
+    }
+  }
 }

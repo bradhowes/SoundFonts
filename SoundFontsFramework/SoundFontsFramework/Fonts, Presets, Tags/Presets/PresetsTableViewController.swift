@@ -169,7 +169,7 @@ public extension PresetsTableViewController {
 
 // MARK: - UITableViewDelegate Protocol
 
-public extension PresetsTableViewController  {
+public extension PresetsTableViewController {
 
   override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     .none

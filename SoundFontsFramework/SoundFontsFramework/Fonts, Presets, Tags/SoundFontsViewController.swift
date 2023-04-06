@@ -136,8 +136,7 @@ extension SoundFontsViewController {
     present(documentPicker, animated: true)
   }
 
-  private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?)
-  {
+  private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
     let promptTitle = Formatters.strings.deleteFontTitle
     let promptMessage = Formatters.strings.deleteFontMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
@@ -309,42 +308,57 @@ extension SoundFontsViewController: SegueHandler {
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
-    case .fontsTableView:
-      guard let destination = segue.destination as? FontsTableViewController else {
-        fatalError("expected FontsTableViewController for segue destination")
-      }
-      fontsTableViewController = destination
-
-    case .presetsTableView:
-      guard let destination = segue.destination as? PresetsTableViewController else {
-        fatalError("expected PresetsTableViewController for segue destination")
-      }
-      presetsTableViewController = destination
-
-    case .tagsTableView:
-      guard let destination = segue.destination as? TagsTableViewController else {
-        fatalError("expected TagsTableViewController for segue destination")
-      }
-      tagsTableViewController = destination
-
-    case .fontEditor:
-      guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
-      prepareToEditFont(segue, config: config)
-
+    case .fontsTableView: prepareForFontTableView(segue)
+    case .presetsTableView: prepareForPresetsTableView(segue)
+    case .tagsTableView: prepareForTagsTableView(segue)
+    case .fontEditor: prepareForFontEditor(segue, sender: sender)
     case .fontBrowser: break
-
-    case .tagsEditor:
-      guard let config = sender as? TagsEditorTableViewController.Config else {
-        fatalError("expected TagsEditorTableViewController.Config")
-      }
-      prepareToEditTags(segue, config: config)
-
-    case .fontsEditor:
-      guard let config = sender as? FontsEditorTableViewController.Config else {
-        fatalError("expected FontsEditorTableViewController.Config")
-      }
-      prepareToEditFonts(segue, config: config)
+    case .tagsEditor: prepareForTagsEditor(segue, sender: sender)
+    case .fontsEditor: prepareForFontsEditor(segue, sender: sender)
     }
+  }
+}
+
+private extension SoundFontsViewController {
+
+  private func prepareForFontTableView(_ segue: UIStoryboardSegue) {
+    guard let destination = segue.destination as? FontsTableViewController else {
+      fatalError("expected FontsTableViewController for segue destination")
+    }
+    fontsTableViewController = destination
+  }
+
+  private func prepareForPresetsTableView(_ segue: UIStoryboardSegue) {
+    guard let destination = segue.destination as? PresetsTableViewController else {
+      fatalError("expected PresetsTableViewController for segue destination")
+    }
+    presetsTableViewController = destination
+  }
+
+  private func prepareForTagsTableView(_ segue: UIStoryboardSegue) {
+    guard let destination = segue.destination as? TagsTableViewController else {
+      fatalError("expected TagsTableViewController for segue destination")
+    }
+    tagsTableViewController = destination
+  }
+
+  private func prepareForFontEditor(_ segue: UIStoryboardSegue, sender: Any?) {
+    guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
+    prepareToEditFont(segue, config: config)
+  }
+
+  private func prepareForTagsEditor(_ segue: UIStoryboardSegue, sender: Any?) {
+    guard let config = sender as? TagsEditorTableViewController.Config else {
+      fatalError("expected TagsEditorTableViewController.Config")
+    }
+    prepareToEditTags(segue, config: config)
+  }
+
+  private func prepareForFontsEditor(_ segue: UIStoryboardSegue, sender: Any?) {
+    guard let config = sender as? FontsEditorTableViewController.Config else {
+      fatalError("expected FontsEditorTableViewController.Config")
+    }
+    prepareToEditFonts(segue, config: config)
   }
 
   private func prepareToEditFont(_ segue: UIStoryboardSegue, config: FontEditor.Config) {

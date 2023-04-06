@@ -1,6 +1,8 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 // Based on code from https://www.swiftbysundell.com/tips/default-decoding-values/
 
+// swiftlint:disable nesting
+
 /// A type that can provide a default value.
 protocol DecodableDefaultSource {
   associatedtype ValueType: Decodable
@@ -54,9 +56,7 @@ extension KeyedDecodingContainer {
    - parameter type: the type to decode
    - parameter key: the key to use in the container
    */
-  func decode<T>(_ type: DecodableDefault.Wrapper<T>.Type, forKey key: Key) throws
-  -> DecodableDefault.Wrapper<T>
-  {
+  func decode<T>(_ type: DecodableDefault.Wrapper<T>.Type, forKey key: Key) throws -> DecodableDefault.Wrapper<T> {
     try decodeIfPresent(type, forKey: key) ?? .init()
   }
 }
@@ -101,3 +101,5 @@ final public class Foo: Codable {
   @DecodableDefault.True var isVisible: Bool
   @DecodableDefault.Value<DefaultValue> var two: Int
 }
+
+// swiftlint:enable nesting

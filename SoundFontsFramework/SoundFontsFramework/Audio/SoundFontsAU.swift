@@ -383,7 +383,7 @@ extension SoundFontsAU {
     os_log(.debug, log: log, "currentPresetChanged BEGIN - %{public}s", preset)
 
     // There are no factory presets (should there be?) so this only applies to user presets.
-    guard preset.number < 0 else  { return }
+    guard preset.number < 0 else { return }
 
     guard let state = try? wrapped.presetState(for: preset) else { return }
     os_log(.debug, log: log, "state: %{public}s", state.debugDescription)
@@ -422,9 +422,7 @@ extension SoundFontsAU {
     set { wrapped.channelMap = newValue }
   }
 
-  public override func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
-  -> MIDICIProfileState
-  {
+  public override func profileState(forCable cable: UInt8, channel: MIDIChannelNumber) -> MIDICIProfileState {
     wrapped.profileState(forCable: cable, channel: channel)
   }
 

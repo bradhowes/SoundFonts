@@ -215,8 +215,7 @@ public final class SettingsViewController: UIViewController {
       copyFiles.isOn = settings.copyFilesWhenAdding
 
       endShowKeyboard()
-    }
-    else {
+    } else {
       keyLabelsStackView.isHidden = true
       solfegeStackView.isHidden = true
       keyWidthStackView.isHidden = true

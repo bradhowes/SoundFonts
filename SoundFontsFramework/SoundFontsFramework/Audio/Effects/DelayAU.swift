@@ -65,12 +65,14 @@ public final class DelayAU: AUAudioUnit {
     do {
       try super.init(componentDescription: componentDescription, options: [])
     } catch {
-      os_log(
-        .error, log: log, "failed to initialize AUAudioUnit - %{public}s",
-        error.localizedDescription)
+      os_log(.error, log: log, "failed to initialize AUAudioUnit - %{public}s", error.localizedDescription)
       throw error
     }
 
+    buildParameterTree()
+  }
+
+  private func buildParameterTree() {
     let parameterTree = AUParameterTree.createTree(withChildren: [time, feedback, cutoff, wetDryMix])
     self.parameterTree = parameterTree
 
@@ -275,9 +277,7 @@ extension DelayAU {
     set { wrapped.channelMap = newValue }
   }
 
-  public override func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
-  -> MIDICIProfileState
-  {
+  public override func profileState(forCable cable: UInt8, channel: MIDIChannelNumber) -> MIDICIProfileState {
     wrapped.profileState(forCable: cable, channel: channel)
   }
 

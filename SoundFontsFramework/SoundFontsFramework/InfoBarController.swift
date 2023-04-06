@@ -169,6 +169,7 @@ extension InfoBarController: AnyInfoBar {
 
   public var moreButtonsVisible: Bool { showingMoreButtons }
 
+  // swiftlint:disable cyclomatic_complexity
   /**
    Add an event target to one of the internal UIControl entities.
 
@@ -180,20 +181,33 @@ extension InfoBarController: AnyInfoBar {
     switch event {
     case .shiftKeyboardUp: addShiftKeyboardUpClosure(closure)
     case .shiftKeyboardDown: addShiftKeyboardDownClosure(closure)
-    case .doubleTap: doubleTap.addClosure(closure)
-    case .addSoundFont: addSoundFont.addClosure(closure)
-    case .editSoundFonts: addButtonLongPressGesture.addClosure(closure)
-    case .showGuide: showGuide.addClosure(closure)
-    case .showSettings: showSettings.addClosure(closure)
-    case .editVisibility: editVisibility.addClosure(closure)
-    case .showEffects: showEffects.addClosure(closure)
-    case .showTags: showTags.addClosure(closure)
+    case .doubleTap: addDoubleTapClosure(closure)
+    case .addSoundFont: addSoundFontClosure(closure)
+    case .editSoundFonts: addButtonLongPressGestureClosure(closure)
+    case .showGuide: addShowGuideClosure(closure)
+    case .showSettings: addShowSettingsClosure(closure)
+    case .editVisibility: addEditVisibilityClosure(closure)
+    case .showEffects: addShowEffectsClosure(closure)
+    case .showTags: addShowTagsClosure(closure)
     case .showMoreButtons: addShowMoreButtonsClosure(closure)
     case .hideMoreButtons: addHideMoreButtonsClosure(closure)
-    case .panic:
-      presetViewLongPressGesture.addClosure(closure)
-      effectsButtonLongPressGesture.addClosure(closure)
+    case .panic: doPanic(closure)
     }
+  }
+  // swiftlint:enable cyclomatic_complexity
+
+  private func addDoubleTapClosure(_ closure: @escaping UIControl.Closure) { doubleTap.addClosure(closure) }
+  private func addSoundFontClosure(_ closure: @escaping UIControl.Closure) { addSoundFont.addClosure(closure) }
+  private func addButtonLongPressGestureClosure(_ closure: @escaping UIControl.Closure) { addButtonLongPressGesture.addClosure(closure) }
+  private func addShowGuideClosure(_ closure: @escaping UIControl.Closure) { showGuide.addClosure(closure) }
+  private func addShowSettingsClosure(_ closure: @escaping UIControl.Closure) { showSettings.addClosure(closure) }
+  private func addEditVisibilityClosure(_ closure: @escaping UIControl.Closure) { editVisibility.addClosure(closure) }
+  private func addShowEffectsClosure(_ closure: @escaping UIControl.Closure) { showEffects.addClosure(closure) }
+  private func addShowTagsClosure(_ closure: @escaping UIControl.Closure) { showTags.addClosure(closure) }
+
+  private func doPanic(_ closure: @escaping UIControl.Closure) {
+    presetViewLongPressGesture.addClosure(closure)
+    effectsButtonLongPressGesture.addClosure(closure)
   }
 
   private func addShiftKeyboardUpClosure(_ closure: @escaping UIControl.Closure) {
@@ -360,8 +374,7 @@ extension InfoBarController {
       }
     )
 
-    UIView.transition(with: showMoreButtonsButton, duration: 0.4, options: .transitionCrossDissolve)
-    {
+    UIView.transition(with: showMoreButtonsButton, duration: 0.4, options: .transitionCrossDissolve) {
       self.showMoreButtonsButton.setImage(newImage, for: .normal)
     }
   }

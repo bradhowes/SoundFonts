@@ -392,8 +392,7 @@ extension FavoriteEditor {
   }
 }
 
-extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate
-{
+extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
   /**
    Notification that the presentation controller has been dismissed.
 

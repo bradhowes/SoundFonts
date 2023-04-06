@@ -13,8 +13,7 @@ extension FourCharCode: ExpressibleByStringLiteral {
       for byte in value.utf8 {
         code = code << 8 + FourCharCode(byte)
       }
-    }
-    else {
+    } else {
       os_log(.error, "FourCharCode: Can't initialize with '%s', only printable ASCII allowed. Setting to '????'.",
              value)
       code = 0x3F3F3F3F // = '????'

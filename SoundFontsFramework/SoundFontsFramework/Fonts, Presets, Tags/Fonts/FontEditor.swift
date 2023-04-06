@@ -157,9 +157,7 @@ extension FontEditor: UITextFieldDelegate {
   }
 }
 
-extension FontEditor: UIPopoverPresentationControllerDelegate,
-                      UIAdaptivePresentationControllerDelegate
-{
+extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
   /**
    Notification that the font editor is being dismissed. Treat as a close.
    */

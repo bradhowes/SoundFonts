@@ -44,8 +44,7 @@ public protocol TableViewDataSourceDelegate: AnyObject {
 /// based on code from obj.io Core Data book.
 public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
                                                                          UITableViewDataSource,
-                                                                         NSFetchedResultsControllerDelegate
-{
+                                                                         NSFetchedResultsControllerDelegate {
   private lazy var log = Logging.logger("tvds")
 
   public typealias Entity = Delegate.Entity
@@ -137,14 +136,9 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
    - parameter indexPath: the index of the row being displayed
    - returns: the UITableViewCell to use to display the row
    */
-  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
-  -> UITableViewCell
-  {
+  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let obj = object(at: indexPath)
-    guard
-      let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        as? Cell
-    else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? Cell else {
       fatalError("unexpected cell type at \(indexPath)")
     }
     delegate.configure(cell, for: obj)

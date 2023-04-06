@@ -15,5 +15,5 @@ FOUNDATION_EXPORT const unsigned char SoundFontInfoLibVersionString[];
  render audio samples for MIDI note activity.
 
  */
-#import "SoundFontInfoLib/SoundFontInfo.h"
-#import "SoundFontInfoLib/SF2Engine.h"
+#import <SoundFontInfoLib/SoundFontInfo.h>
+#import <SoundFontInfoLib/SF2Engine.h>

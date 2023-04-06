@@ -200,8 +200,7 @@ extension EffectsController: ControllerConfiguration {
 
 extension EffectsController: UIPickerViewDataSource {
   public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
-  public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
-  {
+  public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     ReverbEffect.roomNames.count
   }
 }

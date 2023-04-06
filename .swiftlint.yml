@@ -1,11 +1,11 @@
 disabled_rules:
-  - statement_position
+#  - statement_position
   - todo
-  - nesting
-  - opening_brace
+#  - nesting
+#  - opening_brace
   - function_body_length
-  - cyclomatic_complexity
-  - comment_spacing
+#  - cyclomatic_complexity
+#  - comment_spacing
 
 opt_in_rules:
   - empty_count

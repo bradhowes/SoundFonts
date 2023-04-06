@@ -280,10 +280,8 @@ extension KeyboardController {
   private func createKeys() {
     os_log(.debug, log: self.log, "createKeys BEGIN")
     var blackKeys = [Key]()
-    for each in KeyParamsSequence(
-      keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
-      lastMidiNote: maxMidiValue)
-    {
+    for each in KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
+                                  lastMidiNote: maxMidiValue) {
       let key = Key(frame: each.0, note: each.1, settings: settings)
       if key.note.accented {
         blackKeys.append(key)
@@ -300,12 +298,8 @@ extension KeyboardController {
 
   private func layoutKeys() {
     os_log(.debug, log: self.log, "layoutKeys BEGIN")
-    for (key, def) in zip(
-      allKeys,
-      KeyParamsSequence(
-        keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height,
-        firstMidiNote: 0, lastMidiNote: maxMidiValue))
-    {
+    for (key, def) in zip(allKeys, KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height,
+                                                     firstMidiNote: 0, lastMidiNote: maxMidiValue)) {
       key.frame = def.0
     }
 

@@ -33,7 +33,7 @@ final class ConsolidatedConfigDocument: UIDocument {
     os_log(.debug, log: log, "init END")
   }
 
-  deinit{
+  deinit {
     os_log(.debug, log: log, "deinit")
   }
 

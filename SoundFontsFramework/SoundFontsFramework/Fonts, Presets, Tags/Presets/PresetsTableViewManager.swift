@@ -140,8 +140,7 @@ extension PresetsTableViewManager {
 
     if searchTerm.isEmpty {
       searchSlots = viewSlots
-    }
-    else {
+    } else {
       let matches = viewSlots.filter { slot in
         let name: String = {
           switch slot {
@@ -359,8 +358,7 @@ extension PresetsTableViewManager {
       viewController.afterReloadDataAction = {
         self.viewController.endVisibilityEditing()
       }
-    }
-    else if activePresetManager.activeSoundFontKey == new {
+    } else if activePresetManager.activeSoundFontKey == new {
       os_log(.debug, log: log, "handleSelectedSoundFontChanged - showing active slot")
       viewController.afterReloadDataAction = { self.showActiveSlot() }
     }
@@ -725,37 +723,48 @@ extension PresetsTableViewManager {
   }
 
   private func update(cell: TableCell, at indexPath: IndexPath, slotIndex: PresetViewSlotIndex) {
+    switch getSlot(at: slotIndex) {
+    case let .preset(presetIndex):
+      updatePresetCell(cell, indexPath: indexPath, presetIndex: presetIndex, slot: slotIndex.rawValue)
+    case let .favorite(key):
+      updateFavoriteCell(cell, indexPath: indexPath, key: key, slot: slotIndex.rawValue)
+    }
+  }
+
+  func updatePresetCell(_ cell: TableCell, indexPath: IndexPath, presetIndex: Int, slot: Int) {
     guard let soundFont = selectedSoundFont else {
       os_log(.error, log: log, "unexpected nil soundFont")
       return
     }
 
-    switch getSlot(at: slotIndex) {
-    case let .preset(presetIndex):
-      let soundFontAndPreset = soundFont[presetIndex]
-      let preset = soundFont.presets[presetIndex]
-      os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in slot %d",
-             preset.presetConfig.name, presetIndex, slotIndex.rawValue)
-      var flags: TableCell.Flags = .init()
-      if soundFontAndPreset == activePresetManager.active.soundFontAndPreset &&
-          activePresetManager.activeFavorite == nil {
-        flags.insert(.active)
-      }
-      if preset.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
-      if preset.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
-      if preset.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
-      cell.updateForPreset(at: indexPath, name: preset.presetConfig.name, flags: flags)
-
-    case let .favorite(key):
-      guard let favorite = favorites.getBy(key: key) else { return }
-      os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
-             favorite.presetConfig.name, slotIndex.rawValue)
-      var flags: TableCell.Flags = [.favorite]
-      if activePresetManager.activeFavorite == favorite { flags.insert(.active) }
-      if favorite.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
-      if favorite.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
-      if favorite.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
-      cell.updateForFavorite(at: indexPath, name: favorite.presetConfig.name, flags: flags)
+    let soundFontAndPreset = soundFont[presetIndex]
+    let preset = soundFont.presets[presetIndex]
+    os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in slot %d", preset.presetConfig.name, presetIndex,
+           slot)
+    var flags: TableCell.Flags = .init()
+    if soundFontAndPreset == activePresetManager.active.soundFontAndPreset &&
+        activePresetManager.activeFavorite == nil {
+      flags.insert(.active)
     }
+    if preset.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
+    if preset.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
+    if preset.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
+    cell.updateForPreset(at: indexPath, name: preset.presetConfig.name, flags: flags)
+  }
+
+  func updateFavoriteCell(_ cell: TableCell, indexPath: IndexPath, key: Favorite.Key, slot: Int) {
+    guard let soundFont = selectedSoundFont else {
+      os_log(.error, log: log, "unexpected nil soundFont")
+      return
+    }
+    guard let favorite = favorites.getBy(key: key) else { return }
+    os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
+           favorite.presetConfig.name, slot)
+    var flags: TableCell.Flags = [.favorite]
+    if activePresetManager.activeFavorite == favorite { flags.insert(.active) }
+    if favorite.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
+    if favorite.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
+    if favorite.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
+    cell.updateForFavorite(at: indexPath, name: favorite.presetConfig.name, flags: flags)
   }
 }

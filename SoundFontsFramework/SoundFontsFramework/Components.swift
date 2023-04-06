@@ -36,8 +36,20 @@ where T: ControllerConfiguration {
   /// The main view controller of the app
   public private(set) weak var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
 
-  private weak var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
-  private weak var soundFontsViewController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var soundFontsControlsController: SoundFontsControlsController! {
+    didSet {
+      oneTimeSet(oldValue)
+      processChildren(soundFontsControlsController)
+    }
+  }
+
+  private weak var soundFontsViewController: SoundFontsViewController! {
+    didSet {
+      oneTimeSet(oldValue)
+      processChildren(soundFontsViewController)
+    }
+  }
+
   private weak var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
   private weak var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
   private weak var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
@@ -160,30 +172,31 @@ where T: ControllerConfiguration {
 
 extension Components {
 
+  private func processChildren(_ vc: UIViewController) { vc.children.forEach { processChildController($0) } }
+
   private func processChildController(_ obj: UIViewController) {
-    switch obj {
-    case let vc as SoundFontsControlsController:
+    if let vc = obj as? SoundFontsControlsController {
       soundFontsControlsController = vc
-      for obj in vc.children {
-        processChildController(obj)
-      }
-
-    case let vc as SoundFontsViewController:
+    } else if let vc = obj as? SoundFontsViewController {
       soundFontsViewController = vc
-      for obj in vc.children {
-        processChildController(obj)
-      }
-
-    case let vc as KeyboardController: keyboardController = vc
-    case let vc as GuideViewController: guideController = vc
-    case let vc as FavoritesViewController: favoritesController = vc
-    case let vc as InfoBarController: infoBarController = vc
-    case let vc as FontsTableViewController: fontsTableViewController = vc
-    case let vc as PresetsTableViewController: presetsTableViewController = vc
-    case let vc as TagsTableViewController: tagsTableViewController = vc
-    case let vc as EffectsController: effectsController = vc
-
-    default: assertionFailure("unknown child UIViewController")
+    } else if let vc = obj as? KeyboardController {
+      keyboardController = vc
+    } else if let vc = obj as? GuideViewController {
+      guideController = vc
+    } else if let vc = obj as? FavoritesViewController {
+      favoritesController = vc
+    } else if let vc = obj as? InfoBarController {
+      infoBarController = vc
+    } else if let vc = obj as? FontsTableViewController {
+      fontsTableViewController = vc
+    } else if let vc = obj as? PresetsTableViewController {
+      presetsTableViewController = vc
+    } else if let vc = obj as? TagsTableViewController {
+      tagsTableViewController = vc
+    } else if let vc = obj as? EffectsController {
+      effectsController = vc
+    } else {
+      assertionFailure("unknown child UIViewController")
     }
   }
 

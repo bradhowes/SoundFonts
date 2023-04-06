@@ -80,44 +80,11 @@ extension ActivePresetKind: Codable {
    */
   public init(from decoder: Decoder) throws {
     do {
-
-      // Current encoding version using keyed container
-      //
-      let values = try decoder.container(keyedBy: Keys.self)
-      guard let internalKey = InternalKey(rawValue: try values.decode(Int.self, forKey: .internalKey)) else {
-        throw DecodingFailure.invalidInternalKey
-      }
-
-      switch internalKey {
-      case .preset: self = .preset(soundFontAndPreset: try values.decode(SoundFontAndPreset.self, forKey: .value))
-      case .favorite:
-        do {
-          let value = try values.decode(FavoriteValue.self, forKey: .value)
-          self = .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
-        } catch {
-          let value = try values.decode(Favorite.self, forKey: .value)
-          self = .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
-        }
-      case .none: self = .none
-      }
+      self = try Self.decodeV2(decoder)
     } catch {
       let err = error
       do {
-
-        // Legacy encoding using using un-keyed container
-        //
-        var container = try decoder.unkeyedContainer()
-        guard let internalKey = InternalKey(rawValue: try container.decode(Int.self)) else {
-          throw DecodingFailure.invalidInternalKey
-        }
-
-        switch internalKey {
-        case .preset: self = .preset(soundFontAndPreset: try container.decode(SoundFontAndPreset.self))
-        case .favorite:
-          let value = try container.decode(Favorite.self)
-          self = .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
-        case .none: self = .none
-        }
+        self = try Self.decodeV1(decoder)
       } catch {
         throw err
       }
@@ -185,8 +152,7 @@ extension ActivePresetKind: SettingSerializable {
     }
     if let container = raw as? [String: Any] {
       return ActivePresetKind.decodeFromDict(container) ?? defaultValue
-    }
-    else if let container = raw as? Data {
+    } else if let container = raw as? Data {
       return ActivePresetKind.decodeFromData(container) ?? defaultValue
     }
     return defaultValue
@@ -195,6 +161,48 @@ extension ActivePresetKind: SettingSerializable {
   public static func set(key: String, value: ActivePresetKind, source: Settings) {
     if let dict = value.encodeToDict() {
       source.set(key: key, value: dict)
+    }
+  }
+}
+
+private extension ActivePresetKind {
+  static func decodeV2(_ decoder: Decoder) throws -> ActivePresetKind {
+
+    // Current encoding version using keyed container
+    //
+    let values = try decoder.container(keyedBy: Keys.self)
+    guard let internalKey = InternalKey(rawValue: try values.decode(Int.self, forKey: .internalKey)) else {
+      throw DecodingFailure.invalidInternalKey
+    }
+
+    switch internalKey {
+    case .preset: return .preset(soundFontAndPreset: try values.decode(SoundFontAndPreset.self, forKey: .value))
+    case .favorite:
+      do {
+        let value = try values.decode(FavoriteValue.self, forKey: .value)
+        return .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
+      } catch {
+        let value = try values.decode(Favorite.self, forKey: .value)
+        return .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
+      }
+    case .none: return .none
+    }
+  }
+
+  static func decodeV1(_ decoder: Decoder) throws -> ActivePresetKind {
+    // Legacy encoding using using un-keyed container
+    //
+    var container = try decoder.unkeyedContainer()
+    guard let internalKey = InternalKey(rawValue: try container.decode(Int.self)) else {
+      throw DecodingFailure.invalidInternalKey
+    }
+
+    switch internalKey {
+    case .preset: return .preset(soundFontAndPreset: try container.decode(SoundFontAndPreset.self))
+    case .favorite:
+      let value = try container.decode(Favorite.self)
+      return .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
+    case .none: return .none
     }
   }
 }

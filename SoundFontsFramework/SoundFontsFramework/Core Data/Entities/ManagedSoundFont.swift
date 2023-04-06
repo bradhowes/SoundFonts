@@ -85,9 +85,7 @@ extension ManagedSoundFont {
    - parameter tag: the tag to filter with
    - returns: collection of sound fonts that are visible and that belong to a given tag.
    */
-  public static func fetchRows(in context: NSManagedObjectContext, tag: ManagedTag)
-  -> [ManagedSoundFont]
-  {
+  public static func fetchRows(in context: NSManagedObjectContext, tag: ManagedTag) -> [ManagedSoundFont] {
     let request = fetchRequestForRows(tag: tag)
     request.fetchBatchSize = 50
     request.resultType = .managedObjectResultType

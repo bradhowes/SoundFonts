@@ -10,24 +10,9 @@ import MorkAndMIDI
 public class MIDIReceiver {
   private lazy var log = Logging.logger("MIDIController")
 
-  public final class ActivityNotifier: NSObject {
-
-    public struct Payload: CustomStringConvertible {
-      public var description: String { "\(controller)" }
-      let controller: UInt8
-    }
-
-    private let notification = TypedNotification<Payload>(name: "Activity")
-    private let serialQueue = DispatchQueue(label: "MIDIReceiver.Activity", qos: .userInteractive, attributes: [],
-                                            autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
-
-    public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
-      notification.registerOnMain(block: block)
-    }
-
-    public func showActivity(controller: UInt8) {
-      serialQueue.async { self.notification.post(value: .init(controller: controller)) }
-    }
+  public struct Payload: CustomStringConvertible {
+    public var description: String { "\(controller)" }
+    let controller: UInt8
   }
 
   private let settings: Settings
@@ -69,7 +54,7 @@ public class MIDIReceiver {
     // synth.stopAllNotes()
   }
 
-  public func addMonitor(block: @escaping (ActivityNotifier.Payload) -> Void) -> NotificationObserver {
+  public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
     activityNotifier.addMonitor(block: block)
   }
 
@@ -212,4 +197,19 @@ extension MIDIReceiver: Receiver {
   public func relativeRegisteredControllerChange(controller: UInt16, value: Int32) {}
   public func relativeAssignableControllerChange(controller: UInt16, value: Int32) {}
   public func perNoteManagement(note: UInt8, detach: Bool, reset: Bool) {}
+}
+
+private final class ActivityNotifier: NSObject {
+
+  private let notification = TypedNotification<MIDIReceiver.Payload>(name: "Activity")
+  private let serialQueue = DispatchQueue(label: "MIDIReceiver.Activity", qos: .userInteractive, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
+
+  public func addMonitor(block: @escaping (MIDIReceiver.Payload) -> Void) -> NotificationObserver {
+    notification.registerOnMain(block: block)
+  }
+
+  public func showActivity(controller: UInt8) {
+    serialQueue.async { self.notification.post(value: .init(controller: controller)) }
+  }
 }
