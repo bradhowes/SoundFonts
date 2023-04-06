@@ -6,6 +6,10 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.28.1
+
+* Additional MIDI controller labels
+
 # 2.28.0
 
 * Use MorkAndMIDI Swift package for all MIDI processing

@@ -556,18 +556,12 @@
 				BD074BF123CDAF51001987E9 /* Fonts, Presets, Tags */,
 				BD074BD123CDAF51001987E9 /* Favorites */,
 				BD125B3D24100C940003DE99 /* Keyboard */,
+				BDBC2EDF29DF3EFF0090F820 /* MIDI */,
 				BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */,
 				BD125B3E241010430003DE99 /* Components.swift */,
 				BD130B0A2561506B00D1CDF6 /* EffectsController.swift */,
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
 				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
-				BD689B8C29D79C4700C3A5D8 /* MIDIControllerTableCell.swift */,
-				BD4CF05529D81D820097B3B2 /* MIDIControllerTableHeaderView.swift */,
-				BD689B8E29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift */,
-				BDFB371E299A971F00CBEDE3 /* MIDIConnectionTableCell.swift */,
-				BD87DC5B29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift */,
-				BD1B8CD6270C5EB400C6BF15 /* MIDIConnectionsTableViewController.swift */,
-				BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */,
 				BD88BCB62419952700399DE5 /* Notifiication.swift */,
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
@@ -613,13 +607,9 @@
 				BD2454D627847074004B445A /* Effects */,
 				BDBF897E25B5939400B58E23 /* Tags */,
 				BD2F4B302780F9EB0064E31B /* Configuration File */,
+				BDBC2EE029DF3F260090F820 /* MIDI */,
 				BD074BEF23CDAF51001987E9 /* AudioEngine.swift */,
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
-				BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */,
-				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
-				BD4CF05B29D8327C0097B3B2 /* MIDIControllerState.swift */,
-				BD95018029D715A90065D837 /* MIDIMonitor.swift */,
-				BD0F940A25728E610065C147 /* MIDIReceiver.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
@@ -975,6 +965,32 @@
 				BD1C230B25CDF781007C114F /* Pages */,
 			);
 			path = Tutorial;
+			sourceTree = "<group>";
+		};
+		BDBC2EDF29DF3EFF0090F820 /* MIDI */ = {
+			isa = PBXGroup;
+			children = (
+				BD689B8C29D79C4700C3A5D8 /* MIDIControllerTableCell.swift */,
+				BD4CF05529D81D820097B3B2 /* MIDIControllerTableHeaderView.swift */,
+				BD689B8E29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift */,
+				BDFB371E299A971F00CBEDE3 /* MIDIConnectionTableCell.swift */,
+				BD87DC5B29DB526E008F6470 /* MIDIConnectionTableHeaderView.swift */,
+				BD1B8CD6270C5EB400C6BF15 /* MIDIConnectionsTableViewController.swift */,
+				BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */,
+			);
+			path = MIDI;
+			sourceTree = "<group>";
+		};
+		BDBC2EE029DF3F260090F820 /* MIDI */ = {
+			isa = PBXGroup;
+			children = (
+				BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */,
+				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
+				BD4CF05B29D8327C0097B3B2 /* MIDIControllerState.swift */,
+				BD95018029D715A90065D837 /* MIDIMonitor.swift */,
+				BD0F940A25728E610065C147 /* MIDIReceiver.swift */,
+			);
+			path = MIDI;
 			sourceTree = "<group>";
 		};
 		BDBF897E25B5939400B58E23 /* Tags */ = {
