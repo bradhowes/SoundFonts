@@ -138,7 +138,11 @@ extension MIDIReceiver: Receiver {
     activityNotifier.showActivity(controller: controller)
 
     if midiControllerState[midiControllerIndex].allowed {
-      synth?.controlChange(controller: controller, value: value)
+      if MIDICC(rawValue: value) == .favoriteSelect {
+        synth?.programChange(program: value)
+      } else {
+        synth?.controlChange(controller: controller, value: value)
+      }
     }
   }
 
