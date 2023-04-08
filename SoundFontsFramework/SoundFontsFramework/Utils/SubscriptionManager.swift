@@ -20,6 +20,8 @@ public class SubscriptionManager<Event: CustomStringConvertible> {
   /// The type of function / closure that is used to unsubscribe to a subscription manager
   public typealias UnsubscribeProc = () -> Void
 
+  /// Serial request queue to protect the `subscriptions` map. The notifications will be done async on the
+  /// `notificationsQueue`.
   private let subscriptionsQueue = DispatchQueue(label: "SubscriptionsManagerQueue", qos: notificationQueueQoS,
                                                  target: notificationQueue)
   private var subscriptions = [UUID: NotifierProc]()
@@ -54,12 +56,16 @@ public class SubscriptionManager<Event: CustomStringConvertible> {
   @discardableResult
   public func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping NotifierProc) -> SubscriberToken {
     let uuid = UUID()
+
+    // The token knows how to remove a subscription.
     let token = Token { [weak self] in
       guard let self = self else { return }
       _ = self.subscriptionsQueue.sync { self.subscriptions.removeValue(forKey: uuid) }
     }
 
     self.subscriptionsQueue.sync {
+
+      // Add a new subscription that can handle when the subscriber goes away and unsubscribe it.
       self.subscriptions[uuid] = { [weak subscriber] kind in
         if subscriber != nil {
           notifier(kind)
@@ -69,6 +75,7 @@ public class SubscriptionManager<Event: CustomStringConvertible> {
       }
     }
 
+    // Send the last event that was received if caching is enabled.
     if let event = lastEvent, cacheEvent {
       notifier(event)
     }
