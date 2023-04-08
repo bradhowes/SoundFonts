@@ -14,11 +14,14 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="48"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKR-gQ-9NW" userLabel="Background">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="48"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krF-vH-tlE" userLabel="Row">
                     <rect key="frame" x="20" y="0.0" width="353" height="48"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Sustenuto" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nT-kN-UOe" userLabel="Name">
-                            <rect key="frame" x="0.0" y="13.999999999999998" width="288" height="20.333333333333329"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="AUM" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nT-kN-UOe" userLabel="Name">
+                            <rect key="frame" x="0.0" y="13.999999999999998" width="37.333333333333336" height="20.333333333333329"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -27,37 +30,68 @@
                             <rect key="frame" x="304" y="8.6666666666666643" width="51" height="31"/>
                             <color key="tintColor" systemColor="systemTealColor"/>
                         </switch>
+                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="mwM-FZ-gQx">
+                            <rect key="frame" x="202" y="8" width="94" height="32"/>
+                        </stepper>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="127" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ak1-Zd-3PI" userLabel="Velocity">
+                            <rect key="frame" x="160" y="13.666666666666664" width="34" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="34" id="54K-N3-9Cx"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AW9-3a-5WT">
+                            <rect key="frame" x="118" y="13.666666666666664" width="34" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="34" id="6QM-WH-htA"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstItem="CHA-eD-nhi" firstAttribute="leading" secondItem="4nT-kN-UOe" secondAttribute="trailing" constant="16" id="dcf-7b-Otg"/>
+                        <constraint firstItem="mwM-FZ-gQx" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="8Mi-jC-rWn"/>
+                        <constraint firstItem="AW9-3a-5WT" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="EDH-wY-kFq"/>
+                        <constraint firstItem="Ak1-Zd-3PI" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="OXt-4s-Mxn"/>
                         <constraint firstItem="4nT-kN-UOe" firstAttribute="leading" secondItem="krF-vH-tlE" secondAttribute="leading" id="eFF-lN-pwD"/>
+                        <constraint firstItem="AW9-3a-5WT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4nT-kN-UOe" secondAttribute="trailing" constant="8" symbolic="YES" id="fbf-DV-K8b"/>
                         <constraint firstItem="4nT-kN-UOe" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="rva-Tz-plh"/>
                         <constraint firstItem="CHA-eD-nhi" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="sHA-VC-odQ"/>
+                        <constraint firstItem="mwM-FZ-gQx" firstAttribute="leading" secondItem="Ak1-Zd-3PI" secondAttribute="trailing" constant="8" symbolic="YES" id="tyZ-Aw-EwS"/>
                         <constraint firstAttribute="trailing" secondItem="CHA-eD-nhi" secondAttribute="trailing" id="vsc-Fw-Slh"/>
+                        <constraint firstItem="Ak1-Zd-3PI" firstAttribute="leading" secondItem="AW9-3a-5WT" secondAttribute="trailing" constant="8" symbolic="YES" id="x6f-MH-WY7"/>
+                        <constraint firstItem="CHA-eD-nhi" firstAttribute="leading" secondItem="mwM-FZ-gQx" secondAttribute="trailing" constant="8" symbolic="YES" id="zeh-7y-oVq"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
                 <constraint firstItem="krF-vH-tlE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="Br6-le-T9N"/>
+                <constraint firstAttribute="trailing" secondItem="vKR-gQ-9NW" secondAttribute="trailing" id="Lvs-89-YJl"/>
                 <constraint firstAttribute="trailing" secondItem="krF-vH-tlE" secondAttribute="trailing" constant="20" symbolic="YES" id="PDG-YT-L1E"/>
+                <constraint firstItem="vKR-gQ-9NW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="RIE-a0-nVA"/>
                 <constraint firstAttribute="bottom" secondItem="krF-vH-tlE" secondAttribute="bottom" id="YZS-eW-8Me"/>
+                <constraint firstAttribute="bottom" secondItem="vKR-gQ-9NW" secondAttribute="bottom" id="d6K-WU-hAa"/>
+                <constraint firstItem="vKR-gQ-9NW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="sdD-1E-PmO"/>
                 <constraint firstItem="krF-vH-tlE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xgT-av-wHf"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="background" destination="vKR-gQ-9NW" id="lY9-1m-cbz"/>
+                <outlet property="channel" destination="AW9-3a-5WT" id="ljk-vB-uvd"/>
                 <outlet property="connected" destination="CHA-eD-nhi" id="QDk-aJ-eqv"/>
                 <outlet property="name" destination="4nT-kN-UOe" id="kfV-t6-DJH"/>
+                <outlet property="velocity" destination="Ak1-Zd-3PI" id="9HG-5v-AH2"/>
+                <outlet property="velocityStepper" destination="mwM-FZ-gQx" id="CYV-w8-a42"/>
             </connections>
-            <point key="canvasLocation" x="140" y="42"/>
+            <point key="canvasLocation" x="-230" y="44"/>
         </view>
     </objects>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

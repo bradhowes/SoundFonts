@@ -9,6 +9,7 @@ import MorkAndMIDI
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
 public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>, ComponentContainer
 where T: ControllerConfiguration {
+
   private let accessQueue = DispatchQueue(label: "ComponentsQueue", qos: .background, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .background))
   public let settings: Settings
@@ -78,7 +79,7 @@ where T: ControllerConfiguration {
   public var alertManager: AlertManager { _alertManager }
   private var _alertManager: AlertManager!
 
-  /// The synth engine that generates audio from sound font files
+  /// The synth engine that generates audio from sound font files.
   public var audioEngine: AudioEngine? { accessQueue.sync { _audioEngine } }
 
   private var _audioEngine: AudioEngine? {
@@ -89,10 +90,6 @@ where T: ControllerConfiguration {
     }
   }
 
-  public let midi: MIDI?
-
-  public let midiMonitor: MIDIMonitor?
-
   /**
    Create a new instance
 
@@ -102,40 +99,43 @@ where T: ControllerConfiguration {
     self.inApp = inApp
     self.settings = Settings()
 
-    let uniqueId = Int32(settings[.midiInputPortUniqueId])
-    self.midi = inApp ? MIDI(clientName: "SoundFonts", uniqueId: uniqueId, midiProtocol: ._1_0) : nil
-    self.midiMonitor = inApp ? MIDIMonitor(settings: settings) : nil
-    self.midi?.monitor = self.midiMonitor
-
     self.consolidatedConfigProvider = .init(inApp: inApp)
 
-    self.askForReview = inApp ? AskForReview(settings: settings) : nil
+    if inApp {
+      self.askForReview = .init(settings: settings)
+    } else {
+      self.askForReview = nil
+    }
 
     self.soundFonts = SoundFontsManager(consolidatedConfigProvider, settings: settings)
     self.favorites = FavoritesManager(consolidatedConfigProvider)
     self.tags = TagsManager(consolidatedConfigProvider)
 
-    self.selectedSoundFontManager = SelectedSoundFontManager()
-    self.activePresetManager = ActivePresetManager(soundFonts: soundFonts, favorites: favorites,
-                                                   selectedSoundFontManager: selectedSoundFontManager,
-                                                   settings: settings)
-    self.activeTagManager = ActiveTagManager(tags: tags, settings: settings)
+    self.selectedSoundFontManager = .init()
+    self.activePresetManager = .init(soundFonts: soundFonts, favorites: favorites,
+                                     selectedSoundFontManager: selectedSoundFontManager,
+                                     settings: settings)
+    self.activeTagManager = .init(tags: tags, settings: settings)
 
     super.init()
 
-    createAudioComponents()
+    createAudioComponents(activePresetManager: activePresetManager, settings: settings)
   }
 
-  public func createAudioComponents() {
+  public func createAudioComponents(activePresetManager: ActivePresetManager, settings: Settings) {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
-        let audioEngine = AudioEngine(mode: .standalone, activePresetManager: self.activePresetManager,
-                                      reverb: ReverbEffect(), delay: DelayEffect(), settings: self.settings)
-        self.accessQueue.sync { self._audioEngine = audioEngine }
+        let midiInputPortUniqueId = Int32(settings[.midiInputPortUniqueId])
+        let midi = MIDI(clientName: "SoundFonts", uniqueId: midiInputPortUniqueId, midiProtocol: ._1_0)
+        let audioEngine = AudioEngine(mode: .standalone, activePresetManager: activePresetManager, settings: settings,
+                                      midi: midi)
+        self.accessQueue.sync {
+          self._audioEngine = audioEngine
+        }
       }
     } else {
-      self._audioEngine = AudioEngine(mode: .audioUnit, activePresetManager: activePresetManager,
-                                      reverb: nil, delay: nil, settings: settings)
+      self._audioEngine = AudioEngine(mode: .audioUnit, activePresetManager: activePresetManager, settings: settings,
+                                      midi: nil)
     }
   }
 
@@ -203,13 +203,14 @@ extension Components {
   private func validate() {
     precondition(mainViewController != nil, "nil MainViewController")
     precondition(soundFontsControlsController != nil, "nil SoundFontsControlsController")
-    precondition(infoBarController != nil, "nil InfoBarController")
     precondition(soundFontsViewController != nil, "nil SoundFontsViewController")
-    precondition(favoritesController != nil, "nil FavoritesViewController")
     precondition(guideController != nil, "nil GuidesController")
-    precondition(effectsController != nil, "nil EffectsController")
+    precondition(favoritesController != nil, "nil FavoritesViewController")
+    precondition(infoBarController != nil, "nil InfoBarController")
     precondition(fontsTableViewController != nil, "nil FontsTableViewController")
     precondition(presetsTableViewController != nil, "nil PresetsTableViewController")
+    precondition(tagsTableViewController != nil, "nil TagsTableViewController")
+    precondition(effectsController != nil, "nil EffectsController")
   }
 
   private func oneTimeSet<T>(_ oldValue: T?) {

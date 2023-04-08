@@ -25,10 +25,10 @@ final class MIDIConnectionsTableViewController: UITableViewController {
       DispatchQueue.main.async { self.tableView.reloadData() }
     }
 
-    channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
-      guard let self = self else { return }
-      DispatchQueue.main.async { self.tableView.reloadData() }
-    }
+//    channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
+//      guard let self = self else { return }
+//      DispatchQueue.main.async { self.tableView.reloadData() }
+//    }
   }
 }
 
@@ -48,8 +48,9 @@ extension MIDIConnectionsTableViewController {
       let accepted = self.accepting(channel: payload.channel)
       for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
-        if let cell = self.tableView.cellForRow(at: indexPath) {
-          let layer = cell.contentView.layer
+        if let cell: MIDIConnectionTableCell = self.tableView.cellForRow(at: indexPath) {
+          cell.channel.text = "\(payload.channel + 1)"
+          let layer = cell.background.layer
           Self.midiSeenLayerChange(layer, accepted)
         }
       }
@@ -80,6 +81,25 @@ extension MIDIConnectionsTableViewController {
     let cell: MIDIConnectionTableCell = tableView.dequeueReusableCell(at: indexPath)
     let source = midi.sourceConnections[indexPath.row]
     cell.name.text = source.displayName
+
+    let connectionState = midiMonitor.connectionState(for: source.uniqueId)
+    if let channel = connectionState.channel {
+      cell.channel.text = "\(channel)"
+    } else {
+      cell.channel.text = "—"
+    }
+
+    let fixedVelocity = connectionState.fixedVelocity
+    cell.velocity.text = (fixedVelocity == 0 || fixedVelocity == 128) ? "Off" : "\(fixedVelocity)"
+
+    cell.velocityStepper.minimumValue = 0
+    cell.velocityStepper.maximumValue = 128
+    cell.velocityStepper.value = Double(fixedVelocity)
+    cell.velocityStepper.tag = Int(source.uniqueId)
+    if cell.velocityStepper.target(forAction: #selector(velocityStepperChanged(_:)), withSender: self) == nil {
+      cell.velocityStepper.addTarget(self, action: #selector(velocityStepperChanged(_:)), for: .valueChanged)
+    }
+
     cell.connected.isOn = source.connected
     cell.connected.tag = Int(source.uniqueId)
     if cell.connected.target(forAction: #selector(connectedStateChanged(_:)), withSender: cell.connected) == nil {
@@ -106,6 +126,22 @@ extension MIDIConnectionsTableViewController {
     present(ac, animated: true)
 
     MIDIRestart()
+  }
+
+  @IBAction func velocityStepperChanged(_ sender: UIStepper) {
+    let uniqueId = Int32(sender.tag)
+    for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == uniqueId {
+      guard let cell: MIDIConnectionTableCell = tableView.cellForRow(at: .init(row: row, section: 0)) else {
+        return
+      }
+
+      if sender.value == sender.minimumValue || sender.value == sender.maximumValue {
+        cell.velocity.text = "Off"
+      } else {
+        cell.velocity.text = "\(Int(sender.value))"
+        midiMonitor.setFixedVelocityState(for: uniqueId, velocity: Int(sender.value))
+      }
+    }
   }
 
   @IBAction func connectedStateChanged(_ sender: UISwitch) {

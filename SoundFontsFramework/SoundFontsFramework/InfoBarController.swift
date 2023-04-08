@@ -148,8 +148,6 @@ extension InfoBarController: ControllerConfiguration {
     activePresetManager = router.activePresetManager
     soundFonts = router.soundFonts
     isMainApp = router.isMainApp
-    midi = router.midi
-    midiMonitor = router.midiMonitor
 
     showActivePreset()
     showEffects.isEnabled = router.isMainApp
@@ -157,6 +155,13 @@ extension InfoBarController: ControllerConfiguration {
 
     activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
     router.favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
+
+    router.subscribe(self, notifier: routerChangedNotificationInBackground)
+
+    if let audioEngine = router.audioEngine {
+      midi = audioEngine.midi
+      midiMonitor = audioEngine.midiMonitor
+    }
   }
 }
 
@@ -233,6 +238,15 @@ extension InfoBarController: AnyInfoBar {
     showMoreButtonsButton.addClosure { [weak self] button in
       guard let self = self, !self.showingMoreButtons else { return }
       closure(button)
+    }
+  }
+
+  private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
+    os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
+    switch event {
+    case .audioEngineAvailable(let audioEngine):
+      self.midi = audioEngine.midi
+      self.midiMonitor = audioEngine.midiMonitor
     }
   }
 

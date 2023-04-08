@@ -8,6 +8,7 @@ public final class MIDIMonitor {
 
   private let settings: Settings
   private let activityNotifier = ActivityNotifier()
+  private var connectionStates = [MIDIUniqueID: MIDIConnectionState]()
 
   public init(settings: Settings) {
     self.settings = settings
@@ -23,12 +24,32 @@ public final class MIDIMonitor {
     activityNotifier.addMonitor(block: block)
   }
 
+  public func connectionState(for uniqueId: MIDIUniqueID) -> MIDIConnectionState {
+    if let found = connectionStates[uniqueId] {
+      return found
+    } else {
+      let state: MIDIConnectionState = .init()
+      self.connectionStates[uniqueId] = state
+      return state
+    }
+  }
+
   public func setAutoConnectState(for uniqueId: MIDIUniqueID, autoConnect: Bool) {
     settings.set(key: connectedSettingKey(for: uniqueId), value: autoConnect)
   }
 
-  private func connectedSettingKey(for uniqueId: MIDIUniqueID) -> String { "midiAudoConnect_\(uniqueId)" }
+  public func setFixedVelocityState(for uniqueId: MIDIUniqueID, velocity: Int) {
+    connectionStates[uniqueId]?.fixedVelocity = velocity
+    settings.set(key: fixedVelocitySettingKey(for: uniqueId), value: velocity)
+  }
 }
+
+private extension MIDIMonitor {
+  func connectedSettingKey(for uniqueId: MIDIUniqueID) -> String { "midiAutoConnect_\(uniqueId)" }
+  func fixedVelocitySettingKey(for uniqueId: MIDIUniqueID) -> String { "midFixedVelocity_\(uniqueId)" }
+}
+
+// MARK: - Monitor Protocol
 
 extension MIDIMonitor: Monitor {
 
@@ -47,6 +68,7 @@ extension MIDIMonitor: Monitor {
   }
 
   public func didSee(uniqueId: MIDIUniqueID, group: Int, channel: Int) {
+    connectionState(for: uniqueId).channel = channel + 1
     activityNotifier.showActivity(uniqueId: uniqueId, channel: channel)
   }
 }
@@ -60,7 +82,6 @@ extension MIDIMonitor {
   public func didConnect(to uniqueId: MIDIUniqueID) {}
   public func willUpdateConnections() {}
   public func didUpdateConnections(connected: any Sequence<MIDIEndpointRef>, disappeared: any Sequence<MIDIUniqueID>) {}
-
 }
 
 private final class ActivityNotifier: NSObject {

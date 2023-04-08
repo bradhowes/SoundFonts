@@ -49,11 +49,7 @@ public protocol ComponentContainer: AnyObject {
   /// The entity for posting alerts to the user
   var alertManager: AlertManager { get }
 
-  var midi: MIDI? { get }
-
   var askForReview: AskForReview? { get }
-
-  var midiMonitor: MIDIMonitor? { get }
 
   /**
    Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.

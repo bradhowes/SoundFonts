@@ -1,17 +1,19 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import os
+import CoreMIDI
 import MorkAndMIDI
 
 /**
  A MIDI receiver that processes MIDI events from an external source. Shows the keys being played if given a Keyboard,
  and forwards MIDI commands to a synth.
  */
-public class MIDIReceiver {
+final public class MIDIReceiver {
   private lazy var log = Logging.logger("MIDIController")
 
   public struct Payload: CustomStringConvertible {
-    public var description: String { "\(controller)" }
+    public var description: String { "\(source) \(controller)" }
+    let source: MIDIUniqueID
     let controller: UInt8
   }
 
@@ -24,11 +26,12 @@ public class MIDIReceiver {
   public private(set) var channel: Int
   public private(set) var group: Int
 
-  private let audioEngine: AudioEngine
-  private let keyboard: AnyKeyboard?
-  private var observer: NSKeyValueObservation?
+  public var audioEngine: AudioEngine?
 
-  private var synth: AnyMIDISynth? { audioEngine.synth }
+  private let keyboard: AnyKeyboard
+  private let midiMonitor: MIDIMonitor
+  private var observer: NSKeyValueObservation?
+  private var synth: AnyMIDISynth? { audioEngine?.synth }
 
   /**
    Construct new controller for a synth and keyboard
@@ -36,10 +39,11 @@ public class MIDIReceiver {
    - parameter synth: the synth to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(audioEngine: AudioEngine, keyboard: AnyKeyboard?, settings: Settings) {
+  public init(audioEngine: AudioEngine, keyboard: AnyKeyboard, settings: Settings, midiMonitor: MIDIMonitor) {
     self.audioEngine = audioEngine
     self.keyboard = keyboard
     self.settings = settings
+    self.midiMonitor = midiMonitor
     self.channel = settings.midiChannel
     self.group = -1
     monitorMIDIChannelValue()
@@ -50,7 +54,7 @@ public class MIDIReceiver {
   }
 
   public func stopAllNotes() {
-    keyboard?.releaseAllKeys()
+    keyboard.releaseAllKeys()
     // synth.stopAllNotes()
   }
 
@@ -104,38 +108,38 @@ extension UInt32 {
 
 extension MIDIReceiver: Receiver {
 
-  public func noteOff(note: UInt8, velocity: UInt8) {
+  public func noteOff(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
     synth?.noteOff(note: note, velocity: velocity)
-    keyboard?.noteIsOff(note: note)
+    keyboard.noteIsOff(note: note)
   }
 
-  public func noteOff2(note: UInt8, velocity: UInt16, attributeType: UInt8, attributeData: UInt16) {
-    noteOff(note: note, velocity: velocity.b0)
+  public func noteOff2(source: MIDIUniqueID, note: UInt8, velocity: UInt16, attributeType: UInt8, attributeData: UInt16) {
+    noteOff(source: source, note: note, velocity: velocity.b0)
   }
 
-  public func noteOn(note: UInt8, velocity: UInt8) {
+  public func noteOn(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
     synth?.noteOn(note: note, velocity: velocity)
-    keyboard?.noteIsOn(note: note)
+    keyboard.noteIsOn(note: note)
   }
 
-  public func noteOn2(note: UInt8, velocity: UInt16, attributeType: UInt8, attributeData: UInt16) {
-    noteOn(note: note, velocity: velocity.b0)
+  public func noteOn2(source: MIDIUniqueID, note: UInt8, velocity: UInt16, attributeType: UInt8, attributeData: UInt16) {
+    noteOn(source: source, note: note, velocity: velocity.b0)
   }
 
-  public func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
+  public func polyphonicKeyPressure(source: MIDIUniqueID, note: UInt8, pressure: UInt8) {
     synth?.polyphonicKeyPressure(note: note, pressure: pressure)
   }
 
-  public func polyphonicKeyPressure2(note: UInt8, pressure: UInt32) {
+  public func polyphonicKeyPressure2(source: MIDIUniqueID, note: UInt8, pressure: UInt32) {
     synth?.polyphonicKeyPressure(note: note, pressure: pressure.b0)
   }
 
-  public func controlChange(controller: UInt8, value: UInt8) {
+  public func controlChange(source: MIDIUniqueID, controller: UInt8, value: UInt8) {
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
 
     let midiControllerIndex = Int(controller)
     midiControllerState[midiControllerIndex].lastValue = value
-    activityNotifier.showActivity(controller: controller)
+    activityNotifier.showActivity(source: source, controller: controller)
 
     if midiControllerState[midiControllerIndex].allowed {
       if MIDICC(rawValue: value) == .favoriteSelect {
@@ -146,61 +150,61 @@ extension MIDIReceiver: Receiver {
     }
   }
 
-  public func controlChange2(controller: UInt8, value: UInt32) {
+  public func controlChange2(source: MIDIUniqueID, controller: UInt8, value: UInt32) {
     synth?.controlChange(controller: controller, value: value.b0)
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
   }
 
-  public func programChange(program: UInt8) {
+  public func programChange(source: MIDIUniqueID, program: UInt8) {
     synth?.programChange(program: program)
     os_log(.debug, log: log, "programChange: %d", program)
   }
 
-  public func programChange2(program: UInt8, bank: UInt16) {
+  public func programChange2(source: MIDIUniqueID, program: UInt8, bank: UInt16) {
     synth?.programChange(program: program)
     os_log(.debug, log: log, "programChange: %d", program)
   }
 
-  public func channelPressure(pressure: UInt8) {
+  public func channelPressure(source: MIDIUniqueID, pressure: UInt8) {
     synth?.channelPressure(pressure: pressure)
   }
 
-  public func channelPressure2(pressure: UInt32) {
+  public func channelPressure2(source: MIDIUniqueID, pressure: UInt32) {
     synth?.channelPressure(pressure: pressure.b0)
   }
 
-  public func pitchBendChange(value: UInt16) {
+  public func pitchBendChange(source: MIDIUniqueID, value: UInt16) {
     synth?.pitchBendChange(value: value)
     os_log(.debug, log: log, "pitchBendChange: %d", value)
   }
 
-  public func pitchBendChange2(value: UInt32) {
+  public func pitchBendChange2(source: MIDIUniqueID, value: UInt32) {
     synth?.pitchBendChange(value: value.w0 & 0x7FFF)
   }
 
-  public func systemReset() {
+  public func systemReset(source: MIDIUniqueID) {
     synth?.stopAllNotes()
   }
 
-  public func timeCodeQuarterFrame(value: UInt8) {}
-  public func songPositionPointer(value: UInt16) {}
-  public func songSelect(value: UInt8) {}
-  public func tuneRequest() {}
-  public func timingClock() {}
-  public func startCurrentSequence() {}
-  public func continueCurrentSequence() {}
-  public func stopCurrentSequence() {}
-  public func activeSensing() {}
+  public func timeCodeQuarterFrame(source: MIDIUniqueID, value: UInt8) {}
+  public func songPositionPointer(source: MIDIUniqueID, value: UInt16) {}
+  public func songSelect(source: MIDIUniqueID, value: UInt8) {}
+  public func tuneRequest(source: MIDIUniqueID) {}
+  public func timingClock(source: MIDIUniqueID) {}
+  public func startCurrentSequence(source: MIDIUniqueID) {}
+  public func continueCurrentSequence(source: MIDIUniqueID) {}
+  public func stopCurrentSequence(source: MIDIUniqueID) {}
+  public func activeSensing(source: MIDIUniqueID) {}
 
   // MIDI v2
-  public func perNotePitchBendChange(note: UInt8, value: UInt32) {}
-  public func registeredPerNoteControllerChange(note: UInt8, controller: UInt8, value: UInt32) {}
-  public func assignablePerNoteControllerChange(note: UInt8, controller: UInt8, value: UInt32) {}
-  public func registeredControllerChange(controller: UInt16, value: UInt32) {}
-  public func assignableControllerChange(controller: UInt16, value: UInt32) {}
-  public func relativeRegisteredControllerChange(controller: UInt16, value: Int32) {}
-  public func relativeAssignableControllerChange(controller: UInt16, value: Int32) {}
-  public func perNoteManagement(note: UInt8, detach: Bool, reset: Bool) {}
+  public func perNotePitchBendChange(source: MIDIUniqueID, note: UInt8, value: UInt32) {}
+  public func registeredPerNoteControllerChange(source: MIDIUniqueID, note: UInt8, controller: UInt8, value: UInt32) {}
+  public func assignablePerNoteControllerChange(source: MIDIUniqueID, note: UInt8, controller: UInt8, value: UInt32) {}
+  public func registeredControllerChange(source: MIDIUniqueID, controller: UInt16, value: UInt32) {}
+  public func assignableControllerChange(source: MIDIUniqueID, controller: UInt16, value: UInt32) {}
+  public func relativeRegisteredControllerChange(source: MIDIUniqueID, controller: UInt16, value: Int32) {}
+  public func relativeAssignableControllerChange(source: MIDIUniqueID, controller: UInt16, value: Int32) {}
+  public func perNoteManagement(source: MIDIUniqueID, note: UInt8, detach: Bool, reset: Bool) {}
 }
 
 private final class ActivityNotifier: NSObject {
@@ -213,7 +217,7 @@ private final class ActivityNotifier: NSObject {
     notification.registerOnMain(block: block)
   }
 
-  public func showActivity(controller: UInt8) {
-    serialQueue.async { self.notification.post(value: .init(controller: controller)) }
+  public func showActivity(source: MIDIUniqueID, controller: UInt8) {
+    serialQueue.async { self.notification.post(value: .init(source: source, controller: controller)) }
   }
 }

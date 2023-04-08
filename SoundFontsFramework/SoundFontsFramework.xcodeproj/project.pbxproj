@@ -184,6 +184,7 @@
 		BDB7408525CC29690051B4E4 /* SoundFontList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */; };
 		BDB7408625CC29690051B4E4 /* InfoBar2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406125CC29120051B4E4 /* InfoBar2.storyboard */; };
 		BDB7408825CC29690051B4E4 /* Delay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7405E25CC29120051B4E4 /* Delay.storyboard */; };
+		BDBC2EE229E16B220090F820 /* MIDIConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBC2EE129E16B220090F820 /* MIDIConnectionState.swift */; };
 		BDBF893E25B4C7AC00B58E23 /* ActiveTagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */; };
 		BDBF894D25B5784300B58E23 /* TagsEditorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */; };
 		BDBF895325B57A3A00B58E23 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF895225B57A3A00B58E23 /* Tag.swift */; };
@@ -449,6 +450,7 @@
 		BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SoundFontList.storyboard; sourceTree = "<group>"; };
 		BDB7406525CC29120051B4E4 /* TagsList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TagsList.storyboard; sourceTree = "<group>"; };
 		BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
+		BDBC2EE129E16B220090F820 /* MIDIConnectionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIConnectionState.swift; sourceTree = "<group>"; };
 		BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveTagManager.swift; sourceTree = "<group>"; };
 		BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsEditorTableViewController.swift; sourceTree = "<group>"; };
 		BDBF895225B57A3A00B58E23 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
@@ -987,6 +989,7 @@
 				BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */,
 				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
 				BD4CF05B29D8327C0097B3B2 /* MIDIControllerState.swift */,
+				BDBC2EE129E16B220090F820 /* MIDIConnectionState.swift */,
 				BD95018029D715A90065D837 /* MIDIMonitor.swift */,
 				BD0F940A25728E610065C147 /* MIDIReceiver.swift */,
 			);
@@ -1316,6 +1319,7 @@
 				BDBF895325B57A3A00B58E23 /* Tag.swift in Sources */,
 				BD2436B02579356200162A49 /* ArrowView.swift in Sources */,
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
+				BDBC2EE229E16B220090F820 /* MIDIConnectionState.swift in Sources */,
 				BD5B5C3928C14C1E000BC5A4 /* FontsEditorTableViewController.swift in Sources */,
 				BD2F4B24277F28EE0064E31B /* SettingSerializable.swift in Sources */,
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,

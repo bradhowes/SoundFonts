@@ -5,6 +5,7 @@ import AudioToolbox
 import Foundation
 import os
 import SoundFontInfoLib
+import MorkAndMIDI
 
 public protocol SynthProvider {
   var synth: AnyMIDISynth? {get}
@@ -60,6 +61,10 @@ public final class AudioEngine: SynthProvider {
   private var panChangedNotifier: NotificationObserver?
   private var pitchBendRangeChangedNotifier: NotificationObserver?
 
+  public let midi: MIDI?
+  public let midiMonitor: MIDIMonitor?
+  public private(set) var midiReceiver: MIDIReceiver?
+
   /**
    Create a new instance of a Sampler.
 
@@ -69,24 +74,20 @@ public final class AudioEngine: SynthProvider {
 
    - parameter mode: determines how the sampler is hosted.
    - parameter activePresetManager: the manager of the active preset
-   - parameter reverb: the reverb effect to use along with the AVAudioUnitSampler (standalone only)
-   - parameter delay: the delay effect to use along with the AVAudioUnitSampler (standalone only)
    - parameter settings: user-adjustable settings
    */
-  public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?,
-              settings: Settings) {
+  public init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?) {
     os_log(.debug, log: Self.log, "init BEGIN")
 
     self.mode = mode
     self.activePresetManager = activePresetManager
-    self.reverbEffect = reverb
-    self.delayEffect = delay
     self.settings = settings
+    self.reverbEffect = mode == .standalone ? ReverbEffect() : nil
+    self.delayEffect = mode == .standalone ? DelayEffect() : nil
 
-    if mode == .standalone {
-      precondition(reverb != nil, "unexpected nil for reverb")
-      precondition(delay != nil, "unexpected nil for delay")
-    }
+    self.midi = midi
+    self.midiMonitor = midi != nil ? .init(settings: settings) : nil
+    self.midi?.monitor = self.midiMonitor
 
     activePresetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: applyPresetConfig(_:))
     tuningChangedNotifier = Self.tuningChangedNotification.registerOnAny(block: setTuning(_:))
@@ -96,13 +97,24 @@ public final class AudioEngine: SynthProvider {
 
     os_log(.debug, log: Self.log, "init END")
   }
+}
+
+// MARK: - Control
+
+public extension AudioEngine {
+
+  func attachKeyboard(_ keyboard: AnyKeyboard) {
+    guard let midi = self.midi, let midiMonitor = self.midiMonitor else { fatalError("No MIDI support") }
+    self.midiReceiver = .init(audioEngine: self, keyboard: keyboard, settings: settings, midiMonitor: midiMonitor)
+    midi.receiver = self.midiReceiver
+  }
 
   /**
    Create a new AVAudioUnitSampler to use and initialize it according to the `mode`.
 
    - returns: Result value indicating success or failure
    */
-  public func start() -> StartResult {
+  func start() -> StartResult {
     os_log(.debug, log: log, "start BEGIN")
     let synth = makeSynth()
     self.synth = synth
@@ -113,31 +125,29 @@ public final class AudioEngine: SynthProvider {
 
     presetChangeManager.start()
 
-    if mode == .audioUnit {
-      return .success(synth)
+    let result: StartResult
+    switch mode {
+    case .audioUnit:
+      result = .success(synth)
+
+    case .standalone:
+      midi?.start()
+      result = startEngine(synth)
     }
 
-    let result = startEngine(synth)
     os_log(.debug, log: log, "start END - %{public}s", result.description)
-
     return result
   }
 
-  private func makeSynth() -> AnyMIDISynth {
-#if USE_SF2ENGINE_SYNTH
-    return AVSF2Engine()
-#else
-    return AVAudioUnitSampler()
-#endif
-  }
   /**
    Stop the existing audio engine. NOTE: this only applies to the standalone case.
    */
-  public func stop() {
+  func stop() {
     os_log(.debug, log: log, "stop BEGIN")
     guard mode == .standalone else { fatalError("unexpected `stop` called on audioUnit") }
 
     presetChangeManager.stop()
+    midi?.stop()
 
     if let engine = self.engine {
       os_log(.debug, log: log, "stopping engine")
@@ -168,13 +178,23 @@ public final class AudioEngine: SynthProvider {
   }
 
   /**
+   Command the synth to stop playing active notes.
+   */
+  func stopAllNotes() { synth?.stopAllNotes()  }
+}
+
+// MARK: - Configuration Changes
+
+public extension AudioEngine {
+
+  /**
    Ask the sampler to use the active preset held by the ActivePresetManager.
 
    - parameter afterLoadBlock: callback to invoke after the load is successfully done
 
    - returns: Result indicating success or failure
    */
-  public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
+  func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
     os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
@@ -225,16 +245,63 @@ public final class AudioEngine: SynthProvider {
     os_log(.debug, log: log, "loadActivePreset END")
     return .success(synth)
   }
-}
 
-extension AudioEngine {
+  /**
+   Change the synth to use the given preset configuration values.
+
+   - parameter presetConfig: the configuration to use
+   */
+  func applyPresetConfig(_ presetConfig: PresetConfig) {
+    os_log(.debug, log: log, "applyPresetConfig BEGIN")
+
+    if presetConfig.presetTuning != 0.0 {
+      setTuning(presetConfig.presetTuning)
+    } else if settings.globalTuning != 0.0 {
+      setTuning(settings.globalTuning)
+    } else {
+      setTuning(0.0)
+    }
+
+    if let pitchBendRange = presetConfig.pitchBendRange {
+      setPitchBendRange(value: UInt8(pitchBendRange))
+    } else {
+      setPitchBendRange(value: UInt8(settings.pitchBendRange))
+    }
+
+    setGain(presetConfig.gain)
+    setPan(presetConfig.pan)
+
+    // - If global mode enabled, don't change anything
+    // - If preset has a config use it.
+    // - Otherwise, if effect was enabled disable it
+    if let delay = delayEffect, !settings.delayGlobal {
+      if let config = presetConfig.delayConfig {
+        os_log(.debug, log: log, "reverb preset config")
+        delay.active = config
+      } else if delay.active.enabled {
+        os_log(.debug, log: log, "reverb disabled")
+        delay.active = delay.active.setEnabled(false)
+      }
+    }
+
+    if let reverb = reverbEffect, !settings.reverbGlobal {
+      if let config = presetConfig.reverbConfig {
+        os_log(.debug, log: log, "delay preset config")
+        reverb.active = config
+      } else if reverb.active.enabled {
+        os_log(.debug, log: log, "delay disabled")
+        reverb.active = reverb.active.setEnabled(false)
+      }
+    }
+    os_log(.debug, log: log, "applyPresetConfig END")
+  }
 
   /**
    Set the AVAudioUnitSampler tuning value
 
    - parameter value: the value to set in cents (+/- 2400)
    */
-  public func setTuning(_ value: Float) {
+  func setTuning(_ value: Float) {
     os_log(.debug, log: log, "setTuning BEGIN - %f", value)
     synth?.synthGlobalTuning = value
     os_log(.debug, log: log, "setTuning END")
@@ -245,7 +312,7 @@ extension AudioEngine {
 
    - parameter value: the value to set
    */
-  public func setGain(_ value: Float) {
+  func setGain(_ value: Float) {
     os_log(.debug, log: log, "setGain BEGIN - %f", value)
     synth?.synthGain = value
     os_log(.debug, log: log, "setGain END")
@@ -256,7 +323,7 @@ extension AudioEngine {
 
    - parameter value: the value to set
    */
-  public func setPan(_ value: Float) {
+  func setPan(_ value: Float) {
     os_log(.debug, log: log, "setPan BEGIN - %f", value)
     synth?.synthStereoPan = value
     os_log(.debug, log: log, "setPan END")
@@ -267,16 +334,22 @@ extension AudioEngine {
 
    - parameter value: range in semitones
    */
-  public func setPitchBendRange(value: UInt8) {
+  func setPitchBendRange(value: UInt8) {
     os_log(.debug, log: log, "setPitchBendRange BEGIN - %d", value)
     synth?.setPitchBendRange(value: value)
     os_log(.debug, log: log, "setPitchBendRange END")
   }
-
-  public func stopAllNotes() { synth?.stopAllNotes()  }
 }
 
-extension AudioEngine {
+private extension AudioEngine {
+
+  private func makeSynth() -> AnyMIDISynth {
+#if USE_SF2ENGINE_SYNTH
+    return AVSF2Engine()
+#else
+    return AVAudioUnitSampler()
+#endif
+  }
 
   private func startEngine(_ synth: AnyMIDISynth) -> StartResult {
 
@@ -314,49 +387,5 @@ extension AudioEngine {
     }
 
     return loadActivePreset()
-  }
-
-  public func applyPresetConfig(_ presetConfig: PresetConfig) {
-    os_log(.debug, log: log, "applyPresetConfig BEGIN")
-
-    let tuning: Float = {
-      if presetConfig.presetTuning != 0.0 { return presetConfig.presetTuning }
-      if settings.globalTuning != 0.0 { return settings.globalTuning }
-      return 0.0
-    }()
-    setTuning(tuning)
-
-    if let pitchBendRange = presetConfig.pitchBendRange {
-      setPitchBendRange(value: UInt8(pitchBendRange))
-    } else {
-      setPitchBendRange(value: UInt8(settings.pitchBendRange))
-    }
-
-    setGain(presetConfig.gain)
-    setPan(presetConfig.pan)
-
-    // - If global mode enabled, don't change anything
-    // - If preset has a config use it.
-    // - Otherwise, if effect was enabled disable it
-    if let delay = delayEffect, !settings.delayGlobal {
-      if let config = presetConfig.delayConfig {
-        os_log(.debug, log: log, "reverb preset config")
-        delay.active = config
-      } else if delay.active.enabled {
-        os_log(.debug, log: log, "reverb disabled")
-        delay.active = delay.active.setEnabled(false)
-      }
-    }
-
-    if let reverb = reverbEffect, !settings.reverbGlobal {
-      if let config = presetConfig.reverbConfig {
-        os_log(.debug, log: log, "delay preset config")
-        reverb.active = config
-      } else if reverb.active.enabled {
-        os_log(.debug, log: log, "delay disabled")
-        reverb.active = reverb.active.setEnabled(false)
-      }
-    }
-    os_log(.debug, log: log, "applyPresetConfig END")
   }
 }
