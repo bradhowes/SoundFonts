@@ -14,7 +14,20 @@ final public class FavoriteCollection: Codable {
     self.favorites = []
   }
 
+  /**
+   Obtain the index of the favorite that has the given key
+
+   - parameter key: the key to look for
+   - returns: the index of the favorite or None if the key was not found
+   */
   func index(of key: Favorite.Key) -> Int? { favorites.firstIndex { $0.key == key } }
+
+  /**
+   Determine if the given key is in the collection of favorites.
+
+   - parameter key: the key to look for
+   - returns: true if the key matches
+   */
   func contains(key: Favorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
 
   /**
