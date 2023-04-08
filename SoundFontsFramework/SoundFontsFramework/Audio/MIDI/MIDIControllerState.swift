@@ -19,6 +19,7 @@ enum MIDICC: UInt8 {
   case bankSelect = 0
   case modulationWheel = 1
   case breathController = 2
+  case favoriteSelect = 3
   case footPedal = 4
   case portamentoTime = 5
   case volume = 7
@@ -63,6 +64,7 @@ enum MIDICC: UInt8 {
     case .bankSelect: return "Bank Select"
     case .modulationWheel: return "Modulation Wheel"
     case .breathController: return "Breath Controller"
+    case .favoriteSelect: return "SoundFonts Favorite Select"
     case .footPedal: return "Foot Pedal"
     case .portamentoTime: return "Portamento Time"
     case .volume: return "Volume"
