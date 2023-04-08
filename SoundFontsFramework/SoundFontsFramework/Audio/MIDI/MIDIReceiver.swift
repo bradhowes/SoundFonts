@@ -118,7 +118,8 @@ extension MIDIReceiver: Receiver {
   }
 
   public func noteOn(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
-    synth?.noteOn(note: note, velocity: velocity)
+    let connectionState = midiMonitor.connectionState(for: source)
+    synth?.noteOn(note: note, velocity: connectionState.fixedVelocity ?? velocity)
     keyboard.noteIsOn(note: note)
   }
 

@@ -29,6 +29,8 @@ public final class MIDIMonitor {
       return found
     } else {
       let state: MIDIConnectionState = .init()
+      let setting = settings.get(key: fixedVelocitySettingKey(for: uniqueId), defaultValue: 128)
+      state.fixedVelocity = (setting > 0 && setting < 128) ? UInt8(setting) : nil
       self.connectionStates[uniqueId] = state
       return state
     }
@@ -38,9 +40,9 @@ public final class MIDIMonitor {
     settings.set(key: connectedSettingKey(for: uniqueId), value: autoConnect)
   }
 
-  public func setFixedVelocityState(for uniqueId: MIDIUniqueID, velocity: Int) {
+  public func setFixedVelocityState(for uniqueId: MIDIUniqueID, velocity: UInt8?) {
     connectionStates[uniqueId]?.fixedVelocity = velocity
-    settings.set(key: fixedVelocitySettingKey(for: uniqueId), value: velocity)
+    settings.set(key: fixedVelocitySettingKey(for: uniqueId), value: velocity ?? 128)
   }
 }
 
@@ -68,7 +70,7 @@ extension MIDIMonitor: Monitor {
   }
 
   public func didSee(uniqueId: MIDIUniqueID, group: Int, channel: Int) {
-    connectionState(for: uniqueId).channel = channel + 1
+    connectionState(for: uniqueId).channel = UInt8(channel + 1)
     activityNotifier.showActivity(uniqueId: uniqueId, channel: channel)
   }
 }

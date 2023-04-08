@@ -89,12 +89,17 @@ extension MIDIConnectionsTableViewController {
       cell.channel.text = "—"
     }
 
-    let fixedVelocity = connectionState.fixedVelocity
-    cell.velocity.text = (fixedVelocity == 0 || fixedVelocity == 128) ? "Off" : "\(fixedVelocity)"
-
     cell.velocityStepper.minimumValue = 0
     cell.velocityStepper.maximumValue = 128
-    cell.velocityStepper.value = Double(fixedVelocity)
+
+    if let fixedVelocity = connectionState.fixedVelocity {
+      cell.velocityStepper.value = Double(fixedVelocity)
+      cell.velocity.text = "\(fixedVelocity)"
+    } else {
+      cell.velocity.text = "Off"
+      cell.velocityStepper.value = 128
+    }
+
     cell.velocityStepper.tag = Int(source.uniqueId)
     if cell.velocityStepper.target(forAction: #selector(velocityStepperChanged(_:)), withSender: self) == nil {
       cell.velocityStepper.addTarget(self, action: #selector(velocityStepperChanged(_:)), for: .valueChanged)
@@ -137,9 +142,10 @@ extension MIDIConnectionsTableViewController {
 
       if sender.value == sender.minimumValue || sender.value == sender.maximumValue {
         cell.velocity.text = "Off"
+        midiMonitor.setFixedVelocityState(for: uniqueId, velocity: nil)
       } else {
         cell.velocity.text = "\(Int(sender.value))"
-        midiMonitor.setFixedVelocityState(for: uniqueId, velocity: Int(sender.value))
+        midiMonitor.setFixedVelocityState(for: uniqueId, velocity: UInt8(sender.value))
       }
     }
   }
