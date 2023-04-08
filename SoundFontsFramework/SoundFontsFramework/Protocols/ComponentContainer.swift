@@ -55,8 +55,6 @@ public protocol ComponentContainer: AnyObject {
 
   var midiMonitor: MIDIMonitor? { get }
 
-  func createAudioComponents()
-
   /**
    Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.
 
