@@ -15,9 +15,9 @@ public enum SynthStartFailure: Error, Equatable, CustomStringConvertible {
 extension SynthStartFailure {
 
   /// The system error associated with a failure.
-  var error: NSError {
+  var error: NSError? {
     switch self {
-    case .noSynth: return NSError()
+    case .noSynth: return nil
     case .sessionActivating(let err): return err
     case .engineStarting(let err): return err
     case .presetLoading(let err): return err

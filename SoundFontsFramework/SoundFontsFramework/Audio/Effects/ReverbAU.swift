@@ -92,7 +92,7 @@ public final class ReverbAU: AUAudioUnit {
       }
     }
 
-    parameterTree.implementorStringFromValueCallback = { param, value in
+    parameterTree.implementorStringFromValueCallback = { param, _ in
       let formatted: String = {
         switch Address(rawValue: param.address) {
         case .roomPreset: return ReverbEffect.roomNames[Int(param.value)]

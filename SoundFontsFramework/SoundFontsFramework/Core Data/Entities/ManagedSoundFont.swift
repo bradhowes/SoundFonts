@@ -43,6 +43,7 @@ extension ManagedSoundFont {
   // swiftlint:disable force_cast
   /// Obtain the set of tags associated with the sound font.
   public var tagsSet: Set<ManagedTag> { tags as! Set<ManagedTag> }
+  // swiftlint:enable force_cast
 }
 
 extension ManagedSoundFont {

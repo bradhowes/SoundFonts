@@ -6,10 +6,11 @@ import Foundation
 /// which matches all sound fonts, and a 'built-in' tag that shows just those that come with the app.
 public final class Tag: Codable {
 
+  // swiftlint:disable large_tuple
   private typealias UByte16 = (
-    UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
-    UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8
+    UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8
   )
+  // swiftlint:enable large_tuple
 
   /// Type of the unique key associated with a tag
   public typealias Key = UUID

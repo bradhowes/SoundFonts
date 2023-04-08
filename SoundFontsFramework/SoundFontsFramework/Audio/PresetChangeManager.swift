@@ -13,10 +13,10 @@ public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
   case failedToLoad(error: NSError)
 
   /// The system error associated with a failure.
-  var error: NSError {
+  var error: NSError? {
     switch self {
-    case .noSynth: return NSError()
-    case .cancelled: return NSError()
+    case .noSynth: return nil
+    case .cancelled: return nil
     case .failedToLoad(let err): return err
     }
   }

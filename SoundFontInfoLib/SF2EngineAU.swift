@@ -258,28 +258,6 @@ extension SF2EngineAU {
 
   public override var supportsUserPresets: Bool { true }
 
-  /**
-   Notification that the `currentPreset` attribute of the AudioUnit has changed. These should be user presets created
-   by a host application. The host can then change the current preset and we need to react to this change by updating
-   the active preset value. We do this as a side-effect of setting the `fullState` attribute with the state for the
-   give user preset.
-
-   - parameter preset: the new value of `currentPreset`
-   */
-//  private func currentPresetChanged(_ preset: AUAudioUnitPreset?) {
-//    guard let preset = preset else { return }
-//    os_log(.debug, log: log, "currentPresetChanged BEGIN - %{public}s", preset)
-//
-//    // There are no factory presets (should there be?) so this only applies to user presets.
-//    guard preset.number < 0 else  { return }
-//
-//    if #available(iOS 13.0, *) {
-//      guard let state = try? wrapped.presetState(for: preset) else { return }
-//      os_log(.debug, log: log, "state: %{public}s", state.debugDescription)
-//      fullState = state
-//    }
-//  }
-
   public override var currentPreset: AUAudioUnitPreset? {
     get { _currentPreset }
     set {

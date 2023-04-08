@@ -30,6 +30,7 @@ extension ManagedAppState {
   // swiftlint:disable force_cast
   /// Obtain the set of installed sound fonts. NOTE: that this is unordered.
   public var soundFontsSet: Set<ManagedSoundFont> { soundFonts as! Set<ManagedSoundFont> }
+  // swiftlint:enable force_cast
 
   public var allTag: ManagedTag { tagsCollection[0] }
 
