@@ -3,6 +3,5 @@
 import CoreMIDI
 
 public class MIDIConnectionState {
-  var channel: UInt8?
   var fixedVelocity: UInt8?
 }

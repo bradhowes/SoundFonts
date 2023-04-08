@@ -25,10 +25,10 @@ final class MIDIConnectionsTableViewController: UITableViewController {
       DispatchQueue.main.async { self.tableView.reloadData() }
     }
 
-//    channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
-//      guard let self = self else { return }
-//      DispatchQueue.main.async { self.tableView.reloadData() }
-//    }
+    channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
+      guard let self = self else { return }
+      DispatchQueue.main.async { self.tableView.reloadData() }
+    }
   }
 }
 
@@ -83,8 +83,8 @@ extension MIDIConnectionsTableViewController {
     cell.name.text = source.displayName
 
     let connectionState = midiMonitor.connectionState(for: source.uniqueId)
-    if let channel = connectionState.channel {
-      cell.channel.text = "\(channel)"
+    if let channel = source.channel {
+      cell.channel.text = "\(channel + 1)"
     } else {
       cell.channel.text = "—"
     }

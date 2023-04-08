@@ -70,7 +70,6 @@ extension MIDIMonitor: Monitor {
   }
 
   public func didSee(uniqueId: MIDIUniqueID, group: Int, channel: Int) {
-    connectionState(for: uniqueId).channel = UInt8(channel + 1)
     activityNotifier.showActivity(uniqueId: uniqueId, channel: channel)
   }
 }
@@ -82,7 +81,8 @@ extension MIDIMonitor {
   public func didStart() {}
   public func didStop() {}
   public func didConnect(to uniqueId: MIDIUniqueID) {}
-  public func willUpdateConnections() {}
+  public func willUpdateConnections() {
+  }
   public func didUpdateConnections(connected: any Sequence<MIDIEndpointRef>, disappeared: any Sequence<MIDIUniqueID>) {}
 }
 
