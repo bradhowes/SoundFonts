@@ -61,6 +61,7 @@ final class PresetChangeManager {
   func change(synth: PresetLoader, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
     os_log(.debug, log: log, "change - %{public}s %{public}s", url.lastPathComponent, preset.description)
     guard active else { return }
+    queue.cancelAllOperations()
     queue.addOperation(PresetChangeOperation(synth: synth, url: url, preset: preset, afterLoadBlock: afterLoadBlock))
   }
 

@@ -43,4 +43,8 @@ extension Notification.Name {
   public static let showTutorial = Notification.Name("showTutorial")
   /// Notification of MIDI activity on a given channel
   public static let midiActivity = Notification.Name("midiActivity")
+  /// Notification of MIDI activity on a given channel
+  public static let midiAction = Notification.Name("midiAction")
+  /// Notification of change in engine state
+  public static let engineRendering = Notification.Name("engineRendering")
 }

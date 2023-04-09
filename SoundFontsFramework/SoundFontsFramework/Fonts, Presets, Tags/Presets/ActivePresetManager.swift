@@ -39,6 +39,11 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   private let favorites: FavoritesProvider
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
+  private var notificationObserver: NotificationObserver?
+
+  private let debounceDelay = 0.3
+  private var activityDebounceTimer: Timer?
+
   public private(set) var state: State = .starting
 
   /// The currently active preset (if any)
@@ -92,6 +97,26 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
     soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
     favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
+
+    notificationObserver = MIDIReceiver.monitorActions { payload in
+      switch payload.action {
+
+      case .nextPrevFavorite:
+        if payload.value > 64 {
+          self.selectNextFavorite()
+        } else if payload.value < 64 {
+          self.selectPreviousFavorite()
+        }
+
+      case .useFavorite:
+        let scale = Double(payload.value) / Double(127)
+        let index = Int((Double(favorites.count - 1) * scale).rounded())
+        favorites.selected(index: index)
+
+      default:
+        break
+      }
+    }
   }
 
   /**
@@ -266,5 +291,41 @@ extension ActivePresetManager {
     precondition(soundFonts.isRestored)
     guard let soundFontAndPreset = active.soundFontAndPreset else { return false }
     return soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil
+  }
+
+  private func selectNextFavorite() {
+    os_log(.debug, log: log, "selectNextFavorite")
+    guard
+      let key = active.favoriteKey,
+      let index = favorites.index(of: key),
+      index < favorites.count - 1
+    else {
+      return
+    }
+
+    if activityDebounceTimer != nil { return }
+
+    favorites.selected(index: index + 1)
+    self.activityDebounceTimer = Timer.once(after: debounceDelay) { _ in
+      self.activityDebounceTimer = nil
+    }
+  }
+
+  private func selectPreviousFavorite() {
+    os_log(.debug, log: log, "selectPreviousFavorite")
+    guard
+      let key = active.favoriteKey,
+      let index = favorites.index(of: key),
+      index > 0
+    else {
+      return
+    }
+
+    if activityDebounceTimer != nil { return }
+
+    favorites.selected(index: index - 1)
+    self.activityDebounceTimer = Timer.once(after: debounceDelay) { _ in
+      self.activityDebounceTimer = nil
+    }
   }
 }

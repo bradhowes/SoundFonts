@@ -9,6 +9,9 @@ The parsing is really simplistic:
 # 2.28.1
 
 * Additional MIDI controller labels
+* Updates to MID Devices view in Settings panel
+* Show channel of incoming message from MIDI connection
+* Allow fix-velocity notes per MIDI connection
 
 # 2.28.0
 

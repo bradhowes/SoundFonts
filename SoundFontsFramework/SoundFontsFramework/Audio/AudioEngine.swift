@@ -27,6 +27,8 @@ public final class AudioEngine: SynthProvider {
   /// The notification that pitch bend range has changed for the sampler
   public static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
 
+  public static let engineRenderingChangeNotification = TypedNotification<Bool>(name: .engineRendering)
+
   public typealias StartResult = Result<AnyMIDISynth, SynthStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
@@ -35,8 +37,9 @@ public final class AudioEngine: SynthProvider {
     case audioUnit
   }
 
-  /// The internal AVAudioUnitSampler that does the actual sound generation. NOTE: due to
-  public private(set) var synth: AnyMIDISynth?
+  /// The internal synthesizer that does the actual sound generation.
+  public var synth: AnyMIDISynth? { self.pendingPresetChanges == 0 && engineResumeTimer == nil ? _synth : nil }
+  private var _synth: AnyMIDISynth?
 
   public var avAudioUnit: AVAudioUnitMIDIInstrument? { synth?.avAudioUnit }
   private var auAudioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
@@ -53,6 +56,8 @@ public final class AudioEngine: SynthProvider {
   private var engine: AVAudioEngine?
   private var presetLoaded: Bool = false
   private var pendingPresetChanges: Int = 0
+  private var engineResumeTimer: Timer?
+
   private var isRendering: Bool { presetLoaded && pendingPresetChanges == 0 } // engine.isRunning ?
 
   private var activePresetConfigChangedNotifier: NotificationObserver?
@@ -117,7 +122,7 @@ public extension AudioEngine {
   func start() -> StartResult {
     os_log(.debug, log: log, "start BEGIN")
     let synth = makeSynth()
-    self.synth = synth
+    self._synth = synth
 
     if settings.globalTuningEnabled {
       synth.synthGlobalTuning = settings.globalTuning
@@ -160,7 +165,7 @@ public extension AudioEngine {
         os_log(.debug, log: log, "detaching sampler")
         engine.detach(synth.avAudioUnit)
         os_log(.debug, log: log, "dropping sampler")
-        self.synth = nil
+        self._synth = nil
       }
 
       os_log(.debug, log: log, "resetting engine")
@@ -173,7 +178,7 @@ public extension AudioEngine {
       os_log(.debug, log: log, "resetting sampler")
       sampler.stopAllNotes()
       os_log(.debug, log: log, "dropping sampler")
-      self.synth = nil
+      self._synth = nil
     }
 
     os_log(.debug, log: log, "stop END")
@@ -222,7 +227,9 @@ public extension AudioEngine {
 
     pendingPresetChanges += 1
     if pendingPresetChanges == 1 {
+      engineResumeTimer?.invalidate()
       engine?.pause()
+      Self.engineRenderingChangeNotification.post(value: false)
     }
 
     presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
@@ -238,7 +245,16 @@ public extension AudioEngine {
         self.presetLoaded = true
         self.pendingPresetChanges -= 1
         if self.pendingPresetChanges == 0 {
-          try? self.engine?.start()
+          self.engineResumeTimer = Timer.once(after: 0.8) { [weak self] _ in
+            guard let self = self,
+                  let engine = self.engine
+            else {
+              return
+            }
+            try? engine.start()
+            self.engineResumeTimer = nil
+            Self.engineRenderingChangeNotification.post(value: true)
+          }
         }
         afterLoadBlock?()
       }
@@ -295,6 +311,7 @@ public extension AudioEngine {
         reverb.active = reverb.active.setEnabled(false)
       }
     }
+
     os_log(.debug, log: log, "applyPresetConfig END")
   }
 

@@ -69,7 +69,6 @@ public class NotificationObserver {
     name = notification.name
     observer = NotificationCenter.default.addObserver(forName: notification.name, object: nil, queue: nil) { note in
       guard let value = note.userInfo?["value"] as? ValueType else { fatalError("Couldn't understand user info") }
-      print(value)
       aBlock(value)
     }
   }

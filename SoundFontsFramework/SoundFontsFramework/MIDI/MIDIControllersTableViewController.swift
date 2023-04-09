@@ -28,7 +28,7 @@ extension MIDIControllersTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = self.midiReceiver.addMonitor { payload in
+    monitorToken = MIDIReceiver.monitorActivity { payload in
       let indexPath = IndexPath(row: Int(payload.controller), section: 0)
       self.tableView.reloadRows(at: [indexPath], with: .none)
     }
@@ -59,7 +59,11 @@ extension MIDIControllersTableViewController {
     let midiControllerState = midiReceiver.midiControllerState[indexPath.row]
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
+
+    cell.activity.text = midiControllerState.action?.displayName ?? ""
+
     cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
+
     cell.used.isOn = midiControllerState.allowed
     cell.used.tag = indexPath.row
     if cell.used.target(forAction: #selector(allowedStateChanged(_:)), withSender: cell.used) == nil {

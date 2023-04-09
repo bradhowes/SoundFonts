@@ -865,8 +865,8 @@
 				BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */,
 				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
 				BD4CF05729D81F160097B3B2 /* MIDIControllerTableHeaderView.xib */,
-				BD87DC5F29DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib */,
 				BD4CF05929D8299B0097B3B2 /* MIDIControllerTableCell.xib */,
+				BD87DC5F29DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib */,
 				BD87DC5D29DB5528008F6470 /* MIDIConnectionTableCell.xib */,
 			);
 			path = Views;

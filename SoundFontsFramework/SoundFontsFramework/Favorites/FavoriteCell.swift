@@ -29,6 +29,9 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
   /// Foreground color of the active favorite cell
   var activeForegroundColor = UIColor.systemTeal
 
+  /// Foreground color of the active favorite cell
+  var pendingForegroundColor = UIColor.systemYellow
+
   let normalBorderColor = UIColor.darkGray
 
   /// Attribute set by the FavoritesViewController to limit the cell's width
@@ -60,15 +63,17 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
    - parameter favoriteName: the name to show
    - parameter isActive: true if the Favorite's patch is currently active.
+   - parameter engineIsRendering: true if the AudioEngine is currently rendering.
    */
-  func update(favoriteName: String, isActive: Bool) {
-    os_log(.debug, log: log, "update: %{public}s %d", favoriteName, isActive)
+  func update(favoriteName: String, isActive: Bool, engineIsRendering: Bool) {
+    os_log(.debug, log: log, "update: %{public}s %d %d", favoriteName, isActive, engineIsRendering)
 
     name.text = favoriteName
     if isActive {
+      let foregroundColor = engineIsRendering ? activeForegroundColor : pendingForegroundColor
       backgroundColor = activeBackgroundColor
-      name.textColor = activeForegroundColor
-      layer.borderColor = activeForegroundColor.cgColor
+      name.textColor = foregroundColor
+      layer.borderColor = foregroundColor.cgColor
     } else {
       backgroundColor = normalBackgroundColor
       name.textColor = normalForegroundColor

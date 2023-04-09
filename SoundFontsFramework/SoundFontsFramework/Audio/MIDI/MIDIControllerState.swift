@@ -2,24 +2,59 @@
 
 import os
 
-struct MIDIControllerState {
+final public class MIDIControllerState {
+
   let identifier: UInt8
   let name: String
   var lastValue: UInt8?
   var allowed: Bool
+  var action: ControllerAction?
 
-  init(identifier: UInt8, allowed: Bool) {
+  public init(identifier: UInt8, allowed: Bool, action: ControllerAction?) {
     self.identifier = identifier
     self.name = MIDICC(rawValue: identifier)?.name ?? ""
+    self.lastValue = nil
     self.allowed = allowed
+    if identifier == 112 {
+      self.action = .nextPrevFavorite
+    } else if identifier == 74 {
+      self.action = .useFavorite
+    } else {
+      self.action = action
+    }
   }
 }
 
-enum MIDICC: UInt8 {
+public enum ControllerAction: Codable {
+  case nextPrevFavorite
+  case useFavorite
+
+  case reverbMix
+  case reverbRoom
+
+  case delayTime
+  case delayFeedback
+  case delayCutoff
+  case delayMix
+
+  var displayName: String {
+    switch self {
+    case .nextPrevFavorite: return "+/- Favorite"
+    case .useFavorite: return "Use Favorite"
+    case .reverbMix: return "Reverb Mix"
+    case .reverbRoom: return "Reverb Room"
+    case .delayTime: return "Delay Time"
+    case .delayFeedback: return "Delay Feedback"
+    case .delayCutoff: return "Delay Cutoff"
+    case .delayMix: return "Delay Mix"
+    }
+  }
+}
+
+public enum MIDICC: UInt8 {
   case bankSelect = 0
   case modulationWheel = 1
   case breathController = 2
-  case favoriteSelect = 3
   case footPedal = 4
   case portamentoTime = 5
   case volume = 7
@@ -64,7 +99,6 @@ enum MIDICC: UInt8 {
     case .bankSelect: return "Bank Select"
     case .modulationWheel: return "Modulation Wheel"
     case .breathController: return "Breath Controller"
-    case .favoriteSelect: return "SoundFonts Favorite Select"
     case .footPedal: return "Foot Pedal"
     case .portamentoTime: return "Portamento Time"
     case .volume: return "Volume"

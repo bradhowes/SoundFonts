@@ -11,14 +11,31 @@ import MorkAndMIDI
 final public class MIDIReceiver {
   private lazy var log = Logging.logger("MIDIController")
 
-  public struct Payload: CustomStringConvertible {
+  public struct ActivityPayload: CustomStringConvertible {
     public var description: String { "\(source) \(controller)" }
     let source: MIDIUniqueID
     let controller: UInt8
   }
 
+  public struct ActionPayload: CustomStringConvertible {
+    public var description: String { "\(action) \(value)" }
+    let action: ControllerAction
+    let value: UInt8
+  }
+
   private let settings: Settings
-  private let activityNotifier = ActivityNotifier()
+
+  static private let activityNotifier = ActivityNotifier()
+
+  static public func monitorActivity(block: @escaping (ActivityPayload) -> Void) -> NotificationObserver {
+    activityNotifier.addMonitor(block: block)
+  }
+
+  static private let actionNotifier = ActionNotifier()
+
+  static public func monitorActions(block: @escaping (ActionPayload) -> Void) -> NotificationObserver {
+    actionNotifier.addMonitor(block: block)
+  }
 
   private(set) var midiControllerState: [MIDIControllerState] = []
 
@@ -49,7 +66,7 @@ final public class MIDIReceiver {
     monitorMIDIChannelValue()
 
     midiControllerState = (UInt8(0)...UInt8(127)).map {
-      MIDIControllerState(identifier: $0, allowed: controllerAllowed($0))
+      MIDIControllerState(identifier: $0, allowed: controllerAllowed($0), action: controllerAction($0))
     }
   }
 
@@ -58,18 +75,23 @@ final public class MIDIReceiver {
     // synth.stopAllNotes()
   }
 
-  public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
-    activityNotifier.addMonitor(block: block)
-  }
-
-  private func controllerSettingKey(for controller: UInt8) -> String { "controllerAllowed\(controller)" }
+  private func controllerAllowedKey(for controller: UInt8) -> String { "controllerAllowed\(controller)" }
+  private func controllerActionKey(for controller: UInt8) -> String { "controllerAction\(controller)" }
 
   private func controllerAllowed(_ controller: UInt8) -> Bool {
-    settings.get(key: controllerSettingKey(for: controller), defaultValue: true)
+    settings.get(key: controllerAllowedKey(for: controller), defaultValue: true)
+  }
+
+  private func controllerAction(_ controller: UInt8) -> ControllerAction? {
+    settings.get(key: controllerActionKey(for: controller), defaultValue: nil)
+  }
+
+  func actionChanged(controller: UInt8, action: ControllerAction?) {
+    settings.set(key: controllerActionKey(for: controller), value: action)
   }
 
   func allowedStateChanged(controller: UInt8, allowed: Bool) {
-    settings.set(key: controllerSettingKey(for: controller), value: allowed)
+    settings.set(key: controllerAllowedKey(for: controller), value: allowed)
     midiControllerState[Int(controller)].allowed = allowed
     if let lastValue = midiControllerState[Int(controller)].lastValue, allowed {
       synth?.controlChange(controller: controller, value: lastValue)
@@ -139,16 +161,18 @@ extension MIDIReceiver: Receiver {
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
 
     let midiControllerIndex = Int(controller)
-    midiControllerState[midiControllerIndex].lastValue = value
-    activityNotifier.showActivity(source: source, controller: controller)
+    let controllerState = midiControllerState[midiControllerIndex]
 
-    if midiControllerState[midiControllerIndex].allowed {
-      if MIDICC(rawValue: value) == .favoriteSelect {
-        synth?.programChange(program: value)
-      } else {
-        synth?.controlChange(controller: controller, value: value)
-      }
+    controllerState.lastValue = value
+    Self.activityNotifier.post(source: source, controller: controller)
+
+    guard controllerState.allowed else { return }
+
+    if let action = controllerState.action {
+      Self.actionNotifier.post(action: action, value: value)
     }
+
+    synth?.controlChange(controller: controller, value: value)
   }
 
   public func controlChange2(source: MIDIUniqueID, controller: UInt8, value: UInt32) {
@@ -208,17 +232,32 @@ extension MIDIReceiver: Receiver {
   public func perNoteManagement(source: MIDIUniqueID, note: UInt8, detach: Bool, reset: Bool) {}
 }
 
-private final class ActivityNotifier: NSObject {
+private final class ActionNotifier: NSObject {
 
-  private let notification = TypedNotification<MIDIReceiver.Payload>(name: "Activity")
-  private let serialQueue = DispatchQueue(label: "MIDIReceiver.Activity", qos: .userInteractive, attributes: [],
+  private let notification = TypedNotification<MIDIReceiver.ActionPayload>(name: .midiAction)
+  private let serialQueue = DispatchQueue(label: "MIDIReceiver.ActionQueue", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
 
-  public func addMonitor(block: @escaping (MIDIReceiver.Payload) -> Void) -> NotificationObserver {
+  public func addMonitor(block: @escaping (MIDIReceiver.ActionPayload) -> Void) -> NotificationObserver {
     notification.registerOnMain(block: block)
   }
 
-  public func showActivity(source: MIDIUniqueID, controller: UInt8) {
+  public func post(action: ControllerAction, value: UInt8) {
+    serialQueue.async { self.notification.post(value: .init(action: action, value: value)) }
+  }
+}
+
+private final class ActivityNotifier: NSObject {
+
+  private let notification = TypedNotification<MIDIReceiver.ActivityPayload>(name: .midiActivity)
+  private let serialQueue = DispatchQueue(label: "MIDIReceiver.ActivityQueue", qos: .userInteractive, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
+
+  public func addMonitor(block: @escaping (MIDIReceiver.ActivityPayload) -> Void) -> NotificationObserver {
+    notification.registerOnMain(block: block)
+  }
+
+  public func post(source: MIDIUniqueID, controller: UInt8) {
     serialQueue.async { self.notification.post(value: .init(source: source, controller: controller)) }
   }
 }
