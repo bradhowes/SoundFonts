@@ -131,7 +131,9 @@ public extension AudioEngine {
       result = .success(synth)
 
     case .standalone:
-      midi?.start()
+      DispatchQueue.main.async { [weak self] in
+        self?.midi?.start()
+      }
       result = startEngine(synth)
     }
 
