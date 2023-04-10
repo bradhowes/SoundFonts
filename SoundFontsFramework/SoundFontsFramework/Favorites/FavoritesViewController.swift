@@ -66,27 +66,12 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 
     checkIfRestored()
 
-    monitorActionActivity = MIDIEventRouter.monitorActionActivity { payload in
-      switch payload.action {
-      case .editFavorite:
-        switch payload.kind {
-        case .relative:
-          if payload.value > 64 {
-            // self.editFavorite(at:)
-          }
-        case .absolute:
-          let scale = Double(payload.value) / Double(127)
-          let index = Int((Double(self.favorites.count - 1) * scale).rounded())
-          // self.editFavorite(at:)
+    monitorActionActivity = MIDIEventRouter.monitorActionActivity { self.handleAction(payload: $0) }
+  }
 
-        case .onOff:
-          break
-        }
-
-      default:
-        break
-      }
-    }
+  func handleAction(payload: MIDIEventRouter.ActionActivityPayload) {
+    guard case .editFavorite = payload.action  else { return }
+    if payload.value > 64 { self.editCurrentFavorite() }
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -280,8 +265,8 @@ extension FavoritesViewController: SegueHandler {
     guard let favorite = activePresetManager.activeFavorite else { return }
     guard let index = favorites.index(of: favorite.key) else { return }
 
-    let indexPath: IndexPath = .init(index: index)
-    guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
+    let indexPath: IndexPath = .init(item: index, section: 0)
+    guard let view = favoritesView.cellForItem(at: indexPath) else { return }
     doEditFavorite(indexPath: indexPath, viewCell: view, favorite: favorite)
   }
 

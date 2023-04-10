@@ -116,30 +116,11 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
       }
     }
 
-    notificationObserver = MIDIEventRouter.monitorActionActivity { payload in
-      switch payload.action {
-      case .selectFavorite:
-        switch payload.kind {
-        case .relative:
-          if payload.value > 64 {
-            self.selectNextFavorite()
-          } else if payload.value < 64 {
-            self.selectPreviousFavorite()
-          }
-        case .absolute:
-          let scale = Double(payload.value) / Double(127)
-          let index = Int((Double(favorites.count - 1) * scale).rounded())
-          favorites.selected(index: index)
-
-        case .onOff:
-          break
-        }
-
-      default:
-        break
-      }
-    }
+    notificationObserver = MIDIEventRouter.monitorActionActivity { self.handleAction(payload: $0) }
   }
+}
+
+public extension ActivePresetManager {
 
   /**
    Obtain the sound font instance that corresponds to the given preset key.
@@ -147,7 +128,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter soundFontAndPreset: the preset key to resolve
    - returns: optional sound font instance that corresponds to the given key
    */
-  public func resolveToSoundFont(_ soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
+  func resolveToSoundFont(_ soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
     soundFonts.getBy(key: soundFontAndPreset.soundFontKey)
   }
 
@@ -157,7 +138,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter soundFontAndPreset: the preset key to resolve
    - returns: optional patch instance that corresponds to the given key
    */
-  public func resolveToPreset(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
+  func resolveToPreset(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
     soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.presets[soundFontAndPreset.presetIndex]
   }
 
@@ -167,7 +148,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter preset: the preset to make active
    - parameter playSample: if true, play a note using the new preset
    */
-  public func setActive(preset: SoundFontAndPreset, playSample: Bool) {
+  func setActive(preset: SoundFontAndPreset, playSample: Bool) {
     setActive(.preset(soundFontAndPreset: preset), playSample: playSample)
   }
 
@@ -177,7 +158,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter favorite: the favorite to make active
    - parameter playSample: if true, play a note using the new preset
    */
-  public func setActive(favorite: Favorite, playSample: Bool) {
+  func setActive(favorite: Favorite, playSample: Bool) {
     setActive(.favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset),
               playSample: playSample)
   }
@@ -188,7 +169,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter kind: wrapped value to set
    - parameter playSample: if true, play a note using the new preset
    */
-  public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
+  func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
     os_log(.debug, log: log, "setActive BEGIN - %{public}s", kind.description)
 
     guard state == .normal else {
@@ -214,7 +195,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
    - parameter kind: wrapped value to set
    */
-  public func restoreActive(_ kind: ActivePresetKind) {
+  func restoreActive(_ kind: ActivePresetKind) {
     os_log(.debug, log: log, "restoreActive BEGIN - %{public}s", kind.description)
     switch state {
     case .starting: state = .pending(kind)
@@ -223,8 +204,11 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     }
     os_log(.debug, log: log, "restoreActive END")
   }
+}
 
-  private func updateState() {
+private extension ActivePresetManager {
+
+  func updateState() {
     os_log(.debug, log: log, "updateState BEGIN")
 
     guard soundFonts.isRestored && favorites.isRestored else {
@@ -255,7 +239,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     os_log(.debug, log: log, "updateState END")
   }
 
-  private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
+  func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
     os_log(.debug, log: log, "rebuild BEGIN - %{public}s", kind.description)
 
     switch kind {
@@ -288,34 +272,49 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
       return .none
     }
   }
-}
 
-extension ActivePresetManager {
+  func handleAction(payload: MIDIEventRouter.ActionActivityPayload) {
+    guard case .selectFavorite = payload.action  else { return }
+    switch payload.kind {
+    case .relative:
+      if payload.value > 64 {
+        self.selectNextFavorite()
+      } else if payload.value < 64 {
+        self.selectPreviousFavorite()
+      }
+    case .absolute:
+      let scale = Double(payload.value) / Double(127)
+      let index = Int((Double(favorites.count - 1) * scale).rounded())
+      favorites.selected(index: index)
+    case .onOff:
+      break
+    }
+  }
 
-  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
+  func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     if case .restored = event {
       DispatchQueue.main.async { self.updateState() }
     }
   }
 
-  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
+  func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
     if case .restored = event {
       DispatchQueue.main.async { self.updateState() }
     }
   }
 
-  private func save(_ kind: ActivePresetKind) {
+  func save(_ kind: ActivePresetKind) {
     os_log(.debug, log: log, "save - %{public}s", kind.description)
     settings.lastActivePreset = kind
   }
 
-  private func isValid(_ active: ActivePresetKind) -> Bool {
+  func isValid(_ active: ActivePresetKind) -> Bool {
     precondition(soundFonts.isRestored)
     guard let soundFontAndPreset = active.soundFontAndPreset else { return false }
     return soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil
   }
 
-  private func selectNextFavorite() {
+  func selectNextFavorite() {
     os_log(.debug, log: log, "selectNextFavorite")
     guard
       let key = active.favoriteKey,
@@ -333,7 +332,7 @@ extension ActivePresetManager {
     }
   }
 
-  private func selectPreviousFavorite() {
+  func selectPreviousFavorite() {
     os_log(.debug, log: log, "selectPreviousFavorite")
     guard
       let key = active.favoriteKey,
