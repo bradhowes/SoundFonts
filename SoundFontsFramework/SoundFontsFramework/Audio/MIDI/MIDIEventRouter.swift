@@ -9,7 +9,7 @@ import MorkAndMIDI
  and forwards MIDI commands to a synth.
  */
 final public class MIDIEventRouter {
-  private lazy var log = Logging.logger("MIDIRouter")
+  private lazy var log = Logging.logger("MIDIEventRouter")
 
   public struct ControllerActivityPayload: CustomStringConvertible {
     public var description: String { "\(source) \(controller) \(value)" }
@@ -44,12 +44,13 @@ final public class MIDIEventRouter {
   public private(set) var channel: Int
   public private(set) var group: Int
 
-  public var audioEngine: AudioEngine?
-
+  public var audioEngine: AudioEngine? { _audioEngine }
+  private let _audioEngine: AudioEngine?
   private let keyboard: AnyKeyboard
   private let midiConnectionMonitor: MIDIConnectionMonitor
+  private let midiControllerActionStateManager: MIDIControllerActionStateManager
   private var observer: NSKeyValueObservation?
-  private var synth: AnyMIDISynth? { audioEngine?.synth }
+  private var synth: AnyMIDISynth? { _audioEngine?.synth }
 
   /**
    Construct new controller for a synth and keyboard
@@ -58,11 +59,13 @@ final public class MIDIEventRouter {
    - parameter keyboard: the Keyboard to update
    */
   public init(audioEngine: AudioEngine, keyboard: AnyKeyboard, settings: Settings,
-              midiConnectionMonitor: MIDIConnectionMonitor) {
-    self.audioEngine = audioEngine
+              midiConnectionMonitor: MIDIConnectionMonitor,
+              midiControllerActionStateManager: MIDIControllerActionStateManager) {
+    self._audioEngine = audioEngine
     self.keyboard = keyboard
     self.settings = settings
     self.midiConnectionMonitor = midiConnectionMonitor
+    self.midiControllerActionStateManager = midiControllerActionStateManager
     self.channel = settings.midiChannel
     self.group = -1
     monitorMIDIChannelValue()

@@ -49,10 +49,11 @@ public final class AudioEngine: SynthProvider {
 
   private let mode: Mode
   private let activePresetManager: ActivePresetManager
+  private let settings: Settings
+  public let midi: MIDI?
+  private let midiControllerActionStateManager: MIDIControllerActionStateManager?
 
   private let presetChangeManager = PresetChangeManager()
-  private let settings: Settings
-
   private var engine: AVAudioEngine?
   private var pendingPresetChanges: Int = 0
   private var renderingResumeTimer: Timer?
@@ -63,9 +64,8 @@ public final class AudioEngine: SynthProvider {
   private var panChangedNotifier: NotificationObserver?
   private var pitchBendRangeChangedNotifier: NotificationObserver?
 
-  public let midi: MIDI?
   public let midiConnectionMonitor: MIDIConnectionMonitor?
-  public private(set) var midiRouter: MIDIEventRouter?
+  public private(set) var midiEventRouter: MIDIEventRouter?
 
   private var pendingPresetLoadTimer: Timer?
 
@@ -80,12 +80,14 @@ public final class AudioEngine: SynthProvider {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: user-adjustable settings
    */
-  public init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?) {
+  public init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?,
+              midiControllerActionStateManager: MIDIControllerActionStateManager?) {
     os_log(.debug, log: Self.log, "init BEGIN")
 
     self.mode = mode
     self.activePresetManager = activePresetManager
     self.settings = settings
+    self.midiControllerActionStateManager = midiControllerActionStateManager
     self.reverbEffect = mode == .standalone ? ReverbEffect() : nil
     self.delayEffect = mode == .standalone ? DelayEffect() : nil
 
@@ -125,12 +127,18 @@ public final class AudioEngine: SynthProvider {
 public extension AudioEngine {
 
   func attachKeyboard(_ keyboard: AnyKeyboard) {
-    guard let midi = self.midi, let midiConnectionMonitor = self.midiConnectionMonitor else {
+    guard let midi = self.midi,
+          let midiConnectionMonitor = self.midiConnectionMonitor,
+          let midiControllerActionStateManager = self.midiControllerActionStateManager
+    else {
       fatalError("No MIDI support")
     }
-    self.midiRouter = .init(audioEngine: self, keyboard: keyboard, settings: settings,
-                            midiConnectionMonitor: midiConnectionMonitor)
-    midi.receiver = self.midiRouter
+    self.midiEventRouter = .init(audioEngine: self,
+                                 keyboard: keyboard,
+                                 settings: settings,
+                                 midiConnectionMonitor: midiConnectionMonitor,
+                                 midiControllerActionStateManager: midiControllerActionStateManager)
+    midi.receiver = self.midiEventRouter
   }
 
   /**

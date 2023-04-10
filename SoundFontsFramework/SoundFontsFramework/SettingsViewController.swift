@@ -137,6 +137,7 @@ public final class SettingsViewController: UIViewController {
                         midi: MIDI?, midiConnectionMonitor: MIDIConnectionMonitor?, infoBar: AnyInfoBar) {
     self.isMainApp = isMainApp
     self.soundFonts = soundFonts
+    self.settings = settings
     self.midi = midi
     self.midiConnectionMonitor = midiConnectionMonitor
     self.infoBar = infoBar

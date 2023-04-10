@@ -126,16 +126,23 @@ where T: ControllerConfiguration {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
         let midiInputPortUniqueId = Int32(settings[.midiInputPortUniqueId])
-        let midi = MIDI(clientName: "SoundFonts", uniqueId: midiInputPortUniqueId, midiProtocol: ._1_0)
-        let audioEngine = AudioEngine(mode: .standalone, activePresetManager: activePresetManager, settings: settings,
-                                      midi: midi)
+        let midi: MIDI = .init(clientName: "SoundFonts", uniqueId: midiInputPortUniqueId, midiProtocol: ._1_0)
+        let midiControllerActionStateManager: MIDIControllerActionStateManager = .init(settings: settings)
+        let audioEngine: AudioEngine = .init(mode: .standalone,
+                                             activePresetManager: activePresetManager,
+                                             settings: settings,
+                                             midi: midi,
+                                             midiControllerActionStateManager: midiControllerActionStateManager)
         self.accessQueue.sync {
           self._audioEngine = audioEngine
         }
       }
     } else {
-      self._audioEngine = AudioEngine(mode: .audioUnit, activePresetManager: activePresetManager, settings: settings,
-                                      midi: nil)
+      self._audioEngine = AudioEngine(mode: .audioUnit,
+                                      activePresetManager: activePresetManager,
+                                      settings: settings,
+                                      midi: nil,
+                                      midiControllerActionStateManager: nil)
     }
   }
 
