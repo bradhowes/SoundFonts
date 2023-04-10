@@ -30,7 +30,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
   var activeForegroundColor = UIColor.systemTeal
 
   /// Foreground color of the active favorite cell
-  var pendingForegroundColor = UIColor.systemYellow
+  var pendingForegroundColor = UIColor.systemTeal.darker(0.7)
 
   let normalBorderColor = UIColor.darkGray
 

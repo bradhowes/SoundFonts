@@ -55,6 +55,8 @@ final class PresetsTableViewManager: NSObject {
 
   public var visibilityState: [(IndexPath, Bool)] { presetConfigs.map { ($0.0, $0.1.isVisible) } }
 
+  private var engineRenderingObserver: NotificationObserver?
+
   /**
    Construct a new presets table view manager.
 
@@ -86,6 +88,10 @@ final class PresetsTableViewManager: NSObject {
     activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
     favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
     soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
+
+    engineRenderingObserver = AudioEngine.engineRenderingChangeNotification.registerOnMain { rendering in
+      self.showRenderingState(rendering: rendering)
+    }
   }
 }
 
@@ -108,7 +114,7 @@ extension PresetsTableViewManager {
   func numberOfRows(section: Int) -> Int { searchSlots?.count ?? sectionRowCounts[section] }
 
   func update(cell: TableCell, at indexPath: IndexPath) -> UITableViewCell {
-    update(cell: cell, at: indexPath, slotIndex: slotIndex(from: indexPath))
+    update(cell: cell, at: indexPath, slotIndex: slotIndex(from: indexPath), rendering: false)
     return cell
   }
 
@@ -269,7 +275,7 @@ extension PresetsTableViewManager {
 
     case let .changed(_, favorite):
       os_log(.debug, log: log, "favoritesChangeNotificationInBackground - changed - %{public}s", favorite.key.uuidString)
-      serialQueue.async { self.updateRow(with: favorite.key) }
+      serialQueue.async { self.updateRow(with: favorite.key, rendering: false) }
 
     case .selected: break
     case .beginEdit: break
@@ -289,7 +295,7 @@ extension PresetsTableViewManager {
     case let .presetChanged(soundFont, index):
       if soundFont == selectedSoundFont {
         let soundFontAndPreset = soundFont[index]
-        serialQueue.async { self.updateRow(with: soundFontAndPreset) }
+        serialQueue.async { self.updateRow(with: soundFontAndPreset, rendering: false) }
       }
 
     case .restored: serialQueue.async { self.handleSoundFontsRestored() }
@@ -344,8 +350,8 @@ extension PresetsTableViewManager {
 
     viewController.slotToScrollTo = indexPath(from: slotIndex)
     viewController.tableView.performBatchUpdates({
-      updateRow(with: old)
-      updateRow(with: new)
+      updateRow(with: old, rendering: false)
+      updateRow(with: new, rendering: false)
     }, completion: { _ in })
     os_log(.debug, log: log, "handleActivePresetChanged END")
   }
@@ -688,30 +694,34 @@ extension PresetsTableViewManager {
     return soundFont[presetIndex]
   }
 
-  private func updateRow(with activeKind: ActivePresetKind?) {
+  private func updateRow(with activeKind: ActivePresetKind?, rendering: Bool) {
     os_log(.debug, log: log, "updateRow - with activeKind")
     guard let activeKind = activeKind else { return }
     switch activeKind {
     case .none: return
-    case .preset(let soundFontAndPreset): updateRow(with: soundFontAndPreset)
-    case .favorite(let favoriteKey, _): updateRow(with: favoriteKey)
+    case .preset(let soundFontAndPreset): updateRow(with: soundFontAndPreset, rendering: rendering)
+    case .favorite(let favoriteKey, _): updateRow(with: favoriteKey, rendering: rendering)
     }
   }
 
-  private func updateRow(with favoriteKey: Favorite.Key) {
+  private func showRenderingState(rendering: Bool) {
+    updateRow(with: activePresetManager.active, rendering: rendering)
+  }
+
+  private func updateRow(with favoriteKey: Favorite.Key, rendering: Bool) {
     os_log(.debug, log: log, "updateRow - with favorite")
     guard let slotIndex = getSlotIndex(for: favoriteKey),
           let cell: TableCell = viewController.tableView.cellForRow(at: indexPath(from: slotIndex))
     else { return }
-    update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex)
+    update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex, rendering: rendering)
   }
 
-  private func updateRow(with soundFontAndPreset: SoundFontAndPreset?) {
+  private func updateRow(with soundFontAndPreset: SoundFontAndPreset?, rendering: Bool) {
     os_log(.debug, log: log, "updateRow - with soundFontAndPreset")
     guard let slotIndex = getSlotIndex(for: soundFontAndPreset),
           let cell: TableCell = viewController.tableView.cellForRow(at: indexPath(from: slotIndex))
     else { return }
-    update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex)
+    update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex, rendering: rendering)
   }
 
   private func getSlotIndex(for activeKind: ActivePresetKind) -> PresetViewSlotIndex? {
@@ -722,16 +732,17 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func update(cell: TableCell, at indexPath: IndexPath, slotIndex: PresetViewSlotIndex) {
+  private func update(cell: TableCell, at indexPath: IndexPath, slotIndex: PresetViewSlotIndex, rendering: Bool) {
     switch getSlot(at: slotIndex) {
     case let .preset(presetIndex):
-      updatePresetCell(cell, indexPath: indexPath, presetIndex: presetIndex, slot: slotIndex.rawValue)
+      updatePresetCell(cell, indexPath: indexPath, presetIndex: presetIndex, slot: slotIndex.rawValue,
+                       rendering: rendering)
     case let .favorite(key):
-      updateFavoriteCell(cell, indexPath: indexPath, key: key, slot: slotIndex.rawValue)
+      updateFavoriteCell(cell, indexPath: indexPath, key: key, slot: slotIndex.rawValue, rendering: rendering)
     }
   }
 
-  func updatePresetCell(_ cell: TableCell, indexPath: IndexPath, presetIndex: Int, slot: Int) {
+  func updatePresetCell(_ cell: TableCell, indexPath: IndexPath, presetIndex: Int, slot: Int, rendering: Bool) {
     guard let soundFont = selectedSoundFont else {
       os_log(.error, log: log, "unexpected nil soundFont")
       return
@@ -745,6 +756,9 @@ extension PresetsTableViewManager {
     if soundFontAndPreset == activePresetManager.active.soundFontAndPreset &&
         activePresetManager.activeFavorite == nil {
       flags.insert(.active)
+      if !rendering {
+        flags.insert(.loading)
+      }
     }
     if preset.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
     if preset.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
@@ -752,12 +766,17 @@ extension PresetsTableViewManager {
     cell.updateForPreset(at: indexPath, name: preset.presetConfig.name, flags: flags)
   }
 
-  func updateFavoriteCell(_ cell: TableCell, indexPath: IndexPath, key: Favorite.Key, slot: Int) {
+  func updateFavoriteCell(_ cell: TableCell, indexPath: IndexPath, key: Favorite.Key, slot: Int, rendering: Bool) {
     guard let favorite = favorites.getBy(key: key) else { return }
     os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
            favorite.presetConfig.name, slot)
     var flags: TableCell.Flags = [.favorite]
-    if activePresetManager.activeFavorite == favorite { flags.insert(.active) }
+    if activePresetManager.activeFavorite == favorite {
+      flags.insert(.active)
+      if !rendering {
+        flags.insert(.loading)
+      }
+    }
     if favorite.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
     if favorite.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
     if favorite.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }

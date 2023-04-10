@@ -351,7 +351,7 @@ extension FavoritesViewController {
     return IndexPath(item: index, section: 0)
   }
 
-  private func updateCell(with favorite: Favorite, engineRendering: Bool = true) {
+  private func updateCell(with favorite: Favorite, engineRendering: Bool = false) {
     guard favorites.contains(key: favorite.key) else { return }
     if let indexPath = self.indexPath(of: favorite.key),
        let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
@@ -360,7 +360,7 @@ extension FavoritesViewController {
   }
 
   @discardableResult
-  private func update(cell: FavoriteCell, with favorite: Favorite, engineRendering: Bool = true) -> FavoriteCell {
+  private func update(cell: FavoriteCell, with favorite: Favorite, engineRendering: Bool = false) -> FavoriteCell {
     cell.update(
       favoriteName: favorite.presetConfig.name,
       isActive: favorite == activePresetManager.activeFavorite,

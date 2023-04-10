@@ -285,7 +285,6 @@ extension MainViewController: ControllerConfiguration {
     volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
 #endif
 
-    router.activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
     router.subscribe(self, notifier: routerChangedNotificationInBackground)
 
     infoBar.addEventClosure(.panic) { [weak self] _ in
@@ -323,33 +322,6 @@ extension MainViewController: ControllerConfiguration {
     }
 
     os_log(.debug, log: log, "setSynthInBackground END")
-  }
-
-  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
-    os_log(.debug, log: log, "activePresetChangedNotificationInBackground BEGIN - %{public}s", event.description)
-    if case let .changed(old: _, new: new, playSample: playSample) = event {
-      useActivePresetInBackground(new, playSample: playSample)
-    }
-    os_log(.debug, log: log, "activePresetChangedNotificationInBackground END")
-  }
-
-  private func useActivePresetInBackground(_ activePresetKind: ActivePresetKind, playSample: Bool) {
-    os_log(.debug, log: log, "useActivePresetInBackground BEGIN - %{public}s", activePresetKind.description)
-    volumeMonitor?.validActivePreset = activePresetKind != .none
-    audioEngine?.stopAllNotes()
-
-    guard let synthManager = self.audioEngine else { return }
-    let result = synthManager.loadActivePreset {
-      if let synth = synthManager.synth, playSample {
-        self.noteInjector.post(to: synth)
-      }
-    }
-
-    if case let .failure(what) = result, what != .noSynth {
-      self.postAlertInBackground(for: what)
-    }
-
-    os_log(.debug, log: log, "useActivePresetInBackground END")
   }
 
   private func finishStart(_ result: AudioEngine.StartResult) {
