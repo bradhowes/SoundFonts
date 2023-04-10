@@ -8,11 +8,11 @@ import MorkAndMIDI
  A table view that shows the known MIDI devices.
  */
 final class MIDIControllersTableViewController: UITableViewController {
-  private var midiReceiver: MIDIReceiver!
+  private var midiEventRouter: MIDIEventRouter!
   private var monitorToken: NotificationObserver?
 
-  func configure(midiReceiver: MIDIReceiver) {
-    self.midiReceiver = midiReceiver
+  func configure(midiEventRouter: MIDIEventRouter) {
+    self.midiEventRouter = midiEventRouter
   }
 }
 
@@ -28,7 +28,7 @@ extension MIDIControllersTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = MIDIReceiver.monitorControllerActivity { payload in
+    monitorToken = MIDIEventRouter.monitorControllerActivity { payload in
       let indexPath = IndexPath(row: Int(payload.controller), section: 0)
       self.tableView.reloadRows(at: [indexPath], with: .none)
     }
@@ -56,7 +56,7 @@ extension MIDIControllersTableViewController {
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIControllersTableCell = tableView.dequeueReusableCell(at: indexPath)
-    let midiControllerState = midiReceiver.midiControllerState[indexPath.row]
+    let midiControllerState = midiEventRouter.midiControllerState[indexPath.row]
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
 
@@ -77,20 +77,20 @@ extension MIDIControllersTableViewController {
 
   @IBAction func disableAll(_ sender: Any) {
     for controller in 0..<128 {
-      midiReceiver.allowedStateChanged(controller: UInt8(controller), allowed: false)
+      midiEventRouter.allowedStateChanged(controller: UInt8(controller), allowed: false)
       tableView.reloadData()
     }
   }
 
   @IBAction func enableAll(_ sender: Any) {
     for controller in 0..<128 {
-      midiReceiver.allowedStateChanged(controller: UInt8(controller), allowed: true)
+      midiEventRouter.allowedStateChanged(controller: UInt8(controller), allowed: true)
       tableView.reloadData()
     }
   }
 
   @IBAction func allowedStateChanged(_ sender: UISwitch) {
-    midiReceiver.allowedStateChanged(controller: UInt8(sender.tag), allowed: sender.isOn)
+    midiEventRouter.allowedStateChanged(controller: UInt8(sender.tag), allowed: sender.isOn)
   }
 
   private func controllerAllowedSettingName(controller: Int) -> String { "controllerAllowed\(controller)" }

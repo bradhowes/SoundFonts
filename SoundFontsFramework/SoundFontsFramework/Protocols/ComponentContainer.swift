@@ -33,8 +33,9 @@ public protocol ComponentContainer: AnyObject {
   /// The manager that tracks and holds the active preset that is in use in the samplers
   var activePresetManager: ActivePresetManager { get }
   /// The manager that tracks and holds the selected sound font. It is not necessarily the sound font that has the
-  /// active preset.s
+  /// active preset.
   var selectedSoundFontManager: SelectedSoundFontManager { get }
+  /// Manager for the active tag
   var activeTagManager: ActiveTagManager { get }
   /// The manager for the info bar that sits below the sound font and preset table views and above the keyboard.
   var infoBar: AnyInfoBar { get }
@@ -48,7 +49,7 @@ public protocol ComponentContainer: AnyObject {
   var fontSwipeActionGenerator: FontActionManager { get }
   /// The entity for posting alerts to the user
   var alertManager: AlertManager { get }
-
+  /// Service that asks for app review
   var askForReview: AskForReview? { get }
 
   /**

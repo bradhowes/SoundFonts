@@ -116,7 +116,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
       }
     }
 
-    notificationObserver = MIDIReceiver.monitorActions { payload in
+    notificationObserver = MIDIEventRouter.monitorActionActivity { payload in
       switch payload.action {
 
       case .nextPrevFavorite:

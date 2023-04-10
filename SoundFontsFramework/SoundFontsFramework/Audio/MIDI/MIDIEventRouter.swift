@@ -8,8 +8,8 @@ import MorkAndMIDI
  A MIDI receiver that processes MIDI events from an external source. Shows the keys being played if given a Keyboard,
  and forwards MIDI commands to a synth.
  */
-final public class MIDIReceiver {
-  private lazy var log = Logging.logger("MIDIController")
+final public class MIDIEventRouter {
+  private lazy var log = Logging.logger("MIDIRouter")
 
   public struct ControllerActivityPayload: CustomStringConvertible {
     public var description: String { "\(source) \(controller) \(value)" }
@@ -18,7 +18,7 @@ final public class MIDIReceiver {
     let value: UInt8
   }
 
-  public struct ActionPayload: CustomStringConvertible {
+  public struct ActionActivityPayload: CustomStringConvertible {
     public var description: String { "\(action) \(value)" }
     let action: MIDIControllerAction
     let value: UInt8
@@ -34,7 +34,7 @@ final public class MIDIReceiver {
 
   static private let actionNotifier = ActionNotifier()
 
-  static public func monitorActions(block: @escaping (ActionPayload) -> Void) -> NotificationObserver {
+  static public func monitorActionActivity(block: @escaping (ActionActivityPayload) -> Void) -> NotificationObserver {
     actionNotifier.addMonitor(block: block)
   }
 
@@ -47,7 +47,7 @@ final public class MIDIReceiver {
   public var audioEngine: AudioEngine?
 
   private let keyboard: AnyKeyboard
-  private let midiMonitor: MIDIMonitor
+  private let midiConnectionMonitor: MIDIConnectionMonitor
   private var observer: NSKeyValueObservation?
   private var synth: AnyMIDISynth? { audioEngine?.synth }
 
@@ -57,11 +57,12 @@ final public class MIDIReceiver {
    - parameter synth: the synth to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(audioEngine: AudioEngine, keyboard: AnyKeyboard, settings: Settings, midiMonitor: MIDIMonitor) {
+  public init(audioEngine: AudioEngine, keyboard: AnyKeyboard, settings: Settings,
+              midiConnectionMonitor: MIDIConnectionMonitor) {
     self.audioEngine = audioEngine
     self.keyboard = keyboard
     self.settings = settings
-    self.midiMonitor = midiMonitor
+    self.midiConnectionMonitor = midiConnectionMonitor
     self.channel = settings.midiChannel
     self.group = -1
     monitorMIDIChannelValue()
@@ -129,7 +130,7 @@ extension UInt32 {
   var w1: UInt16 { .init((self      ) & 0x00_00_FF_FF)}
 }
 
-extension MIDIReceiver: Receiver {
+extension MIDIEventRouter: Receiver {
 
   public func noteOff(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
     synth?.noteOff(note: note, velocity: velocity)
@@ -141,7 +142,7 @@ extension MIDIReceiver: Receiver {
   }
 
   public func noteOn(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
-    let connectionState = midiMonitor.connectionState(for: source)
+    let connectionState = midiConnectionMonitor.connectionState(for: source)
     synth?.noteOn(note: note, velocity: connectionState.fixedVelocity ?? velocity)
     keyboard.noteIsOn(note: note)
   }
@@ -235,11 +236,11 @@ extension MIDIReceiver: Receiver {
 
 private final class ActionNotifier: NSObject {
 
-  private let notification = TypedNotification<MIDIReceiver.ActionPayload>(name: .midiAction)
-  private let serialQueue = DispatchQueue(label: "MIDIReceiver.ActionQueue", qos: .userInteractive, attributes: [],
+  private let notification = TypedNotification<MIDIEventRouter.ActionActivityPayload>(name: .midiAction)
+  private let serialQueue = DispatchQueue(label: "MIDIRouter.ActionQueue", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
 
-  public func addMonitor(block: @escaping (MIDIReceiver.ActionPayload) -> Void) -> NotificationObserver {
+  public func addMonitor(block: @escaping (MIDIEventRouter.ActionActivityPayload) -> Void) -> NotificationObserver {
     notification.registerOnMain(block: block)
   }
 
@@ -250,11 +251,11 @@ private final class ActionNotifier: NSObject {
 
 private final class ControllerActivityNotifier: NSObject {
 
-  private let notification = TypedNotification<MIDIReceiver.ControllerActivityPayload>(name: .midiActivity)
-  private let serialQueue = DispatchQueue(label: "MIDIReceiver.ControllerActivityQueue", qos: .userInteractive, attributes: [],
+  private let notification = TypedNotification<MIDIEventRouter.ControllerActivityPayload>(name: .midiActivity)
+  private let serialQueue = DispatchQueue(label: "MIDIRouter.ControllerActivityQueue", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
 
-  public func addMonitor(block: @escaping (MIDIReceiver.ControllerActivityPayload) -> Void) -> NotificationObserver {
+  public func addMonitor(block: @escaping (MIDIEventRouter.ControllerActivityPayload) -> Void) -> NotificationObserver {
     notification.registerOnMain(block: block)
   }
 

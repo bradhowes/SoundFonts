@@ -3,7 +3,7 @@
 import CoreMIDI
 import MorkAndMIDI
 
-public final class MIDIMonitor {
+public final class MIDIConnectionMonitor {
   private lazy var log = Logging.logger("MIDIMonitor")
 
   private let settings: Settings
@@ -46,14 +46,14 @@ public final class MIDIMonitor {
   }
 }
 
-private extension MIDIMonitor {
+private extension MIDIConnectionMonitor {
   func connectedSettingKey(for uniqueId: MIDIUniqueID) -> String { "midiAutoConnect_\(uniqueId)" }
   func fixedVelocitySettingKey(for uniqueId: MIDIUniqueID) -> String { "midFixedVelocity_\(uniqueId)" }
 }
 
 // MARK: - Monitor Protocol
 
-extension MIDIMonitor: Monitor {
+extension MIDIConnectionMonitor: Monitor {
 
   public func didCreate(inputPort: MIDIPortRef) {
     // Save our unique ID if CoreMIDI had to change it due to a conflict.
@@ -74,7 +74,7 @@ extension MIDIMonitor: Monitor {
   }
 }
 
-extension MIDIMonitor {
+extension MIDIConnectionMonitor {
   public func didInitialize() {}
   public func willUninitialize() {}
   public func willDelete(inputPort: MIDIPortRef) {}
@@ -90,7 +90,7 @@ private final class ConnectionActivityNotifier {
   let queueName = "MIDIMonitor.ConnectionActivity"
   var lastChannel: Int = -2
   var lastNotificationTime: Date = .distantPast
-  let notification: TypedNotification<MIDIMonitor.ConnectionActivityPayload>
+  let notification: TypedNotification<MIDIConnectionMonitor.ConnectionActivityPayload>
   let serialQueue: DispatchQueue
 
   init() {
@@ -99,7 +99,7 @@ private final class ConnectionActivityNotifier {
                         autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
   }
 
-  internal func addMonitor(block: @escaping (MIDIMonitor.ConnectionActivityPayload) -> Void) -> NotificationObserver {
+  internal func addMonitor(block: @escaping (MIDIConnectionMonitor.ConnectionActivityPayload) -> Void) -> NotificationObserver {
     notification.registerOnMain(block: block)
   }
 

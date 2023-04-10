@@ -98,8 +98,8 @@ public final class SettingsViewController: UIViewController {
   public weak var soundFonts: SoundFontsProvider!
   public weak var infoBar: AnyInfoBar!
   public weak var midi: MIDI?
-  public weak var midiMonitor: MIDIMonitor?
-  public weak var midiReceiver: MIDIReceiver?
+  public weak var midiConnectionMonitor: MIDIConnectionMonitor?
+  public weak var midiRouter: MIDIEventRouter?
   public var isMainApp = true
   private var monitorToken: NotificationObserver?
   private var midiConnectionsObserver: NSKeyValueObservation!
@@ -131,6 +131,17 @@ public final class SettingsViewController: UIViewController {
     divider4,
     divider5
   ]
+
+  // swiftlint:disable function_parameter_count
+  public func configure(isMainApp: Bool, soundFonts: SoundFontsProvider, settings: Settings,
+                        midi: MIDI?, midiConnectionMonitor: MIDIConnectionMonitor?, infoBar: AnyInfoBar) {
+    self.isMainApp = isMainApp
+    self.soundFonts = soundFonts
+    self.midi = midi
+    self.midiConnectionMonitor = midiConnectionMonitor
+    self.infoBar = infoBar
+  }
+  // swiftlint:enable function_parameter_count
 
   override public func viewDidLoad() {
     super.viewDidLoad()
@@ -199,7 +210,7 @@ public final class SettingsViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in self?.updateMIDIConnectionsButton() }
       }
 
-      monitorToken = midiMonitor?.addConnectionActivityMonitor { data in
+      monitorToken = midiConnectionMonitor?.addConnectionActivityMonitor { data in
         let ourChannel = self.settings.midiChannel
         let accepted = ourChannel == -1 || ourChannel == data.channel
         MIDIConnectionsTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
@@ -540,7 +551,7 @@ extension SettingsViewController: SegueHandler {
     case .midiConnectionsTableView:
       guard
         let midi = self.midi,
-        let midiMonitor = self.midiMonitor,
+        let midiMonitor = self.midiConnectionMonitor,
         let destination = segue.destination as? MIDIConnectionsTableViewController
       else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
@@ -549,21 +560,21 @@ extension SettingsViewController: SegueHandler {
 
     case .midiControllersTableView:
       guard
-        let midiReceiver = self.midi?.receiver as? MIDIReceiver,
+        let midiEventRouter = self.midi?.receiver as? MIDIEventRouter,
         let destination = segue.destination as? MIDIControllersTableViewController
       else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
-      destination.configure(midiReceiver: midiReceiver)
+      destination.configure(midiEventRouter: midiEventRouter)
 
     case .midiActionsTableView:
       guard
-        let midiReceiver = self.midi?.receiver as? MIDIReceiver,
+        let midiEventRouter = self.midi?.receiver as? MIDIEventRouter,
         let destination = segue.destination as? MIDIActionsTableViewController
       else {
         fatalError("expected MIDIActionsTableViewController for segue destination")
       }
-      destination.configure(midiReceiver: midiReceiver)
+      destination.configure(midiEventRouter: midiEventRouter)
     }
   }
 }

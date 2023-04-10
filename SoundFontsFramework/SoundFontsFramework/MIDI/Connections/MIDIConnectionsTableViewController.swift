@@ -9,14 +9,14 @@ import MorkAndMIDI
  */
 final class MIDIConnectionsTableViewController: UITableViewController {
   private var midi: MIDI!
-  private var midiMonitor: MIDIMonitor!
+  private var midiConnectionMonitor: MIDIConnectionMonitor!
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
   private var monitorToken: NotificationObserver?
 
-  func configure(midi: MIDI, midiMonitor: MIDIMonitor, activeChannel: Int) {
+  func configure(midi: MIDI, midiMonitor: MIDIConnectionMonitor, activeChannel: Int) {
     self.midi = midi
-    self.midiMonitor = midiMonitor
+    self.midiConnectionMonitor = midiMonitor
     self.activeChannel = activeChannel
 
     activeConnectionsObserver = midi.observe(\.activeConnections) { [weak self] _, _ in
@@ -38,7 +38,7 @@ extension MIDIConnectionsTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = self.midiMonitor.addConnectionActivityMonitor { payload in
+    monitorToken = self.midiConnectionMonitor.addConnectionActivityMonitor { payload in
       let accepted = self.accepting(channel: payload.channel)
       for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
@@ -76,7 +76,7 @@ extension MIDIConnectionsTableViewController {
     let source = midi.sourceConnections[indexPath.row]
     cell.name.text = source.displayName
 
-    let connectionState = midiMonitor.connectionState(for: source.uniqueId)
+    let connectionState = midiConnectionMonitor.connectionState(for: source.uniqueId)
     if let channel = source.channel {
       cell.channel.text = "\(channel + 1)"
     } else {
@@ -136,10 +136,10 @@ extension MIDIConnectionsTableViewController {
 
       if sender.value == sender.minimumValue || sender.value == sender.maximumValue {
         cell.velocity.text = "Off"
-        midiMonitor.setFixedVelocityState(for: uniqueId, velocity: nil)
+        midiConnectionMonitor.setFixedVelocityState(for: uniqueId, velocity: nil)
       } else {
         cell.velocity.text = "\(Int(sender.value))"
-        midiMonitor.setFixedVelocityState(for: uniqueId, velocity: UInt8(sender.value))
+        midiConnectionMonitor.setFixedVelocityState(for: uniqueId, velocity: UInt8(sender.value))
       }
     }
   }
@@ -147,10 +147,10 @@ extension MIDIConnectionsTableViewController {
   @IBAction func connectedStateChanged(_ sender: UISwitch) {
     let uniqueId = Int32(sender.tag)
     if sender.isOn {
-      midiMonitor.setAutoConnectState(for: uniqueId, autoConnect: true)
+      midiConnectionMonitor.setAutoConnectState(for: uniqueId, autoConnect: true)
       _ = midi.connect(to: uniqueId)
     } else {
-      midiMonitor.setAutoConnectState(for: uniqueId, autoConnect: false)
+      midiConnectionMonitor.setAutoConnectState(for: uniqueId, autoConnect: false)
       midi.disconnect(from: uniqueId)
     }
   }

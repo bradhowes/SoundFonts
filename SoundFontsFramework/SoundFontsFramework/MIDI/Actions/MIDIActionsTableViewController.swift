@@ -8,12 +8,12 @@ import MorkAndMIDI
  A table view that shows the assignments of SoundFont actions to MIDI controllers.
  */
 final class MIDIActionsTableViewController: UITableViewController {
-  private var midiReceiver: MIDIReceiver!
+  private var midiEventRouter: MIDIEventRouter!
   private var monitorToken: NotificationObserver?
   private var learning: Bool = false
 
-  func configure(midiReceiver: MIDIReceiver) {
-    self.midiReceiver = midiReceiver
+  func configure(midiEventRouter: MIDIEventRouter) {
+    self.midiEventRouter = midiEventRouter
   }
 }
 
@@ -29,7 +29,7 @@ extension MIDIActionsTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = MIDIReceiver.monitorControllerActivity { [weak self] payload in
+    monitorToken = MIDIEventRouter.monitorControllerActivity { [weak self] payload in
       guard let self = self else { return }
       if self.learning {
         print(payload.controller, payload.value)

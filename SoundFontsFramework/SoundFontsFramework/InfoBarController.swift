@@ -44,7 +44,7 @@ public final class InfoBarController: UIViewController {
   private var isMainApp: Bool!
   private var settings: Settings!
   private var midi: MIDI?
-  private var midiMonitor: MIDIMonitor?
+  private var midiConnectionMonitor: MIDIConnectionMonitor?
 
   private var observers = [NSKeyValueObservation]()
 
@@ -93,7 +93,7 @@ public final class InfoBarController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    monitorToken = midiMonitor?.addConnectionActivityMonitor { payload in
+    monitorToken = midiConnectionMonitor?.addConnectionActivityMonitor { payload in
       let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == payload.channel
       self.updateMIDIIndicator(accepted: accepted)
     }
@@ -160,7 +160,7 @@ extension InfoBarController: ControllerConfiguration {
 
     if let audioEngine = router.audioEngine {
       midi = audioEngine.midi
-      midiMonitor = audioEngine.midiMonitor
+      midiConnectionMonitor = audioEngine.midiConnectionMonitor
     }
   }
 }
@@ -246,7 +246,7 @@ extension InfoBarController: AnyInfoBar {
     switch event {
     case .audioEngineAvailable(let audioEngine):
       self.midi = audioEngine.midi
-      self.midiMonitor = audioEngine.midiMonitor
+      self.midiConnectionMonitor = audioEngine.midiConnectionMonitor
     }
   }
 
@@ -333,13 +333,8 @@ extension InfoBarController: SegueHandler {
           let viewController = navController.topViewController as? SettingsViewController
     else { return }
 
-    viewController.soundFonts = soundFonts
-    viewController.isMainApp = isMainApp
-    viewController.settings = settings
-    viewController.midi = midi
-    viewController.midiMonitor = midiMonitor
-//    viewController.midiReceiver = midi?.receiver as? MIDIReceiver
-    viewController.infoBar = self
+    viewController.configure(isMainApp: isMainApp, soundFonts: soundFonts, settings: settings, midi: midi,
+                             midiConnectionMonitor: midiConnectionMonitor, infoBar: self)
 
     if !isMainApp {
       viewController.modalPresentationStyle = .fullScreen
@@ -349,7 +344,7 @@ extension InfoBarController: SegueHandler {
     if let ppc = navController.popoverPresentationController {
       ppc.sourceView = showSettings
       ppc.sourceRect = showSettings.bounds
-      ppc.permittedArrowDirections = .any
+       ppc.permittedArrowDirections = .any
     }
   }
 }

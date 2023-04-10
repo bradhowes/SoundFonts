@@ -64,8 +64,8 @@ public final class AudioEngine: SynthProvider {
   private var pitchBendRangeChangedNotifier: NotificationObserver?
 
   public let midi: MIDI?
-  public let midiMonitor: MIDIMonitor?
-  public private(set) var midiReceiver: MIDIReceiver?
+  public let midiConnectionMonitor: MIDIConnectionMonitor?
+  public private(set) var midiRouter: MIDIEventRouter?
 
   private var pendingPresetLoadTimer: Timer?
 
@@ -90,8 +90,8 @@ public final class AudioEngine: SynthProvider {
     self.delayEffect = mode == .standalone ? DelayEffect() : nil
 
     self.midi = midi
-    self.midiMonitor = midi != nil ? .init(settings: settings) : nil
-    self.midi?.monitor = self.midiMonitor
+    self.midiConnectionMonitor = midi != nil ? .init(settings: settings) : nil
+    self.midi?.monitor = self.midiConnectionMonitor
 
     activePresetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: applyPresetConfig(_:))
     tuningChangedNotifier = Self.tuningChangedNotification.registerOnAny(block: setTuning(_:))
@@ -125,9 +125,12 @@ public final class AudioEngine: SynthProvider {
 public extension AudioEngine {
 
   func attachKeyboard(_ keyboard: AnyKeyboard) {
-    guard let midi = self.midi, let midiMonitor = self.midiMonitor else { fatalError("No MIDI support") }
-    self.midiReceiver = .init(audioEngine: self, keyboard: keyboard, settings: settings, midiMonitor: midiMonitor)
-    midi.receiver = self.midiReceiver
+    guard let midi = self.midi, let midiConnectionMonitor = self.midiConnectionMonitor else {
+      fatalError("No MIDI support")
+    }
+    self.midiRouter = .init(audioEngine: self, keyboard: keyboard, settings: settings,
+                            midiConnectionMonitor: midiConnectionMonitor)
+    midi.receiver = self.midiRouter
   }
 
   /**
