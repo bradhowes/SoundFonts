@@ -1062,14 +1062,30 @@
 			isa = PBXGroup;
 			children = (
 				BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */,
+				BDFD3E2A29E3F7AE0010E3CB /* MIDI Controllers */,
+				BDFD3E2B29E3F7C50010E3CB /* MIDI Connections */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		BDFD3E2A29E3F7AE0010E3CB /* MIDI Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				BDFD3E2729E3F71A0010E3CB /* MIDIControllers.storyboard */,
-				BDFD3E2529E3F6FC0010E3CB /* MIDIDevices.storyboard */,
 				BD4CF05729D81F160097B3B2 /* MIDIControllerTableHeaderView.xib */,
 				BD4CF05929D8299B0097B3B2 /* MIDIControllerTableCell.xib */,
+			);
+			path = "MIDI Controllers";
+			sourceTree = "<group>";
+		};
+		BDFD3E2B29E3F7C50010E3CB /* MIDI Connections */ = {
+			isa = PBXGroup;
+			children = (
+				BDFD3E2529E3F6FC0010E3CB /* MIDIDevices.storyboard */,
 				BD87DC5F29DB55ED008F6470 /* MIDIConnectionTableHeaderView.xib */,
 				BD87DC5D29DB5528008F6470 /* MIDIConnectionTableCell.xib */,
 			);
-			path = Settings;
+			path = "MIDI Connections";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
