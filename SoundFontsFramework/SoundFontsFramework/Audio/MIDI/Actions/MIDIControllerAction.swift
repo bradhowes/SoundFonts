@@ -1,8 +1,8 @@
 // Copyright © 2023 Brad Howes. All rights reserved.
 
 public enum MIDIControllerAction: String, Codable, CaseIterable {
-  case nextPrevFavorite
   case selectFavorite
+  case editFavorite
 
   case reverbMix
   case reverbRoom
@@ -14,8 +14,8 @@ public enum MIDIControllerAction: String, Codable, CaseIterable {
 
   var displayName: String {
     switch self {
-    case .nextPrevFavorite: return "+/- Favorite"
     case .selectFavorite: return "Select Favorite"
+    case .editFavorite: return "Edit Favorite"
 
     case .reverbMix: return "Reverb Mix"
     case .reverbRoom: return "Reverb Room"
@@ -31,11 +31,13 @@ public enum MIDIControllerAction: String, Codable, CaseIterable {
 public enum MIDIControllerActionKind: String, Codable, CaseIterable {
   case absolute
   case relative
+  case onOff
 
   var displayName: String {
     switch self {
     case .absolute: return ""
     case .relative: return " ±"
+    case .onOff: return " ⌥"
     }
   }
 }

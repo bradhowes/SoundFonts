@@ -19,8 +19,9 @@ final public class MIDIEventRouter {
   }
 
   public struct ActionActivityPayload: CustomStringConvertible {
-    public var description: String { "\(action) \(value)" }
+    public var description: String { "\(action) \(kind) \(value)" }
     let action: MIDIControllerAction
+    let kind: MIDIControllerActionKind
     let value: UInt8
   }
 
@@ -160,15 +161,21 @@ extension MIDIEventRouter: Receiver {
     let midiControllerIndex = Int(controller)
     let controllerState = midiControllerState[midiControllerIndex]
 
+    // Update with last value for display in the MIDI Controllers view
     controllerState.lastValue = Int(value)
     Self.controllerActivityNotifier.post(source: source, controller: controller, value: value)
 
+    // If not enabled, stop processing
     guard controllerState.allowed else { return }
 
+    // If assigned to an action, notify action handlers
     if let actionIndex = midiControllerActionStateManager.lookup[Int(controller)] {
-      Self.actionNotifier.post(action: midiControllerActionStateManager.actions[actionIndex].action, value: value)
+      let action = midiControllerActionStateManager.actions[actionIndex]
+      guard let kind = action.kind else { fatalError() }
+      Self.actionNotifier.post(action: action.action, kind: kind, value: value)
     }
 
+    // Hand the controller value change to the synth
     synth?.controlChange(controller: controller, value: value)
   }
 
@@ -239,8 +246,8 @@ private final class ActionNotifier: NSObject {
     notification.registerOnMain(block: block)
   }
 
-  public func post(action: MIDIControllerAction, value: UInt8) {
-    serialQueue.async { self.notification.post(value: .init(action: action, value: value)) }
+  fileprivate func post(action: MIDIControllerAction, kind: MIDIControllerActionKind, value: UInt8) {
+    serialQueue.async { self.notification.post(value: .init(action: action, kind: kind, value: value)) }
   }
 }
 
@@ -254,7 +261,7 @@ private final class ControllerActivityNotifier: NSObject {
     notification.registerOnMain(block: block)
   }
 
-  public func post(source: MIDIUniqueID, controller: UInt8, value: UInt8) {
+  fileprivate func post(source: MIDIUniqueID, controller: UInt8, value: UInt8) {
     serialQueue.async { self.notification.post(value: .init(source: source, controller: controller, value: value)) }
   }
 }

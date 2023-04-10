@@ -118,18 +118,22 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
     notificationObserver = MIDIEventRouter.monitorActionActivity { payload in
       switch payload.action {
-
-      case .nextPrevFavorite:
-        if payload.value > 64 {
-          self.selectNextFavorite()
-        } else if payload.value < 64 {
-          self.selectPreviousFavorite()
-        }
-
       case .selectFavorite:
-        let scale = Double(payload.value) / Double(127)
-        let index = Int((Double(favorites.count - 1) * scale).rounded())
-        favorites.selected(index: index)
+        switch payload.kind {
+        case .relative:
+          if payload.value > 64 {
+            self.selectNextFavorite()
+          } else if payload.value < 64 {
+            self.selectPreviousFavorite()
+          }
+        case .absolute:
+          let scale = Double(payload.value) / Double(127)
+          let index = Int((Double(favorites.count - 1) * scale).rounded())
+          favorites.selected(index: index)
+
+        case .onOff:
+          break
+        }
 
       default:
         break

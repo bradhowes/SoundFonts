@@ -60,7 +60,13 @@ extension MIDIControllersTableViewController {
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
 
-    cell.action.text = ""
+    if let actionRow = midiEventRouter.midiControllerActionStateManager.lookup[indexPath.row] {
+      let action = midiEventRouter.midiControllerActionStateManager.actions[actionRow]
+      cell.action.text = action.action.displayName
+    } else {
+      cell.action.text = ""
+    }
+
     cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
 
     cell.used.isOn = midiControllerState.allowed

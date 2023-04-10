@@ -35,12 +35,22 @@ public class MIDIControllerActionStateManager {
   }
   public func assign(controller: Int?, kind: MIDIControllerActionKind?, to action: MIDIControllerAction) {
     os_log(.info, log: log, "assign - %d %s %s", controller ?? -1, kind.debugDescription, action.displayName)
-    if let actionState = actions.first(where: { $0.action == action }) {
-      actionState.assigned = controller
-      actionState.kind = kind
-      if let config = try? JSONEncoder().encode(self.actions) {
-        settings.set(key: "controllerActionStateConfig", value: config)
-      }
+    guard let index = actions.firstIndex(where: { $0.action == action }) else { return }
+    let actionState = actions[index]
+
+    if let controller = actionState.assigned {
+      lookup.removeValue(forKey: controller)
+    }
+
+    actionState.assigned = controller
+    actionState.kind = kind
+
+    if let controller = controller {
+      lookup[controller] = index
+    }
+
+    if let config = try? JSONEncoder().encode(self.actions) {
+      settings.set(key: "controllerActionStateConfig", value: config)
     }
   }
 }

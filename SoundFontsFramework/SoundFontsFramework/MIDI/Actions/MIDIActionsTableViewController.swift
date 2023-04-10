@@ -127,6 +127,16 @@ private extension MIDIActionsTableViewController {
 
   func trackController(controller: UInt8, value: UInt8, for row: Int) {
     learningValues.append(value)
+
+    // On/Off Switch?
+    if learningValues.count >= 2 {
+      let uniqueSorted = Set(learningValues).sorted()
+      if uniqueSorted == [0, 127] {
+        assign(controller: Int(controller), kind: .onOff, to: row)
+        return
+      }
+    }
+
     if learningValues.count > 15 {
       let uniqueSorted = Set(learningValues).sorted()
       let kind: MIDIControllerActionKind

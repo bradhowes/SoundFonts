@@ -31,6 +31,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   private var tagsSubscription: SubscriberToken?
 
   private var cellForSizing: FavoriteCell!
+  private var monitorActionActivity: NotificationObserver?
 
   public override func viewDidLoad() {
 
@@ -39,7 +40,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 
     doubleTapGestureRecognizer.numberOfTapsRequired = 2
     doubleTapGestureRecognizer.numberOfTouchesRequired = 1
-    doubleTapGestureRecognizer.addTarget(self, action: #selector(editFavorite))
+    doubleTapGestureRecognizer.addTarget(self, action: #selector(editFavorite(_:)))
     doubleTapGestureRecognizer.delaysTouchesBegan = true
 
     favoriteMover = FavoriteMover(view: favoritesView, recognizer: longPressGestureRecognizer)
@@ -64,6 +65,28 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     favoritesView.accessibilityLabel = "FavoritesView"
 
     checkIfRestored()
+
+    monitorActionActivity = MIDIEventRouter.monitorActionActivity { payload in
+      switch payload.action {
+      case .editFavorite:
+        switch payload.kind {
+        case .relative:
+          if payload.value > 64 {
+            // self.editFavorite(at:)
+          }
+        case .absolute:
+          let scale = Double(payload.value) / Double(127)
+          let index = Int((Double(self.favorites.count - 1) * scale).rounded())
+          // self.editFavorite(at:)
+
+        case .onOff:
+          break
+        }
+
+      default:
+        break
+      }
+    }
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -238,6 +261,31 @@ extension FavoritesViewController: SegueHandler {
     let favorite = favorites.getBy(index: indexPath.item)
     guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
 
+    if activePresetManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
+      favorites.remove(key: favorite.key)
+      postNotice(msg: "Removed favorite that was invalid.")
+      return
+    }
+
+    let isActive = activePresetManager.activeFavorite?.key == favorite.key
+    let configState = FavoriteEditor.State(indexPath: indexPath, sourceView: favoritesView, sourceRect: view.frame,
+                                           currentLowestNote: self.keyboard?.lowestNote, completionHandler: nil,
+                                           soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset,
+                                           isActive: isActive, settings: settings)
+    let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
+    showEditor(config: config)
+  }
+
+  private func editCurrentFavorite() {
+    guard let favorite = activePresetManager.activeFavorite else { return }
+    guard let index = favorites.index(of: favorite.key) else { return }
+
+    let indexPath: IndexPath = .init(index: index)
+    guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
+    doEditFavorite(indexPath: indexPath, viewCell: view, favorite: favorite)
+  }
+
+  func doEditFavorite(indexPath: IndexPath, viewCell: UICollectionViewCell, favorite: Favorite) {
     if activePresetManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
       favorites.remove(key: favorite.key)
       postNotice(msg: "Removed favorite that was invalid.")
