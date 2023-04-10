@@ -22,13 +22,13 @@ extension MIDIControllersTableViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    tableView.register(MIDIControllerTableCell.self)
-    tableView.registerHeaderFooter(MIDIControllerTableHeaderView.self)
+    tableView.register(MIDIControllersTableCell.self)
+    tableView.registerHeaderFooter(MIDIControllersTableHeaderView.self)
   }
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = MIDIReceiver.monitorActivity { payload in
+    monitorToken = MIDIReceiver.monitorControllerActivity { payload in
       let indexPath = IndexPath(row: Int(payload.controller), section: 0)
       self.tableView.reloadRows(at: [indexPath], with: .none)
     }
@@ -46,7 +46,7 @@ extension MIDIControllersTableViewController {
 extension MIDIControllersTableViewController {
 
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view: MIDIControllerTableHeaderView = tableView.dequeueReusableHeaderFooterView()
+    let view: MIDIControllersTableHeaderView = tableView.dequeueReusableHeaderFooterView()
     return view
   }
 
@@ -55,13 +55,10 @@ extension MIDIControllersTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell: MIDIControllerTableCell = tableView.dequeueReusableCell(at: indexPath)
+    let cell: MIDIControllersTableCell = tableView.dequeueReusableCell(at: indexPath)
     let midiControllerState = midiReceiver.midiControllerState[indexPath.row]
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
-
-    cell.activity.setTitle(midiControllerState.action?.displayName ?? "Set…", for: .normal)
-    cell.activity.addTarget(self, action: #selector(showActionView(_:)), for: .touchUpInside)
 
     cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
 

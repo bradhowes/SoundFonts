@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="MIDIControllerTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="MIDIControllersTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="393" height="48"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -45,24 +45,25 @@
                             <rect key="frame" x="304" y="8.6666666666666643" width="51" height="31"/>
                             <color key="tintColor" systemColor="systemTealColor"/>
                         </switch>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bSF-7W-htc">
-                            <rect key="frame" x="181" y="9" width="51" height="30"/>
-                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal" title="Activity"/>
-                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Action" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Azo-n5-Pw3" userLabel="Action">
+                            <rect key="frame" x="183.33333333333334" y="13.999999999999998" width="48.666666666666657" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="4nT-kN-UOe" firstAttribute="leading" secondItem="88b-he-hl7" secondAttribute="trailing" constant="8" symbolic="YES" id="6sc-bi-iX1"/>
-                        <constraint firstItem="bSF-7W-htc" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="J2f-ey-QtN"/>
+                        <constraint firstItem="Azo-n5-Pw3" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="Jmr-Fg-6Sb"/>
+                        <constraint firstItem="jyE-4S-z8X" firstAttribute="leading" secondItem="Azo-n5-Pw3" secondAttribute="trailing" constant="8" symbolic="YES" id="QRP-iv-QdE"/>
                         <constraint firstItem="88b-he-hl7" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="WCu-V3-IO5"/>
-                        <constraint firstItem="bSF-7W-htc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4nT-kN-UOe" secondAttribute="trailing" constant="8" symbolic="YES" id="bqb-TF-jBx"/>
+                        <constraint firstItem="Azo-n5-Pw3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4nT-kN-UOe" secondAttribute="trailing" constant="8" symbolic="YES" id="cCH-bk-tcR"/>
                         <constraint firstItem="jyE-4S-z8X" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="cVe-yi-F6n"/>
                         <constraint firstItem="88b-he-hl7" firstAttribute="leading" secondItem="krF-vH-tlE" secondAttribute="leading" id="fFJ-fc-ne6"/>
                         <constraint firstItem="CHA-eD-nhi" firstAttribute="leading" secondItem="jyE-4S-z8X" secondAttribute="trailing" constant="24" id="kX8-hi-zSU"/>
                         <constraint firstItem="4nT-kN-UOe" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="rva-Tz-plh"/>
                         <constraint firstItem="CHA-eD-nhi" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="sHA-VC-odQ"/>
-                        <constraint firstItem="jyE-4S-z8X" firstAttribute="leading" secondItem="bSF-7W-htc" secondAttribute="trailing" constant="8" symbolic="YES" id="vP3-Ai-SHk"/>
                         <constraint firstAttribute="trailing" secondItem="CHA-eD-nhi" secondAttribute="trailing" id="vsc-Fw-Slh"/>
                     </constraints>
                 </view>
@@ -77,11 +78,11 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="activity" destination="bSF-7W-htc" id="RUr-F4-VPK"/>
-                <outlet property="identifier" destination="88b-he-hl7" id="q34-di-PCa"/>
-                <outlet property="name" destination="4nT-kN-UOe" id="Ili-N6-RiX"/>
-                <outlet property="used" destination="CHA-eD-nhi" id="dYq-ya-ANK"/>
-                <outlet property="value" destination="jyE-4S-z8X" id="M4G-iX-Z6s"/>
+                <outlet property="action" destination="Azo-n5-Pw3" id="r5E-U2-po6"/>
+                <outlet property="identifier" destination="88b-he-hl7" id="7rD-5P-HnY"/>
+                <outlet property="name" destination="4nT-kN-UOe" id="75u-kN-1CU"/>
+                <outlet property="used" destination="CHA-eD-nhi" id="VPB-tW-oo5"/>
+                <outlet property="value" destination="jyE-4S-z8X" id="rRx-9R-lQe"/>
             </connections>
             <point key="canvasLocation" x="140" y="42"/>
         </view>

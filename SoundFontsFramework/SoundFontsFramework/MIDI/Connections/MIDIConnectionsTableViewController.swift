@@ -38,8 +38,8 @@ extension MIDIConnectionsTableViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    tableView.register(MIDIConnectionTableCell.self)
-    tableView.registerHeaderFooter(MIDIConnectionTableHeaderView.self)
+    tableView.register(MIDIConnectionsTableCell.self)
+    tableView.registerHeaderFooter(MIDIConnectionsTableHeaderView.self)
   }
 
   override public func viewWillAppear(_ animated: Bool) {
@@ -48,7 +48,7 @@ extension MIDIConnectionsTableViewController {
       let accepted = self.accepting(channel: payload.channel)
       for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
-        if let cell: MIDIConnectionTableCell = self.tableView.cellForRow(at: indexPath) {
+        if let cell: MIDIConnectionsTableCell = self.tableView.cellForRow(at: indexPath) {
           cell.channel.text = "\(payload.channel + 1)"
           let layer = cell.background.layer
           Self.midiSeenLayerChange(layer, accepted)
@@ -69,7 +69,7 @@ extension MIDIConnectionsTableViewController {
 extension MIDIConnectionsTableViewController {
 
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view: MIDIConnectionTableHeaderView = tableView.dequeueReusableHeaderFooterView()
+    let view: MIDIConnectionsTableHeaderView = tableView.dequeueReusableHeaderFooterView()
     return view
   }
 
@@ -78,7 +78,7 @@ extension MIDIConnectionsTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell: MIDIConnectionTableCell = tableView.dequeueReusableCell(at: indexPath)
+    let cell: MIDIConnectionsTableCell = tableView.dequeueReusableCell(at: indexPath)
     let source = midi.sourceConnections[indexPath.row]
     cell.name.text = source.displayName
 
@@ -136,7 +136,7 @@ extension MIDIConnectionsTableViewController {
   @IBAction func velocityStepperChanged(_ sender: UIStepper) {
     let uniqueId = Int32(sender.tag)
     for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == uniqueId {
-      guard let cell: MIDIConnectionTableCell = tableView.cellForRow(at: .init(row: row, section: 0)) else {
+      guard let cell: MIDIConnectionsTableCell = tableView.cellForRow(at: .init(row: row, section: 0)) else {
         return
       }
 

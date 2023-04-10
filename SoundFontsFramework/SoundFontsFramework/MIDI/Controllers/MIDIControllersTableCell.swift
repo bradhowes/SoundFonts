@@ -4,11 +4,11 @@ import UIKit
 import CoreMIDI
 import MorkAndMIDI
 
-final class MIDIControllerTableCell: UITableViewCell, ReusableView, NibLoadableView {
+final class MIDIControllersTableCell: UITableViewCell, ReusableView, NibLoadableView {
   @IBOutlet weak var identifier: UILabel!
   @IBOutlet weak var name: UILabel!
+  @IBOutlet weak var action: UILabel!
   @IBOutlet weak var value: UILabel!
-  @IBOutlet weak var activity: UIButton!
   @IBOutlet weak var used: UISwitch!
 
   public override func awakeFromNib() {

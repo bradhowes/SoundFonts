@@ -4,7 +4,7 @@ import UIKit
 import CoreMIDI
 import MorkAndMIDI
 
-final class MIDIConnectionTableCell: UITableViewCell, ReusableView, NibLoadableView {
+final class MIDIConnectionsTableCell: UITableViewCell, ReusableView, NibLoadableView {
   @IBOutlet weak var background: UIView!
   @IBOutlet weak var name: UILabel!
   @IBOutlet weak var channel: UILabel!

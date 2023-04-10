@@ -7,21 +7,21 @@ public final class MIDIMonitor {
   private lazy var log = Logging.logger("MIDIMonitor")
 
   private let settings: Settings
-  private let activityNotifier = ActivityNotifier()
+  private let connectionActivityNotifier = ConnectionActivityNotifier()
   private var connectionStates = [MIDIUniqueID: MIDIConnectionState]()
 
   public init(settings: Settings) {
     self.settings = settings
   }
 
-  public struct Payload: CustomStringConvertible {
-    public var description: String { "\(uniqueId),\(channel)" }
+  public struct ConnectionActivityPayload: CustomStringConvertible {
+    public var description: String { "\(uniqueId), \(channel)" }
     let uniqueId: MIDIUniqueID
     let channel: Int
   }
 
-  public func addMonitor(block: @escaping (Payload) -> Void) -> NotificationObserver {
-    activityNotifier.addMonitor(block: block)
+  public func addMonitor(block: @escaping (ConnectionActivityPayload) -> Void) -> NotificationObserver {
+    connectionActivityNotifier.addMonitor(block: block)
   }
 
   public func connectionState(for uniqueId: MIDIUniqueID) -> MIDIConnectionState {
@@ -70,7 +70,7 @@ extension MIDIMonitor: Monitor {
   }
 
   public func didSee(uniqueId: MIDIUniqueID, group: Int, channel: Int) {
-    activityNotifier.showActivity(uniqueId: uniqueId, channel: channel)
+    connectionActivityNotifier.showActivity(uniqueId: uniqueId, channel: channel)
   }
 }
 
@@ -86,19 +86,24 @@ extension MIDIMonitor {
   public func didUpdateConnections(connected: any Sequence<MIDIEndpointRef>, disappeared: any Sequence<MIDIUniqueID>) {}
 }
 
-private final class ActivityNotifier: NSObject {
+private final class ConnectionActivityNotifier {
+  let queueName = "MIDIMonitor.ConnectionActivity"
+  var lastChannel: Int = -2
+  var lastNotificationTime: Date = .distantPast
+  let notification: TypedNotification<MIDIMonitor.ConnectionActivityPayload>
+  let serialQueue: DispatchQueue
 
-  private let notification = TypedNotification<MIDIMonitor.Payload>(name: "MIDIActivity")
-  private let serialQueue = DispatchQueue(label: "MIDIActivity", qos: .userInteractive, attributes: [],
-                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
-  private var lastChannel: Int = -2
-  private var lastNotificationTime: Date = .distantPast
+  init() {
+    notification = .init(name: queueName)
+    serialQueue = .init(label: "MIDIActivity", qos: .userInteractive, attributes: [],
+                        autoreleaseFrequency: .inherit, target: .global(qos: .userInteractive))
+  }
 
-  public func addMonitor(block: @escaping (MIDIMonitor.Payload) -> Void) -> NotificationObserver {
+  internal func addMonitor(block: @escaping (MIDIMonitor.ConnectionActivityPayload) -> Void) -> NotificationObserver {
     notification.registerOnMain(block: block)
   }
 
-  public func showActivity(uniqueId: MIDIUniqueID, channel: Int) {
+  internal func showActivity(uniqueId: MIDIUniqueID, channel: Int) {
     let now = Date()
     if channel != lastChannel || now.timeIntervalSince(lastNotificationTime) > 0.5 {
       lastNotificationTime = now

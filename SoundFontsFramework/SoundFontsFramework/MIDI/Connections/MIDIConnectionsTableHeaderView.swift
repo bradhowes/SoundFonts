@@ -8,7 +8,7 @@
 
 import UIKit
 
-final public class MIDIConnectionTableHeaderView: UITableViewHeaderFooterView, ReusableView, NibLoadableView {
+final public class MIDIConnectionsTableHeaderView: UITableViewHeaderFooterView, ReusableView, NibLoadableView {
   @IBOutlet weak var name: UILabel!
   @IBOutlet weak var connected: UILabel!
 }

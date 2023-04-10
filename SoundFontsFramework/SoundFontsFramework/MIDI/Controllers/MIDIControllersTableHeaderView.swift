@@ -8,7 +8,7 @@
 
 import UIKit
 
-final public class MIDIControllerTableHeaderView: UITableViewHeaderFooterView, ReusableView, NibLoadableView {
+final public class MIDIControllersTableHeaderView: UITableViewHeaderFooterView, ReusableView, NibLoadableView {
   @IBOutlet var stackView: UIStackView!
   @IBOutlet weak var identifier: UILabel!
   @IBOutlet weak var name: UILabel!

@@ -530,13 +530,14 @@ extension SettingsViewController: SegueHandler {
 
   /// Segues that we support.
   public enum SegueIdentifier: String {
-    case midiDevicesTableView
+    case midiConnectionsTableView
     case midiControllersTableView
+    case midiActionsTableView
   }
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
-    case .midiDevicesTableView:
+    case .midiConnectionsTableView:
       guard
         let midi = self.midi,
         let midiMonitor = self.midiMonitor,
@@ -552,6 +553,15 @@ extension SettingsViewController: SegueHandler {
         let destination = segue.destination as? MIDIControllersTableViewController
       else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
+      }
+      destination.configure(midiReceiver: midiReceiver)
+
+    case .midiActionsTableView:
+      guard
+        let midiReceiver = self.midi?.receiver as? MIDIReceiver,
+        let destination = segue.destination as? MIDIActionsTableViewController
+      else {
+        fatalError("expected MIDIActionsTableViewController for segue destination")
       }
       destination.configure(midiReceiver: midiReceiver)
     }

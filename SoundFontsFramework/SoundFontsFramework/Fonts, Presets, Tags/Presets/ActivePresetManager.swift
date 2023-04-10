@@ -126,7 +126,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
           self.selectPreviousFavorite()
         }
 
-      case .useFavorite:
+      case .selectFavorite:
         let scale = Double(payload.value) / Double(127)
         let index = Int((Double(favorites.count - 1) * scale).rounded())
         favorites.selected(index: index)

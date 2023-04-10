@@ -8,9 +8,9 @@ final public class MIDIControllerState {
   let name: String
   var lastValue: UInt8?
   var allowed: Bool
-  var action: ControllerAction?
+  var action: MIDIControllerAction?
 
-  public init(identifier: UInt8, allowed: Bool, action: ControllerAction?) {
+  public init(identifier: UInt8, allowed: Bool, action: MIDIControllerAction?) {
     self.identifier = identifier
     self.name = MIDICC(rawValue: identifier)?.name ?? ""
     self.lastValue = nil
@@ -18,35 +18,9 @@ final public class MIDIControllerState {
     if identifier == 112 {
       self.action = .nextPrevFavorite
     } else if identifier == 74 {
-      self.action = .useFavorite
+      self.action = .selectFavorite
     } else {
       self.action = action
-    }
-  }
-}
-
-public enum ControllerAction: Codable {
-  case nextPrevFavorite
-  case useFavorite
-
-  case reverbMix
-  case reverbRoom
-
-  case delayTime
-  case delayFeedback
-  case delayCutoff
-  case delayMix
-
-  var displayName: String {
-    switch self {
-    case .nextPrevFavorite: return "+/- Favorite"
-    case .useFavorite: return "Use Favorite"
-    case .reverbMix: return "Reverb Mix"
-    case .reverbRoom: return "Reverb Room"
-    case .delayTime: return "Delay Time"
-    case .delayFeedback: return "Delay Feedback"
-    case .delayCutoff: return "Delay Cutoff"
-    case .delayMix: return "Delay Mix"
     }
   }
 }

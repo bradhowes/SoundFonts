@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -184,7 +185,7 @@
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <segue destination="bhT-hc-8tg" kind="show" identifier="midiDevicesTableView" id="m3n-Vx-W4K"/>
+                                                                    <segue destination="bhT-hc-8tg" kind="show" identifier="midiConnectionsTableView" id="m3n-Vx-W4K"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -279,11 +280,11 @@
                                                             </stackView>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lTo-DM-IUv" userLabel="MIDI Controllers">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lTo-DM-IUv" userLabel="MIDI Controllers">
                                                         <rect key="frame" x="0.0" y="536" width="374" height="33"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Sr-pj-HEv">
-                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="33"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="183" height="33"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                 <state key="normal" title="MIDI Controllers">
@@ -291,6 +292,17 @@
                                                                 </state>
                                                                 <connections>
                                                                     <segue destination="oNc-2h-tjg" kind="show" identifier="midiControllersTableView" id="DO4-Vu-Xg5"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iiy-6q-vDn">
+                                                                <rect key="frame" x="191" y="0.0" width="183" height="33"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <state key="normal" title="Actions">
+                                                                    <color key="titleColor" systemColor="systemTealColor"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <segue destination="bx4-eW-VRH" kind="show" identifier="midiActionsTableView" id="3Zb-ex-hsQ"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -787,17 +799,17 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1163.768115942029" y="-545.08928571428567"/>
+            <point key="canvasLocation" x="1714" y="-781"/>
         </scene>
-        <!--MIDIDevices-->
+        <!--MIDIConnections-->
         <scene sceneID="G9h-GT-dkA">
             <objects>
-                <viewControllerPlaceholder storyboardName="MIDIDevices" id="bhT-hc-8tg" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="MIDIConnections" id="bhT-hc-8tg" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="VJA-bn-jow"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6J-aN-kce" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3329" y="-39"/>
+            <point key="canvasLocation" x="2493" y="-339"/>
         </scene>
         <!--MIDIControllers-->
         <scene sceneID="IG2-KZ-2VO">
@@ -807,7 +819,17 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pRH-iW-Yto" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3329" y="-781"/>
+            <point key="canvasLocation" x="3066" y="-797"/>
+        </scene>
+        <!--MIDIActions-->
+        <scene sceneID="A0z-jL-bd5">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MIDIActions" id="bx4-eW-VRH" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="phk-sr-HOF"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iP9-mh-wTf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3497" y="-394"/>
         </scene>
     </scenes>
     <resources>
