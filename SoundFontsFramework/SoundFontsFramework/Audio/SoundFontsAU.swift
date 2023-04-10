@@ -94,6 +94,8 @@ extension SoundFontsAU {
     case .changed:
       self.currentPreset = nil
       useActivePreset()
+    case .loaded:
+      break
     }
   }
 

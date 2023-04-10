@@ -15,9 +15,12 @@ public enum ActivePresetEvent: CustomStringConvertible {
    */
   case changed(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
 
+  case loaded(preset: ActivePresetKind)
+
   public var description: String {
     switch self {
     case let .changed(old, new, _): return "<ActivePresetEvent: changed old: \(old) new: \(new)>"
+    case let .loaded(preset): return "<ActivePresetEvent: loaded: \(preset)>"
     }
   }
 }
@@ -47,7 +50,13 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   public private(set) var state: State = .starting
 
   /// The currently active preset (if any)
-  public private(set) var active: ActivePresetKind = .none
+  public private(set) var active: ActivePresetKind = .none {
+    didSet {
+      isLoading = true
+    }
+  }
+
+  public private(set) var isLoading: Bool = false
 
   public var activeSoundFontKey: SoundFont.Key? { active.soundFontAndPreset?.soundFontKey }
 
@@ -78,15 +87,18 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     activeFavorite?.presetConfig ?? activePreset?.presetConfig
   }
 
+  private var presetLoadingObserver: NotificationObserver?
+
   /**
    Construct new manager
 
-   - parameter soundFont: the sound font manager
+   - parameter soundFonts: the collection of sound fonts
+   - parameter favorites: the collection of favorites
    - parameter selectedSoundFontManager: the manager of the selected sound font
-   - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
+   - parameter settings: the app settings
    */
-  public init(soundFonts: SoundFontsProvider, favorites: FavoritesProvider, selectedSoundFontManager: SelectedSoundFontManager,
-              settings: Settings) {
+  public init(soundFonts: SoundFontsProvider, favorites: FavoritesProvider,
+              selectedSoundFontManager: SelectedSoundFontManager, settings: Settings) {
     self.soundFonts = soundFonts
     self.favorites = favorites
     self.selectedSoundFontManager = selectedSoundFontManager
@@ -97,6 +109,12 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
     soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
     favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
+    presetLoadingObserver = AudioEngine.presetLoadingChangeNotification.registerOnAny { [weak self] loading in
+      if let self = self, !loading {
+        self.isLoading = false
+        self.notify(.loaded(preset: self.active))
+      }
+    }
 
     notificationObserver = MIDIReceiver.monitorActions { payload in
       switch payload.action {

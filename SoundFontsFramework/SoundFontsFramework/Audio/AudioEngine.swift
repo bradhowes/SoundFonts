@@ -27,7 +27,7 @@ public final class AudioEngine: SynthProvider {
   /// The notification that pitch bend range has changed for the sampler
   public static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
 
-  public static let engineRenderingChangeNotification = TypedNotification<Bool>(name: .engineRendering)
+  public static let presetLoadingChangeNotification = TypedNotification<Bool>(name: .presetLoading)
 
   public typealias StartResult = Result<AnyMIDISynth, SynthStartFailure>
 
@@ -102,6 +102,7 @@ public final class AudioEngine: SynthProvider {
     activePresetManager.subscribe(self) { event in
       switch event {
       case .changed: self.pendingPresetLoad()
+      case .loaded: break
       }
     }
 
@@ -268,7 +269,7 @@ public extension AudioEngine {
         engine.mainMixerNode.volume = 0.0
         synth.avAudioUnit.reset()
       }
-      Self.engineRenderingChangeNotification.post(value: false)
+      Self.presetLoadingChangeNotification.post(value: true)
     }
   }
 
@@ -282,7 +283,7 @@ public extension AudioEngine {
           engine.mainMixerNode.volume = 1.0
         }
         self.renderingResumeTimer = nil
-        Self.engineRenderingChangeNotification.post(value: true)
+        Self.presetLoadingChangeNotification.post(value: false)
       }
     }
   }

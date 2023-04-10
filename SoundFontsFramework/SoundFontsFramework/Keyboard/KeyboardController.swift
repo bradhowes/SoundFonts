@@ -128,6 +128,7 @@ extension KeyboardController: ControllerConfiguration {
       if let presetConfig = activePresetManager.activePresetConfig {
         DispatchQueue.main.async { self.updateWith(presetConfig: presetConfig) }
       }
+    case .loaded: break
     }
   }
 

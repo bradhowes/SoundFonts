@@ -63,14 +63,14 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
    - parameter favoriteName: the name to show
    - parameter isActive: true if the Favorite's patch is currently active.
-   - parameter engineIsRendering: true if the AudioEngine is currently rendering.
+   - parameter loading: true if the preset is loading.
    */
-  func update(favoriteName: String, isActive: Bool, engineIsRendering: Bool) {
-    os_log(.debug, log: log, "update: %{public}s %d %d", favoriteName, isActive, engineIsRendering)
+  func update(favoriteName: String, isActive: Bool, loading: Bool) {
+    os_log(.debug, log: log, "update: %{public}s %d %d", favoriteName, isActive, loading)
 
     name.text = favoriteName
     if isActive {
-      let foregroundColor = engineIsRendering ? activeForegroundColor : pendingForegroundColor
+      let foregroundColor = loading ? pendingForegroundColor : activeForegroundColor
       backgroundColor = activeBackgroundColor
       name.textColor = foregroundColor
       layer.borderColor = foregroundColor.cgColor

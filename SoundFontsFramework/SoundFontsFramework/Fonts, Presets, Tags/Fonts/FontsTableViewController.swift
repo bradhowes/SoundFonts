@@ -176,6 +176,8 @@ extension FontsTableViewController {
     switch event {
     case let .changed(old: old, new: new, playSample: _):
       serialQueue.async { self.handlePresetChanged(old: old, new: new) }
+    case .loaded:
+      break
     }
   }
 

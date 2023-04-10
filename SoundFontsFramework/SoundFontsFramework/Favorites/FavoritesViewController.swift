@@ -29,7 +29,6 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   private var favoritesSubscription: SubscriberToken?
   private var soundFontsSubscription: SubscriberToken?
   private var tagsSubscription: SubscriberToken?
-  private var engineRenderingObserver: NotificationObserver?
 
   private var cellForSizing: FavoriteCell!
 
@@ -63,10 +62,6 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     favoritesView.accessibilityIdentifier = "FavoritesView"
     favoritesView.accessibilityHint = "View holding favorites"
     favoritesView.accessibilityLabel = "FavoritesView"
-
-    engineRenderingObserver = AudioEngine.engineRenderingChangeNotification.registerOnMain { rendering in
-      self.showRenderingState(rendering: rendering)
-    }
 
     checkIfRestored()
   }
@@ -109,6 +104,10 @@ extension FavoritesViewController: ControllerConfiguration {
       }
       if case let .favorite(newFaveKey, _) = new, let favorite = favorites.getBy(key: newFaveKey) {
         os_log(.debug, log: log, "updating new favorite cell")
+        serialQueue.async { self.updateCell(with: favorite) }
+      }
+    case let .loaded(preset: preset):
+      if case let .favorite(key, _) = preset, let favorite = favorites.getBy(key: key) {
         serialQueue.async { self.updateCell(with: favorite) }
       }
     }
@@ -333,7 +332,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                              sizeForItemAt indexPath: IndexPath) -> CGSize {
     let favorite = favorites.getBy(index: indexPath.item)
-    let cell = update(cell: cellForSizing, with: favorite, engineRendering: true)
+    let cell = update(cell: cellForSizing, with: favorite)
     let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     return CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
   }
@@ -341,30 +340,24 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FavoritesViewController {
 
-  private func showRenderingState(rendering: Bool) {
-    guard let favorite = activePresetManager.activeFavorite else { return }
-    updateCell(with: favorite, engineRendering: rendering)
-  }
-
   private func indexPath(of key: Favorite.Key) -> IndexPath? {
     guard let index = favorites.index(of: key) else { return nil }
     return IndexPath(item: index, section: 0)
   }
 
-  private func updateCell(with favorite: Favorite, engineRendering: Bool = false) {
+  private func updateCell(with favorite: Favorite) {
     guard favorites.contains(key: favorite.key) else { return }
     if let indexPath = self.indexPath(of: favorite.key),
        let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
-      update(cell: cell, with: favorite, engineRendering: engineRendering)
+      update(cell: cell, with: favorite)
     }
   }
 
   @discardableResult
-  private func update(cell: FavoriteCell, with favorite: Favorite, engineRendering: Bool = false) -> FavoriteCell {
-    cell.update(
-      favoriteName: favorite.presetConfig.name,
-      isActive: favorite == activePresetManager.activeFavorite,
-      engineIsRendering: engineRendering)
+  private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
+    let isActive = favorite == activePresetManager.activeFavorite
+    let isLoading = isActive && activePresetManager.isLoading
+    cell.update(favoriteName: favorite.presetConfig.name, isActive: isActive, loading: isLoading)
     return cell
   }
 }
