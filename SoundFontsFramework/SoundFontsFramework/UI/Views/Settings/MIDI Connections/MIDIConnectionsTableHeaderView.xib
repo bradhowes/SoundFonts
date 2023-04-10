@@ -18,7 +18,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="393" height="42"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJT-iG-5va">
-                            <rect key="frame" x="20" y="12" width="129.33333333333334" height="18"/>
+                            <rect key="frame" x="19.999999999999993" y="12" width="127.33333333333331" height="18"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
                             <nil key="highlightedColor"/>
@@ -36,7 +36,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEA-oF-Dx9">
-                            <rect key="frame" x="157.33333333333334" y="12" width="20" height="18"/>
+                            <rect key="frame" x="155.33333333333334" y="12" width="20" height="18"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
                             <nil key="highlightedColor"/>
@@ -50,7 +50,7 @@
                         <constraint firstItem="w10-mA-QPo" firstAttribute="centerY" secondItem="XXs-cL-ehd" secondAttribute="centerY" id="KEe-un-OqQ"/>
                         <constraint firstItem="wsI-Ng-Mhn" firstAttribute="centerY" secondItem="XXs-cL-ehd" secondAttribute="centerY" id="LpK-Xc-5Ye"/>
                         <constraint firstItem="UJT-iG-5va" firstAttribute="leading" secondItem="XXs-cL-ehd" secondAttribute="leading" constant="20" id="QdI-KR-t6X"/>
-                        <constraint firstItem="w10-mA-QPo" firstAttribute="leading" secondItem="jEA-oF-Dx9" secondAttribute="trailing" constant="28" id="bEd-pw-Evm"/>
+                        <constraint firstItem="w10-mA-QPo" firstAttribute="leading" secondItem="jEA-oF-Dx9" secondAttribute="trailing" constant="30" id="bEd-pw-Evm"/>
                         <constraint firstAttribute="trailing" secondItem="wsI-Ng-Mhn" secondAttribute="trailing" constant="26" id="dLE-cO-2B2"/>
                         <constraint firstItem="UJT-iG-5va" firstAttribute="centerY" secondItem="XXs-cL-ehd" secondAttribute="centerY" id="e9z-3g-jSk"/>
                     </constraints>

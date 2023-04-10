@@ -199,7 +199,7 @@ public final class SettingsViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in self?.updateMIDIConnectionsButton() }
       }
 
-      monitorToken = midiMonitor?.addMonitor { data in
+      monitorToken = midiMonitor?.addConnectionActivityMonitor { data in
         let ourChannel = self.settings.midiChannel
         let accepted = ourChannel == -1 || ourChannel == data.channel
         MIDIConnectionsTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)

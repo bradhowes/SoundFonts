@@ -20,7 +20,7 @@ public final class MIDIMonitor {
     let channel: Int
   }
 
-  public func addMonitor(block: @escaping (ConnectionActivityPayload) -> Void) -> NotificationObserver {
+  public func addConnectionActivityMonitor(block: @escaping (ConnectionActivityPayload) -> Void) -> NotificationObserver {
     connectionActivityNotifier.addMonitor(block: block)
   }
 

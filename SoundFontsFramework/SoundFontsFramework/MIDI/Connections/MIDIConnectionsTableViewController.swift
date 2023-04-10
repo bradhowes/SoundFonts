@@ -11,7 +11,6 @@ final class MIDIConnectionsTableViewController: UITableViewController {
   private var midi: MIDI!
   private var midiMonitor: MIDIMonitor!
   private var activeConnectionsObserver: NSKeyValueObservation?
-  private var channelsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
   private var monitorToken: NotificationObserver?
 
@@ -21,11 +20,6 @@ final class MIDIConnectionsTableViewController: UITableViewController {
     self.activeChannel = activeChannel
 
     activeConnectionsObserver = midi.observe(\.activeConnections) { [weak self] _, _ in
-      guard let self = self else { return }
-      DispatchQueue.main.async { self.tableView.reloadData() }
-    }
-
-    channelsObserver = midi.observe(\.channels) { [weak self] _, _ in
       guard let self = self else { return }
       DispatchQueue.main.async { self.tableView.reloadData() }
     }
@@ -44,7 +38,7 @@ extension MIDIConnectionsTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = self.midiMonitor.addMonitor { payload in
+    monitorToken = self.midiMonitor.addConnectionActivityMonitor { payload in
       let accepted = self.accepting(channel: payload.channel)
       for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
@@ -172,9 +166,11 @@ extension MIDIConnectionsTableViewController {
 
   public static func midiSeenLayerChange(_ layer: CALayer, _ accepted: Bool) {
     let color = accepted ? UIColor.systemTeal : UIColor.systemOrange
-    let animator = CABasicAnimation(keyPath: "backgroundColor")
-    animator.fromValue = color.cgColor
-    animator.toValue = UIColor.clear.cgColor
+    let animator = CAKeyframeAnimation(keyPath: "backgroundColor")
+    animator.values = [color.cgColor, UIColor.clear.cgColor]
+    animator.keyTimes = [0.0, 1.0]
+    animator.duration = 0.5
+    layer.removeAllAnimations()
     layer.add(animator, forKey: "MIDI Seen")
   }
 }

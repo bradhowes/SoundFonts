@@ -93,7 +93,7 @@ public final class InfoBarController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    monitorToken = midiMonitor?.addMonitor { payload in
+    monitorToken = midiMonitor?.addConnectionActivityMonitor { payload in
       let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == payload.channel
       self.updateMIDIIndicator(accepted: accepted)
     }

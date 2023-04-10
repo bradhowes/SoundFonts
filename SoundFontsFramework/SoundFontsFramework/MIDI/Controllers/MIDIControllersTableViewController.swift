@@ -60,6 +60,7 @@ extension MIDIControllersTableViewController {
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
 
+    cell.action.text = ""
     cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
 
     cell.used.isOn = midiControllerState.allowed
@@ -98,14 +99,6 @@ extension MIDIControllersTableViewController {
 // MARK: - MIDIMonitor Methods
 
 extension MIDIControllersTableViewController: SegueHandler {
-
-  public static func midiSeenLayerChange(_ layer: CALayer, _ accepted: Bool) {
-    let color = accepted ? UIColor.systemTeal : UIColor.systemOrange
-    let animator = CABasicAnimation(keyPath: "backgroundColor")
-    animator.fromValue = color.cgColor
-    animator.toValue = UIColor.clear.cgColor
-    layer.add(animator, forKey: "MIDI Seen")
-  }
 
   /// Segues that we support.
   public enum SegueIdentifier: String {
