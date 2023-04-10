@@ -1,6 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-import os
+import os.log
 import CoreMIDI
 import MorkAndMIDI
 
@@ -45,10 +45,11 @@ final public class MIDIEventRouter {
   public private(set) var group: Int
 
   public var audioEngine: AudioEngine? { _audioEngine }
+  public let midiControllerActionStateManager: MIDIControllerActionStateManager
+
   private let _audioEngine: AudioEngine?
   private let keyboard: AnyKeyboard
   private let midiConnectionMonitor: MIDIConnectionMonitor
-  private let midiControllerActionStateManager: MIDIControllerActionStateManager
   private var observer: NSKeyValueObservation?
   private var synth: AnyMIDISynth? { _audioEngine?.synth }
 
@@ -70,8 +71,8 @@ final public class MIDIEventRouter {
     self.group = -1
     monitorMIDIChannelValue()
 
-    midiControllerState = (UInt8(0)...UInt8(127)).map {
-      MIDIControllerState(identifier: $0, allowed: controllerAllowed($0), action: controllerAction($0))
+    midiControllerState = (0...127).map {
+      MIDIControllerState(identifier: $0, allowed: controllerAllowed($0))
     }
   }
 
@@ -80,26 +81,17 @@ final public class MIDIEventRouter {
     // synth.stopAllNotes()
   }
 
-  private func controllerAllowedKey(for controller: UInt8) -> String { "controllerAllowed\(controller)" }
-  private func controllerActionKey(for controller: UInt8) -> String { "controllerAction\(controller)" }
+  private func controllerAllowedKey(for controller: Int) -> String { "controllerAllowed\(controller)" }
 
-  private func controllerAllowed(_ controller: UInt8) -> Bool {
+  private func controllerAllowed(_ controller: Int) -> Bool {
     settings.get(key: controllerAllowedKey(for: controller), defaultValue: true)
   }
 
-  private func controllerAction(_ controller: UInt8) -> MIDIControllerAction? {
-    settings.get(key: controllerActionKey(for: controller), defaultValue: nil)
-  }
-
-  func actionChanged(controller: UInt8, action: MIDIControllerAction?) {
-    settings.set(key: controllerActionKey(for: controller), value: action)
-  }
-
-  func allowedStateChanged(controller: UInt8, allowed: Bool) {
+  func allowedStateChanged(controller: Int, allowed: Bool) {
     settings.set(key: controllerAllowedKey(for: controller), value: allowed)
-    midiControllerState[Int(controller)].allowed = allowed
-    if let lastValue = midiControllerState[Int(controller)].lastValue, allowed {
-      synth?.controlChange(controller: controller, value: lastValue)
+    midiControllerState[controller].allowed = allowed
+    if let lastValue = midiControllerState[controller].lastValue, allowed {
+      synth?.controlChange(controller: UInt8(controller), value: UInt8(lastValue))
     }
   }
 
@@ -168,13 +160,13 @@ extension MIDIEventRouter: Receiver {
     let midiControllerIndex = Int(controller)
     let controllerState = midiControllerState[midiControllerIndex]
 
-    controllerState.lastValue = value
+    controllerState.lastValue = Int(value)
     Self.controllerActivityNotifier.post(source: source, controller: controller, value: value)
 
     guard controllerState.allowed else { return }
 
-    if let action = controllerState.action {
-      Self.actionNotifier.post(action: action, value: value)
+    if let actionIndex = midiControllerActionStateManager.lookup[Int(controller)] {
+      Self.actionNotifier.post(action: midiControllerActionStateManager.actions[actionIndex].action, value: value)
     }
 
     synth?.controlChange(controller: controller, value: value)

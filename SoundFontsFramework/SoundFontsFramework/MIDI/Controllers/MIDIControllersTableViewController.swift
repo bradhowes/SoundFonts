@@ -71,46 +71,23 @@ extension MIDIControllersTableViewController {
     return cell
   }
 
-  @IBAction func showActionView(_ sender: UIButton) {
-    performSegue(withIdentifier: .midiControllerAction)
-  }
-
   @IBAction func disableAll(_ sender: Any) {
     for controller in 0..<128 {
-      midiEventRouter.allowedStateChanged(controller: UInt8(controller), allowed: false)
+      midiEventRouter.allowedStateChanged(controller: controller, allowed: false)
       tableView.reloadData()
     }
   }
 
   @IBAction func enableAll(_ sender: Any) {
     for controller in 0..<128 {
-      midiEventRouter.allowedStateChanged(controller: UInt8(controller), allowed: true)
+      midiEventRouter.allowedStateChanged(controller: controller, allowed: true)
       tableView.reloadData()
     }
   }
 
   @IBAction func allowedStateChanged(_ sender: UISwitch) {
-    midiEventRouter.allowedStateChanged(controller: UInt8(sender.tag), allowed: sender.isOn)
+    midiEventRouter.allowedStateChanged(controller: sender.tag, allowed: sender.isOn)
   }
 
   private func controllerAllowedSettingName(controller: Int) -> String { "controllerAllowed\(controller)" }
-}
-
-// MARK: - MIDIMonitor Methods
-
-extension MIDIControllersTableViewController: SegueHandler {
-
-  /// Segues that we support.
-  public enum SegueIdentifier: String {
-    case midiControllerAction
-  }
-
-  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    switch segueIdentifier(for: segue) {
-    case .midiControllerAction:
-      break
-      // let destination = segue.destination as? MIDIControllersTableViewController
-      // destination.configure(midi: midi, midiMonitor: midiMonitor, activeChannel: settings.midiChannel)
-    }
-  }
 }

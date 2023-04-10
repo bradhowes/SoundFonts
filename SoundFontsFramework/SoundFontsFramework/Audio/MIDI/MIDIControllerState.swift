@@ -4,28 +4,20 @@ import os
 
 final public class MIDIControllerState {
 
-  let identifier: UInt8
+  let identifier: Int
   let name: String
-  var lastValue: UInt8?
+  var lastValue: Int?
   var allowed: Bool
-  var action: MIDIControllerAction?
 
-  public init(identifier: UInt8, allowed: Bool, action: MIDIControllerAction?) {
+  public init(identifier: Int, allowed: Bool) {
     self.identifier = identifier
     self.name = MIDICC(rawValue: identifier)?.name ?? ""
     self.lastValue = nil
     self.allowed = allowed
-    if identifier == 112 {
-      self.action = .nextPrevFavorite
-    } else if identifier == 74 {
-      self.action = .selectFavorite
-    } else {
-      self.action = action
-    }
   }
 }
 
-public enum MIDICC: UInt8 {
+public enum MIDICC: Int {
   case bankSelect = 0
   case modulationWheel = 1
   case breathController = 2

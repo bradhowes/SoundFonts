@@ -1,4 +1,6 @@
-public enum MIDIControllerAction: Codable, CaseIterable {
+// Copyright © 2023 Brad Howes. All rights reserved.
+
+public enum MIDIControllerAction: String, Codable, CaseIterable {
   case nextPrevFavorite
   case selectFavorite
 
@@ -26,7 +28,14 @@ public enum MIDIControllerAction: Codable, CaseIterable {
   }
 }
 
-public enum MIDIControllerActionKind: Codable, CaseIterable {
+public enum MIDIControllerActionKind: String, Codable, CaseIterable {
   case absolute
   case relative
+
+  var displayName: String {
+    switch self {
+    case .absolute: return ""
+    case .relative: return " ±"
+    }
+  }
 }

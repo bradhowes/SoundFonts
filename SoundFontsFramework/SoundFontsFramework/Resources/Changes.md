@@ -6,13 +6,16 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
-# 2.28.1
+# 2.29.0
 
 * Additional MIDI controller labels
 * Updates to MID Devices view in Settings panel
 * Show channel of incoming message from MIDI connection
 * Allow fix-velocity notes per MIDI connection
-* Allow changing of favorites via MIDI controllers
+* New Actions view in Settings panel
+* Supports assigning MIDI change controller (CC) to predefined actions
+* Allow changing of favorites via assigned MIDI CC
+* Allow changing of effect settings via assigned MIDI CC
 
 # 2.28.0
 
