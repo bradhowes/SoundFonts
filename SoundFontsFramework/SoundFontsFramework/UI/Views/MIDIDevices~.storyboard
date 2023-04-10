@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -766,26 +767,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" systemColor="systemTealColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MIDIConnectionTableCell" textLabel="OzK-7H-oAk" rowHeight="44" style="IBUITableViewCellStyleDefault" id="fZa-KF-HeY" customClass="MIDIConnectionTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MIDIConnectionTableCell" rowHeight="44" id="fZa-KF-HeY" customClass="MIDIConnectionTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="fZa-KF-HeY" id="r9H-8Y-Cx5">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OzK-7H-oAk">
-                                            <rect key="frame" x="20" y="0.0" width="374" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
                                 </tableViewCellContentView>
                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                <connections>
-                                    <outlet property="name" destination="OzK-7H-oAk" id="5gM-LC-8wz"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -804,7 +793,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kr3-g6-ajq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3967" y="-762"/>
+            <point key="canvasLocation" x="3329" y="-39"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JbL-Hk-dDI">
@@ -849,33 +838,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" systemColor="systemTealColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MIDIControllerTableCell" textLabel="wA5-91-3Vx" detailTextLabel="pKl-bT-GCv" rowHeight="44" style="IBUITableViewCellStyleSubtitle" id="u1M-rs-0qa" userLabel="MIDIControllerTableCell" customClass="MIDIControllerTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MIDIControllerTableCell" rowHeight="44" id="u1M-rs-0qa" userLabel="MIDIControllerTableCell" customClass="MIDIControllerTableCell" customModule="SoundFontsFramework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="u1M-rs-0qa" id="nwU-za-obL">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wA5-91-3Vx">
-                                            <rect key="frame" x="20" y="6" width="25" height="14.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
-                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pKl-bT-GCv">
-                                            <rect key="frame" x="20" y="22.5" width="44" height="14.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
                                 </tableViewCellContentView>
                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                <connections>
-                                    <outlet property="name" destination="wA5-91-3Vx" id="KV7-Hd-pFI"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -902,7 +872,60 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dip-Dx-3TR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3329" y="-762"/>
+            <point key="canvasLocation" x="3329" y="-781"/>
+        </scene>
+        <!--Action-->
+        <scene sceneID="rMn-of-Omb">
+            <objects>
+                <viewController id="MNI-a2-iKw" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2r8-VR-YXg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SqG-AY-G4g">
+                                <rect key="frame" x="144.5" y="48" width="125" height="30"/>
+                                <menu key="menu" title="Action" identifier="action" id="PFn-Sc-zLg">
+                                    <menuOptions key="menuOptions" singleSelection="YES"/>
+                                    <children>
+                                        <command title="Prev/Next Favorite" id="4ar-kN-4fH"/>
+                                        <command title="Set Favorite" id="JKe-v2-NtG"/>
+                                        <command title="Reverb Mix" id="kxZ-vP-qVS" userLabel="Reverb Mix"/>
+                                        <command title="Reverb Room" id="hP9-5c-C74"/>
+                                        <command title="Delay TIme" id="4d7-IH-z3R"/>
+                                        <command title="Delay Feedback" id="kSa-mj-PPy"/>
+                                        <command title="Delay Cutoff" id="Y1U-ek-3sb"/>
+                                        <command title="Delay Mix" id="Ti7-Ne-kHB"/>
+                                    </children>
+                                </menu>
+                                <state key="normal" title="Action"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i7I-Sb-ffN">
+                                <rect key="frame" x="160" y="86" width="94" height="30"/>
+                                <menu key="menu" title="Style" identifier="style" id="sL7-3R-1CC">
+                                    <menuOptions key="menuOptions" singleSelection="YES"/>
+                                    <children>
+                                        <command title="Normal 0-127" id="PoC-nY-Gnn"/>
+                                        <command title="+ / -  Center 64" id="p3G-gm-xwt"/>
+                                        <command title="On/Off" id="wXv-o4-42f" userLabel="Reverb Mix"/>
+                                    </children>
+                                </menu>
+                                <state key="normal" title="Action"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="g9q-xJ-OvS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="i7I-Sb-ffN" firstAttribute="top" secondItem="SqG-AY-G4g" secondAttribute="bottom" constant="8" symbolic="YES" id="52M-oi-buw"/>
+                            <constraint firstItem="SqG-AY-G4g" firstAttribute="centerX" secondItem="2r8-VR-YXg" secondAttribute="centerX" id="Xdp-Sc-tfr"/>
+                            <constraint firstItem="SqG-AY-G4g" firstAttribute="top" secondItem="g9q-xJ-OvS" secondAttribute="top" id="lKH-P7-3dM"/>
+                            <constraint firstItem="i7I-Sb-ffN" firstAttribute="centerX" secondItem="2r8-VR-YXg" secondAttribute="centerX" id="leE-wz-vJ6"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Action" id="GRQ-AK-e0C"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e9G-lc-PJ5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4092.753623188406" y="-781.47321428571422"/>
         </scene>
     </scenes>
     <resources>

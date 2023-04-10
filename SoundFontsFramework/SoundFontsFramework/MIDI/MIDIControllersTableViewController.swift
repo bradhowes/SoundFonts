@@ -60,7 +60,8 @@ extension MIDIControllersTableViewController {
     cell.identifier.text = "\(indexPath.row)"
     cell.name.text = midiControllerState.name
 
-    cell.activity.text = midiControllerState.action?.displayName ?? ""
+    cell.activity.setTitle(midiControllerState.action?.displayName ?? "Set…", for: .normal)
+    cell.activity.addTarget(self, action: #selector(showActionView(_:)), for: .touchUpInside)
 
     cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
 
@@ -70,6 +71,10 @@ extension MIDIControllersTableViewController {
       cell.used.addTarget(self, action: #selector(allowedStateChanged(_:)), for: .valueChanged)
     }
     return cell
+  }
+
+  @IBAction func showActionView(_ sender: UIButton) {
+    performSegue(withIdentifier: .midiControllerAction)
   }
 
   @IBAction func disableAll(_ sender: Any) {
@@ -95,7 +100,7 @@ extension MIDIControllersTableViewController {
 
 // MARK: - MIDIMonitor Methods
 
-extension MIDIControllersTableViewController {
+extension MIDIControllersTableViewController: SegueHandler {
 
   public static func midiSeenLayerChange(_ layer: CALayer, _ accepted: Bool) {
     let color = accepted ? UIColor.systemTeal : UIColor.systemOrange
@@ -103,5 +108,19 @@ extension MIDIControllersTableViewController {
     animator.fromValue = color.cgColor
     animator.toValue = UIColor.clear.cgColor
     layer.add(animator, forKey: "MIDI Seen")
+  }
+
+  /// Segues that we support.
+  public enum SegueIdentifier: String {
+    case midiControllerAction
+  }
+
+  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    switch segueIdentifier(for: segue) {
+    case .midiControllerAction:
+      break
+      // let destination = segue.destination as? MIDIControllersTableViewController
+      // destination.configure(midi: midi, midiMonitor: midiMonitor, activeChannel: settings.midiChannel)
+    }
   }
 }

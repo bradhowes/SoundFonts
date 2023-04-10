@@ -12,6 +12,7 @@ The parsing is really simplistic:
 * Updates to MID Devices view in Settings panel
 * Show channel of incoming message from MIDI connection
 * Allow fix-velocity notes per MIDI connection
+* Allow changing of favorites via MIDI controllers
 
 # 2.28.0
 
