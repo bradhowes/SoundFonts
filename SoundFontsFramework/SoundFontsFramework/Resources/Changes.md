@@ -10,10 +10,10 @@ The parsing is really simplistic:
 
 * Additional MIDI controller labels
 * Updates to MID Devices view in Settings panel
-* Show channel of incoming message from MIDI connection
+* Show MIDI channel of last incoming message
 * Allow fix-velocity notes per MIDI connection
-* New Actions view in Settings panel
-* Supports assigning MIDI change controller (CC) to predefined actions
+* New MIDI Assignments view in Settings panel
+* Assign MIDI change controller (CC) to predefined app actions
 * Allow changing of favorites via assigned MIDI CC
 * Allow changing of effect settings via assigned MIDI CC
 
