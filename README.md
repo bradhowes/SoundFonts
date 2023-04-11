@@ -34,6 +34,26 @@ Here are some additional sites that have curated or custom SF2 files that should
 * [Soundfonts 4u](https://sites.google.com/site/soundfonts4u/)
 * [Les Productions Zvon](https://lesproductionszvon.com/freesounds.htm)
 
+# Recent Changes
+
+## 2.29.0
+
+* Additional MIDI controller labels
+* Updates to MID Devices view in Settings panel
+* Show MIDI channel of last incoming message
+* Allow fix-velocity notes per MIDI connection
+* New MIDI Assignments view in Settings panel
+* Assign MIDI change controller (CC) to predefined app actions
+* Allow changing of favorites via assigned MIDI CC
+* Allow changing of effect settings via assigned MIDI CC
+
+## 2.28.0
+
+* Use [MorkAndMIDI](https://github.com/bradhowes/morkandmidi) Swift package for all MIDI processing
+* Using MIDI v2.0 in CoreMIDI API when available
+* New MIDI controller display in Settings view
+* Individual MIDI controller input can be now be disabled
+
 ## AUv3 App Extensions
 
 Starting with v2.0, the application now contains an AUv3 app extension that can be loaded by other music
