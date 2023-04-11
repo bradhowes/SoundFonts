@@ -47,4 +47,8 @@ extension Notification.Name {
   public static let midiAction = Notification.Name("midiAction")
   /// Notification that a preset is loading
   public static let presetLoading = Notification.Name("presetLoading")
+  /// Notification that active reverb config has changed
+  public static let reverbConfigChanged = Notification.Name("reverbConfigChanged")
+  /// Notification that active delay config has changed
+  public static let delayConfigChanged = Notification.Name("delayConfigChanged")
 }

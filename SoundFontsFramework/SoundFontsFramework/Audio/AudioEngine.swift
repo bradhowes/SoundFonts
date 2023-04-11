@@ -45,7 +45,9 @@ public final class AudioEngine: SynthProvider {
   private var auAudioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
 
   public let reverbEffect: ReverbEffect?
+  private let reverbEffectActions: ReverbEffectActions?
   public let delayEffect: DelayEffect?
+  private let delayEffectActions: DelayEffectActions?
 
   private let mode: Mode
   private let activePresetManager: ActivePresetManager
@@ -88,8 +90,19 @@ public final class AudioEngine: SynthProvider {
     self.activePresetManager = activePresetManager
     self.settings = settings
     self.midiControllerActionStateManager = midiControllerActionStateManager
-    self.reverbEffect = mode == .standalone ? ReverbEffect() : nil
-    self.delayEffect = mode == .standalone ? DelayEffect() : nil
+    if mode == .standalone {
+      let reverb = ReverbEffect()
+      self.reverbEffect = reverb
+      self.reverbEffectActions = .init(effect: reverb)
+      let delay = DelayEffect()
+      self.delayEffect = delay
+      self.delayEffectActions = .init(effect: delay)
+    } else {
+      self.reverbEffect = nil
+      self.reverbEffectActions = nil
+      self.delayEffect = nil
+      self.delayEffectActions = nil
+    }
 
     self.midi = midi
     self.midiConnectionMonitor = midi != nil ? .init(settings: settings) : nil

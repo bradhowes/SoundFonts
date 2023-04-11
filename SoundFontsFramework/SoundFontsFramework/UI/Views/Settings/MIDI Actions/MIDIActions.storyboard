@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--MIDI Actions-->
+        <!--MIDI Assignments-->
         <scene sceneID="71s-ay-LjT">
             <objects>
                 <tableViewController id="jwz-5M-mZ8" customClass="MIDIActionsTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,7 +31,7 @@
                             <outlet property="delegate" destination="jwz-5M-mZ8" id="qdD-As-MrJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="MIDI Actions" id="MrQ-Og-Eos"/>
+                    <navigationItem key="navigationItem" title="MIDI Assignments" id="MrQ-Og-Eos"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RRR-6j-jWj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

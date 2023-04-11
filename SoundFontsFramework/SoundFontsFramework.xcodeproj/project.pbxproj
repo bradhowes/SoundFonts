@@ -256,6 +256,8 @@
 		BDFD3E4229E411BE0010E3CB /* MIDIActionsTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDFD3E4129E411BE0010E3CB /* MIDIActionsTableHeaderView.xib */; };
 		BDFD3E4429E411CB0010E3CB /* MIDIActionsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDFD3E4329E411CB0010E3CB /* MIDIActionsTableCell.xib */; };
 		BDFD3E4729E420CF0010E3CB /* Checkbox in Frameworks */ = {isa = PBXBuildFile; productRef = BDFD3E4629E420CF0010E3CB /* Checkbox */; };
+		BDFD3E4929E53AD00010E3CB /* ReverbActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD3E4829E53AD00010E3CB /* ReverbActions.swift */; };
+		BDFD3E4B29E55D3C0010E3CB /* DelayActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD3E4A29E55D3C0010E3CB /* DelayActions.swift */; };
 		BDFE80082983368D00F400A7 /* MIDIActivityNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */; };
 		BDFE800A29844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */; };
 /* End PBXBuildFile section */
@@ -543,6 +545,8 @@
 		BDFD3E3E29E405850010E3CB /* MIDIControllerActionStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIControllerActionStateManager.swift; sourceTree = "<group>"; };
 		BDFD3E4129E411BE0010E3CB /* MIDIActionsTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MIDIActionsTableHeaderView.xib; sourceTree = "<group>"; };
 		BDFD3E4329E411CB0010E3CB /* MIDIActionsTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MIDIActionsTableCell.xib; sourceTree = "<group>"; };
+		BDFD3E4829E53AD00010E3CB /* ReverbActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbActions.swift; sourceTree = "<group>"; };
+		BDFD3E4A29E55D3C0010E3CB /* DelayActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayActions.swift; sourceTree = "<group>"; };
 		BDFE80072983368D00F400A7 /* MIDIActivityNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIActivityNotifier.swift; sourceTree = "<group>"; };
 		BDFE800929844CDE00F400A7 /* MIDIIndicatorPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIIndicatorPulseAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1153,6 +1157,8 @@
 				BDFD3E3729E3FD960010E3CB /* MIDIControllerAction.swift */,
 				BDFD3E3C29E404440010E3CB /* MIDIControllerActionState.swift */,
 				BDFD3E3E29E405850010E3CB /* MIDIControllerActionStateManager.swift */,
+				BDFD3E4A29E55D3C0010E3CB /* DelayActions.swift */,
+				BDFD3E4829E53AD00010E3CB /* ReverbActions.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -1350,6 +1356,7 @@
 				BD074C4F23CDAF51001987E9 /* SoundFontsManager.swift in Sources */,
 				BDFA98EE280C5C4C0069A46F /* DelayAU.swift in Sources */,
 				BD2F4B26277F2B230064E31B /* SettingKeys.swift in Sources */,
+				BDFD3E4B29E55D3C0010E3CB /* DelayActions.swift in Sources */,
 				BD074C8A23CDAF51001987E9 /* FavoriteEditorDelegate.swift in Sources */,
 				BD130B192561755F00D1CDF6 /* Knob.swift in Sources */,
 				BD074C7F23CDAF51001987E9 /* UICollectionView.swift in Sources */,
@@ -1361,6 +1368,7 @@
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* Preset.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */,
+				BDFD3E4929E53AD00010E3CB /* ReverbActions.swift in Sources */,
 				BD125B40241010810003DE99 /* Key.swift in Sources */,
 				BD689B8F29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* AnyInfoBar.swift in Sources */,

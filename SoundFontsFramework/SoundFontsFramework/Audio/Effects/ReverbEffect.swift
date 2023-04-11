@@ -35,7 +35,11 @@ public final class ReverbEffect: NSObject {
     AUAudioUnitPreset(number: $0.offset, name: $0.element.name)
   }
 
-  public var active: ReverbConfig { didSet { applyActiveConfig(self.active) } }
+  public var active: ReverbConfig {
+    didSet {
+      applyActiveConfig(self.active)
+    }
+  }
 
   public static let roomNames = [
     "Room 1",  // smallRoom
@@ -84,6 +88,9 @@ extension ReverbEffect {
     DispatchQueue.global(qos: .userInitiated).async {
       self.audioUnit.loadFactoryPreset(ReverbEffect.roomPresets[config.preset])
       self.audioUnit.wetDryMix = config.enabled ? config.wetDryMix : 0.0
+    }
+    DispatchQueue.main.async {
+      NotificationCenter.default.post(name: .reverbConfigChanged, object: nil)
     }
   }
 }

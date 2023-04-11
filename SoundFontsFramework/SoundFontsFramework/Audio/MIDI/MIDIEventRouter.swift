@@ -169,10 +169,12 @@ extension MIDIEventRouter: Receiver {
     guard controllerState.allowed else { return }
 
     // If assigned to an action, notify action handlers
-    if let actionIndex = midiControllerActionStateManager.lookup[Int(controller)] {
-      let action = midiControllerActionStateManager.actions[actionIndex]
-      guard let kind = action.kind else { fatalError() }
-      Self.actionNotifier.post(action: action.action, kind: kind, value: value)
+    if let actions = midiControllerActionStateManager.lookup[Int(controller)] {
+      for actionIndex in actions {
+        let action = midiControllerActionStateManager.actions[actionIndex]
+        guard let kind = action.kind else { fatalError() }
+        Self.actionNotifier.post(action: action.action, kind: kind, value: value)
+      }
     }
 
     // Hand the controller value change to the synth

@@ -4,9 +4,11 @@ public enum MIDIControllerAction: String, Codable, CaseIterable {
   case selectFavorite
   case editFavorite
 
+  case reverbToggle
   case reverbMix
   case reverbRoom
 
+  case delayToggle
   case delayTime
   case delayFeedback
   case delayCutoff
@@ -17,9 +19,11 @@ public enum MIDIControllerAction: String, Codable, CaseIterable {
     case .selectFavorite: return "Select Favorite"
     case .editFavorite: return "Edit Favorite"
 
+    case .reverbToggle: return "Reverb On/Off"
     case .reverbMix: return "Reverb Mix"
     case .reverbRoom: return "Reverb Room"
 
+    case .delayToggle: return "Delay On/Off"
     case .delayTime: return "Delay Time"
     case .delayFeedback: return "Delay Feedback"
     case .delayCutoff: return "Delay Cutoff"

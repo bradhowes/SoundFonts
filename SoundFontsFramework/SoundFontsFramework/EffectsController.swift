@@ -37,6 +37,9 @@ public final class EffectsController: UIViewController {
   private var reverbEffect: ReverbEffect? { audioEngine?.reverbEffect }
   private var delayEffect: DelayEffect? { audioEngine?.delayEffect }
 
+  private var reverbConfigObserver: NSObjectProtocol?
+  private var delayConfigObserver: NSObjectProtocol?
+
   public override func viewDidLoad() {
 
     view.isHidden = true
@@ -194,6 +197,7 @@ extension EffectsController: ControllerConfiguration {
     if let audioEngine = router.audioEngine {
       self.audioEngine = audioEngine
       updateState()
+      registerConfigObservers()
     }
   }
 }
@@ -314,6 +318,7 @@ extension EffectsController {
       DispatchQueue.main.async {
         self.audioEngine = audioEngine
         self.updateState()
+        self.registerConfigObservers()
       }
     }
   }
@@ -349,7 +354,7 @@ extension EffectsController {
       os_log(.debug, log: log, "showing preset delay state - %{public}s", config.description)
       update(config: config)
     }
-}
+  }
 
   private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
@@ -438,5 +443,23 @@ extension EffectsController {
 
   private func showDelayMixValue() {
     delayWetDryMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%")
+  }
+
+  private func registerConfigObservers() {
+    if let reverbEffect = reverbEffect {
+      reverbConfigObserver = NotificationCenter.default.addObserver(forName: .reverbConfigChanged,
+                                                                    object: nil,
+                                                                    queue: nil) { [weak self] _ in
+        self?.update(config: reverbEffect.active)
+      }
+    }
+
+    if let delayEffect = delayEffect {
+      delayConfigObserver = NotificationCenter.default.addObserver(forName: .delayConfigChanged,
+                                                                   object: nil,
+                                                                   queue: nil) { [weak self] _ in
+        self?.update(config: delayEffect.active)
+      }
+    }
   }
 }

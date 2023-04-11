@@ -50,5 +50,8 @@ extension DelayEffect {
       self.audioUnit.feedback = config.feedback
       self.audioUnit.lowPassCutoff = config.cutoff
     }
+    DispatchQueue.main.async {
+      NotificationCenter.default.post(name: .delayConfigChanged, object: nil)
+    }
   }
 }

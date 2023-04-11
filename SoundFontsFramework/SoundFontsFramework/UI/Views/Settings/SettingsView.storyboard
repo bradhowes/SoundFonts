@@ -298,7 +298,7 @@
                                                                 <rect key="frame" x="191" y="0.0" width="183" height="33"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <state key="normal" title="Actions">
+                                                                <state key="normal" title="MIDI Assignments">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
                                                                 <connections>
