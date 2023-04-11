@@ -146,5 +146,5 @@ extension Preset {
 }
 
 extension Preset: CustomStringConvertible {
-  public var description: String { "Preset('\(originalName)' \(bank):\(program))" }
+  public var description: String { "Preset('\(originalName)' \(bank):\(program):\(soundFontIndex)" }
 }

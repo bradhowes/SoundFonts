@@ -51,7 +51,7 @@ final class PresetChangeManager {
   }
 
   /**
-   Place into the queue an operation to change the active preset.
+   Place into the queue an operation to change the active preset. NOTE: this cancels any pending changes.
 
    - parameter synth: the synth to change
    - parameter url: the URL of the soundfont to use
@@ -86,7 +86,9 @@ private final class PresetChangeOperation: Operation {
   private weak var synth: PresetLoader?
   private let url: URL
   private let preset: Preset
+
   private let afterLoadBlock: PresetChangeManager.AfterLoadBlock?
+  private var operationResult: PresetChangeManager.OperationResult?
 
   override var isAsynchronous: Bool { true }
 
@@ -96,6 +98,15 @@ private final class PresetChangeOperation: Operation {
     self.preset = preset
     self.afterLoadBlock = afterLoadBlock
     super.init()
+
+    self.completionBlock = {
+      if self.isCancelled {
+        afterLoadBlock?(.failure(.cancelled))
+      } else if let operationResult = self.operationResult {
+        afterLoadBlock?(operationResult)
+      }
+    }
+
     os_log(.debug, log: log, "init")
   }
 
@@ -104,13 +115,12 @@ private final class PresetChangeOperation: Operation {
 
     guard let synth = self.synth else {
       os_log(.debug, log: log, "nil synth")
-      afterLoadBlock?(.failure(.noSynth))
+      operationResult = .failure(.noSynth)
       return
     }
 
     if self.isCancelled {
-      os_log(.debug, log: log, "op cancelled")
-      afterLoadBlock?(.failure(.cancelled))
+      operationResult = .failure(.cancelled)
       return
     }
 
@@ -120,10 +130,11 @@ private final class PresetChangeOperation: Operation {
 
     os_log(.debug, log: log, "before afterLoadBlock")
     if let error = result {
-      afterLoadBlock?(.failure(.failedToLoad(error: error)))
+      operationResult = .failure(.failedToLoad(error: error))
     } else {
-      afterLoadBlock?(.success(self.preset))
+      operationResult = .success(self.preset)
     }
+
     os_log(.debug, log: log, "after afterLoadBlock")
     os_log(.debug, log: log, "main - END")
   }
