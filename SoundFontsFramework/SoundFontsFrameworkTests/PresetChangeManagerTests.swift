@@ -25,23 +25,26 @@ class PresetChangeManagerTests: XCTestCase {
   override func tearDownWithError() throws {
   }
 
-  func testLoading() async throws {
+  func testLoading() throws {
     loadFinishedExpectation = expectation(description: "load success")
     loadFinishedExpectation.expectedFulfillmentCount = 100
     loadFinishedExpectation?.assertForOverFulfill = true
 
     for index in 0..<100 {
-      try await Task.sleep(nanoseconds: UInt64(0.01 * Double(NSEC_PER_SEC)))
-      presetChangeManager.change(synth: synth, url: urls[0], preset: Preset("", 0, 0, index)) { result in
-        if case .success = result {
-          DispatchQueue.main.async { self.good += 1 }
+      let preset = Preset("", 0, 0, index)
+      DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + .milliseconds(20 * index)) {
+        self.presetChangeManager.change(synth: self.synth, url: self.urls[0], preset: preset) { result in
+          if case .success = result {
+            DispatchQueue.main.async { self.good += 1 }
+          }
+          self.loadFinishedExpectation?.fulfill()
         }
-        self.loadFinishedExpectation?.fulfill()
       }
     }
 
-    await fulfillment(of: [loadFinishedExpectation], timeout: 10.0)
-    XCTAssertTrue(good > 1)
+    wait(for: [loadFinishedExpectation], timeout: 10.0)
+    print("----> good", good)
+    XCTAssertTrue(good > 5)
   }
 
   func testFailures() throws {
