@@ -18,15 +18,15 @@
                     <rect key="frame" x="20" y="0.0" width="353" height="48"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="250" text="Action" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88b-he-hl7" userLabel="Name">
-                            <rect key="frame" x="0.0" y="13.999999999999998" width="48.666666666666664" height="20.333333333333329"/>
+                            <rect key="frame" x="0.0" y="0.0" width="48.666666666666664" height="48"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="250" text="Controller" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Azo-n5-Pw3" userLabel="Controller">
-                            <rect key="frame" x="202.66666666666666" y="13.999999999999998" width="75.333333333333343" height="20.333333333333329"/>
+                            <rect key="frame" x="202.66666666666666" y="0.0" width="75.333333333333343" height="48"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" systemColor="systemYellowColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rF2-Bj-4OV" userLabel="Learn">
@@ -37,12 +37,17 @@
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="88b-he-hl7" secondAttribute="bottom" id="21n-L2-QCO"/>
                         <constraint firstItem="Azo-n5-Pw3" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="Jmr-Fg-6Sb"/>
                         <constraint firstItem="Azo-n5-Pw3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="88b-he-hl7" secondAttribute="trailing" constant="8" symbolic="YES" id="R7I-HR-2Dz"/>
                         <constraint firstAttribute="trailing" secondItem="rF2-Bj-4OV" secondAttribute="trailing" id="SYL-ff-zmq"/>
+                        <constraint firstItem="88b-he-hl7" firstAttribute="top" secondItem="krF-vH-tlE" secondAttribute="top" id="VkR-ZT-gjK"/>
                         <constraint firstItem="88b-he-hl7" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="WCu-V3-IO5"/>
+                        <constraint firstItem="Azo-n5-Pw3" firstAttribute="top" secondItem="krF-vH-tlE" secondAttribute="top" id="bYr-N7-6KP"/>
                         <constraint firstItem="88b-he-hl7" firstAttribute="leading" secondItem="krF-vH-tlE" secondAttribute="leading" id="fFJ-fc-ne6"/>
+                        <constraint firstAttribute="bottom" secondItem="Azo-n5-Pw3" secondAttribute="bottom" id="fgL-sW-F31"/>
                         <constraint firstItem="rF2-Bj-4OV" firstAttribute="centerY" secondItem="krF-vH-tlE" secondAttribute="centerY" id="gdF-nf-yhW"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="hlf-vw-X6m"/>
                         <constraint firstItem="rF2-Bj-4OV" firstAttribute="leading" secondItem="Azo-n5-Pw3" secondAttribute="trailing" constant="8" symbolic="YES" id="l7i-Tj-BTd"/>
                     </constraints>
                 </view>
@@ -67,6 +72,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
