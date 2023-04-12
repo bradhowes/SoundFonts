@@ -276,7 +276,7 @@ public extension AudioEngine {
           self.applyPresetConfig(presetConfig)
         }
       case .failure:
-        activePresetManager.setActive(.none)
+        self.activePresetManager.setActive(.none)
       }
 
       DispatchQueue.main.async { [weak self] in
