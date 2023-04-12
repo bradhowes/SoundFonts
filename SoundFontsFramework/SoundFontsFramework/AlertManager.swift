@@ -96,7 +96,7 @@ public final class AlertManager {
       case .soundFontsCollectionOrphans:
         return soundFontsCollectionOrphansAlert(count: notification.intObject)
       case .soundFontFileAccessDenied:
-        return soundFontFileAccessDeniedAlert(name: notification.urlObject.absoluteString)
+        return soundFontFileAccessDeniedAlert(name: notification.urlObject.lastPathComponent)
       case .synthStartFailure:
         return synthStartFailureAlert(failure: notification.synthStartFailureObject)
       default: fatalError("unexpected notification - \(notification.name)")
