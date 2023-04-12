@@ -96,7 +96,7 @@ public final class AlertManager {
       case .soundFontsCollectionOrphans:
         return soundFontsCollectionOrphansAlert(count: notification.intObject)
       case .soundFontFileAccessDenied:
-        return soundFontFileAccessDeniedAlert(name: notification.stringObject)
+        return soundFontFileAccessDeniedAlert(name: notification.urlObject.absoluteString)
       case .synthStartFailure:
         return synthStartFailureAlert(failure: notification.synthStartFailureObject)
       default: fatalError("unexpected notification - \(notification.name)")
@@ -122,6 +122,11 @@ extension Notification {
   fileprivate var intObject: Int {
     guard let tmp = object as? NSNumber else { fatalError() }
     return tmp.intValue
+  }
+
+  fileprivate var urlObject: URL {
+    guard let tmp = object as? URL else { fatalError() }
+    return tmp
   }
 
   fileprivate var stringObject: String {
@@ -150,7 +155,9 @@ extension AlertManager {
 
   private func soundFontFileAccessDeniedAlert(name: String) -> AlertConfig {
     let strings = Formatters.strings.soundFontFileAccessDeniedAlert
-    return AlertConfig(title: strings.0, body: String(format: strings.1, name))
+    let format = strings.1
+    let body = String(format: format, name)
+    return AlertConfig(title: strings.0, body: body)
   }
 
   private func synthStartFailureAlert(failure: SynthStartFailure) -> AlertConfig {
