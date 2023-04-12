@@ -43,7 +43,7 @@ have been lost.";
 "soundFontsCollectionOrphansBody" = "Found %s that are not being used and moved them to local SoundFonts folder.";
 
 "soundFontFileAccessDeniedTitle" = "File Access Failure";
-"soundFontFileAccessDeniedBody" = "Unable to access and use the sound font file '%s'";
+"soundFontFileAccessDeniedBody" = "Unable to access and use the sound font file '%@'";
 
 "samplerStartFailureTitle" = "Audio Engine Failure";
 "noSamplerFailureBody" = "No sampler instance available to start";
