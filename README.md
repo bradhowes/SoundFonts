@@ -36,6 +36,11 @@ Here are some additional sites that have curated or custom SF2 files that should
 
 # Recent Changes
 
+## 2.29.1
+
+* Fix access to font files on external drive after device restart. Thanks to Eduard for alerting me to the problem.
+* Minor UI fixes.
+
 ## 2.29.0
 
 * Additional MIDI controller labels
