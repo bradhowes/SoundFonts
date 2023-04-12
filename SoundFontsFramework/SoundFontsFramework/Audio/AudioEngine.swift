@@ -269,9 +269,16 @@ public extension AudioEngine {
     presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }
       os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
-      if let presetConfig = presetConfig {
-        self.applyPresetConfig(presetConfig)
+
+      switch result {
+      case .success:
+        if let presetConfig = presetConfig {
+          self.applyPresetConfig(presetConfig)
+        }
+      case .failure:
+        activePresetManager.setActive(.none)
       }
+
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
         self.resumeRendering()
