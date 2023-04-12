@@ -758,6 +758,7 @@
 				BD074C3323CDAF51001987E9 /* AnyInfoBar.swift */,
 				BD074C3823CDAF51001987E9 /* AnyKeyboard.swift */,
 				BD1A2A7C26682146009E2338 /* KeyboardNoteProcessor.swift */,
+				BDFA98FF280DF07B0069A46F /* PresetLoader.swift */,
 				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
 				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
 				BD074C3B23CDAF51001987E9 /* SegueHandler.swift */,
@@ -765,7 +766,6 @@
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
 				BDBF897A25B5930100B58E23 /* TagsProvider.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
-				BDFA98FF280DF07B0069A46F /* PresetLoader.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

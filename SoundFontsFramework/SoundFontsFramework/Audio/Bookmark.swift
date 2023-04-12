@@ -1,7 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import Foundation
-import os
+import os.log
 
 /// A bookmark represents a file located outside of the app's own storage space. It is used to reference sound font files
 /// without making a copy of them. However there are risks involved, namely that the bookmark may not resolve to a real
@@ -21,8 +21,16 @@ public final class Bookmark: Codable {
   public let name: String
   public private(set) var bookmark: Data?
   public let original: URL
+  public var url: URL { restore() }
 
-  private var _resolved: URL?
+  private func restore() -> URL {
+    let resolved = Self.resolve(from: self.bookmark)
+    if resolved.stale {
+      self.bookmark = resolved.url?.secureBookmarkData
+      NotificationCenter.default.post(name: .bookmarkChanged, object: nil)
+    }
+    return resolved.url ?? original
+  }
 
   /**
    Construct a new bookmark
@@ -33,8 +41,9 @@ public final class Bookmark: Codable {
   public init(url: URL, name: String) {
     self.name = name
     original = url
-    bookmark = bookmarkData
-    os_log(.debug, log: log, "name: %{public}s data.count: %d url: %{public}s", name, bookmark?.count ?? 0, url.path)
+    bookmark = url.secureBookmarkData
+    os_log(.debug, log: log, "name: %{public}s data.count: %d url: %{public}s",
+           name, bookmark?.count ?? 0, url.absoluteString)
   }
 
   /**
@@ -56,23 +65,18 @@ public final class Bookmark: Codable {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     name = try values.decode(String.self, forKey: .name)
     original = try values.decode(URL.self, forKey: .original)
-    let data = try? values.decode(Data.self, forKey: .bookmark)
-    bookmark = data
-    _resolved = Self.resolve(from: data)
+    bookmark = try values.decode(Data.self, forKey: .bookmark)
   }
 }
 
 extension Bookmark {
 
-  /// The resolved URL of the bookmark. Note well that this may not point to a valid file if the file has moved or is
-  /// not available.
-  public var url: URL { _resolved ?? self.resolve() }
-
   /// Determine the availability state for a bookmarked URL
   public var isAvailable: Bool {
     let secured = url.startAccessingSecurityScopedResource()
-    defer { if secured { url.stopAccessingSecurityScopedResource() } }
-    return (try? url.checkResourceIsReachable()) ?? false
+    let value = try? url.checkResourceIsReachable()
+    if secured { url.stopAccessingSecurityScopedResource() }
+    return value ?? false
   }
 
   /// Determine if the file is located in an iCloud container
@@ -116,25 +120,33 @@ extension Bookmark {
   }
 }
 
+private extension URL {
+
+  var secureBookmarkData: Data? {
+    let secured = self.startAccessingSecurityScopedResource()
+    let data = try? self.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
+    if secured { self.stopAccessingSecurityScopedResource() }
+    return data
+  }
+}
+
 extension Bookmark {
-  private static func resolve(from data: Data?) -> URL? {
-    guard let data = data else { return nil }
-    var isStale = false
-    return try? URL(
-      resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &isStale)
-  }
 
-  private func resolve() -> URL {
-    if let url = _resolved { return url }
-    _resolved = Self.resolve(from: self.bookmark)
-    return _resolved ?? original
-  }
-
-  private var bookmarkData: Data? {
-    let secured = url.startAccessingSecurityScopedResource()
-    defer { if secured { url.stopAccessingSecurityScopedResource() } }
-    return try? url.bookmarkData(
-      options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
+  private static func resolve(from data: Data?) -> (url: URL?, stale: Bool) {
+    os_log(.info, log: log, "resolve: data.count: %d", data?.count ?? 0)
+    guard let data = data else { return (url: nil, stale: false) }
+    do {
+      var isStale = false
+      let url = try URL(resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &isStale)
+      os_log(.info, log: log, "resolved - isStale: %d url: %{public}s", isStale, url.absoluteString)
+      if isStale {
+        return (url: url, stale: true)
+      }
+      return (url: url, stale: false)
+    } catch {
+      os_log(.info, log: log, "failed to resolve - %{public}s", error.localizedDescription)
+      return (url: nil, stale: false)
+    }
   }
 }
 

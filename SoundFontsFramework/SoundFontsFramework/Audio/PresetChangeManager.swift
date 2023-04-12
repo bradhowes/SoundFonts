@@ -125,9 +125,10 @@ private final class PresetChangeOperation: Operation {
     }
 
     os_log(.debug, log: log, "before loadAndActivate - %{public}s", url.absoluteString)
+    let secure = url.startAccessingSecurityScopedResource()
     let result = synth.loadAndActivatePreset(preset, from: url)
     os_log(.debug, log: log, "after loadAndActivate - %d", result ?? noErr)
-
+    if secure { url.stopAccessingSecurityScopedResource() }
     os_log(.debug, log: log, "before afterLoadBlock")
     if let error = result {
       operationResult = .failure(.failedToLoad(error: error))

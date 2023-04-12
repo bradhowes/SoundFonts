@@ -51,4 +51,6 @@ extension Notification.Name {
   public static let reverbConfigChanged = Notification.Name("reverbConfigChanged")
   /// Notification that active delay config has changed
   public static let delayConfigChanged = Notification.Name("delayConfigChanged")
+  /// Notification that a Bookmark has changed
+  public static let bookmarkChanged = Notification.Name("bookmarkChanged")
 }

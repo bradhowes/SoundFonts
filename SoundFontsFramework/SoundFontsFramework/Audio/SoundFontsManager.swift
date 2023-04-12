@@ -14,6 +14,8 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private var observer: ConsolidatedConfigObserver!
   public var collection: SoundFontCollection { observer.soundFonts }
 
+  private var bookmarkChangeObserver: NSObjectProtocol?
+
   /**
    Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
    fails then creates a new one containing SoundFont instances embedded in the app.
@@ -23,6 +25,12 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
     super.init()
     observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider,
                                           restored: notifyCollectionRestored)
+    bookmarkChangeObserver = NotificationCenter.default.addObserver(forName: .bookmarkChanged, object: nil,
+                                                                    queue: nil) { _ in
+      if self.observer.isRestored {
+        self.markCollectionChanged()
+      }
+    }
   }
 }
 
