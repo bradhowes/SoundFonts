@@ -6,6 +6,11 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.29.1
+
+* Fix access to font files on external drive after device restart. Thanks to Eduard for alerting me to the problem.
+* Minor UI fixes.
+
 # 2.29.0
 
 * Additional MIDI controller labels
