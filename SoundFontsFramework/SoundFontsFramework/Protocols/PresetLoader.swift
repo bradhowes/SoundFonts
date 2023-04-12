@@ -24,15 +24,14 @@ extension AVAudioUnitSampler: PresetLoader {
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
     do {
-      stopAllNotes()
       try loadSoundBankInstrument(at: url, program: UInt8(preset.program), bankMSB: UInt8(preset.bankMSB),
                                   bankLSB: UInt8(preset.bankLSB))
     } catch let error as NSError {
       switch error.code {
       case -43: // not found
-        NotificationCenter.default.post(name: .soundFontFileNotAvailable, object: url.lastPathComponent)
+        NotificationCenter.default.post(name: .soundFontFileNotAvailable, object: url)
       case -54: // permission error for SF2 file
-        NotificationCenter.default.post(name: .soundFontFileAccessDenied, object: url.lastPathComponent)
+        NotificationCenter.default.post(name: .soundFontFileAccessDenied, object: url)
       default:
         break
       }
