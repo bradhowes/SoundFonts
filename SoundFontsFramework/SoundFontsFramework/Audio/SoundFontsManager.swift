@@ -394,5 +394,6 @@ extension SoundFontsManager {
   private func notifyCollectionRestored() {
     os_log(.debug, log: log, "restored")
     notify(.restored)
+    markCollectionChanged()
   }
 }
