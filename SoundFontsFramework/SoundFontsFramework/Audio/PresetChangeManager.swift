@@ -124,7 +124,7 @@ private final class PresetChangeOperation: Operation {
       return
     }
 
-    os_log(.debug, log: log, "before loadAndActivate")
+    os_log(.debug, log: log, "before loadAndActivate - %{public}s", url.absoluteString)
     let result = synth.loadAndActivatePreset(preset, from: url)
     os_log(.debug, log: log, "after loadAndActivate - %d", result ?? noErr)
 
