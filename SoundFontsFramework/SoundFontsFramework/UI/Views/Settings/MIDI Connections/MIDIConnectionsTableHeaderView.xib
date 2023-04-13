@@ -63,10 +63,6 @@
                 <constraint firstAttribute="trailing" secondItem="XXs-cL-ehd" secondAttribute="trailing" id="STa-Q0-o3E"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="connected" destination="wsI-Ng-Mhn" id="ZfG-bo-KvG"/>
-                <outlet property="name" destination="UJT-iG-5va" id="hfj-rN-0Dn"/>
-            </connections>
             <point key="canvasLocation" x="140" y="41"/>
         </view>
     </objects>

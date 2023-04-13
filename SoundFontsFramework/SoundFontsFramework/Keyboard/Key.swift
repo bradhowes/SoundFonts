@@ -4,7 +4,7 @@ import UIKit
 
 /// Visual representation of a piano key. Each key has an associated Note value which determines what MIDI note the key
 /// will emit when touched.
-public final class Key: UIView {
+final class Key: UIView {
 
   private let settings: Settings
 
@@ -18,10 +18,10 @@ public final class Key: UIView {
   private var keyWidth: CGFloat { CGFloat(settings.keyWidth) }
 
   /// The note to play when touched
-  public let note: Note
+  let note: Note
 
   /// State of the key -- true when touched/pressed
-  public var pressed: Bool = false {
+   var pressed: Bool = false {
     didSet {
       if oldValue != pressed {
         DispatchQueue.main.async {
@@ -37,7 +37,7 @@ public final class Key: UIView {
    - parameter frame: location of the key
    - parameter note: the note that the key plays
    */
-  public init(frame: CGRect, note: Note, settings: Settings) {
+  init(frame: CGRect, note: Note, settings: Settings) {
     self.note = note
     self.settings = settings
     super.init(frame: frame)
@@ -49,7 +49,7 @@ public final class Key: UIView {
 
    - parameter coder: data container to use
    */
-  public required init?(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     fatalError()
   }
 
@@ -58,7 +58,7 @@ public final class Key: UIView {
 
    - parameter rect: the region to draw in
    */
-  public override func draw(_ rect: CGRect) {
+  override func draw(_ rect: CGRect) {
     let roundedCorner: CGFloat = (0.1875 * rect.width).rounded()
     if note.accented {
       KeyboardRender.drawBlackKey(
@@ -80,7 +80,7 @@ public final class Key: UIView {
   }
 
   /// Description of Key instance for logging
-  public override var description: String { "Key(\(note),\(pressed))" }
+  override var description: String { "Key(\(note),\(pressed))" }
 
   private func configure() {
     self.backgroundColor = .clear

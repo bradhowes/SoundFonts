@@ -31,7 +31,7 @@ public enum ActivePresetEvent: CustomStringConvertible {
  */
 public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
-  public enum State: Equatable {
+  enum State: Equatable {
     case starting
     case pending(ActivePresetKind)
     case normal
@@ -47,18 +47,18 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   private let debounceDelay = 0.3
   private var activityDebounceTimer: Timer?
 
-  public private(set) var state: State = .starting
+  private(set) var state: State = .starting
 
   /// The currently active preset (if any)
-  public private(set) var active: ActivePresetKind = .none {
+  private(set) var active: ActivePresetKind = .none {
     didSet {
       isLoading = true
     }
   }
 
-  public private(set) var isLoading: Bool = false
+  private(set) var isLoading: Bool = false
 
-  public var activeSoundFontKey: SoundFont.Key? { active.soundFontAndPreset?.soundFontKey }
+  var activeSoundFontKey: SoundFont.Key? { active.soundFontAndPreset?.soundFontKey }
 
   /// The currently active sound font (if any)
   public var activeSoundFont: SoundFont? {

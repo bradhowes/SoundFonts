@@ -114,7 +114,7 @@ extension ActivePresetKind: Codable {
 extension ActivePresetKind: SettingSerializable {
 
   // Legacy support
-  public static func decodeFromData(_ data: Data) -> ActivePresetKind? {
+  static func decodeFromData(_ data: Data) -> ActivePresetKind? {
     try? JSONDecoder().decode(ActivePresetKind.self, from: data)
   }
 
@@ -124,7 +124,7 @@ extension ActivePresetKind: SettingSerializable {
    - parameter dict: container to extract from
    - returns: optional ActivePresetKind
    */
-  public static func decodeFromDict(_ dict: [String: Any]) -> ActivePresetKind? {
+  static func decodeFromDict(_ dict: [String: Any]) -> ActivePresetKind? {
     try? DictionaryCoder.DictionaryDecoder().decode(ActivePresetKind.self, from: dict)
   }
 
@@ -133,9 +133,9 @@ extension ActivePresetKind: SettingSerializable {
 
    - returns: optional dictionary containing the encoded value
    */
-  public func encodeToDict() -> [String: Any]? { try? DictionaryCoder.DictionaryEncoder().encode(self) }
+  func encodeToDict() -> [String: Any]? { try? DictionaryCoder.DictionaryEncoder().encode(self) }
 
-  public static func register(key: String, value: ActivePresetKind, source: UserDefaults) {
+  static func register(key: String, value: ActivePresetKind, source: UserDefaults) {
     if let dict = value.encodeToDict() {
       source.register(defaults: [key: dict])
     }

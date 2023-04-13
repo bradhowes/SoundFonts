@@ -4,7 +4,7 @@ import UIKit
 import os.log
 
 /// Configuration for an alert to be shown to the user.
-public struct AlertConfig {
+struct AlertConfig {
   /// Title of the alert
   let title: String
   /// Message body of the alert
@@ -110,7 +110,7 @@ public final class AlertManager {
 
    - parameter alert: the contents of the alert to show
    */
-  public func post(alert: AlertConfig) {
+  func post(alert: AlertConfig) {
     guard let presenter = self.presenter else { return }
     os_log(.debug, log: log, "post BEGIN")
     queue.addOperation(AlertOperation(alert: alert, presenter: presenter))

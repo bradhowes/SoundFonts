@@ -8,5 +8,4 @@
 
 import UIKit
 
-final public class MIDIActionsTableHeaderView: UITableViewHeaderFooterView, ReusableView, NibLoadableView {
-}
+final class MIDIActionsTableHeaderView: UITableViewHeaderFooterView, ReusableView, NibLoadableView {}

@@ -15,13 +15,9 @@ final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
   private weak var router: ComponentContainer?
-  private var soundFonts: SoundFontsProvider!
   private var activePresetManager: ActivePresetManager!
-  private var keyboard: AnyKeyboard!
   private var audioEngine: AudioEngine?
-  private var infoBar: AnyInfoBar!
   private var settings: Settings!
-  fileprivate var noteInjector: NoteInjector!
 
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
@@ -274,38 +270,41 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "establishConnections BEGIN")
     self.router = router
 
-    soundFonts = router.soundFonts
-    infoBar = router.infoBar
-    keyboard = router.keyboard
     activePresetManager = router.activePresetManager
     settings = router.settings
-    noteInjector = .init(settings: settings)
 
 #if !targetEnvironment(macCatalyst)
     volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
 #endif
 
-    router.subscribe(self, notifier: routerChangedNotificationInBackground)
-
-    infoBar.addEventClosure(.panic) { [weak self] _ in
+    router.infoBar.addEventClosure(.panic) { [weak self] _ in
       guard let self = self else { return }
-      self.infoBar.setStatusText("All notes off")
+      router.infoBar.setStatusText("All notes off")
       self.audioEngine?.stopAllNotes()
     }
 
+    guard let keyboard = router.keyboard else {
+      fatalError("main app needs a keyboard to play")
+    }
+
     if let audioEngine = router.audioEngine {
-      activePresetManager.runOnNotifyQueue { self.setAudioEngineInBackground(audioEngine) }
+      activePresetManager.runOnNotifyQueue {
+        audioEngine.attachKeyboard(keyboard)
+        self.setAudioEngineInBackground(audioEngine)
+      }
+    } else {
+      router.subscribe(self) { [weak self] event in
+        guard let self = self else { return }
+        switch event {
+        case .audioEngineAvailable(let audioEngine):
+          audioEngine.attachKeyboard(keyboard)
+          self.setAudioEngineInBackground(audioEngine)
+        }
+      }
     }
 
     activePresetManager.restoreActive(settings.lastActivePreset)
     os_log(.debug, log: log, "establishConnections END")
-  }
-
-  private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
-    os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
-    switch event {
-    case .audioEngineAvailable(let audioEngine): setAudioEngineInBackground(audioEngine)
-    }
   }
 
   private func setAudioEngineInBackground(_ audioEngine: AudioEngine) {
@@ -313,7 +312,6 @@ extension MainViewController: ControllerConfiguration {
     guard self.audioEngine == nil else { return }
 
     self.audioEngine = audioEngine
-    audioEngine.attachKeyboard(keyboard)
 
     // If we were started but did not have the synth available, now we can continue starting the audio session.
     if startRequested {

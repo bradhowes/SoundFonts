@@ -3,7 +3,7 @@
 import UIKit
 
 /// Custom sequence / iterator that will spit out 2-tuples of CGRect and Note values for the next key in a keyboard view.
-internal struct KeyParamsSequence: Sequence, IteratorProtocol {
+struct KeyParamsSequence: Sequence, IteratorProtocol {
   private var nextMidiNote: Int
   private var lastMidiNote: Int
   private var nextX: CGFloat

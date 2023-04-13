@@ -77,12 +77,6 @@
                 <constraint firstAttribute="trailing" secondItem="XXs-cL-ehd" secondAttribute="trailing" id="STa-Q0-o3E"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="identifier" destination="UJT-iG-5va" id="jMq-ik-DVs"/>
-                <outlet property="name" destination="8lh-tx-nVm" id="n2o-rY-POC"/>
-                <outlet property="used" destination="wsI-Ng-Mhn" id="Tb0-Pf-YeT"/>
-                <outlet property="value" destination="xeO-bv-yj1" id="pgB-00-pkr"/>
-            </connections>
             <point key="canvasLocation" x="140" y="41"/>
         </view>
     </objects>
