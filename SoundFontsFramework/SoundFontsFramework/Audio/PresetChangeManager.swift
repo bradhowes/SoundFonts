@@ -3,33 +3,6 @@
 import AVFoundation
 import os
 
-/// Failure modes for a PresetChangeOperation
-public enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
-  /// No synth is available
-  case noSynth
-  /// Request was cancelled
-  case cancelled
-  /// Failed to load a preset
-  case failedToLoad(error: NSError)
-
-  /// The system error associated with a failure.
-  var error: NSError? {
-    switch self {
-    case .noSynth: return nil
-    case .cancelled: return nil
-    case .failedToLoad(let err): return err
-    }
-  }
-
-  public var description: String {
-    switch self {
-    case .noSynth: return "<PresetChangeFailure: no synth>"
-    case .cancelled: return "<PresetChangeFailure: cancelled>"
-    case .failedToLoad(error: let error): return "<PresetChangeFailure: failedToLoad - \(error.localizedDescription)>"
-    }
-  }
-}
-
 /**
  Controls changes to the active sound font preset of a synth. Requests are sent to a queue so that changes take place
  in an asynchronous but serial manner.
@@ -138,5 +111,32 @@ private final class PresetChangeOperation: Operation {
 
     os_log(.debug, log: log, "after afterLoadBlock")
     os_log(.debug, log: log, "main - END")
+  }
+}
+
+/// Failure modes for a PresetChangeOperation
+enum PresetChangeFailure: Error, Equatable, CustomStringConvertible {
+  /// No synth is available
+  case noSynth
+  /// Request was cancelled
+  case cancelled
+  /// Failed to load a preset
+  case failedToLoad(error: NSError)
+
+  /// The system error associated with a failure.
+  var error: NSError? {
+    switch self {
+    case .noSynth: return nil
+    case .cancelled: return nil
+    case .failedToLoad(let err): return err
+    }
+  }
+
+  var description: String {
+    switch self {
+    case .noSynth: return "<PresetChangeFailure: no synth>"
+    case .cancelled: return "<PresetChangeFailure: cancelled>"
+    case .failedToLoad(error: let error): return "<PresetChangeFailure: failedToLoad - \(error.localizedDescription)>"
+    }
   }
 }

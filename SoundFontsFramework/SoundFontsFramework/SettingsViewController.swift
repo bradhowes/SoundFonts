@@ -6,7 +6,7 @@ import MessageUI
 import UIKit
 import os
 
-public enum KeyLabelOption: Int {
+enum KeyLabelOption: Int {
   case off
   case all
   case cOnly
@@ -15,10 +15,10 @@ public enum KeyLabelOption: Int {
 /**
  Manages view showing various runtime settings and options that the user can modify.
  */
-public final class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController {
   private lazy var log = Logging.logger("SettingsViewController")
 
-  @IBOutlet weak var scrollView: UIScrollView!
+  @IBOutlet private weak var scrollView: UIScrollView!
   @IBOutlet private weak var contentView: UIView!
   @IBOutlet private weak var upperBackground: UIView!
   @IBOutlet private weak var doneButton: UIBarButtonItem!
@@ -94,13 +94,13 @@ public final class SettingsViewController: UIViewController {
   private var revealKeyboardForKeyWidthChanges = false
   private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
-  public weak var settings: Settings!
-  public weak var soundFonts: SoundFontsProvider!
-  public weak var infoBar: AnyInfoBar!
-  public weak var midi: MIDI?
-  public weak var midiConnectionMonitor: MIDIConnectionMonitor?
-  public weak var midiRouter: MIDIEventRouter?
-  public var isMainApp = true
+  private weak var settings: Settings!
+  private weak var soundFonts: SoundFontsProvider!
+  private weak var infoBar: AnyInfoBar!
+  private weak var midi: MIDI?
+  private weak var midiConnectionMonitor: MIDIConnectionMonitor?
+  private weak var midiRouter: MIDIEventRouter?
+  private var isMainApp = true
   private var monitorToken: NotificationObserver?
   private var midiConnectionsObserver: NSKeyValueObservation!
   private var tuningComponent: TuningComponent?
@@ -133,8 +133,8 @@ public final class SettingsViewController: UIViewController {
   ]
 
   // swiftlint:disable function_parameter_count
-  public func configure(isMainApp: Bool, soundFonts: SoundFontsProvider, settings: Settings,
-                        midi: MIDI?, midiConnectionMonitor: MIDIConnectionMonitor?, infoBar: AnyInfoBar) {
+  func configure(isMainApp: Bool, soundFonts: SoundFontsProvider, settings: Settings,
+                 midi: MIDI?, midiConnectionMonitor: MIDIConnectionMonitor?, infoBar: AnyInfoBar) {
     self.isMainApp = isMainApp
     self.soundFonts = soundFonts
     self.settings = settings
@@ -144,7 +144,7 @@ public final class SettingsViewController: UIViewController {
   }
   // swiftlint:enable function_parameter_count
 
-  override public func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
 
     review.isEnabled = isMainApp
@@ -166,7 +166,7 @@ public final class SettingsViewController: UIViewController {
     globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
   }
 
-  override public func viewWillAppear(_ animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     precondition(soundFonts != nil, "nil soundFonts")
     precondition(settings != nil, "nil settings")
 
@@ -258,7 +258,7 @@ public final class SettingsViewController: UIViewController {
     }
   }
 
-  override public func viewDidDisappear(_ animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
     os_log(.debug, log: log, "viewDidDisapper BEGIN")
     super.viewDidDisappear(animated)
     guard let tuningComponent = self.tuningComponent else { fatalError("unexpected nil tuningComponent") }
@@ -494,7 +494,7 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
     }
   }
 
-  public func mailComposeController(
+  func mailComposeController(
     _ controller: MFMailComposeViewController,
     didFinishWith result: MFMailComposeResult, error: Error?
   ) {
@@ -541,13 +541,13 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
 extension SettingsViewController: SegueHandler {
 
   /// Segues that we support.
-  public enum SegueIdentifier: String {
+  enum SegueIdentifier: String {
     case midiConnectionsTableView
     case midiControllersTableView
     case midiActionsTableView
   }
 
-  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .midiConnectionsTableView:
       guard

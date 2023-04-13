@@ -642,14 +642,13 @@
 				BDBC2EE029DF3F260090F820 /* MIDI */,
 				BD074BEF23CDAF51001987E9 /* AudioEngine.swift */,
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
+				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
-				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
-				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
-				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
-				BD95018229D767160065D837 /* SynthStartFailure.swift */,
+				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
+				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */,
 				BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */,
@@ -657,6 +656,7 @@
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
 				BDFA98EF280C60880069A46F /* SoundFontsAU.swift */,
 				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
+				BD95018229D767160065D837 /* SynthStartFailure.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";

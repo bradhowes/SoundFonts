@@ -67,7 +67,7 @@ public final class AudioEngine: SynthProvider {
   private var pitchBendRangeChangedNotifier: NotificationObserver?
 
   public let midiConnectionMonitor: MIDIConnectionMonitor?
-  public private(set) var midiEventRouter: MIDIEventRouter?
+  internal private(set) var midiEventRouter: MIDIEventRouter?
 
   private var pendingPresetLoadTimer: Timer?
 
@@ -122,16 +122,6 @@ public final class AudioEngine: SynthProvider {
     }
 
     os_log(.debug, log: Self.log, "init END")
-  }
-
-  private func pendingPresetLoad() {
-    DispatchQueue.main.async { [weak self] in
-      guard let self = self else { return }
-      self.pendingPresetLoadTimer?.invalidate()
-      self.pendingPresetLoadTimer = Timer.once(after: 0.3) { [weak self] _ in
-        _ = self?.loadActivePreset()
-      }
-    }
   }
 }
 
@@ -235,91 +225,6 @@ public extension AudioEngine {
 public extension AudioEngine {
 
   /**
-   Ask the sampler to use the active preset held by the ActivePresetManager.
-
-   - parameter afterLoadBlock: callback to invoke after the load is successfully done
-
-   - returns: Result indicating success or failure
-   */
-  private func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
-    os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
-
-    // Ok if the sampler is not yet available. We will apply the preset when it is
-    guard let synth = _synth else {
-      os_log(.debug, log: log, "no sampler yet")
-      return .failure(.noSynth)
-    }
-
-    guard let soundFont = activePresetManager.activeSoundFont else {
-      os_log(.debug, log: log, "activePresetManager.activeSoundFont is nil")
-      return .success(synth)
-    }
-
-    guard let preset = activePresetManager.activePreset else {
-      os_log(.debug, log: log, "activePresetManager.activePreset is nil")
-      return .success(synth)
-    }
-
-    let presetConfig = activePresetManager.activePresetConfig
-
-    os_log(.debug, log: log, "requesting preset change - %d", pendingPresetChanges)
-
-    pauseRendering(synth)
-
-    presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
-      guard let self = self else { return }
-      os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
-
-      switch result {
-      case .success:
-        if let presetConfig = presetConfig {
-          self.applyPresetConfig(presetConfig)
-        }
-      case .failure:
-        self.activePresetManager.setActive(.none)
-      }
-
-      DispatchQueue.main.async { [weak self] in
-        guard let self = self else { return }
-        self.resumeRendering()
-        afterLoadBlock?()
-      }
-    }
-
-    os_log(.debug, log: log, "loadActivePreset END")
-    return .success(synth)
-  }
-
-  private func pauseRendering(_ synth: AnyMIDISynth) {
-    pendingPresetChanges += 1
-    if pendingPresetChanges == 1 {
-      renderingResumeTimer?.invalidate()
-      renderingResumeTimer = nil
-      if let engine = self.engine {
-        engine.pause()
-        engine.mainMixerNode.volume = 0.0
-        synth.avAudioUnit.reset()
-      }
-      Self.presetLoadingChangeNotification.post(value: true)
-    }
-  }
-
-  private func resumeRendering() {
-    pendingPresetChanges -= 1
-    if pendingPresetChanges == 0 {
-      renderingResumeTimer = Timer.once(after: 0.3) { [weak self] _ in
-        guard let self = self else { return }
-        if let engine = self.engine {
-          try? engine.start()
-          engine.mainMixerNode.volume = 1.0
-        }
-        self.renderingResumeTimer = nil
-        Self.presetLoadingChangeNotification.post(value: false)
-      }
-    }
-  }
-
-  /**
    Change the synth to use the given preset configuration values.
 
    - parameter presetConfig: the configuration to use
@@ -417,6 +322,103 @@ public extension AudioEngine {
 
 private extension AudioEngine {
 
+  func pauseRendering(_ synth: AnyMIDISynth) {
+    pendingPresetChanges += 1
+    if pendingPresetChanges == 1 {
+      renderingResumeTimer?.invalidate()
+      renderingResumeTimer = nil
+      if let engine = self.engine {
+        engine.pause()
+        engine.mainMixerNode.volume = 0.0
+        synth.avAudioUnit.reset()
+      }
+      Self.presetLoadingChangeNotification.post(value: true)
+    }
+  }
+
+  func resumeRendering() {
+    pendingPresetChanges -= 1
+    if pendingPresetChanges == 0 {
+      renderingResumeTimer = Timer.once(after: 0.3) { [weak self] _ in
+        guard let self = self else { return }
+        if let engine = self.engine {
+          try? engine.start()
+          engine.mainMixerNode.volume = 1.0
+        }
+        self.renderingResumeTimer = nil
+        Self.presetLoadingChangeNotification.post(value: false)
+      }
+    }
+  }
+
+  func pendingPresetLoad() {
+    // We delay changing preset in case there is another change coming over due to UI/MIDI controls. When another one
+    // comes in we cancel the running timer and restart it, setting a new preset only after the time finishes and fires.
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      self.pendingPresetLoadTimer?.invalidate()
+      self.pendingPresetLoadTimer = Timer.once(after: 0.3) { [weak self] _ in
+        _ = self?.loadActivePreset()
+      }
+    }
+  }
+
+  /**
+   Ask the sampler to use the active preset held by the ActivePresetManager.
+
+   - parameter afterLoadBlock: callback to invoke after the load is successfully done
+
+   - returns: Result indicating success or failure
+   */
+  private func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
+    os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
+
+    // Ok if the sampler is not yet available. We will apply the preset when it is
+    guard let synth = _synth else {
+      os_log(.debug, log: log, "no sampler yet")
+      return .failure(.noSynth)
+    }
+
+    guard let soundFont = activePresetManager.activeSoundFont else {
+      os_log(.debug, log: log, "activePresetManager.activeSoundFont is nil")
+      return .success(synth)
+    }
+
+    guard let preset = activePresetManager.activePreset else {
+      os_log(.debug, log: log, "activePresetManager.activePreset is nil")
+      return .success(synth)
+    }
+
+    let presetConfig = activePresetManager.activePresetConfig
+
+    os_log(.debug, log: log, "requesting preset change - %d", pendingPresetChanges)
+
+    pauseRendering(synth)
+
+    presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
+      guard let self = self else { return }
+      os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
+
+      switch result {
+      case .success:
+        if let presetConfig = presetConfig {
+          self.applyPresetConfig(presetConfig)
+        }
+      case .failure:
+        self.activePresetManager.setActive(.none)
+      }
+
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        self.resumeRendering()
+        afterLoadBlock?()
+      }
+    }
+
+    os_log(.debug, log: log, "loadActivePreset END")
+    return .success(synth)
+  }
+
   private func makeSynth() -> AnyMIDISynth {
 #if USE_SF2ENGINE_SYNTH
     return AVSF2Engine()
@@ -425,8 +427,7 @@ private extension AudioEngine {
 #endif
   }
 
-  private func startEngine(_ synth: AnyMIDISynth) -> StartResult {
-
+  func startEngine(_ synth: AnyMIDISynth) -> StartResult {
     os_log(.debug, log: log, "creating AVAudioEngine")
     let engine = AVAudioEngine()
     self.engine = engine

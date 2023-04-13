@@ -8,17 +8,17 @@ import MorkAndMIDI
  A MIDI receiver that processes MIDI events from an external source. Shows the keys being played if given a Keyboard,
  and forwards MIDI commands to a synth.
  */
-final public class MIDIEventRouter {
+final class MIDIEventRouter {
   private lazy var log = Logging.logger("MIDIEventRouter")
 
-  public struct ControllerActivityPayload: CustomStringConvertible {
+  struct ControllerActivityPayload: CustomStringConvertible {
     public var description: String { "\(source) \(controller) \(value)" }
     let source: MIDIUniqueID
     let controller: UInt8
     let value: UInt8
   }
 
-  public struct ActionActivityPayload: CustomStringConvertible {
+  struct ActionActivityPayload: CustomStringConvertible {
     public var description: String { "\(action) \(kind) \(value)" }
     let action: MIDIControllerAction
     let kind: MIDIControllerActionKind
@@ -29,24 +29,24 @@ final public class MIDIEventRouter {
 
   static private let controllerActivityNotifier = ControllerActivityNotifier()
 
-  static public func monitorControllerActivity(block: @escaping (ControllerActivityPayload) -> Void) -> NotificationObserver {
+  static func monitorControllerActivity(block: @escaping (ControllerActivityPayload) -> Void) -> NotificationObserver {
     controllerActivityNotifier.addMonitor(block: block)
   }
 
   static private let actionNotifier = ActionNotifier()
 
-  static public func monitorActionActivity(block: @escaping (ActionActivityPayload) -> Void) -> NotificationObserver {
+  static func monitorActionActivity(block: @escaping (ActionActivityPayload) -> Void) -> NotificationObserver {
     actionNotifier.addMonitor(block: block)
   }
 
   private(set) var midiControllerState: [MIDIControllerState] = []
 
   /// Current MIDI channel to listen to for MIDI. A value of -1 means OMNI -- accept all messages
-  public private(set) var channel: Int
-  public private(set) var group: Int
+  internal private(set) var channel: Int
+  internal private(set) var group: Int
 
-  public var audioEngine: AudioEngine? { _audioEngine }
-  public let midiControllerActionStateManager: MIDIControllerActionStateManager
+  var audioEngine: AudioEngine? { _audioEngine }
+  let midiControllerActionStateManager: MIDIControllerActionStateManager
 
   private let _audioEngine: AudioEngine?
   private let keyboard: AnyKeyboard
@@ -76,8 +76,11 @@ final public class MIDIEventRouter {
       MIDIControllerState(identifier: $0, allowed: controllerAllowed($0))
     }
   }
+}
 
-  public func stopAllNotes() {
+extension MIDIEventRouter {
+
+  func stopAllNotes() {
     keyboard.releaseAllKeys()
     // synth.stopAllNotes()
   }
