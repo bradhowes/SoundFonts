@@ -2,7 +2,7 @@
 
 import UIKit
 
-public final class GuideViewController: UIViewController {
+final class GuideViewController: UIViewController {
 
   private var savedParent: UIViewController!
   private var infoBar: AnyInfoBar!
@@ -21,10 +21,6 @@ public final class GuideViewController: UIViewController {
   @IBOutlet private weak var keyRangeArrow: ArrowView!
 
   private var isMainApp = true
-
-  public override func viewDidLoad() {
-    super.viewDidLoad()
-  }
 }
 
 extension GuideViewController: ControllerConfiguration {

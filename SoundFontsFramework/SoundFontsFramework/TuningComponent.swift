@@ -6,7 +6,7 @@ import UIKit
  Manager for tuning-related operations. Used by the FavoriteEditor and SettingsViewController.
  */
 @objc
-public final class TuningComponent: NSObject {
+final class TuningComponent: NSObject {
 
   static private let shiftA4Lookup: [String] = [
     "A2",
@@ -81,14 +81,14 @@ public final class TuningComponent: NSObject {
 
   private let textFieldKeyboardMonitor: TextFieldKeyboardMonitor
 
-  public var tuning: Float { tuningCentsValue }
+  var tuning: Float { tuningCentsValue }
 
-  public var viewToKeepVisible: UIView? {
+  var viewToKeepVisible: UIView? {
     get { textFieldKeyboardMonitor.viewToKeepVisible }
     set { textFieldKeyboardMonitor.viewToKeepVisible = newValue }
   }
 
-  public init(
+  init(
     tuning: Float,
     view: UIView,
     scrollView: UIScrollView,
@@ -137,33 +137,68 @@ public final class TuningComponent: NSObject {
 
 extension TuningComponent {
 
-  public func updateState(cents: Float, transpose: Int) {
+  func updateState(cents: Float, transpose: Int) {
     shiftA4Stepper.value = Double(transpose)
     setTuningCents(cents)
   }
 }
 
-extension TuningComponent {
+extension TuningComponent: UITextFieldDelegate {
 
-  private func shiftA4Changed(_ stepper: Any) {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    textFieldKeyboardMonitor.viewToKeepVisible = textField
+    return true
+  }
+
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    DispatchQueue.main.async {
+      textField.selectedTextRange = textField.textRange(from: textField.endOfDocument, to: textField.endOfDocument)
+    }
+  }
+
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                 replacementString string: String) -> Bool {
+    let invalid = NSCharacterSet(charactersIn: "0123456789.-").inverted
+    let filtered = string.components(separatedBy: invalid).joined(separator: "")
+    return string == filtered
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    if textField == tuningCents {
+      parseTuningCents()
+    } else {
+      parseTuningFrequency()
+    }
+    textFieldKeyboardMonitor.viewToKeepVisible = nil
+  }
+}
+
+private extension TuningComponent {
+
+  func shiftA4Changed(_ stepper: Any) {
     if let stepper = stepper as? UIStepper {
       setTuningCents(Float(stepper.value) * 100)
     }
   }
 
-  private func toggledTuningEnabled(_ switch: Any) { setTuningCents(tuningCentsValue) }
+  func toggledTuningEnabled(_ switch: Any) { setTuningCents(tuningCentsValue) }
 
-  private func useStandardTuning(_ button: Any) { setTuningFrequency(440.0) }
+  func useStandardTuning(_ button: Any) { setTuningFrequency(440.0) }
 
-  private func useScientificTuning(_ button: Any) { setTuningFrequency(432.0) }
+  func useScientificTuning(_ button: Any) { setTuningFrequency(432.0) }
 
-  private func setTuningFrequency(_ value: Float) { setTuningCents(frequencyToCents(value)) }
+  func setTuningFrequency(_ value: Float) { setTuningCents(frequencyToCents(value)) }
 
-  private func centsToFrequency(_ cents: Float) -> Float { pow(2.0, (cents / 1200.0)) * 440.0 }
+  func centsToFrequency(_ cents: Float) -> Float { pow(2.0, (cents / 1200.0)) * 440.0 }
 
-  private func frequencyToCents(_ frequency: Float) -> Float { log2(frequency / 440.0) * 1200.0 }
+  func frequencyToCents(_ frequency: Float) -> Float { log2(frequency / 440.0) * 1200.0 }
 
-  private func setTuningCents(_ value: Float) {
+  func setTuningCents(_ value: Float) {
     tuningCentsValue = min(max(value, -2400.0), 2400.0)
 
     let transposeCents = (tuningCentsValue / 100).rounded() * 100.0
@@ -184,46 +219,8 @@ extension TuningComponent {
       AudioEngine.tuningChangedNotification.post(value: tuningCentsValue)
     }
   }
-}
 
-extension TuningComponent: UITextFieldDelegate {
-
-  public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    textFieldKeyboardMonitor.viewToKeepVisible = textField
-    return true
-  }
-
-  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return true
-  }
-
-  public func textFieldDidBeginEditing(_ textField: UITextField) {
-    DispatchQueue.main.async {
-      textField.selectedTextRange = textField.textRange(from: textField.endOfDocument, to: textField.endOfDocument)
-    }
-  }
-
-  public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-                        replacementString string: String) -> Bool {
-    let invalid = NSCharacterSet(charactersIn: "0123456789.-").inverted
-    let filtered = string.components(separatedBy: invalid).joined(separator: "")
-    return string == filtered
-  }
-
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    if textField == tuningCents {
-      parseTuningCents()
-    } else {
-      parseTuningFrequency()
-    }
-    textFieldKeyboardMonitor.viewToKeepVisible = nil
-  }
-}
-
-extension TuningComponent {
-
-  @objc private func adjustForKeyboard(_ notification: Notification) {
+  @objc func adjustForKeyboard(_ notification: Notification) {
     guard
       let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
     else {
@@ -240,11 +237,8 @@ extension TuningComponent {
 
     scrollView.scrollIndicatorInsets = scrollView.contentInset
   }
-}
 
-extension TuningComponent {
-
-  private func parseTuningCents() {
+  func parseTuningCents() {
     guard let text = tuningCents.text else {
       setTuningCents(tuningCentsValue)
       return
@@ -258,7 +252,7 @@ extension TuningComponent {
     setTuningCents(value.floatValue)
   }
 
-  private func parseTuningFrequency() {
+  func parseTuningFrequency() {
     guard let text = tuningFrequency.text else {
       setTuningCents(tuningCentsValue)
       return

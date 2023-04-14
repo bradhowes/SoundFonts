@@ -7,7 +7,7 @@ import os
 /**
  View controller that manages which view -- sound fonts & presets or favorites -- is shown.
  */
-public final class SoundFontsControlsController: UIViewController {
+final class SoundFontsControlsController: UIViewController {
 
   private lazy var logger = Logging.logger("SoundFontsControlsController")
 
@@ -68,7 +68,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
    - parameter context: the RunContext that holds all of the registered managers / controllers
    */
-  public func establishConnections(_ router: ComponentContainer) {
+  func establishConnections(_ router: ComponentContainer) {
     settings = router.settings
     fontsViewManager = router.fontsViewManager
     fontsViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
@@ -82,8 +82,13 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
     isMainApp = router.isMainApp
   }
+}
 
-  private func toggleConfigurationViews(_ action: AnyObject) {
+private extension SoundFontsControlsController {
+
+  var showingEffects: Bool { effectsBottomConstraint.constant == 0.0 }
+
+  func toggleConfigurationViews(_ action: AnyObject) {
     if upperViewManager.active == 0 {
       showNextConfigurationView(action)
     } else {
@@ -91,13 +96,8 @@ extension SoundFontsControlsController: ControllerConfiguration {
     }
     AskForReview.maybe()
   }
-}
 
-extension SoundFontsControlsController {
-
-  private var showingEffects: Bool { effectsBottomConstraint.constant == 0.0 }
-
-  private func toggleShowEffects(_ sender: AnyObject) {
+  func toggleShowEffects(_ sender: AnyObject) {
     let button = sender as? UIButton
     if showingEffects {
       hideEffects()
@@ -107,7 +107,7 @@ extension SoundFontsControlsController {
     button?.tintColor = showingEffects ? .systemOrange : .systemTeal
   }
 
-  private func showEffects(_ animated: Bool = true) {
+  func showEffects(_ animated: Bool = true) {
     effectsBottomConstraint.constant = 0.0
     if animated {
       UIViewPropertyAnimator.runningPropertyAnimator(
@@ -121,7 +121,7 @@ extension SoundFontsControlsController {
     settings.showEffects = true
   }
 
-  private func hideEffects(_ animated: Bool = true) {
+  func hideEffects(_ animated: Bool = true) {
     NotificationCenter.default.post(name: .hidingEffects, object: nil)
     effectsBottomConstraint.constant = effectsHeightConstraint.constant + 8
     if animated {
@@ -134,9 +134,6 @@ extension SoundFontsControlsController {
     }
     settings.showEffects = false
   }
-}
-
-extension SoundFontsControlsController {
 
   /**
    Show the next (right) view in the space above the info bar.
@@ -173,7 +170,7 @@ extension SoundFontsControlsController: SegueHandler {
     }
   }
 
-  public enum SegueIdentifier: String {
+  enum SegueIdentifier: String {
     case guidedView
     case favorites
     case soundFontPresets
