@@ -39,9 +39,9 @@ extension GuideViewController: ControllerConfiguration {
   }
 }
 
-extension GuideViewController {
+private extension GuideViewController {
 
-  private func prepareGuide() {
+  func prepareGuide() {
     let isAUv3 = !isMainApp
     effectsLabel.isHidden = isAUv3
     effectsArrow.isHidden = isAUv3
@@ -57,7 +57,7 @@ extension GuideViewController {
     }
   }
 
-  private func showGuide(_ sender: AnyObject) {
+  func showGuide(_ sender: AnyObject) {
     prepareGuide()
     savedParent.add(self)
     view.alpha = 0.0

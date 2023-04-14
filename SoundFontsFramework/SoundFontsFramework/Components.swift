@@ -19,14 +19,14 @@ where T: ControllerConfiguration {
   public var identity: Int { consolidatedConfigProvider.identity }
   /// Manager that controls when to ask for a review from the customer
   public let askForReview: AskForReview?
+  /// The manager of the active preset
+  public let activePresetManager: ActivePresetManager
   /// The manager for the collection of sound fonts
   public let soundFonts: SoundFontsProvider
   /// The manager for the collection of favorites
   public let favorites: FavoritesProvider
   /// The manager for the collection of sound font tags
   public let tags: TagsProvider
-  /// The manager of the active preset
-  public let activePresetManager: ActivePresetManager
   /// The manager of the selected sound font
   public let selectedSoundFontManager: SelectedSoundFontManager
   /// The manager of the active tag for font filtering

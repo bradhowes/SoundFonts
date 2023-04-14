@@ -14,10 +14,10 @@ import os
 final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
-  private weak var router: ComponentContainer?
   private var activePresetManager: ActivePresetManager!
   private var audioEngine: AudioEngine?
   private var settings: Settings!
+  private var askForReview: AskForReview?
 
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
@@ -67,7 +67,7 @@ final class MainViewController: UIViewController {
       }
     }
 
-    router?.askForReview?.windowScene = view.window?.windowScene
+    askForReview?.windowScene = view.window?.windowScene
 
 #if TEST_MEDIA_SERVICES_RESTART // See Development.xcconfig
     resetTimers.append(Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
@@ -78,7 +78,7 @@ final class MainViewController: UIViewController {
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    router?.askForReview?.windowScene = nil
+    askForReview?.windowScene = nil
   }
 
   override func willTransition(to newCollection: UITraitCollection,
@@ -268,11 +268,11 @@ extension MainViewController: ControllerConfiguration {
    */
   func establishConnections(_ router: ComponentContainer) {
     os_log(.debug, log: log, "establishConnections BEGIN")
-    self.router = router
 
     activePresetManager = router.activePresetManager
     settings = router.settings
-
+    askForReview = router.askForReview
+    
 #if !targetEnvironment(macCatalyst)
     volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
 #endif

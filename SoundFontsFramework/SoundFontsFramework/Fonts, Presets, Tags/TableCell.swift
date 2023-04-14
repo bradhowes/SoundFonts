@@ -78,7 +78,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter isSelected: true if the cell holds the selected sound font
    - parameter isActive: true if the cell holds the sound font of the active preset
    */
-  public func updateForFont(at indexPath: IndexPath, name: String, kind: SoundFontKind, flags: Flags) {
+  func updateForFont(at indexPath: IndexPath, name: String, kind: SoundFontKind, flags: Flags) {
     var name = name
     if case let .reference(bookmark) = kind {
       self.bookmark = bookmark

@@ -582,13 +582,6 @@
 		BD074BD023CDAF51001987E9 /* SoundFontsFramework */ = {
 			isa = PBXGroup;
 			children = (
-				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
-				BD074C3C23CDAF51001987E9 /* Info.plist */,
-				BD074BD923CDAF51001987E9 /* UI */,
-				BD074BF123CDAF51001987E9 /* Fonts, Presets, Tags */,
-				BD074BD123CDAF51001987E9 /* Favorites */,
-				BD125B3D24100C940003DE99 /* Keyboard */,
-				BDBC2EDF29DF3EFF0090F820 /* MIDI */,
 				BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */,
 				BD125B3E241010430003DE99 /* Components.swift */,
 				BD130B0A2561506B00D1CDF6 /* EffectsController.swift */,
@@ -598,6 +591,13 @@
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
 				BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */,
+				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
+				BD074C3C23CDAF51001987E9 /* Info.plist */,
+				BD074BD923CDAF51001987E9 /* UI */,
+				BD074BF123CDAF51001987E9 /* Fonts, Presets, Tags */,
+				BD074BD123CDAF51001987E9 /* Favorites */,
+				BD125B3D24100C940003DE99 /* Keyboard */,
+				BDBC2EDF29DF3EFF0090F820 /* MIDI */,
 				BD3F44B725018DEF00653ABD /* Core Data */,
 				BD074BE823CDAF51001987E9 /* Audio */,
 				BD074C1C23CDAF51001987E9 /* Extensions */,

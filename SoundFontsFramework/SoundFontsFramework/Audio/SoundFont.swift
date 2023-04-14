@@ -11,22 +11,22 @@ public final class SoundFont: Codable {
   private var log: OSLog { Self.log }
 
   /// Presentation name of the sound font
-  public var displayName: String
+  var displayName: String
 
   ///  The resolved URL for the sound font
-  public var fileURL: URL { kind.fileURL }
+  var fileURL: URL { kind.fileURL }
 
   public typealias Key = UUID
-  public let key: Key
+  let key: Key
 
-  public let originalDisplayName: String
+  let originalDisplayName: String
 
   @DecodableDefault.EmptyString var embeddedName: String
   @DecodableDefault.EmptyString var embeddedComment: String
   @DecodableDefault.EmptyString var embeddedAuthor: String
   @DecodableDefault.EmptyString var embeddedCopyright: String
 
-  public let kind: SoundFontKind
+  let kind: SoundFontKind
 
   /// The collection of presets found in the sound font
   public let presets: [Preset]
@@ -55,7 +55,7 @@ public final class SoundFont: Codable {
    - parameter url: the resource URL for this sound font
    - parameter key: UUID for this font
    */
-  public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key, copyFilesWhenAdding: Bool) {
+  init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key, copyFilesWhenAdding: Bool) {
     self.key = key
     self.displayName = displayName
     self.originalDisplayName = displayName

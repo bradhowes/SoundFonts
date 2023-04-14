@@ -6,7 +6,7 @@ import os
 
 /// View controller for the effects controls view. Much of this functionality is duplicated in the AUv3 effects
 /// components. Should be refactored and shared between the two.
-public final class EffectsController: UIViewController {
+final class EffectsController: UIViewController {
   private lazy var log = Logging.logger("EffectsController")
 
   @IBOutlet weak var scrollView: UIScrollView!
@@ -242,9 +242,9 @@ extension EffectsController: UIPickerViewDelegate {
   }
 }
 
-extension EffectsController {
+private extension EffectsController {
 
-  private func updateGlobalConfig() {
+  func updateGlobalConfig() {
     if let reverbEffect = self.reverbEffect, settings.reverbGlobal {
       os_log(.debug, log: log, "updating global reverb settings")
       let config = reverbEffect.active
@@ -264,7 +264,7 @@ extension EffectsController {
     }
   }
 
-  private func updatePresetConfig() {
+  func updatePresetConfig() {
     guard let reverbEffect = self.reverbEffect,
           let delayEffect = self.delayEffect
     else {
@@ -312,7 +312,7 @@ extension EffectsController {
     updateGlobalConfig()
   }
 
-  private func routerChangeNotificationInBackground(_ event: ComponentContainerEvent) {
+  func routerChangeNotificationInBackground(_ event: ComponentContainerEvent) {
     switch event {
     case .audioEngineAvailable(let audioEngine):
       DispatchQueue.main.async {
@@ -323,12 +323,12 @@ extension EffectsController {
     }
   }
 
-  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+  func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     guard case .changed = event else { return }
     DispatchQueue.main.async { self.updateState() }
   }
 
-  private func updateState() {
+  func updateState() {
     os_log(.debug, log: log, "updateState")
     let presetConfig = activePresetManager.activePresetConfig
 
@@ -356,9 +356,9 @@ extension EffectsController {
     }
   }
 
-  private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
+  func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
-  private func update(config: ReverbConfig) {
+  func update(config: ReverbConfig) {
     os_log(.debug, log: log, "update ReverbConfig - %{public}s", config.description)
     reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
     reverbWetDryMix.setValue(config.wetDryMix, animated: true)
@@ -366,7 +366,7 @@ extension EffectsController {
     updateReverbState(config.enabled)
   }
 
-  private func updateReverbState(_ enabled: Bool) {
+  func updateReverbState(_ enabled: Bool) {
     os_log(.debug, log: log, "updateReverbState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.reverbEnabled.accessibilityLabel = enabled ? "DisableReverbEffect" : "EnableReverbEffect"
@@ -383,7 +383,7 @@ extension EffectsController {
     animator.startAnimation()
   }
 
-  private func update(config: DelayConfig) {
+  func update(config: DelayConfig) {
     os_log(.debug, log: log, "update DelayConfig - %{public}s", config.description)
     delayTime.setValue(config.time, animated: true)
     showDelayTimeValue()
@@ -396,7 +396,7 @@ extension EffectsController {
     updateDelayState(config.enabled)
   }
 
-  private func updateDelayState(_ enabled: Bool) {
+  func updateDelayState(_ enabled: Bool) {
     os_log(.debug, log: log, "updateDelayState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.delayEnabled.accessibilityLabel = enabled ? "DisableDelayEffect" : "EnableDelayEffect"
@@ -420,19 +420,19 @@ extension EffectsController {
     animator.startAnimation()
   }
 
-  private func showReverbMixValue() {
+  func showReverbMixValue() {
     reverbWetDryMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%")
   }
 
-  private func showDelayTimeValue() {
+  func showDelayTimeValue() {
     delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s")
   }
 
-  private func showDelayFeedbackValue() {
+  func showDelayFeedbackValue() {
     delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%")
   }
 
-  private func showDelayCutoffValue() {
+  func showDelayCutoffValue() {
     let value = pow(10.0, delayCutoff.value)
     if value < 1000.0 {
       delayCutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
@@ -441,11 +441,11 @@ extension EffectsController {
     }
   }
 
-  private func showDelayMixValue() {
+  func showDelayMixValue() {
     delayWetDryMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%")
   }
 
-  private func registerConfigObservers() {
+  func registerConfigObservers() {
     if let reverbEffect = reverbEffect {
       reverbConfigObserver = NotificationCenter.default.addObserver(forName: .reverbConfigChanged,
                                                                     object: nil,

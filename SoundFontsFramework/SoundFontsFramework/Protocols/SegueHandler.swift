@@ -4,7 +4,7 @@ import UIKit
 
 /// Protocol definition for objects that know about segues between UIView controllers. The protocol basically defines
 /// a type-safe way to translate from a UIStoryboardSegue.identifier value into a type-specific value (probably an enum)
-public protocol SegueHandler {
+protocol SegueHandler {
   associatedtype SegueIdentifier: RawRepresentable
 }
 
@@ -16,7 +16,7 @@ extension SegueHandler where Self: UIViewController, SegueIdentifier.RawValue ==
    - parameter segue: the segue to look for
    - returns: the identifier for the segue
    */
-  public func segueIdentifier(for segue: UIStoryboardSegue) -> SegueIdentifier {
+  func segueIdentifier(for segue: UIStoryboardSegue) -> SegueIdentifier {
     guard let identifier = segue.identifier,
           let segueIdentifier = SegueIdentifier(rawValue: identifier)
     else {
@@ -30,7 +30,7 @@ extension SegueHandler where Self: UIViewController, SegueIdentifier.RawValue ==
 
    - parameter segueIdentifier: the identifier of the segue to perform
    */
-  public func performSegue(withIdentifier segueIdentifier: SegueIdentifier, sender: Any? = nil) {
+  func performSegue(withIdentifier segueIdentifier: SegueIdentifier, sender: Any? = nil) {
     performSegue(withIdentifier: segueIdentifier.rawValue, sender: sender)
   }
 }

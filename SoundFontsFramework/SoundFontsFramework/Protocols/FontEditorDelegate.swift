@@ -3,13 +3,13 @@
 import UIKit
 
 /// Reason why the FontEditor view was dismissed by the user.
-public enum FontEditorDismissedReason {
+enum FontEditorDismissedReason {
   case cancel
   case done(soundFontKey: SoundFont.Key)
 }
 
 /// Protocol for the `SoundFontDetailController` delegate instance.
-public protocol FontEditorDelegate: NSObjectProtocol {
+protocol FontEditorDelegate: NSObjectProtocol {
   /**
    Notification when the FontEditor is dismissed and editing of a particular SoundFont instance
    is over.

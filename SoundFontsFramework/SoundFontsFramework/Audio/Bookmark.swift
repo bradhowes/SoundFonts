@@ -6,7 +6,7 @@ import os.log
 /// A bookmark represents a file located outside of the app's own storage space. It is used to reference sound font files
 /// without making a copy of them. However there are risks involved, namely that the bookmark may not resolve to a real
 /// file.
-public final class Bookmark: Codable {
+final class Bookmark: Codable {
   private static let log = Logging.logger("Bookmark")
   private var log: OSLog { Self.log }
 

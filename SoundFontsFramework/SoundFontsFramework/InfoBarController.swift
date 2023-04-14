@@ -6,7 +6,7 @@ import MorkAndMIDI
 
 /// Manager of the strip informational strip between the keyboard and the SoundFont presets / favorites screens. Supports
 /// left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
-public final class InfoBarController: UIViewController {
+final class InfoBarController: UIViewController {
   private lazy var log = Logging.logger("InfoBarController")
 
   @IBOutlet private weak var status: UILabel!
@@ -55,6 +55,9 @@ public final class InfoBarController: UIViewController {
   private var presetConfigChangedNotifier: NotificationObserver?
   private var midiIndicatorAnimator: MIDIIndicatorPulseAnimation?
   private var monitorToken: NotificationObserver?
+}
+
+extension InfoBarController {
 
   public override func viewDidLoad() {
     super .viewDidLoad()
@@ -136,9 +139,55 @@ public final class InfoBarController: UIViewController {
 }
 
 extension InfoBarController {
-  @IBAction private func toggleMoreButtons(_ sender: UIButton) { setMoreButtonsVisible(state: !showingMoreButtons) }
-  @IBAction private func showSettings(_ sender: UIButton) { setMoreButtonsVisible(state: false) }
-  @IBAction private func toggleSlideKeyboard(_ sender: UIButton) { settings.slideKeyboard = !settings.slideKeyboard }
+
+  func resetButtonState(_ event: InfoBarEvent) {
+    let button: UIButton? = {
+      switch event {
+      case .addSoundFont: return addSoundFont
+      case .showGuide: return showGuide
+      case .showSettings: return showSettings
+      case .editVisibility: return editVisibility
+      case .showEffects: return showEffects
+      case .showTags: return showTags
+      default: return nil
+      }
+    }()
+    button?.tintColor = .systemTeal
+  }
+
+  /**
+   Set the text to temporarily show in the center of the info bar.
+
+   - parameter value: the text to display
+   */
+  func setStatusText(_ value: String) {
+    status.text = value
+    startStatusAnimation()
+  }
+
+  /**
+   Set the range of keys to show in the bar
+
+   - parameter from: the first key label
+   - parameter to: the last key label
+   */
+  func setVisibleKeyLabels(from: String, to: String) {
+    lowestKeyValue = from
+    highestKeyValue = to
+    updateKeyLabels()
+  }
+
+  func showMoreButtons() {
+    setMoreButtonsVisible(state: true)
+  }
+
+  func hideMoreButtons() {
+    setMoreButtonsVisible(state: false)
+  }
+
+  func updateTuningIndicator() {
+    updateTuningIndicator(activePresetManager.activePresetConfig?.presetTuning ?? 0.0)
+  }
 }
 
 extension InfoBarController: ControllerConfiguration {
@@ -200,125 +249,11 @@ extension InfoBarController: AnyInfoBar {
     }
   }
   // swiftlint:enable cyclomatic_complexity
-
-  private func addDoubleTapClosure(_ closure: @escaping UIControl.Closure) { doubleTap.addClosure(closure) }
-  private func addSoundFontClosure(_ closure: @escaping UIControl.Closure) { addSoundFont.addClosure(closure) }
-  private func addButtonLongPressGestureClosure(_ closure: @escaping UIControl.Closure) { addButtonLongPressGesture.addClosure(closure) }
-  private func addShowGuideClosure(_ closure: @escaping UIControl.Closure) { showGuide.addClosure(closure) }
-  private func addShowSettingsClosure(_ closure: @escaping UIControl.Closure) { showSettings.addClosure(closure) }
-  private func addEditVisibilityClosure(_ closure: @escaping UIControl.Closure) { editVisibility.addClosure(closure) }
-  private func addShowEffectsClosure(_ closure: @escaping UIControl.Closure) { showEffects.addClosure(closure) }
-  private func addShowTagsClosure(_ closure: @escaping UIControl.Closure) { showTags.addClosure(closure) }
-
-  private func doPanic(_ closure: @escaping UIControl.Closure) {
-    presetViewLongPressGesture.addClosure(closure)
-    effectsButtonLongPressGesture.addClosure(closure)
-  }
-
-  private func addShiftKeyboardUpClosure(_ closure: @escaping UIControl.Closure) {
-    highestKey.addClosure(closure)
-    highestKey.isHidden = false
-    slidingKeyboardToggle.isHidden = false
-  }
-
-  private func addShiftKeyboardDownClosure(_ closure: @escaping UIControl.Closure) {
-    lowestKey.addClosure(closure)
-    lowestKey.isHidden = false
-    slidingKeyboardToggle.isHidden = false
-  }
-
-  private func addShowMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
-    showMoreButtonsButton.addClosure { [weak self] button in
-      guard let self = self, self.showingMoreButtons else { return }
-      closure(button)
-    }
-  }
-
-  private func addHideMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
-    showMoreButtonsButton.addClosure { [weak self] button in
-      guard let self = self, !self.showingMoreButtons else { return }
-      closure(button)
-    }
-  }
-
-  private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
-    os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
-    switch event {
-    case .audioEngineAvailable(let audioEngine):
-      self.midi = audioEngine.midi
-      self.midiConnectionMonitor = audioEngine.midiConnectionMonitor
-    }
-  }
-
-  public func resetButtonState(_ event: InfoBarEvent) {
-    let button: UIButton? = {
-      switch event {
-      case .addSoundFont: return addSoundFont
-      case .showGuide: return showGuide
-      case .showSettings: return showSettings
-      case .editVisibility: return editVisibility
-      case .showEffects: return showEffects
-      case .showTags: return showTags
-      default: return nil
-      }
-    }()
-    button?.tintColor = .systemTeal
-  }
-
-  /**
-   Set the text to temporarily show in the center of the info bar.
-
-   - parameter value: the text to display
-   */
-  public func setStatusText(_ value: String) {
-    status.text = value
-    startStatusAnimation()
-  }
-
-  /**
-   Set the range of keys to show in the bar
-
-   - parameter from: the first key label
-   - parameter to: the last key label
-   */
-  public func setVisibleKeyLabels(from: String, to: String) {
-    lowestKeyValue = from
-    highestKeyValue = to
-    updateKeyLabels()
-  }
-
-  public func showMoreButtons() {
-    setMoreButtonsVisible(state: true)
-  }
-
-  public func hideMoreButtons() {
-    setMoreButtonsVisible(state: false)
-  }
-
-  public func updateIndicators(_ presetConfig: PresetConfig) {
-    updateTuningIndicator(presetConfig.presetTuning)
-    updateGainIndicator(presetConfig.gain)
-    updatePanIndicator(presetConfig.pan)
-  }
-
-  public func updateTuningIndicator() {
-    updateTuningIndicator(activePresetManager.activePresetConfig?.presetTuning ?? 0.0)
-  }
-
-  public func updatePanIndicator() {
-    updatePanIndicator(activePresetManager.activePresetConfig?.pan ?? 0.0)
-  }
-
-  public func updateGainIndicator() {
-    updateGainIndicator(activePresetManager.activePresetConfig?.gain ?? 0.0)
-  }
 }
-
-// MARK: - Private
 
 extension InfoBarController: SegueHandler {
 
-  public enum SegueIdentifier: String {
+  enum SegueIdentifier: String {
     case settings
   }
 
@@ -327,8 +262,77 @@ extension InfoBarController: SegueHandler {
       beginSettingsView(segue, sender: sender)
     }
   }
+}
 
-  private func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
+// MARK: - Private
+
+private extension InfoBarController {
+
+  func updateIndicators(_ presetConfig: PresetConfig) {
+    updateTuningIndicator(presetConfig.presetTuning)
+    updateGainIndicator(presetConfig.gain)
+    updatePanIndicator(presetConfig.pan)
+  }
+
+  func updatePanIndicator() { updatePanIndicator(activePresetManager.activePresetConfig?.pan ?? 0.0) }
+  func updateGainIndicator() { updateGainIndicator(activePresetManager.activePresetConfig?.gain ?? 0.0) }
+  func addDoubleTapClosure(_ closure: @escaping UIControl.Closure) { doubleTap.addClosure(closure) }
+  func addSoundFontClosure(_ closure: @escaping UIControl.Closure) { addSoundFont.addClosure(closure) }
+  func addButtonLongPressGestureClosure(_ closure: @escaping UIControl.Closure) { addButtonLongPressGesture.addClosure(closure) }
+  func addShowGuideClosure(_ closure: @escaping UIControl.Closure) { showGuide.addClosure(closure) }
+  func addShowSettingsClosure(_ closure: @escaping UIControl.Closure) { showSettings.addClosure(closure) }
+  func addEditVisibilityClosure(_ closure: @escaping UIControl.Closure) { editVisibility.addClosure(closure) }
+  func addShowEffectsClosure(_ closure: @escaping UIControl.Closure) { showEffects.addClosure(closure) }
+  func addShowTagsClosure(_ closure: @escaping UIControl.Closure) { showTags.addClosure(closure) }
+
+  func doPanic(_ closure: @escaping UIControl.Closure) {
+    presetViewLongPressGesture.addClosure(closure)
+    effectsButtonLongPressGesture.addClosure(closure)
+  }
+
+  func addShiftKeyboardUpClosure(_ closure: @escaping UIControl.Closure) {
+    highestKey.addClosure(closure)
+    highestKey.isHidden = false
+    slidingKeyboardToggle.isHidden = false
+  }
+
+  func addShiftKeyboardDownClosure(_ closure: @escaping UIControl.Closure) {
+    lowestKey.addClosure(closure)
+    lowestKey.isHidden = false
+    slidingKeyboardToggle.isHidden = false
+  }
+
+  func addShowMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
+    showMoreButtonsButton.addClosure { [weak self] button in
+      guard let self = self, self.showingMoreButtons else { return }
+      closure(button)
+    }
+  }
+
+  func addHideMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
+    showMoreButtonsButton.addClosure { [weak self] button in
+      guard let self = self, !self.showingMoreButtons else { return }
+      closure(button)
+    }
+  }
+
+  func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
+    os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
+    switch event {
+    case .audioEngineAvailable(let audioEngine):
+      self.midi = audioEngine.midi
+      self.midiConnectionMonitor = audioEngine.midiConnectionMonitor
+    }
+  }
+}
+
+private extension InfoBarController {
+
+  @IBAction func toggleMoreButtons(_ sender: UIButton) { setMoreButtonsVisible(state: !showingMoreButtons) }
+  @IBAction func showSettings(_ sender: UIButton) { setMoreButtonsVisible(state: false) }
+  @IBAction func toggleSlideKeyboard(_ sender: UIButton) { settings.slideKeyboard = !settings.slideKeyboard }
+
+  func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? SettingsViewController
     else { return }
@@ -347,11 +351,8 @@ extension InfoBarController: SegueHandler {
        ppc.permittedArrowDirections = .any
     }
   }
-}
 
-extension InfoBarController {
-
-  private func setMoreButtonsVisible(state: Bool) {
+  func setMoreButtonsVisible(state: Bool) {
     guard state != showingMoreButtons else { return }
     guard traitCollection.horizontalSizeClass == .compact else { return }
 
@@ -388,17 +389,17 @@ extension InfoBarController {
     }
   }
 
-  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+  func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     if case .changed = event {
       DispatchQueue.main.async { self.showActivePreset() }
     }
   }
 
-  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
+  func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     DispatchQueue.main.async { self.showActivePreset() }
   }
 
-  private func showActivePreset() {
+  func showActivePreset() {
     let activePresetKind = activePresetManager.active
     os_log(.debug, log: log, "useActivePresetKind BEGIN - %{public}s", activePresetKind.description)
     if activePresetKind.favoriteKey != nil,
@@ -412,7 +413,7 @@ extension InfoBarController {
     }
   }
 
-  private func setPresetInfo(presetConfig: PresetConfig, isFavored: Bool) {
+  func setPresetInfo(presetConfig: PresetConfig, isFavored: Bool) {
     os_log(.debug, log: log, "setPresetInfo: %{public}s %d %f", presetConfig.name, isFavored)
     presetInfo.text = TableCell.favoriteTag(isFavored) + presetConfig.name
     updateTuningIndicator(presetConfig.presetTuning)
@@ -421,21 +422,21 @@ extension InfoBarController {
     cancelStatusAnimation()
   }
 
-  private func updateTuningIndicator(_ presetTuning: Float) {
+  func updateTuningIndicator(_ presetTuning: Float) {
     os_log(.debug, log: log, "updateTuningIndicator BEGIN - %f", presetTuning)
     tuningIndicator.isHidden = presetTuning == 0.0 && settings.globalTuning == 0.0
     os_log(.debug, log: log, "updateTuningIndicator END")
   }
 
-  private func updatePanIndicator(_ presetPan: Float) {
+  func updatePanIndicator(_ presetPan: Float) {
     panIndicator.isHidden = presetPan == 0.0
   }
 
-  private func updateGainIndicator(_ presetGain: Float) {
+  func updateGainIndicator(_ presetGain: Float) {
     gainIndicator.isHidden = presetGain == 0.0
   }
 
-  private func startStatusAnimation() {
+  func startStatusAnimation() {
     cancelStatusAnimation()
 
     status.isHidden = false
@@ -455,14 +456,14 @@ extension InfoBarController {
     self.fader?.startAnimation(afterDelay: 1.0)
   }
 
-  private func cancelStatusAnimation() {
+  func cancelStatusAnimation() {
     if let fader = self.fader {
       fader.stopAnimation(true)
       self.fader = nil
     }
   }
 
-  @objc private func panKeyboard(_ panner: UIPanGestureRecognizer) {
+  @objc func panKeyboard(_ panner: UIPanGestureRecognizer) {
     if panner.state == .began {
       panOrigin = panner.translation(in: view)
     } else {
@@ -482,7 +483,7 @@ extension InfoBarController {
     }
   }
 
-  private func updateKeyLabels() {
+  func updateKeyLabels() {
     UIView.performWithoutAnimation {
       lowestKey.setTitle("❰" + lowestKeyValue, for: .normal)
       lowestKey.accessibilityLabel = "Keyboard down before " + lowestKeyValue
@@ -493,11 +494,11 @@ extension InfoBarController {
     }
   }
 
-  private func updateSlidingKeyboardState() {
+  func updateSlidingKeyboardState() {
     slidingKeyboardToggle.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
   }
 
-  private func updateMIDIIndicator(accepted: Bool) {
+  func updateMIDIIndicator(accepted: Bool) {
     let color = accepted ? UIColor.systemTeal : UIColor.systemOrange
     midiIndicatorAnimator?.start(radius: midiIndicator.frame.height / 2, color: color, duration: 0.5,
                                  repetitions: 2.0)

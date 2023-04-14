@@ -439,7 +439,7 @@ private extension SoundFontsViewController {
 // MARK: - FontEditorDelegate Protocol
 
 extension SoundFontsViewController: FontEditorDelegate {
-  public func dismissed(reason: FontEditorDismissedReason) {
+  func dismissed(reason: FontEditorDismissedReason) {
     if case let .done(soundFontKey) = reason {
       guard let soundFont = soundFonts.getBy(key: soundFontKey) else { return }
       soundFonts.rename(key: soundFontKey, name: soundFont.displayName)

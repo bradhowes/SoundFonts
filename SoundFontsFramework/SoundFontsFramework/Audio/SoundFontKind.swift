@@ -5,7 +5,7 @@ import SF2Files
 import os
 
 /// Various error conditions for loading or working with a sound font (SF2) file
-public enum SoundFontKindError: Error {
+enum SoundFontKindError: Error {
   case invalidKind
   case failedToRead
   case failedToResolveURL
@@ -13,7 +13,7 @@ public enum SoundFontKindError: Error {
 
 /// There are two types of SoundFont instances in the application: a built-in kind that resides in the app's bundle, and
 /// a file kind which comes from an external source.
-public enum SoundFontKind {
+enum SoundFontKind {
   static let log = Logging.logger("SoundFontKind")
 
   /// Built-in sound font file that is comes with the app. Holds a URL to a bundle resource
@@ -25,7 +25,7 @@ public enum SoundFontKind {
   case reference(bookmark: Bookmark)
 
   /// The URL that points to the data file that defines the SoundFont.
-  public var fileURL: URL {
+  var fileURL: URL {
     switch self {
     case .builtin(let resource): return resource
     case .installed(let file): return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(file)
@@ -34,10 +34,10 @@ public enum SoundFontKind {
   }
 
   /// The String representation of the fileURL
-  public var path: String { return fileURL.path }
+  var path: String { return fileURL.path }
 
   /// True if built-in resource
-  public var builtin: Bool {
+  var builtin: Bool {
     switch self {
     case .builtin: return true
     case .installed: return false
@@ -46,10 +46,10 @@ public enum SoundFontKind {
   }
 
   /// True if the file was added by the user
-  public var installed: Bool { !builtin }
+  var installed: Bool { !builtin }
 
   /// True if added file is a reference
-  public var reference: Bool {
+  var reference: Bool {
     switch self {
     case .builtin: return false
     case .installed: return false
@@ -57,7 +57,7 @@ public enum SoundFontKind {
     }
   }
 
-  public var deletable: Bool { installed && !reference }
+  var deletable: Bool { installed && !reference }
 
   /// Key used to encode/decode the above case types.
   private enum InternalKey: Int {
@@ -71,7 +71,7 @@ public enum SoundFontKind {
 
 extension SoundFontKind: Codable {
 
-  public init(from decoder: Decoder) throws {
+  init(from decoder: Decoder) throws {
     var container = try decoder.unkeyedContainer()
     let kind = InternalKey(rawValue: try container.decode(Int.self))
     switch kind {
@@ -94,7 +94,7 @@ extension SoundFontKind: Codable {
     }
   }
 
-  public func encode(to encoder: Encoder) throws {
+  func encode(to encoder: Encoder) throws {
     var container = encoder.unkeyedContainer()
     switch self {
     case .builtin(let resource):
@@ -113,7 +113,8 @@ extension SoundFontKind: Codable {
 // MARK: - Hashable Protocol
 
 extension SoundFontKind: Hashable {
-  public func hash(into hasher: inout Hasher) {
+
+  func hash(into hasher: inout Hasher) {
     switch self {
     case .builtin(let resource):
       hasher.combine(InternalKey.builtin.rawValue)
