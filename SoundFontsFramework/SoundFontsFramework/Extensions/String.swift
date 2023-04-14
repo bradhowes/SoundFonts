@@ -8,7 +8,7 @@ private let systemFontAttributes = [
 
 private class BundleTag: NSObject {}
 
-public extension String {
+extension String {
 
   /// Trim whitespaces from value and return nil if empty string. Otherwise, return trimmed value
   var trimmedWhiteSpacesOrNil: String? {
@@ -56,12 +56,12 @@ public extension String {
   }
 }
 
-public struct VersionComponents: Comparable {
+struct VersionComponents: Comparable {
   let major: Int
   let minor: Int
   let patch: Int
 
-  public static func < (lhs: VersionComponents, rhs: VersionComponents) -> Bool {
+  static func < (lhs: VersionComponents, rhs: VersionComponents) -> Bool {
     lhs.major < rhs.major
       || (lhs.major == rhs.major
                 && (lhs.minor < rhs.minor
@@ -71,7 +71,7 @@ public struct VersionComponents: Comparable {
 
 extension String {
 
-  public var versionComponents: VersionComponents {
+  var versionComponents: VersionComponents {
     let values =
       self.split(separator: ".").map { Int($0.split(separator: " ")[0]) ?? 0 } + [0, 0, 0]
     return VersionComponents(major: values[0], minor: values[1], patch: values[2])

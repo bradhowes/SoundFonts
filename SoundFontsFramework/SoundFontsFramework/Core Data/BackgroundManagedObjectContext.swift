@@ -1,10 +1,10 @@
 import CoreData
 
-public final class BackgroundManagedObjectContext {
+final class BackgroundManagedObjectContext {
 
   private var context: NSManagedObjectContext
 
-  public init(_ context: NSManagedObjectContext) {
+  init(_ context: NSManagedObjectContext) {
     self.context = context
   }
 
@@ -15,7 +15,7 @@ public final class BackgroundManagedObjectContext {
 
 extension BackgroundManagedObjectContext {
 
-  public convenience init(
+  convenience init(
     _ container: NSPersistentContainer, _ configure: (NSManagedObjectContext) -> Void
   ) {
     let context = container.newBackgroundContext()
@@ -23,11 +23,11 @@ extension BackgroundManagedObjectContext {
     self.init(context)
   }
 
-  public func performTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+  func performTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
     context.perform { [weak self] in self.map { block($0.context) } }
   }
 
-  public func write(
+  func write(
     errorBlock: @escaping (Error?) -> Void,
     _ taskBlock: @escaping (NSManagedObjectContext) throws -> Void
   ) {

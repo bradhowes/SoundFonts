@@ -5,51 +5,51 @@ import UIKit
 private class BundleTag {}
 
 /// Collection of value formatters that use localized strings.
-public struct Formatters {
+struct Formatters {
 
-  public struct Strings {
+  struct Strings {
     private var bundle: Bundle { Bundle(for: BundleTag.self) }
 
-    public var allTagName: String {
+    var allTagName: String {
       NSLocalizedString("allTagName", bundle: bundle, comment: "The name of the 'all' tag.")
     }
 
-    public var builtInTagName: String {
+    var builtInTagName: String {
       NSLocalizedString(
         "builtInTagName", bundle: bundle, comment: "The name of the 'Built-in' tag.")
     }
 
-    public var newTagName: String {
+    var newTagName: String {
       NSLocalizedString(
         "newTagName", bundle: bundle, comment: "The initial name to use for a new tag")
     }
 
-    public var cancelButton: String {
+    var cancelButton: String {
       NSLocalizedString("cancelButton", bundle: bundle, comment: "Cancel or dismiss view")
     }
 
-    public var editButton: String {
+    var editButton: String {
       NSLocalizedString("editButton", bundle: bundle, comment: "Begin editing")
     }
 
-    public var doneButton: String {
+    var doneButton: String {
       NSLocalizedString("doneButton", bundle: bundle, comment: "End editing")
     }
 
-    public var saveButton: String {
+    var saveButton: String {
       NSLocalizedString("saveButton", bundle: bundle, comment: "Save current values")
     }
 
-    public var volumeIsZero: String {
+    var volumeIsZero: String {
       NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
     }
 
-    public var noPresetLoaded: String {
+    var noPresetLoaded: String {
       NSLocalizedString(
         "noPresetLoaded", bundle: bundle, comment: "HUD message when no preset is loaded")
     }
 
-    public var otherAppAudio: String {
+    var otherAppAudio: String {
       NSLocalizedString(
         "otherAppAudio", bundle: bundle, comment: "HUD message when another app controls audio")
     }
@@ -213,7 +213,7 @@ public struct Formatters {
     }
   }
 
-  public static let strings: Strings = Strings()
+  static let strings: Strings = Strings()
 
   /**
    Obtain a formatted slider value.
@@ -221,7 +221,7 @@ public struct Formatters {
    - parameter sliderValue the value to format
    - returns string value
    */
-  public static func format(sliderValue: Float) -> String {
+  static func format(sliderValue: Float) -> String {
     sliderFormatter.string(for: sliderValue) ?? "???"
   }
   /**
@@ -230,7 +230,7 @@ public struct Formatters {
    - parameter fileCount: value to format
    - returns: string value
    */
-  public static func format(fileCount: Int) -> String {
+  static func format(fileCount: Int) -> String {
     .localizedStringWithFormat(strings.fileCount, fileCount)
   }
 
@@ -240,23 +240,23 @@ public struct Formatters {
    - parameter presetCount: value to format
    - returns: string value
    */
-  public static func format(presetCount: Int) -> String {
+  static func format(presetCount: Int) -> String {
     .localizedStringWithFormat(strings.presetCount, presetCount)
   }
 
-  public static func format(favoriteCount: Int) -> String {
+  static func format(favoriteCount: Int) -> String {
     .localizedStringWithFormat(strings.favoriteCount, favoriteCount)
   }
 
-  public static func format(emptyFileCount: Int) -> String {
+  static func format(emptyFileCount: Int) -> String {
     .localizedStringWithFormat(strings.emptyFileCount, emptyFileCount)
   }
 
-  public static func format(invalidFileCount: Int) -> String {
+  static func format(invalidFileCount: Int) -> String {
     .localizedStringWithFormat(strings.invalidFileCount, invalidFileCount)
   }
 
-  public static func format(failedToAddFileCount: Int) -> String {
+  static func format(failedToAddFileCount: Int) -> String {
     .localizedStringWithFormat(strings.failedToAddFileCount, failedToAddFileCount)
   }
 
@@ -266,7 +266,7 @@ public struct Formatters {
    - parameter failures: the list of failures
    - returns: string value
    */
-  public static func makeAddSoundFontFailureText(failures: [SoundFontFileLoadFailure]) -> String {
+  static func makeAddSoundFontFailureText(failures: [SoundFontFileLoadFailure]) -> String {
     guard !failures.isEmpty else { return "" }
     var counts = [SoundFontFileLoadFailure: [String]]()
     for failure in failures {
@@ -298,7 +298,7 @@ public struct Formatters {
    - parameter total: total number of sound fonts attempted
    - returns: string value
    */
-  public static func makeAddSoundFontBody(
+  static func makeAddSoundFontBody(
     ok: [String], failures: [SoundFontFileLoadFailure],
     total: Int
   ) -> String {

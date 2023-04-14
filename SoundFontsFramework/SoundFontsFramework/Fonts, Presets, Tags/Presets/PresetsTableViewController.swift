@@ -5,23 +5,23 @@ import AVFoundation
 import os
 
 /// View controller for the UITableView showing the presets of a sound font
-public final class PresetsTableViewController: UITableViewController {
+final class PresetsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("PresetsTableViewController")
 
   /// Text field for entering preset search queries.
-  @IBOutlet public var searchBar: UISearchBar!
+  @IBOutlet var searchBar: UISearchBar!
   private var infoBar: AnyInfoBar!
 
   /// True when user is searching
-  public var isSearching: Bool { searchBar.isFirstResponder }
+  var isSearching: Bool { searchBar.isFirstResponder }
 
-  public typealias AfterReloadDataAction = () -> Void
+  typealias AfterReloadDataAction = () -> Void
 
   /// Closure to execute after the table view performs `layoutSubviews`. This is reset to nil in `viewDidLayoutSubviews`.
-  public var afterReloadDataAction: AfterReloadDataAction?
+  var afterReloadDataAction: AfterReloadDataAction?
 
   /// A row to make visible after the table view performs `layoutSubviews`. This is reset to nil in `viewDidLayoutSubviews`.
-  public var slotToScrollTo: IndexPath? {
+  var slotToScrollTo: IndexPath? {
     didSet {
       os_log(.debug, log: log, "slotToScrollTo: %{public}s", slotToScrollTo.descriptionOrNil)
       if slotToScrollTo == lastSelectedSlot {
@@ -41,7 +41,7 @@ public final class PresetsTableViewController: UITableViewController {
 
 extension PresetsTableViewController {
 
-  public override func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
 
     tableView.register(TableCell.self)
@@ -59,7 +59,7 @@ extension PresetsTableViewController {
     tableView.addGestureRecognizer(longPressGesture)
   }
 
-  @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+  @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
     let point = sender.location(in: tableView)
     if let indexPath = tableView.indexPathForRow(at: point),
        let view = tableView.cellForRow(at: indexPath) {
@@ -71,7 +71,7 @@ extension PresetsTableViewController {
     }
   }
 
-  public override func viewWillAppear(_ animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     os_log(.debug, log: log, "viewWillAppear BEGIN")
     super.viewWillAppear(animated)
     if tableView.numberOfRows(inSection: 0) == 0 {
@@ -84,7 +84,7 @@ extension PresetsTableViewController {
    Notification that the table view has performed `layoutSubviews`. Here we perform actions that needed to wait until the
    table view was updated.
    */
-  public override func viewDidLayoutSubviews() {
+  override func viewDidLayoutSubviews() {
     os_log(.debug, log: log, "viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
 
@@ -118,7 +118,7 @@ extension PresetsTableViewController {
     os_log(.debug, log: log, "viewDidLayoutSubviews END")
   }
 
-  public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     os_log(.debug, log: log, "viewWillTransition BEGIN")
     super.viewWillTransition(to: size, with: coordinator)
     if isSearching {
@@ -132,7 +132,7 @@ extension PresetsTableViewController {
 
 // MARK: - UITableViewDataSource Protocol
 
-public extension PresetsTableViewController {
+extension PresetsTableViewController {
 
   override func numberOfSections(in tableView: UITableView) -> Int {
     lastSelectedSlot = nil
@@ -169,7 +169,7 @@ public extension PresetsTableViewController {
 
 // MARK: - UITableViewDelegate Protocol
 
-public extension PresetsTableViewController {
+extension PresetsTableViewController {
 
   override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     .none
@@ -233,57 +233,52 @@ public extension PresetsTableViewController {
   }
 }
 
-// MARK: - Preset visibility editing
+// MARK: Searching
 
-extension PresetsTableViewController {
+extension PresetsTableViewController: UISearchBarDelegate {
 
   /**
-   Toggle the edit visibility action.
+   Notification from searchBar that the text value changed. NOTE: this is not invoked when programmatically set.
 
-   - parameter sender: the button that was touched
+   - parameter searchBar: the UISearchBar where the change took place
+   - parameter searchText: the current search term
    */
-  func toggleVisibilityEditing(_ sender: AnyObject) {
-    let button = sender as? UIButton
-    button?.tintColor = isEditing ? .systemTeal : .systemOrange
-    if isEditing == false {
-
-      // If user was searching, cancel out of it.
-      searchBar.endSearch()
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    os_log(.debug, log: log, "searchBar.textDidChange - %{public}s", searchText)
+    guard let term = searchBar.searchTerm else {
+      lastSearchText = ""
       presetsTableViewManager.cancelSearch()
-
-      // Begin editing after next `layoutSubviews`.
-      afterReloadDataAction = { self.beginVisibilityEditing() }
-    } else {
-      endVisibilityEditing()
+      return
     }
+    presetsTableViewManager.search(for: term)
+    lastSearchText = term
   }
 
-  private func beginVisibilityEditing() {
-    os_log(.debug, log: log, "beginVisibilityEditing BEGIN")
+  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    os_log(.debug, log: log, "searchBarTextDidEndEditing - %d", searchBar.isFirstResponder)
+    endSearch()
+  }
 
-    // We show currently-hidden items but we don't update existing IndexPath values. This is fast and not complicated,
-    // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
-    // back into sync. The result as written looks nice with no animation disruptions.
-    //
-    guard let insertions = presetsTableViewManager.beginVisibilityEditing() else { return }
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    os_log(.debug, log: log, "searchBarSearchButtonClicked - %d", searchBar.isFirstResponder)
+    endSearch()
+  }
 
-    tableView.performBatchUpdates {
-      tableView.reloadSectionIndexTitles()
-      self.tableView.insertRows(at: insertions, with: .none)
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    endSearch()
+  }
 
-      // Set editing mode here in order to have the inserted cells above in editing mode.
-      setEditing(true, animated: true)
+  func endSearch() {
+    lastSearchText = searchBar.nonNilSearchTerm
+    presetsTableViewManager.cancelSearch()
+    self.searchBar.endSearch()
+
+    UIView.animate(withDuration: 0.25) {
+      self.tableView.contentOffset = .init(x: 0, y: self.searchBar.frame.height)
     } completion: { _ in
-      self.showVisibilityState()
-    }
-
-    os_log(.debug, log: log, "beginVisibilityEditing END")
-  }
-
-  private func showVisibilityState() {
-    os_log(.debug, log: self.log, "showVisibilityState")
-    for (indexPath, isVisible) in presetsTableViewManager.visibilityState where isVisible {
-      tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+      self.tableView.tableHeaderView = nil
+      self.tableView.contentOffset = .zero
+      self.presetsTableViewManager.showActiveSlot()
     }
   }
 
@@ -307,73 +302,11 @@ extension PresetsTableViewController {
   }
 }
 
-// MARK: Searching
-
-extension PresetsTableViewController: UISearchBarDelegate {
-
-  private func beginSearch() {
-    guard searchBar.isFirstResponder == false else { return }
-    let offset: CGPoint = .init(x: self.tableView.contentOffset.x, y: 0)
-    tableView.tableHeaderView = searchBar
-    UIView.animate(withDuration: 0.25) {
-      self.tableView.contentOffset = offset
-      self.searchBar.beginSearch(with: self.lastSearchText)
-    } completion: { _ in
-      self.presetsTableViewManager.search(for: self.lastSearchText)
-    }
-  }
-
-  private func endSearch() {
-    lastSearchText = searchBar.nonNilSearchTerm
-    presetsTableViewManager.cancelSearch()
-    self.searchBar.endSearch()
-
-    UIView.animate(withDuration: 0.25) {
-      self.tableView.contentOffset = .init(x: 0, y: self.searchBar.frame.height)
-    } completion: { _ in
-      self.tableView.tableHeaderView = nil
-      self.tableView.contentOffset = .zero
-      self.presetsTableViewManager.showActiveSlot()
-    }
-  }
-
-  /**
-   Notification from searchBar that the text value changed. NOTE: this is not invoked when programmatically set.
-
-   - parameter searchBar: the UISearchBar where the change took place
-   - parameter searchText: the current search term
-   */
-  public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    os_log(.debug, log: log, "searchBar.textDidChange - %{public}s", searchText)
-    guard let term = searchBar.searchTerm else {
-      lastSearchText = ""
-      presetsTableViewManager.cancelSearch()
-      return
-    }
-    presetsTableViewManager.search(for: term)
-    lastSearchText = term
-  }
-
-  public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    os_log(.debug, log: log, "searchBarTextDidEndEditing - %d", searchBar.isFirstResponder)
-    endSearch()
-  }
-
-  public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    os_log(.debug, log: log, "searchBarSearchButtonClicked - %d", searchBar.isFirstResponder)
-    endSearch()
-  }
-
-  public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    endSearch()
-  }
-}
-
 // MARK: ControllerConfiguration
 
 extension PresetsTableViewController: ControllerConfiguration {
 
-  public func establishConnections(_ router: ComponentContainer) {
+  func establishConnections(_ router: ComponentContainer) {
     infoBar = router.infoBar
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
 
@@ -391,5 +324,70 @@ extension PresetsTableViewController: ControllerConfiguration {
                                                       infoBar: router.infoBar,
                                                       settings: router.settings)
     tableView.tableHeaderView = nil
+  }
+}
+
+private extension PresetsTableViewController {
+
+  /**
+   Toggle the edit visibility action.
+
+   - parameter sender: the button that was touched
+   */
+  func toggleVisibilityEditing(_ sender: AnyObject) {
+    let button = sender as? UIButton
+    button?.tintColor = isEditing ? .systemTeal : .systemOrange
+    if isEditing == false {
+
+      // If user was searching, cancel out of it.
+      searchBar.endSearch()
+      presetsTableViewManager.cancelSearch()
+
+      // Begin editing after next `layoutSubviews`.
+      afterReloadDataAction = { self.beginVisibilityEditing() }
+    } else {
+      endVisibilityEditing()
+    }
+  }
+
+  func beginVisibilityEditing() {
+    os_log(.debug, log: log, "beginVisibilityEditing BEGIN")
+
+    // We show currently-hidden items but we don't update existing IndexPath values. This is fast and not complicated,
+    // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
+    // back into sync. The result as written looks nice with no animation disruptions.
+    //
+    guard let insertions = presetsTableViewManager.beginVisibilityEditing() else { return }
+
+    tableView.performBatchUpdates {
+      tableView.reloadSectionIndexTitles()
+      self.tableView.insertRows(at: insertions, with: .none)
+
+      // Set editing mode here in order to have the inserted cells above in editing mode.
+      setEditing(true, animated: true)
+    } completion: { _ in
+      self.showVisibilityState()
+    }
+
+    os_log(.debug, log: log, "beginVisibilityEditing END")
+  }
+
+  func showVisibilityState() {
+    os_log(.debug, log: self.log, "showVisibilityState")
+    for (indexPath, isVisible) in presetsTableViewManager.visibilityState where isVisible {
+      tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+    }
+  }
+
+  func beginSearch() {
+    guard searchBar.isFirstResponder == false else { return }
+    let offset: CGPoint = .init(x: self.tableView.contentOffset.x, y: 0)
+    tableView.tableHeaderView = searchBar
+    UIView.animate(withDuration: 0.25) {
+      self.tableView.contentOffset = offset
+      self.searchBar.beginSearch(with: self.lastSearchText)
+    } completion: { _ in
+      self.presetsTableViewManager.search(for: self.lastSearchText)
+    }
   }
 }

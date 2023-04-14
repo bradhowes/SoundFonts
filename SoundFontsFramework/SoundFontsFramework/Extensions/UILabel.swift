@@ -8,21 +8,6 @@ private var timerAssociation = AssociatedObject<Timer>()
 
 extension UILabel {
 
-  private var originalText: String? {
-    get {
-      if let value = stringAssociation[self] { return value }
-      let value = self.text ?? "?"
-      stringAssociation[self] = value
-      return value
-    }
-    set { stringAssociation[self] = newValue }
-  }
-
-  private var fadeTimer: Timer? {
-    get { timerAssociation[self] }
-    set { timerAssociation[self] = newValue }
-  }
-
   /**
    Show a temporary status string in a label, replacing its current value. After some amount of time elapses, restore
    the label to the original content.
@@ -47,6 +32,21 @@ extension UILabel {
       }
     }
     text = status
+  }
+
+  private var originalText: String? {
+    get {
+      if let value = stringAssociation[self] { return value }
+      let value = self.text ?? "?"
+      stringAssociation[self] = value
+      return value
+    }
+    set { stringAssociation[self] = newValue }
+  }
+
+  private var fadeTimer: Timer? {
+    get { timerAssociation[self] }
+    set { timerAssociation[self] = newValue }
   }
 
   private func fadeTransition() {

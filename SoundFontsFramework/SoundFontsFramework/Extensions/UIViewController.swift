@@ -2,7 +2,7 @@
 
 import UIKit
 
-public extension UIViewController {
+extension UIViewController {
 
   /**
    Add the given UIViewController as a child.

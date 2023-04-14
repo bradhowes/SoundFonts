@@ -3,12 +3,12 @@
 import UIKit
 
 /// Custom UIView that draws an arrow between an entry and an exit point on the border of the view.
-open class ArrowView: UIView {
+class ArrowView: UIView {
 
   /**
    Supported locations for an entry or an exit
    */
-  public enum Position: Int, CaseIterable {
+  enum Position: Int, CaseIterable {
     case left
     case top
     case right
@@ -16,44 +16,44 @@ open class ArrowView: UIView {
   }
 
   /// Entry point for the arrow in this view
-  open var entry: Position = .top
+  var entry: Position = .top
 
   /// Exit point for the arrow in this view
-  open var exit: Position = .bottom
+  var exit: Position = .bottom
 
   /// Line width of the line
-  open var lineWidth: CGFloat = 0.5
+  var lineWidth: CGFloat = 0.5
 
   /// Width of the arrow tail (gap across the top of the "V")
-  open var arrowWidth: CGFloat = 8.0 { didSet { createArrow() } }
+  var arrowWidth: CGFloat = 8.0 { didSet { createArrow() } }
 
   /// Color of the line
-  open var lineColor: UIColor = .systemOrange {
+  var lineColor: UIColor = .systemOrange {
     didSet { lineLayer.strokeColor = lineColor.cgColor }
   }
 
   /// Color of the arrow
-  open var arrowBorderColor: UIColor = .systemOrange {
+  var arrowBorderColor: UIColor = .systemOrange {
     didSet { arrowLayer.strokeColor = arrowBorderColor.cgColor }
   }
 
   /// Color of the arrow
-  open var arrowFillColor: UIColor = .systemOrange {
+  var arrowFillColor: UIColor = .systemOrange {
     didSet { arrowLayer.fillColor = arrowFillColor.cgColor }
   }
 
   /// Length of the arrow
-  open var arrowLength: CGFloat = 10.0 { didSet { createPaths() } }
+  var arrowLength: CGFloat = 10.0 { didSet { createPaths() } }
 
   /// Amount of bending given to a curve. This is multiplied with the dimension of the of the view and added to the
   /// dimension mid point to obtain
   /// an X or Y coordinate for a control point.
-  open var bendFactor: CGFloat = 0.20 { didSet { createLine() } }
+  var bendFactor: CGFloat = 0.20 { didSet { createLine() } }
 
   /// Amount of waviness in horizontal/vertical lines. This is multiplied with the dimension of the of the view and
   /// added to the dimension
   /// mid point to obtain an X or Y coordinate for a control point.
-  open var wavyFactor: CGFloat = 0.10 { didSet { createLine() } }
+  var wavyFactor: CGFloat = 0.10 { didSet { createLine() } }
 
   private let lineLayer = CAShapeLayer()
   private let arrowLayer = CAShapeLayer()
@@ -63,7 +63,7 @@ open class ArrowView: UIView {
 
    - parameter frame: geometry of the new view
    */
-  public override init(frame: CGRect) {
+  override init(frame: CGRect) {
     super.init(frame: frame)
     initialize()
   }
@@ -73,7 +73,7 @@ open class ArrowView: UIView {
 
    - parameter coder: source to read from
    */
-  public required init?(coder: NSCoder) {
+  required init?(coder: NSCoder) {
     super.init(coder: coder)
     initialize()
   }
@@ -81,7 +81,7 @@ open class ArrowView: UIView {
   /**
    Update the view due to layout changes.
    */
-  override open func layoutSubviews() {
+  override func layoutSubviews() {
     super.layoutSubviews()
     let layerBounds = bounds.offsetBy(dx: -bounds.midX, dy: -bounds.midY)
     let layerCenter = CGPoint(x: bounds.midX, y: bounds.midY)
@@ -93,12 +93,12 @@ open class ArrowView: UIView {
   }
 }
 
-extension ArrowView {
+private extension ArrowView {
 
-  private var entryPoint: CGPoint { positionPoint(entry) }
-  private var exitPoint: CGPoint { positionPoint(exit) }
+  var entryPoint: CGPoint { positionPoint(entry) }
+  var exitPoint: CGPoint { positionPoint(exit) }
 
-  private func initialize() {
+  func initialize() {
     lineLayer.fillColor = UIColor.clear.cgColor
     lineLayer.strokeColor = lineColor.cgColor
     lineLayer.lineWidth = lineWidth
@@ -113,12 +113,12 @@ extension ArrowView {
     createPaths()
   }
 
-  private func createPaths() {
+  func createPaths() {
     createLine()
     createArrow()
   }
 
-  private func createLine() {
+  func createLine() {
     let controls = controlPoints(controlPointParams())
     let linePath = UIBezierPath()
     linePath.move(to: entryPoint)
@@ -126,7 +126,7 @@ extension ArrowView {
     lineLayer.path = linePath.cgPath
   }
 
-  private func createArrow() {
+  func createArrow() {
     let arrowHead = self.exitPoint
     let tailPoints = arrowPoints()
     let arrowPath = UIBezierPath()
@@ -137,7 +137,7 @@ extension ArrowView {
     arrowLayer.path = arrowPath.cgPath
   }
 
-  private func positionPoint(_ position: Position) -> CGPoint {
+  func positionPoint(_ position: Position) -> CGPoint {
     let bounds = lineLayer.bounds
     switch position {
     case .left: return CGPoint(x: bounds.minX, y: bounds.midY)
@@ -147,7 +147,7 @@ extension ArrowView {
     }
   }
 
-  private func linePathEnd() -> CGPoint {
+  func linePathEnd() -> CGPoint {
     let bounds = lineLayer.bounds
     switch exit {
     case .left: return CGPoint(x: bounds.minX + arrowWidth, y: bounds.midY)
@@ -157,7 +157,7 @@ extension ArrowView {
     }
   }
 
-  private func controlPointParams() -> CGSize {
+  func controlPointParams() -> CGSize {
     let bounds = lineLayer.bounds
     switch (entry, exit) {
     case (_, .top) where (entry == .left || entry == .right):
@@ -178,7 +178,7 @@ extension ArrowView {
     }
   }
 
-  private func controlPoints(_ size: CGSize) -> (CGPoint, CGPoint) {
+  func controlPoints(_ size: CGSize) -> (CGPoint, CGPoint) {
     let bounds = lineLayer.bounds
     return (
       CGPoint(x: bounds.midX - size.width / 2, y: bounds.midY - size.height / 2),
@@ -186,7 +186,7 @@ extension ArrowView {
     )
   }
 
-  private func arrowPoints() -> (CGPoint, CGPoint) {
+  func arrowPoints() -> (CGPoint, CGPoint) {
     let exitPoint = self.exitPoint
     switch exit {
     case .left:

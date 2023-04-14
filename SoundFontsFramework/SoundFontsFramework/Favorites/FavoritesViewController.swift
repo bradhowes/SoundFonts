@@ -5,7 +5,7 @@ import os
 
 /// Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
 /// settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
-public final class FavoritesViewController: UIViewController, FavoritesViewManager {
+final class FavoritesViewController: UIViewController, FavoritesViewManager {
   private lazy var log = Logging.logger("FavoritesViewController")
   private let serialQueue = DispatchQueue(label: "FavoritesViewController", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .main)
@@ -32,8 +32,11 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 
   private var cellForSizing: FavoriteCell!
   private var monitorActionActivity: NotificationObserver?
+}
 
-  public override func viewDidLoad() {
+extension FavoritesViewController {
+
+  override func viewDidLoad() {
 
     favoritesView.register(FavoriteCell.self)
     cellForSizing = favoritesView.dequeueReusableCell(for: .init(item: 0, section: 0))
@@ -69,12 +72,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     monitorActionActivity = MIDIEventRouter.monitorActionActivity { self.handleAction(payload: $0) }
   }
 
-  func handleAction(payload: MIDIEventRouter.ActionActivityPayload) {
-    guard case .editFavorite = payload.action  else { return }
-    if payload.value > 64 { self.editCurrentFavorite() }
-  }
-
-  public override func viewDidAppear(_ animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     os_log(.debug, log: log, "viewWillAppear BEGIN")
     super.viewDidAppear(animated)
     guard let favorite = activePresetManager?.activeFavorite else { return }
@@ -85,7 +83,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 
 extension FavoritesViewController: ControllerConfiguration {
 
-  public func establishConnections(_ router: ComponentContainer) {
+  func establishConnections(_ router: ComponentContainer) {
     activePresetManager = router.activePresetManager
     favorites = router.favorites
     keyboard = router.keyboard
@@ -100,8 +98,116 @@ extension FavoritesViewController: ControllerConfiguration {
 
     checkIfRestored()
   }
+}
 
-  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+extension FavoritesViewController: SegueHandler {
+
+  enum SegueIdentifier: String {
+    case favoriteEditor
+  }
+
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    switch segueIdentifier(for: segue) {
+    case .favoriteEditor:
+      guard let config = sender as? FavoriteEditor.Config else {
+        fatalError("expected FavoriteEditor.Config")
+      }
+      prepareToEdit(segue, config: config)
+    }
+  }
+}
+
+extension FavoritesViewController: FavoriteEditorDelegate {
+
+  func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
+    if case let .done(response) = reason {
+      switch response {
+      case .favorite(let config):
+        favorites.update(index: indexPath.item, config: config)
+        favoritesView.reloadItems(at: [indexPath])
+        favoritesView.collectionViewLayout.invalidateLayout()
+      case .preset(let soundFontAndPreset, let config):
+        soundFonts.updatePreset(soundFontAndPreset: soundFontAndPreset, config: config)
+      }
+    }
+
+    if let presetConfig = activePresetManager.activePresetConfig {
+      PresetConfig.changedNotification.post(value: presetConfig)
+    }
+
+    self.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension FavoritesViewController: UICollectionViewDataSource {
+
+  func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    favorites.count
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorites.getBy(index: indexPath.row))
+  }
+}
+
+extension FavoritesViewController: UICollectionViewDelegate {
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    favorites.selected(index: indexPath.row)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+    favorites.count > 1
+  }
+
+  func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
+                      to destinationIndexPath: IndexPath) {
+    favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
+    collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
+  }
+}
+
+extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let favorite = favorites.getBy(index: indexPath.item)
+    let cell = update(cell: cellForSizing, with: favorite)
+    let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    return CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
+  }
+}
+
+private extension FavoritesViewController {
+
+  func handleAction(payload: MIDIEventRouter.ActionActivityPayload) {
+    guard case .editFavorite = payload.action  else { return }
+    if payload.value > 64 { self.editCurrentFavorite() }
+  }
+
+  func doEditFavorite(indexPath: IndexPath, viewCell: UICollectionViewCell, favorite: Favorite) {
+    if activePresetManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
+      favorites.remove(key: favorite.key)
+      postNotice(msg: "Removed favorite that was invalid.")
+      return
+    }
+
+    let isActive = activePresetManager.activeFavorite?.key == favorite.key
+    let configState = FavoriteEditor.State(indexPath: indexPath, sourceView: favoritesView, sourceRect: view.frame,
+                                           currentLowestNote: self.keyboard?.lowestNote, completionHandler: nil,
+                                           soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset,
+                                           isActive: isActive, settings: settings)
+    let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
+    showEditor(config: config)
+  }
+
+  func showEditor(config: FavoriteEditor.Config) {
+    performSegue(withIdentifier: .favoriteEditor, sender: config)
+  }
+
+  func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     guard favorites.isRestored && soundFonts.isRestored else { return }
     switch event {
@@ -121,7 +227,7 @@ extension FavoritesViewController: ControllerConfiguration {
     }
   }
 
-  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
+  func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
     os_log(.debug, log: log, "favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
@@ -141,7 +247,7 @@ extension FavoritesViewController: ControllerConfiguration {
     }
   }
 
-  private func handleFavoriteAdded(index: Int, favorite: Favorite) {
+  func handleFavoriteAdded(index: Int, favorite: Favorite) {
     os_log(.debug, log: log, "added item %d", index)
     favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
     if favorite == activePresetManager.activeFavorite {
@@ -152,7 +258,7 @@ extension FavoritesViewController: ControllerConfiguration {
     }
   }
 
-  private func handleFavoriteRemoved(index: Int) {
+  func handleFavoriteRemoved(index: Int) {
     os_log(.debug, log: log, "removed %d", index)
     guard favoritesView.delegate != nil else { return }
     let indexPath = IndexPath(item: index, section: 0)
@@ -160,21 +266,21 @@ extension FavoritesViewController: ControllerConfiguration {
     favoritesView.reloadData()
   }
 
-  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
+  func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
     switch event {
     case .restored: serialQueue.async { self.checkIfRestored() }
     default: break
     }
   }
 
-  private func tagsChangedNotificationInBackground(_ event: TagsEvent) {
+  func tagsChangedNotificationInBackground(_ event: TagsEvent) {
     switch event {
     case .restored: serialQueue.async { self.checkIfRestored() }
     default: break
     }
   }
 
-  private func checkIfRestored() {
+  func checkIfRestored() {
     guard soundFonts != nil,
           soundFonts.isRestored,
           favorites != nil,
@@ -195,25 +301,8 @@ extension FavoritesViewController: ControllerConfiguration {
       favoritesView.reloadData()
     }
   }
-}
 
-extension FavoritesViewController: SegueHandler {
-
-  public enum SegueIdentifier: String {
-    case favoriteEditor
-  }
-
-  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    switch segueIdentifier(for: segue) {
-    case .favoriteEditor:
-      guard let config = sender as? FavoriteEditor.Config else {
-        fatalError("expected FavoriteEditor.Config")
-      }
-      prepareToEdit(segue, config: config)
-    }
-  }
-
-  private func prepareToEdit(_ segue: UIStoryboardSegue, config: FavoriteEditor.Config) {
+  func prepareToEdit(_ segue: UIStoryboardSegue, config: FavoriteEditor.Config) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? FavoriteEditor
     else {
@@ -240,7 +329,7 @@ extension FavoritesViewController: SegueHandler {
     navController.presentationController?.delegate = viewController
   }
 
-  @objc private func editFavorite(_ recognizer: UITapGestureRecognizer) {
+  @objc func editFavorite(_ recognizer: UITapGestureRecognizer) {
     let pos = recognizer.location(in: view)
     guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
     let favorite = favorites.getBy(index: indexPath.item)
@@ -261,7 +350,7 @@ extension FavoritesViewController: SegueHandler {
     showEditor(config: config)
   }
 
-  private func editCurrentFavorite() {
+  func editCurrentFavorite() {
     guard let favorite = activePresetManager.activeFavorite else { return }
     guard let index = favorites.index(of: favorite.key) else { return }
 
@@ -270,27 +359,20 @@ extension FavoritesViewController: SegueHandler {
     doEditFavorite(indexPath: indexPath, viewCell: view, favorite: favorite)
   }
 
-  func doEditFavorite(indexPath: IndexPath, viewCell: UICollectionViewCell, favorite: Favorite) {
-    if activePresetManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
-      favorites.remove(key: favorite.key)
-      postNotice(msg: "Removed favorite that was invalid.")
-      return
+  func indexPath(of key: Favorite.Key) -> IndexPath? {
+    guard let index = favorites.index(of: key) else { return nil }
+    return IndexPath(item: index, section: 0)
+  }
+
+  func updateCell(with favorite: Favorite) {
+    guard favorites.contains(key: favorite.key) else { return }
+    if let indexPath = self.indexPath(of: favorite.key),
+       let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
+      update(cell: cell, with: favorite)
     }
-
-    let isActive = activePresetManager.activeFavorite?.key == favorite.key
-    let configState = FavoriteEditor.State(indexPath: indexPath, sourceView: favoritesView, sourceRect: view.frame,
-                                           currentLowestNote: self.keyboard?.lowestNote, completionHandler: nil,
-                                           soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset,
-                                           isActive: isActive, settings: settings)
-    let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
-    showEditor(config: config)
   }
 
-  func showEditor(config: FavoriteEditor.Config) {
-    performSegue(withIdentifier: .favoriteEditor, sender: config)
-  }
-
-  private func postNotice(msg: String) {
+  func postNotice(msg: String) {
     let alertController = UIAlertController(
       title: "Favorites", message: msg, preferredStyle: .alert)
     let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
@@ -306,88 +388,9 @@ extension FavoritesViewController: SegueHandler {
 
     present(alertController, animated: true, completion: nil)
   }
-}
-
-extension FavoritesViewController: FavoriteEditorDelegate {
-
-  public func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
-    if case let .done(response) = reason {
-      switch response {
-      case .favorite(let config):
-        favorites.update(index: indexPath.item, config: config)
-        favoritesView.reloadItems(at: [indexPath])
-        favoritesView.collectionViewLayout.invalidateLayout()
-      case .preset(let soundFontAndPreset, let config):
-        soundFonts.updatePreset(soundFontAndPreset: soundFontAndPreset, config: config)
-      }
-    }
-
-    if let presetConfig = activePresetManager.activePresetConfig {
-      PresetConfig.changedNotification.post(value: presetConfig)
-    }
-
-    self.dismiss(animated: true, completion: nil)
-  }
-}
-
-extension FavoritesViewController: UICollectionViewDataSource {
-
-  public func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
-
-  public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    favorites.count
-  }
-
-  public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorites.getBy(index: indexPath.row))
-  }
-}
-
-extension FavoritesViewController: UICollectionViewDelegate {
-
-  public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    favorites.selected(index: indexPath.row)
-  }
-
-  public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-    favorites.count > 1
-  }
-
-  public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
-                             to destinationIndexPath: IndexPath) {
-    favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
-    collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
-  }
-}
-
-extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
-
-  public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                             sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let favorite = favorites.getBy(index: indexPath.item)
-    let cell = update(cell: cellForSizing, with: favorite)
-    let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    return CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
-  }
-}
-
-extension FavoritesViewController {
-
-  private func indexPath(of key: Favorite.Key) -> IndexPath? {
-    guard let index = favorites.index(of: key) else { return nil }
-    return IndexPath(item: index, section: 0)
-  }
-
-  private func updateCell(with favorite: Favorite) {
-    guard favorites.contains(key: favorite.key) else { return }
-    if let indexPath = self.indexPath(of: favorite.key),
-       let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
-      update(cell: cell, with: favorite)
-    }
-  }
 
   @discardableResult
-  private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
+  func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
     let isActive = favorite == activePresetManager.activeFavorite
     let isLoading = isActive && activePresetManager.isLoading
     cell.update(favoriteName: favorite.presetConfig.name, isActive: isActive, loading: isLoading)

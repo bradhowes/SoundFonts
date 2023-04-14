@@ -4,7 +4,7 @@ import CoreData
 import Foundation
 
 @objc(ManagedAppState)
-public final class ManagedAppState: NSManagedObject, Managed {
+final class ManagedAppState: NSManagedObject, Managed {
 
   @NSManaged public private(set) var lastUpdated: Date
   @NSManaged private var favorites: NSOrderedSet
@@ -22,19 +22,19 @@ public final class ManagedAppState: NSManagedObject, Managed {
 extension ManagedAppState {
 
   /// Obtain the ordered collection of favorites
-  public var favoritesCollection: EntityCollection<ManagedFavorite> { EntityCollection(favorites) }
+  var favoritesCollection: EntityCollection<ManagedFavorite> { EntityCollection(favorites) }
 
   /// Obtain the ordered collection of tags
-  public var tagsCollection: EntityCollection<ManagedTag> { EntityCollection(tags) }
+  var tagsCollection: EntityCollection<ManagedTag> { EntityCollection(tags) }
 
   // swiftlint:disable force_cast
   /// Obtain the set of installed sound fonts. NOTE: that this is unordered.
-  public var soundFontsSet: Set<ManagedSoundFont> { soundFonts as! Set<ManagedSoundFont> }
+  var soundFontsSet: Set<ManagedSoundFont> { soundFonts as! Set<ManagedSoundFont> }
   // swiftlint:enable force_cast
 
-  public var allTag: ManagedTag { tagsCollection[0] }
+  var allTag: ManagedTag { tagsCollection[0] }
 
-  public var builtInTag: ManagedTag { tagsCollection[1] }
+  var builtInTag: ManagedTag { tagsCollection[1] }
 }
 
 extension ManagedAppState {
@@ -45,7 +45,7 @@ extension ManagedAppState {
    - parameter context: the Core Data context to work in
    - returns: the ManagedAppState instance
    */
-  public static func get(context: NSManagedObjectContext) -> ManagedAppState {
+  static func get(context: NSManagedObjectContext) -> ManagedAppState {
     if let appState: ManagedAppState = context.object(forSingleObjectCacheKey: "ManagedAppState") {
       return appState
     }
@@ -66,40 +66,40 @@ extension ManagedAppState {
 extension ManagedAppState {
 
   @objc(insertObject:inFavoritesAtIndex:)
-  @NSManaged public func insertIntoFavorites(_ value: ManagedFavorite, at idx: Int)
+  @NSManaged func insertIntoFavorites(_ value: ManagedFavorite, at idx: Int)
 
   @objc(removeObjectFromFavoritesAtIndex:)
-  @NSManaged public func removeFromFavorites(at idx: Int)
+  @NSManaged func removeFromFavorites(at idx: Int)
 
   @objc(addFavoritesObject:)
-  @NSManaged public func addToFavorites(_ value: ManagedFavorite)
+  @NSManaged func addToFavorites(_ value: ManagedFavorite)
 
   @objc(removeFavoritesObject:)
-  @NSManaged public func removeFromFavorites(_ value: ManagedFavorite)
+  @NSManaged func removeFromFavorites(_ value: ManagedFavorite)
 }
 
 // MARK: Generated accessors for soundFonts
 extension ManagedAppState {
 
   @objc(addSoundFontsObject:)
-  @NSManaged public func addToSoundFonts(_ value: ManagedSoundFont)
+  @NSManaged func addToSoundFonts(_ value: ManagedSoundFont)
 
   @objc(removeSoundFontsObject:)
-  @NSManaged public func removeFromSoundFonts(_ value: ManagedSoundFont)
+  @NSManaged func removeFromSoundFonts(_ value: ManagedSoundFont)
 }
 
 // MARK: Generated accessors for tags
 extension ManagedAppState {
 
   @objc(insertObject:inTagsAtIndex:)
-  @NSManaged public func insertIntoTags(_ value: ManagedTag, at idx: Int)
+  @NSManaged func insertIntoTags(_ value: ManagedTag, at idx: Int)
 
   @objc(removeObjectFromTagsAtIndex:)
-  @NSManaged public func removeFromTags(at idx: Int)
+  @NSManaged func removeFromTags(at idx: Int)
 
   @objc(addTagsObject:)
-  @NSManaged public func addToTags(_ value: ManagedTag)
+  @NSManaged func addToTags(_ value: ManagedTag)
 
   @objc(removeTagsObject:)
-  @NSManaged public func removeFromTags(_ value: ManagedTag)
+  @NSManaged func removeFromTags(_ value: ManagedTag)
 }

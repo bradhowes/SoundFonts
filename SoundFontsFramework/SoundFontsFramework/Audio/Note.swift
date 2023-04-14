@@ -16,20 +16,20 @@ public struct Note: CustomStringConvertible, Codable {
   public let midiNoteValue: Int
 
   /// True if this note is accented (sharp or flat)
-  public let accented: Bool
+  let accented: Bool
 
   /// Obtain a textual representation of the note
-  public var label: String {
+  var label: String {
     let noteIndex = midiNoteValue % 12
     let accent = accented ? Note.sharpTag : ""
     return "\(Note.noteLabels[noteIndex])\(accent)\(octave)"
   }
 
   /// Obtain the solfege representation for this note
-  public var solfege: String { Note.solfegeLabels[midiNoteValue % 12] }
+  var solfege: String { Note.solfegeLabels[midiNoteValue % 12] }
 
   /// Obtain the octave this note is a part of
-  public var octave: Int { midiNoteValue / 12 - 1 }
+  var octave: Int { midiNoteValue / 12 - 1 }
 
   /// Custom string representation for a Note instance
   public var description: String { label }
@@ -39,13 +39,13 @@ public struct Note: CustomStringConvertible, Codable {
 
    - parameter midiNoteValue: MIDI note value for this instance
    */
-  public init(midiNoteValue: Int) {
+  init(midiNoteValue: Int) {
     self.midiNoteValue = midiNoteValue
     let offset = midiNoteValue % 12
     self.accented = (offset < 5 && (offset & 1) == 1) || (offset > 5 && (offset & 1) == 0)
   }
 
-  public init?(_ tag: String) {
+  init?(_ tag: String) {
     guard tag.count > 1 && tag.count < 5 else { return nil }
     let octave = tag.drop { !$0.isNumber }
     guard let octaveValue = Int(octave) else { return nil }

@@ -236,30 +236,30 @@ extension FavoriteEditor: UITextViewDelegate {
 
 // MARK: - Private
 
-extension FavoriteEditor {
+private extension FavoriteEditor {
 
   /**
    Event handler for the `Done` button. Updates the Favorite instance with new values from the editing view.
 
    - parameter sender: the `Done` button
    */
-  @IBAction private func donePressed(_ sender: UIBarButtonItem) { save() }
+  @IBAction func donePressed(_ sender: UIBarButtonItem) { save() }
 
   /**
    Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
 
    - parameter sender: the `Cancel` button.
    */
-  @IBAction private func cancelPressed(_ sender: UIBarButtonItem) { discard() }
+  @IBAction func cancelPressed(_ sender: UIBarButtonItem) { discard() }
 
-  @IBAction private func useOriginalName(_ sender: UIButton) { name.text = originalName.text }
+  @IBAction func useOriginalName(_ sender: UIButton) { name.text = originalName.text }
 
   /**
    Event handler for the lowest key stepper.
 
    - parameter sender: UIStepper control
    */
-  @IBAction private func changeLowestKey(_ sender: UIStepper) {
+  @IBAction func changeLowestKey(_ sender: UIStepper) {
     lowestNoteValue.text = Note(midiNoteValue: Int(sender.value)).label
   }
 
@@ -275,30 +275,30 @@ extension FavoriteEditor {
 
    - parameter sender: UISlider
    */
-  @IBAction private func volumeChanged(_ sender: UISlider) { setGainValue(sender.value) }
+  @IBAction func volumeChanged(_ sender: UISlider) { setGainValue(sender.value) }
 
-  @IBAction private func resetGain(_ sender: UIButton) { setGainValue(0.0) }
+  @IBAction func resetGain(_ sender: UIButton) { setGainValue(0.0) }
 
   /**
    Event handler for the pan slider
 
    - parameter sender: UISlider
    */
-  @IBAction private func panChanged(_ sender: UISlider) {
+  @IBAction func panChanged(_ sender: UISlider) {
     setPanValue(sender.value)
   }
 
-  @IBAction private func resetPan(_ sender: UIButton) {
+  @IBAction func resetPan(_ sender: UIButton) {
     setPanValue(0.0)
   }
 
-  @IBAction private func useCurrentLowestNote(_ sender: Any) {
+  @IBAction func useCurrentLowestNote(_ sender: Any) {
     guard let currentLowestNote = self.currentLowestNote else { return }
     lowestNoteValue.text = currentLowestNote.label
     lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
   }
 
-  private func save() {
+  func save() {
     guard
       let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey),
       let tuningComponent = self.tuningComponent
@@ -335,18 +335,18 @@ extension FavoriteEditor {
     dismissed(reason: .done(response: response))
   }
 
-  private func discard() {
+  func discard() {
     dismissed(reason: .cancel)
   }
 
-  private func dismissed(reason: FavoriteEditorDismissedReason) {
+  func dismissed(reason: FavoriteEditorDismissedReason) {
     AskForReview.maybe()
     delegate?.dismissed(position, reason: reason)
     completionHandler?(false)
     self.tuningComponent = nil
   }
 
-  private func updatePitchBendRange() {
+  func updatePitchBendRange() {
     let value = UInt8(pitchBendStepper.value)
     pitchBendRange.text = "\(value)"
     presetConfig.pitchBendRange = Int(value)
@@ -355,12 +355,12 @@ extension FavoriteEditor {
     }
   }
 
-  private func setPitchBendRange(_ value: Int) {
+  func setPitchBendRange(_ value: Int) {
     pitchBendRange.text = "\(value)"
     pitchBendStepper.value = Double(value)
   }
 
-  private func setGainValue(_ value: Float) {
+  func setGainValue(_ value: Float) {
     gainValue.text = "\(formatFloat(value)) dB"
     gainSlider.value = value
     presetConfig.gain = value
@@ -369,7 +369,7 @@ extension FavoriteEditor {
     }
   }
 
-  private func setPanValue(_ value: Float) {
+  func setPanValue(_ value: Float) {
     let right = Int(round((value + 100.0) / 200.0 * 100.0))
     let left = Int(100 - right)
     panLeft.text = "\(left)"
@@ -387,7 +387,7 @@ extension FavoriteEditor {
    - parameter value: the value to format
    - returns: formatted value
    */
-  private func formatFloat(_ value: Float) -> String {
+  func formatFloat(_ value: Float) -> String {
     String(format: "%+.1f", locale: Locale.current, arguments: [value])
   }
 }

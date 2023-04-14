@@ -19,20 +19,20 @@ public final class AudioEngine: SynthProvider {
   private var log: OSLog { Self.log }
 
   /// The notification that tuning value has changed for the sampler
-  public static let tuningChangedNotification = TypedNotification<Float>(name: .tuningChanged)
+  static let tuningChangedNotification = TypedNotification<Float>(name: .tuningChanged)
   /// The notification that gain value has changed for the sampler
-  public static let gainChangedNotification = TypedNotification<Float>(name: .gainChanged)
+  static let gainChangedNotification = TypedNotification<Float>(name: .gainChanged)
   /// The notification that pan value has changed for the sampler
-  public static let panChangedNotification = TypedNotification<Float>(name: .panChanged)
+  static let panChangedNotification = TypedNotification<Float>(name: .panChanged)
   /// The notification that pitch bend range has changed for the sampler
-  public static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
+  static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
 
-  public static let presetLoadingChangeNotification = TypedNotification<Bool>(name: .presetLoading)
+  static let presetLoadingChangeNotification = TypedNotification<Bool>(name: .presetLoading)
 
   public typealias StartResult = Result<AnyMIDISynth, SynthStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
-  public enum Mode {
+  enum Mode {
     case standalone
     case audioUnit
   }
@@ -44,9 +44,9 @@ public final class AudioEngine: SynthProvider {
   public var avAudioUnit: AVAudioUnitMIDIInstrument? { synth?.avAudioUnit }
   private var auAudioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
 
-  public let reverbEffect: ReverbEffect?
+  let reverbEffect: ReverbEffect?
   private let reverbEffectActions: ReverbEffectActions?
-  public let delayEffect: DelayEffect?
+  let delayEffect: DelayEffect?
   private let delayEffectActions: DelayEffectActions?
 
   private let mode: Mode
@@ -82,8 +82,8 @@ public final class AudioEngine: SynthProvider {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: user-adjustable settings
    */
-  public init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?,
-              midiControllerActionStateManager: MIDIControllerActionStateManager?) {
+  init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?,
+       midiControllerActionStateManager: MIDIControllerActionStateManager?) {
     os_log(.debug, log: Self.log, "init BEGIN")
 
     self.mode = mode
@@ -222,7 +222,7 @@ public extension AudioEngine {
 
 // MARK: - Configuration Changes
 
-public extension AudioEngine {
+private extension AudioEngine {
 
   /**
    Change the synth to use the given preset configuration values.
@@ -318,9 +318,6 @@ public extension AudioEngine {
     synth?.setPitchBendRange(value: value)
     os_log(.debug, log: log, "setPitchBendRange END")
   }
-}
-
-private extension AudioEngine {
 
   func pauseRendering(_ synth: AnyMIDISynth) {
     pendingPresetChanges += 1
@@ -370,7 +367,7 @@ private extension AudioEngine {
 
    - returns: Result indicating success or failure
    */
-  private func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
+  func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
     os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
@@ -419,7 +416,7 @@ private extension AudioEngine {
     return .success(synth)
   }
 
-  private func makeSynth() -> AnyMIDISynth {
+  func makeSynth() -> AnyMIDISynth {
 #if USE_SF2ENGINE_SYNTH
     return AVSF2Engine()
 #else

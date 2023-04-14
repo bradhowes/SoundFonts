@@ -6,7 +6,7 @@ import os
 /// Monitors the iOS keyboard appearance and manipulates a given UIScrollView to keep the content in view when
 /// the keyboard appears. Contains a slot `viewToKeepVisible` which when set to a UIView will cause the
 /// monitor to scroll so that the view is visible.
-final public class TextFieldKeyboardMonitor {
+final class TextFieldKeyboardMonitor {
   private lazy var log = Logging.logger("TextFieldKeyboardMonitor")
   private let view: UIView
   private let scrollView: UIScrollView
@@ -23,7 +23,7 @@ final public class TextFieldKeyboardMonitor {
    - parameter view: the view to track and monitor
    - parameter scrollView: the view to adjust
    */
-  public init(view: UIView, scrollView: UIScrollView) {
+  init(view: UIView, scrollView: UIScrollView) {
     self.view = view
     self.scrollView = scrollView
     NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard),

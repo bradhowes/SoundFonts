@@ -3,7 +3,7 @@ import UIKit
 
 private class BundleTag: NSObject {}
 
-public extension Bundle {
+extension Bundle {
 
   @inlinable
   func string(forKey key: String) -> String { infoDictionary?[key] as? String ?? "" }
@@ -27,7 +27,7 @@ extension Bundle {
    - parameter compatibleWith: traits to consider when looking for an image
    - returns: UIImage instance for the button state
    */
-  public static func effectEnabledButtonImage(enabled: Bool, compatibleWith: UITraitCollection? = nil) -> UIImage {
+  static func effectEnabledButtonImage(enabled: Bool, compatibleWith: UITraitCollection? = nil) -> UIImage {
     let name = enabled ? "EffectOn" : "EffectOff"
     guard let image = UIImage(named: name, in: Bundle(for: BundleTag.self), compatibleWith: compatibleWith) else {
       fatalError("missing image '\(name)'")

@@ -3,7 +3,7 @@
 import UIKit
 
 /// Mapping of UITouch instances from touch events to the Key instances that are played by the touches.
-internal struct TouchKeyMap {
+struct TouchKeyMap {
   private let noteVelocity: UInt8
   private let noteChannel: UInt8
 
@@ -60,15 +60,15 @@ internal struct TouchKeyMap {
   }
 }
 
-extension TouchKeyMap {
+private extension TouchKeyMap {
 
-  private func activateKey(_ key: Key) {
+  func activateKey(_ key: Key) {
     guard !key.pressed else { return }
     key.pressed = true
     processor?.synth?.noteOn(note: UInt8(key.note.midiNoteValue), velocity: noteVelocity)
   }
 
-  private func releaseKey(_ key: Key) {
+  func releaseKey(_ key: Key) {
     guard key.pressed else { return }
     key.pressed = false
     processor?.synth?.noteOff(note: UInt8(key.note.midiNoteValue), velocity: 0)

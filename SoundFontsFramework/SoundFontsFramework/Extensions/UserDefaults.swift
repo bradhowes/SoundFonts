@@ -2,7 +2,7 @@
 
 import UIKit
 
-public extension UserDefaults {
+extension UserDefaults {
 
   /**
    Remove the setting from UserDefaults

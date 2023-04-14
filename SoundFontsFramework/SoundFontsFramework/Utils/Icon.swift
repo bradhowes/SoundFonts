@@ -5,7 +5,7 @@ import UIKit
 private class BundleTag {}
 
 /// Collection of value formatters that use localized strings.
-public enum Icon: CaseIterable {
+enum Icon: CaseIterable {
   case edit
   case hide
   case effectOn

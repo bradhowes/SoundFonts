@@ -11,19 +11,19 @@ import CoreData
 import Foundation
 
 @objc(ManagedReverbConfig)
-public class ManagedReverbConfig: NSManagedObject, Managed {
+class ManagedReverbConfig: NSManagedObject, Managed {
 
-  @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedReverbConfig> {
+  @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedReverbConfig> {
     return NSFetchRequest<ManagedReverbConfig>(entityName: "ManagedReverbConfig")
   }
 
-  @NSManaged public var enabled: Bool
-  @NSManaged public var presetIndex: Int16
-  @NSManaged public var wetDryMix: Float
-  @NSManaged public var ownedBy: ManagedPresetConfig?
+  @NSManaged var enabled: Bool
+  @NSManaged var presetIndex: Int16
+  @NSManaged var wetDryMix: Float
+  @NSManaged var ownedBy: ManagedPresetConfig?
 
   @discardableResult
-  internal convenience init(
+  convenience init(
     in context: NSManagedObjectContext, owner: ManagedPresetConfig,
     basis: ManagedReverbConfig
   ) {

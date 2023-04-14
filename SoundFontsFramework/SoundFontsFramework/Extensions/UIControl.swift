@@ -3,10 +3,10 @@
 import UIKit
 
 /// Extend UIControl to accept closures for events.
-public extension UIControl {
+extension UIControl {
 
   /// Type of closure to invoke when control fires.
-  typealias Closure = (AnyObject) -> Void
+  public typealias Closure = (AnyObject) -> Void
 
   /**
    Add a closure to the control.

@@ -2,7 +2,7 @@
 
 import UIKit
 
-public extension UIColor {
+extension UIColor {
 
   /**
    Initialize a color using a string containing hex values.

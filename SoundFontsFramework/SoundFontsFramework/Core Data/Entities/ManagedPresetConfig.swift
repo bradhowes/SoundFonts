@@ -11,7 +11,7 @@ import CoreData
 import Foundation
 
 @objc(ManagedPresetConfig)
-public class ManagedPresetConfig: NSManagedObject, Managed {
+class ManagedPresetConfig: NSManagedObject, Managed {
 
   static var fetchRequest: FetchRequest {
     let request = typedFetchRequest
@@ -20,22 +20,22 @@ public class ManagedPresetConfig: NSManagedObject, Managed {
     return request
   }
 
-  @NSManaged public var gain: Float
-  @NSManaged public var hidden: Bool
-  @NSManaged public var keyboardLowestNote: Int16
-  @NSManaged public var keyboardLowestNoteEnabled: Bool
-  @NSManaged public var pan: Float
-  @NSManaged public var pitchBendRange: Int16
-  @NSManaged public var tuning: Float
-  @NSManaged public var tuningEnabled: Bool
-  @NSManaged public var userNotes: String?
-  @NSManaged public var delayConfig: ManagedDelayConfig?
-  @NSManaged public var ownedByFavorite: ManagedFavorite?
-  @NSManaged public var ownedByPreset: ManagedPreset?
-  @NSManaged public var reverbConfig: ManagedReverbConfig?
+  @NSManaged var gain: Float
+  @NSManaged var hidden: Bool
+  @NSManaged var keyboardLowestNote: Int16
+  @NSManaged var keyboardLowestNoteEnabled: Bool
+  @NSManaged var pan: Float
+  @NSManaged var pitchBendRange: Int16
+  @NSManaged var tuning: Float
+  @NSManaged var tuningEnabled: Bool
+  @NSManaged var userNotes: String?
+  @NSManaged var delayConfig: ManagedDelayConfig?
+  @NSManaged var ownedByFavorite: ManagedFavorite?
+  @NSManaged var ownedByPreset: ManagedPreset?
+  @NSManaged var reverbConfig: ManagedReverbConfig?
 
   @discardableResult
-  internal convenience init(
+  convenience init(
     in context: NSManagedObjectContext, basis: ManagedPresetConfig, owner: ManagedPreset
   ) {
     self.init(context: context)
@@ -44,7 +44,7 @@ public class ManagedPresetConfig: NSManagedObject, Managed {
   }
 
   @discardableResult
-  internal convenience init(
+  convenience init(
     in context: NSManagedObjectContext, basis: ManagedPresetConfig, owner: ManagedFavorite
   ) {
     self.init(context: context)

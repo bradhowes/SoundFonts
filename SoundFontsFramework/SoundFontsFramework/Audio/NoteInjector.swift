@@ -4,7 +4,7 @@ import CoreAudioKit
 import os
 
 /// Submit a sequence of MIDI events to play a A4 note. Used when switching presets.
-public final class NoteInjector {
+final class NoteInjector {
   private let log = Logging.logger("NoteInjector")
   private let note: UInt8 = 69  // A4
   private let noteOnDuration = 0.5
@@ -14,7 +14,7 @@ public final class NoteInjector {
   private let settings: Settings
   private var workItems = [DispatchWorkItem]()
 
-  public init(settings: Settings) {
+  init(settings: Settings) {
     self.settings = settings
   }
 
@@ -23,7 +23,7 @@ public final class NoteInjector {
 
    - parameter synth: the synth to command
    */
-  public func post(to synth: AnyMIDISynth) {
+  func post(to synth: AnyMIDISynth) {
     guard settings.playSample == true else { return }
     workItems.forEach { $0.cancel() }
 
@@ -45,7 +45,7 @@ public final class NoteInjector {
 
    - parameter audioUnit: the audio unit to command
    */
-  public func post(to audioUnit: AUAudioUnit) {
+  func post(to audioUnit: AUAudioUnit) {
     os_log(.debug, log: log, "post BEGIN")
     workItems.forEach { $0.cancel() }
 

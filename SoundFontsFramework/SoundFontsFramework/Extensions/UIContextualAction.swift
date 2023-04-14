@@ -11,7 +11,7 @@ extension UIContextualAction {
    - parameter color: the background color of the action
    - parameter handler: the closure to invoke when the action fires
    */
-  public convenience init(icon: Icon, color: UIColor, handler: @escaping Handler) {
+  convenience init(icon: Icon, color: UIColor, handler: @escaping Handler) {
     self.init(style: .normal, title: nil, handler: handler)
     self.image = icon.image
     self.backgroundColor = color

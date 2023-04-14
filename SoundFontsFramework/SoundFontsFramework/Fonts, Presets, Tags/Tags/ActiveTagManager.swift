@@ -79,13 +79,13 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
   }
 }
 
-extension ActiveTagManager {
+private extension ActiveTagManager {
 
-  private func tagsRestoredNotificationInBackground(_ event: TagsEvent) {
+  func tagsRestoredNotificationInBackground(_ event: TagsEvent) {
     self.restoreActive()
   }
 
-  private func restoreActive() {
+  func restoreActive() {
     guard tags.isRestored else { return }
     let tagKey = settings.activeTagKey
     activeTag = tags.getBy(key: tagKey) ?? Tag.allTag

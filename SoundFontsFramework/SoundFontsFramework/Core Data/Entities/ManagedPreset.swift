@@ -5,22 +5,22 @@ import Foundation
 import SoundFontInfoLib
 
 @objc(ManagedPreset)
-public final class ManagedPreset: NSManagedObject, Managed {
+final class ManagedPreset: NSManagedObject, Managed {
 
-  @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedPreset> {
+  @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedPreset> {
     return NSFetchRequest<ManagedPreset>(entityName: "ManagedPreset")
   }
 
-  @NSManaged public var displayName: String
-  @NSManaged public private(set) var embeddedName: String
-  @NSManaged public private(set) var bank: Int16
-  @NSManaged public private(set) var program: Int16
-  @NSManaged public private(set) var aliases: NSSet
-  @NSManaged public private(set) var configuration: ManagedPresetConfig
-  @NSManaged public private(set) var parent: ManagedSoundFont
+  @NSManaged var displayName: String
+  @NSManaged private(set) var embeddedName: String
+  @NSManaged private(set) var bank: Int16
+  @NSManaged private(set) var program: Int16
+  @NSManaged private(set) var aliases: NSSet
+  @NSManaged private(set) var configuration: ManagedPresetConfig
+  @NSManaged private(set) var parent: ManagedSoundFont
 
   @discardableResult
-  public convenience init(
+  convenience init(
     in context: NSManagedObjectContext, owner: ManagedSoundFont, config: SoundFontInfoPreset
   ) {
     self.init(context: context)
@@ -41,15 +41,15 @@ public final class ManagedPreset: NSManagedObject, Managed {
 extension ManagedPreset {
 
   @objc(addAliasesObject:)
-  @NSManaged public func addToAliases(_ value: ManagedFavorite)
+  @NSManaged func addToAliases(_ value: ManagedFavorite)
 
   @objc(removeAliasesObject:)
-  @NSManaged public func removeFromAliases(_ value: ManagedFavorite)
+  @NSManaged func removeFromAliases(_ value: ManagedFavorite)
 
   @objc(addAliases:)
-  @NSManaged public func addToAliases(_ values: NSSet)
+  @NSManaged func addToAliases(_ values: NSSet)
 
   @objc(removeAliases:)
-  @NSManaged public func removeFromAliases(_ values: NSSet)
+  @NSManaged func removeFromAliases(_ values: NSSet)
 
 }

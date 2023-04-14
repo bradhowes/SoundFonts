@@ -5,7 +5,7 @@ import UIKit
 /**
  Animates an expanding circle that fades as it grows.
  */
-class MIDIIndicatorPulseAnimation: CALayer {
+final class MIDIIndicatorPulseAnimation: CALayer {
 
   override init(layer: Any) {
     super.init(layer: layer)

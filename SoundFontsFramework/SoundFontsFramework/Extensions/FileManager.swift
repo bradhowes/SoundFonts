@@ -5,7 +5,7 @@ import os
 
 private let log = Logging.logger("FileManager")
 
-public extension FileManager {
+extension FileManager {
   var groupIdentifier: String { "group.com.braysoftware.SoundFontsShare" }
   /**
    Obtain the URL for a new, temporary file. The file will exist on the system but will be empty.
@@ -95,12 +95,12 @@ public extension FileManager {
   }
 }
 
-public extension FileManager {
+extension FileManager {
 
   final class Identity {
-    public let index: Int
-    public let path: URL
-    public let fileDescriptor: Int32
+    let index: Int
+    let path: URL
+    let fileDescriptor: Int32
 
     init(_ index: Int, _ path: URL, _ fileDescriptor: Int32) {
       self.index = index

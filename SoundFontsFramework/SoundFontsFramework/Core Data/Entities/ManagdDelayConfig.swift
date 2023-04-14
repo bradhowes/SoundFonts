@@ -4,21 +4,21 @@ import CoreData
 import Foundation
 
 @objc(ManagedDelayConfig)
-public final class ManagedDelayConfig: NSManagedObject, Managed {
+final class ManagedDelayConfig: NSManagedObject, Managed {
 
-  @NSManaged public var time: Float
-  @NSManaged public var feedback: Float
-  @NSManaged public var cutoff: Float
-  @NSManaged public var wetDryMix: Float
-  @NSManaged public var enabled: Bool
-  @NSManaged public var ownedBy: ManagedPresetConfig
+  @NSManaged var time: Float
+  @NSManaged var feedback: Float
+  @NSManaged var cutoff: Float
+  @NSManaged var wetDryMix: Float
+  @NSManaged var enabled: Bool
+  @NSManaged var ownedBy: ManagedPresetConfig
 
-  @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedDelayConfig> {
+  @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedDelayConfig> {
     return NSFetchRequest<ManagedDelayConfig>(entityName: "ManagedDelayConfig")
   }
 
   @discardableResult
-  internal convenience init(
+  convenience init(
     in context: NSManagedObjectContext, owner: ManagedPresetConfig,
     basis: ManagedDelayConfig
   ) {
@@ -32,7 +32,7 @@ public final class ManagedDelayConfig: NSManagedObject, Managed {
   }
 
   @discardableResult
-  internal convenience init(
+  convenience init(
     in context: NSManagedObjectContext, owner: ManagedPresetConfig,
     time: Float, feedback: Float, cutoff: Float, wetDryMix: Float,
     enabled: Bool

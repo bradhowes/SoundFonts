@@ -5,13 +5,13 @@ import os
 
 /**
  */
-public final class FontsEditorTableViewController: UITableViewController {
+final class FontsEditorTableViewController: UITableViewController {
   private lazy var log = Logging.logger("FontsEditorTableViewController")
 
   /**
    Configuration for the controller that is passed to it via the segue that makes it appear.
    */
-  public struct Config {
+  struct Config {
     let fonts: SoundFontsProvider
     let settings: Settings
 
@@ -41,7 +41,7 @@ public final class FontsEditorTableViewController: UITableViewController {
     self.trashButton.isEnabled = false
   }
 
-  override public func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
     selectedRows.removeAll()
     tableView.register(TableCell.self)
@@ -49,7 +49,7 @@ public final class FontsEditorTableViewController: UITableViewController {
     tableView.rowHeight = UITableView.automaticDimension
   }
 
-  override public func viewWillDisappear(_ animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     os_log(.debug, log: log, "viewWillDisappear")
     self.trashButton.isEnabled = false
     self.selectedRows.removeAll()
@@ -58,14 +58,94 @@ public final class FontsEditorTableViewController: UITableViewController {
   }
 }
 
+// MARK: - UITableViewDataSource / UITableViewDelegate
+
 extension FontsEditorTableViewController {
 
-  @IBAction public func dismiss(_ sender: UIBarButtonItem) {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    fonts.count
+  }
+
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
+  }
+
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    // guard !isEditing else { return }
+
+    tableView.deselectRow(at: indexPath, animated: true)
+
+    if self.selectedRows.contains(indexPath.row) {
+      self.selectedRows.remove(indexPath.row)
+    } else {
+      self.selectedRows.insert(indexPath.row)
+      let font = fonts.getBy(index: indexPath.row)
+      if !font.kind.installed {
+        notifyAboutBuiltinFonts()
+      }
+    }
+
+    tableView.reloadRows(at: [indexPath], with: .automatic)
+    trashButton.isEnabled = !selectedRows.isEmpty
+  }
+
+  private func notifyAboutBuiltinFonts() {
+    guard !settings[.notifiedAboutBuiltinFonts] else { return }
+    settings[.notifiedAboutBuiltinFonts] = true
+
+    let alertController = UIAlertController(title: "Built-in Font",
+                                            message: "Deleting a built-in font only hides it from view. " +
+                                            "You can restore their visibility in the Settings view",
+                                            preferredStyle: .alert)
+    let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
+  }
+
+  override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    indexPath
+  }
+
+  override func tableView(_ tableView: UITableView,
+                          editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    .none
+  }
+}
+
+extension FontsEditorTableViewController: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
+
+  /**
+   Notification that the font editor is being dismissed. Treat as a close.
+   */
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    dismiss(cancelButton)
+  }
+
+  /**
+   Notification that the font editor is being dismissed. Treat as a close.
+   */
+  func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+    dismiss(cancelButton)
+  }
+}
+
+private extension FontsEditorTableViewController {
+
+  @IBAction func dismiss(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true)
     AskForReview.maybe()
   }
 
-  @IBAction public func selectAllFonts(_ sender: UIBarButtonItem) {
+  @IBAction func selectAllFonts(_ sender: UIBarButtonItem) {
     if selectedRows.count == fonts.count {
       selectedRows.removeAll()
     } else {
@@ -75,7 +155,7 @@ extension FontsEditorTableViewController {
     trashButton.isEnabled = !selectedRows.isEmpty
   }
 
-  @IBAction public func deleteFonts(_ sender: UIBarButtonItem) {
+  @IBAction func deleteFonts(_ sender: UIBarButtonItem) {
     let promptTitle = "Delete \(selectedRows.count) font\(selectedRows.count == 1 ? "" : "s")?"
     let promptMessage = "This cannot be undone."
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
@@ -117,72 +197,6 @@ extension FontsEditorTableViewController {
     selectedRows.removeAll()
     trashButton.isEnabled = false
   }
-}
-
-// MARK: - UITableViewDataSource / UITableViewDelegate
-
-extension FontsEditorTableViewController {
-
-  override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    fonts.count
-  }
-
-  override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
-  }
-
-  override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    // guard !isEditing else { return }
-
-    tableView.deselectRow(at: indexPath, animated: true)
-
-    if self.selectedRows.contains(indexPath.row) {
-      self.selectedRows.remove(indexPath.row)
-    } else {
-      self.selectedRows.insert(indexPath.row)
-      let font = fonts.getBy(index: indexPath.row)
-      if !font.kind.installed {
-        notifyAboutBuiltinFonts()
-      }
-    }
-
-    tableView.reloadRows(at: [indexPath], with: .automatic)
-    trashButton.isEnabled = !selectedRows.isEmpty
-  }
-
-  private func notifyAboutBuiltinFonts() {
-    guard !settings[.notifiedAboutBuiltinFonts] else { return }
-    settings[.notifiedAboutBuiltinFonts] = true
-
-    let alertController = UIAlertController(title: "Built-in Font",
-                                            message: "Deleting a built-in font only hides it from view. " +
-                                            "You can restore their visibility in the Settings view",
-                                            preferredStyle: .alert)
-    let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
-    alertController.addAction(cancel)
-
-    if let popoverController = alertController.popoverPresentationController {
-      popoverController.sourceView = self.view
-      popoverController.sourceRect = CGRect(
-        x: self.view.bounds.midX, y: self.view.bounds.midY,
-        width: 0, height: 0)
-      popoverController.permittedArrowDirections = []
-    }
-
-    present(alertController, animated: true, completion: nil)
-  }
-
-  override public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    indexPath
-  }
-
-  override public func tableView(_ tableView: UITableView,
-                                 editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    .none
-  }
-}
-
-extension FontsEditorTableViewController {
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let font = fonts.getBy(index: indexPath.row)
@@ -196,22 +210,5 @@ extension FontsEditorTableViewController {
     cell.updateForTag(at: indexPath, name: font.displayName, flags: font.kind.installed ? .selected : .init())
 
     return cell
-  }
-}
-
-extension FontsEditorTableViewController: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
-
-  /**
-   Notification that the font editor is being dismissed. Treat as a close.
-   */
-  public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    dismiss(cancelButton)
-  }
-
-  /**
-   Notification that the font editor is being dismissed. Treat as a close.
-   */
-  public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-    dismiss(cancelButton)
   }
 }

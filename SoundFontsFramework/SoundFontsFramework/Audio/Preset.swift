@@ -68,7 +68,7 @@ final public class Preset: Codable {
    - parameter program: the program ID of the preset in the sound font
    - parameter index: the entry for the preset in the sound font presets array
    */
-  public init(_ name: String, _ bank: Int, _ program: Int, _ index: Int) {
+  init(_ name: String, _ bank: Int, _ program: Int, _ index: Int) {
     self.originalName = name
     self.bank = bank
     self.program = program

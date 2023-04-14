@@ -1,6 +1,6 @@
 import Foundation
 
-public extension DispatchQueue {
+extension DispatchQueue {
 
   func asyncLater(interval: DispatchTimeInterval, qos: DispatchQoS = .unspecified, flags: DispatchWorkItemFlags = [],
                   execute work: @escaping () -> Void) {
@@ -8,7 +8,7 @@ public extension DispatchQueue {
   }
 }
 
-public extension Thread {
+extension Thread {
 
   static func preconditionMainThread(_ message: @autoclosure () -> String = String(), file: StaticString = #file, line: UInt = #line) {
     precondition(isMainThread, message(), file: file, line: line)

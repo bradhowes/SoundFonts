@@ -174,7 +174,6 @@
 		BDA5ACF7265D427C000AE48E /* FontActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF5265D427C000AE48E /* FontActionManager.swift */; };
 		BDA5ACF8265D427C000AE48E /* EventClosureMangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */; };
 		BDA5ACFA265D4284000AE48E /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACF9265D4284000AE48E /* Icon.swift */; };
-		BDABD85B29A2025200B8D585 /* UInt8.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDABD85A29A2025200B8D585 /* UInt8.swift */; };
 		BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */; };
 		BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406225CC29120051B4E4 /* Presets.storyboard */; };
 		BDB7408125CC29690051B4E4 /* TagsList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406525CC29120051B4E4 /* TagsList.storyboard */; };
@@ -455,7 +454,6 @@
 		BDA5ACF5265D427C000AE48E /* FontActionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontActionManager.swift; sourceTree = "<group>"; };
 		BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventClosureMangement.swift; sourceTree = "<group>"; };
 		BDA5ACF9265D4284000AE48E /* Icon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
-		BDABD85A29A2025200B8D585 /* UInt8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt8.swift; sourceTree = "<group>"; };
 		BDB7405E25CC29120051B4E4 /* Delay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Delay.storyboard; sourceTree = "<group>"; };
 		BDB7405F25CC29120051B4E4 /* Favorites.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Favorites.storyboard; sourceTree = "<group>"; };
 		BDB7406025CC29120051B4E4 /* InfoBar1.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InfoBar1.storyboard; sourceTree = "<group>"; };
@@ -735,7 +733,6 @@
 				BD074C2423CDAF51001987E9 /* UITableView.swift */,
 				BD1F11BB23FE690300AE9F3D /* UIViewController.swift */,
 				BD074C2523CDAF51001987E9 /* UserDefaults.swift */,
-				BDABD85A29A2025200B8D585 /* UInt8.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1432,7 +1429,6 @@
 				BDBF893E25B4C7AC00B58E23 /* ActiveTagManager.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD44E6112791A020004E0543 /* PresetsTableRowVisibilityEditor.swift in Sources */,
-				BDABD85B29A2025200B8D585 /* UInt8.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
 				BDBF896625B58AEF00B58E23 /* TagCollection.swift in Sources */,
 				BDA5ACEE265D422C000AE48E /* DonePageViewController.swift in Sources */,

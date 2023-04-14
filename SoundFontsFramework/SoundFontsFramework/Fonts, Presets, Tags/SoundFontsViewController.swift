@@ -10,7 +10,7 @@ import os
  between normal preset table view display and preset search results display. Apart from the adopted protocols, there
  is no API for this class.
  */
-public final class SoundFontsViewController: UIViewController {
+final class SoundFontsViewController: UIViewController {
   private lazy var log = Logging.logger("SoundFontsViewController")
 
   @IBOutlet private weak var fontsView: UIView!
@@ -39,13 +39,13 @@ public final class SoundFontsViewController: UIViewController {
   private var dividerDragGesture = UIPanGestureRecognizer()
   private var lastDividerPos: CGFloat = .zero
 
-  public let swipeLeft = UISwipeGestureRecognizer()
-  public let swipeRight = UISwipeGestureRecognizer()
+  let swipeLeft = UISwipeGestureRecognizer()
+  let swipeRight = UISwipeGestureRecognizer()
 }
 
 extension SoundFontsViewController {
 
-  public override func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
 
     fontsView.isAccessibilityElement = false
@@ -112,11 +112,11 @@ extension SoundFontsViewController {
     }
   }
 
-  public override func viewDidAppear(_ animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
   }
 
-  public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     if tagsVisibilityManager.showingTags {
       tagsVisibilityManager.hideTags()
@@ -124,58 +124,9 @@ extension SoundFontsViewController {
   }
 }
 
-extension SoundFontsViewController {
-
-  private func showSoundFontPicker(_ button: AnyObject) {
-    let types = ["com.braysoftware.sf2", "com.soundblaster.soundfont"].compactMap { UTType($0) }
-    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: types,
-                                                        asCopy: settings.copyFilesWhenAdding)
-    documentPicker.delegate = self
-    documentPicker.modalPresentationStyle = .automatic
-    documentPicker.allowsMultipleSelection = true
-    present(documentPicker, animated: true)
-  }
-
-  private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
-    let promptTitle = Formatters.strings.deleteFontTitle
-    let promptMessage = Formatters.strings.deleteFontMessage
-    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-
-    let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { [weak self ] _ in
-      guard let self = self else { return }
-      self.soundFonts.remove(key: soundFont.key)
-      self.favorites.removeAll(associatedWith: soundFont)
-      let url = soundFont.fileURL
-      if soundFont.kind.deletable {
-        DispatchQueue.global(qos: .userInitiated).async {
-          try? FileManager.default.removeItem(at: url)
-        }
-      }
-      completionHandler?(true)
-    }
-
-    let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
-      completionHandler?(false)
-    }
-
-    alertController.addAction(delete)
-    alertController.addAction(cancel)
-
-    if let popoverController = alertController.popoverPresentationController {
-      popoverController.sourceView = self.view
-      popoverController.sourceRect = CGRect(
-        x: self.view.bounds.midX, y: self.view.bounds.midY,
-        width: 0, height: 0)
-      popoverController.permittedArrowDirections = []
-    }
-
-    present(alertController, animated: true, completion: nil)
-  }
-}
-
 extension SoundFontsViewController: UIDocumentPickerDelegate {
 
-  public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     os_log(.debug, log: log, "documentPicker didPickDocumentAt")
     addSoundFonts(urls: urls)
   }
@@ -185,7 +136,7 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
 
 extension SoundFontsViewController: ControllerConfiguration {
 
-  public func establishConnections(_ router: ComponentContainer) {
+  func establishConnections(_ router: ComponentContainer) {
     settings = router.settings
     soundFonts = router.soundFonts
     favorites = router.favorites
@@ -212,11 +163,11 @@ extension SoundFontsViewController: ControllerConfiguration {
 
 extension SoundFontsViewController: FontsViewManager {
 
-  public func dismissSearchKeyboard() {
+  func dismissSearchKeyboard() {
     presetsTableViewController.searchBar.endSearch()
   }
 
-  public func addSoundFonts(urls: [URL]) {
+  func addSoundFonts(urls: [URL]) {
     os_log(.info, log: log, "addSoundFonts - BEGIN %{public}s", String.pointer(self))
     guard !urls.isEmpty else { return }
 
@@ -261,15 +212,15 @@ extension SoundFontsViewController: FontActionManager {
    - parameter with: the SoundFont that will be edited by the swipe action
    - returns: new UIContextualAction that will perform the edit
    */
-  public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
+  func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, _, completionHandler in
       guard let self = self else { return }
       self.beginEditingFont(at: at, cell: cell, soundFont: soundFont, completionHandler: completionHandler)
     }
   }
 
-  public func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont,
-                               completionHandler: ((Bool) -> Void)? = nil) {
+  func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont,
+                        completionHandler: ((Bool) -> Void)? = nil) {
     let config = FontEditor.Config(indexPath: at, view: cell, rect: cell.bounds, soundFonts: soundFonts,
                                    soundFontKey: soundFont.key,
                                    favoriteCount: favorites.count(associatedWith: soundFont), tags: tags,
@@ -286,7 +237,7 @@ extension SoundFontsViewController: FontActionManager {
    - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
    - returns: new UIContextualAction that will perform the edit
    */
-  public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
+  func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
     UIContextualAction(icon: .remove, color: .red) { [weak self] _, _, completionHandler in
       self?.remove(soundFont: soundFont, completionHandler: completionHandler)
     }
@@ -296,7 +247,7 @@ extension SoundFontsViewController: FontActionManager {
 extension SoundFontsViewController: SegueHandler {
 
   /// Segues that we support.
-  public enum SegueIdentifier: String {
+  enum SegueIdentifier: String {
     case fontsTableView
     case presetsTableView
     case tagsTableView
@@ -306,7 +257,7 @@ extension SoundFontsViewController: SegueHandler {
     case fontsEditor
   }
 
-  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .fontsTableView: prepareForFontTableView(segue)
     case .presetsTableView: prepareForPresetsTableView(segue)
@@ -321,47 +272,47 @@ extension SoundFontsViewController: SegueHandler {
 
 private extension SoundFontsViewController {
 
-  private func prepareForFontTableView(_ segue: UIStoryboardSegue) {
+  func prepareForFontTableView(_ segue: UIStoryboardSegue) {
     guard let destination = segue.destination as? FontsTableViewController else {
       fatalError("expected FontsTableViewController for segue destination")
     }
     fontsTableViewController = destination
   }
 
-  private func prepareForPresetsTableView(_ segue: UIStoryboardSegue) {
+  func prepareForPresetsTableView(_ segue: UIStoryboardSegue) {
     guard let destination = segue.destination as? PresetsTableViewController else {
       fatalError("expected PresetsTableViewController for segue destination")
     }
     presetsTableViewController = destination
   }
 
-  private func prepareForTagsTableView(_ segue: UIStoryboardSegue) {
+  func prepareForTagsTableView(_ segue: UIStoryboardSegue) {
     guard let destination = segue.destination as? TagsTableViewController else {
       fatalError("expected TagsTableViewController for segue destination")
     }
     tagsTableViewController = destination
   }
 
-  private func prepareForFontEditor(_ segue: UIStoryboardSegue, sender: Any?) {
+  func prepareForFontEditor(_ segue: UIStoryboardSegue, sender: Any?) {
     guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
     prepareToEditFont(segue, config: config)
   }
 
-  private func prepareForTagsEditor(_ segue: UIStoryboardSegue, sender: Any?) {
+  func prepareForTagsEditor(_ segue: UIStoryboardSegue, sender: Any?) {
     guard let config = sender as? TagsEditorTableViewController.Config else {
       fatalError("expected TagsEditorTableViewController.Config")
     }
     prepareToEditTags(segue, config: config)
   }
 
-  private func prepareForFontsEditor(_ segue: UIStoryboardSegue, sender: Any?) {
+  func prepareForFontsEditor(_ segue: UIStoryboardSegue, sender: Any?) {
     guard let config = sender as? FontsEditorTableViewController.Config else {
       fatalError("expected FontsEditorTableViewController.Config")
     }
     prepareToEditFonts(segue, config: config)
   }
 
-  private func prepareToEditFont(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
+  func prepareToEditFont(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? FontEditor
     else {
@@ -386,7 +337,7 @@ private extension SoundFontsViewController {
     navController.presentationController?.delegate = viewController
   }
 
-  private func prepareToEditTags(_ segue: UIStoryboardSegue, config: TagsEditorTableViewController.Config) {
+  func prepareToEditTags(_ segue: UIStoryboardSegue, config: TagsEditorTableViewController.Config) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? TagsEditorTableViewController
     else {
@@ -410,7 +361,7 @@ private extension SoundFontsViewController {
     navController.presentationController?.delegate = viewController
   }
 
-  private func prepareToEditFonts(_ segue: UIStoryboardSegue, config: FontsEditorTableViewController.Config) {
+  func prepareToEditFonts(_ segue: UIStoryboardSegue, config: FontsEditorTableViewController.Config) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? FontsEditorTableViewController
     else {
@@ -433,6 +384,52 @@ private extension SoundFontsViewController {
     }
 
     navController.presentationController?.delegate = viewController
+  }
+
+  func showSoundFontPicker(_ button: AnyObject) {
+    let types = ["com.braysoftware.sf2", "com.soundblaster.soundfont"].compactMap { UTType($0) }
+    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: types,
+                                                        asCopy: settings.copyFilesWhenAdding)
+    documentPicker.delegate = self
+    documentPicker.modalPresentationStyle = .automatic
+    documentPicker.allowsMultipleSelection = true
+    present(documentPicker, animated: true)
+  }
+
+  func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    let promptTitle = Formatters.strings.deleteFontTitle
+    let promptMessage = Formatters.strings.deleteFontMessage
+    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+
+    let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { [weak self ] _ in
+      guard let self = self else { return }
+      self.soundFonts.remove(key: soundFont.key)
+      self.favorites.removeAll(associatedWith: soundFont)
+      let url = soundFont.fileURL
+      if soundFont.kind.deletable {
+        DispatchQueue.global(qos: .userInitiated).async {
+          try? FileManager.default.removeItem(at: url)
+        }
+      }
+      completionHandler?(true)
+    }
+
+    let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
+      completionHandler?(false)
+    }
+
+    alertController.addAction(delete)
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
   }
 }
 

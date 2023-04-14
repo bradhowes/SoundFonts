@@ -3,7 +3,7 @@
 import UIKit
 
 /// Extend UIGestureRecognizer to accept closures for events.
-public extension UIGestureRecognizer {
+extension UIGestureRecognizer {
 
   /// Type of closure to invoke when gesture fires.
   typealias Closure = (AnyObject) -> Void

@@ -5,7 +5,7 @@ import Foundation
 import SoundFontInfoLib
 
 @objc(ManagedFavorite)
-public final class ManagedFavorite: NSManagedObject, Managed {
+final class ManagedFavorite: NSManagedObject, Managed {
 
   static var fetchRequest: FetchRequest {
     let request = typedFetchRequest
@@ -14,16 +14,16 @@ public final class ManagedFavorite: NSManagedObject, Managed {
     return request
   }
 
-  @NSManaged public var displayName: String?
-  @NSManaged public var configuration: ManagedPresetConfig
-  @NSManaged public var orderedBy: ManagedAppState
-  @NSManaged public var preset: ManagedPreset
+  @NSManaged var displayName: String?
+  @NSManaged var configuration: ManagedPresetConfig
+  @NSManaged var orderedBy: ManagedAppState
+  @NSManaged var preset: ManagedPreset
 }
 
 extension ManagedFavorite {
 
   @discardableResult
-  public convenience init(in context: NSManagedObjectContext, preset: ManagedPreset) {
+  convenience init(in context: NSManagedObjectContext, preset: ManagedPreset) {
     self.init(context: context)
     self.displayName = preset.displayName
     self.preset = preset
@@ -31,11 +31,11 @@ extension ManagedFavorite {
     context.saveChangesAsync()
   }
 
-  public static var fetchRequestForRows: FetchRequest {
+  static var fetchRequestForRows: FetchRequest {
     typedFetchRequest
   }
 
-  public static func countRows(in context: NSManagedObjectContext) -> Int {
+  static func countRows(in context: NSManagedObjectContext) -> Int {
     return count(in: context, request: fetchRequestForRows)
   }
 }

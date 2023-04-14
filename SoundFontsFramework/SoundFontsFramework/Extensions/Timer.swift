@@ -2,7 +2,7 @@
 
 import Foundation
 
-public extension Timer {
+extension Timer {
 
   /**
    Create a timer that will fire just once after some interval has elapsed.

@@ -3,31 +3,31 @@
 import UIKit
 
 /// Simple UIView collection manager that can cycle through cells, showing them one at a time.
-public struct SlidingViewManager {
+struct SlidingViewManager {
 
   private var views = [ViewSlider]()
 
   /// The index of the currently active view
-  public var active: Int = 0
+  var active: Int = 0
 
   /**
    Add a view to the manager
 
    - parameter view: the UIView to add
    */
-  public mutating func add(view: UIView) { views.append(ViewSlider(view: view)) }
+  mutating func add(view: UIView) { views.append(ViewSlider(view: view)) }
 
   /**
    Show the next view by sliding the existing / next views to the left.
    */
-  public mutating func slideNextHorizontally() {
+  mutating func slideNextHorizontally() {
     transition(activate: active + 1, method: ViewSlider.slideLeft)
   }
 
   /**
    Show the previous view by sliding the existing / previous views to the right.
    */
-  public mutating func slidePrevHorizontally() {
+  mutating func slidePrevHorizontally() {
     transition(activate: active - 1, method: ViewSlider.slideRight)
   }
 }

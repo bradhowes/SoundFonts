@@ -5,7 +5,7 @@ import os
 
 private let log = Logging.logger("AudioUnit")
 
-public extension AudioUnit {
+extension AudioUnit {
 
   /**
    Obtain a property description from an AudioUnit
@@ -78,7 +78,7 @@ public extension AudioUnit {
   }
 }
 
-public extension OSStatus {
+extension OSStatus {
 
   ///
   /**
@@ -101,7 +101,7 @@ extension AUAudioUnitPreset {
    - parameter number: the unique number for this preset. Factory presets must be non-negative.
    - parameter name: the display name for the preset.
    */
-  public convenience init(number: Int, name: String) {
+  convenience init(number: Int, name: String) {
     self.init()
     self.number = number
     self.name = name

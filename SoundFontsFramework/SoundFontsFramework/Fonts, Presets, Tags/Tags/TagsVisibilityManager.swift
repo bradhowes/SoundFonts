@@ -48,6 +48,25 @@ struct TagsVisibilityManager {
   var showingTags: Bool { tagsBottomConstraint.constant == 0.0 }
 
   /**
+   Hide the tags table view
+   */
+  func hideTags() {
+    guard showingTags else { return }
+    infoBar.resetButtonState(.showTags)
+    tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
+    tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
+    UIViewPropertyAnimator.runningPropertyAnimator(
+      withDuration: 0.25, delay: 0.0,
+      options: [.allowUserInteraction, .curveEaseOut],
+      animations: self.containerView.layoutIfNeeded,
+      completion: nil
+    )
+  }
+}
+
+private extension TagsVisibilityManager {
+
+  /**
    Toggle the visibility of the tags table
 
    - parameter sender: the object that sent the request
@@ -65,7 +84,7 @@ struct TagsVisibilityManager {
   /**
    Show the tags table view
    */
-  public func showTags() {
+  func showTags() {
     guard !showingTags else { return }
     let maxHeight = fontsView.frame.height - 8
     let midHeight = maxHeight / 2.0
@@ -87,21 +106,4 @@ struct TagsVisibilityManager {
         self.tagsTableViewController.scrollToActiveRow()
       }, completion: { _ in })
   }
-
-  /**
-   Hide the tags table view
-   */
-  public func hideTags() {
-    guard showingTags else { return }
-    infoBar.resetButtonState(.showTags)
-    tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
-    tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
-    UIViewPropertyAnimator.runningPropertyAnimator(
-      withDuration: 0.25, delay: 0.0,
-      options: [.allowUserInteraction, .curveEaseOut],
-      animations: self.containerView.layoutIfNeeded,
-      completion: nil
-    )
-  }
-
 }

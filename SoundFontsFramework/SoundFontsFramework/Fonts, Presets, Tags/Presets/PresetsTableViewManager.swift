@@ -54,7 +54,7 @@ final class PresetsTableViewManager: NSObject {
     }
   }
 
-  public var visibilityState: [(IndexPath, Bool)] { presetConfigs.map { ($0.0, $0.1.isVisible) } }
+  var visibilityState: [(IndexPath, Bool)] { presetConfigs.map { ($0.0, $0.1.isVisible) } }
 
   /**
    Construct a new presets table view manager.
@@ -239,201 +239,6 @@ extension PresetsTableViewManager {
   }
 }
 
-extension PresetsTableViewManager {
-
-  private func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
-    switch event {
-    case let .changed(old: old, new: new, playSample: _):
-      serialQueue.async { self.handleActivePresetChanged(old: old, new: new) }
-    case let .loaded(preset: preset):
-      serialQueue.async { self.updateRow(with: preset) }
-    }
-  }
-
-  private func selectedSoundFontChangedNotificationInBackground(_ event: SelectedSoundFontEvent) {
-    guard case let .changed(old, new) = event else { return }
-    os_log(.debug, log: log, "selectedSoundFontChangeNotificationInBackground - old: '%{public}s' new: '%{public}s'",
-           old.descriptionOrNil, new.descriptionOrNil)
-    serialQueue.async { self.handleSelectedSoundFontChanged(old: old, new: new) }
-  }
-
-  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
-    os_log(.debug, log: log, "favoritesChangeNotificationInBackground BEGIN")
-    switch event {
-    case .restored:
-      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - restored")
-      serialQueue.async { self.handleFavoritesRestored() }
-
-    case let .added(_, favorite):
-      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - added - %{public}s", favorite.key.uuidString)
-
-    case let .removed(_, favorite):
-      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - removed - %{public}s", favorite.key.uuidString)
-
-    case let .changed(_, favorite):
-      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - changed - %{public}s", favorite.key.uuidString)
-      serialQueue.async { self.updateRow(with: favorite.key) }
-
-    case .selected: break
-    case .beginEdit: break
-    case .removedAll: break
-    }
-    os_log(.debug, log: log, "favoritesChangeNotificationInBackground END")
-  }
-
-  private func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
-    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground BEGIN")
-    switch event {
-    case let .unhidPresets(font: soundFont):
-      if soundFont == self.showingSoundFont {
-        serialQueue.async { self.regenerateViewSlots() }
-      }
-
-    case let .presetChanged(soundFont, index):
-      if soundFont == showingSoundFont {
-        let soundFontAndPreset = soundFont[index]
-        serialQueue.async { self.updateRow(with: soundFontAndPreset) }
-      }
-
-    case .restored: serialQueue.async { self.handleSoundFontsRestored() }
-    case .added: break
-    case .moved: break
-    case .removed: break
-    }
-    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground END")
-  }
-
-  private func slotIndex(from indexPath: IndexPath) -> PresetViewSlotIndex {
-    indexPath.slotIndex(using: sectionRowCounts)
-  }
-
-  private func indexPath(from slotIndex: PresetViewSlotIndex) -> IndexPath {
-    .init(slotIndex: slotIndex, sectionRowCounts: sectionRowCounts)
-  }
-
-  private func selectPreset(_ presetIndex: Int) {
-    guard let soundFont = showingSoundFont else { return }
-    let soundFontAndPreset = soundFont[presetIndex]
-    activePresetManager.setActive(preset: soundFontAndPreset, playSample: settings.playSample)
-  }
-
-  private func selectFavorite(_ key: Favorite.Key) {
-    if let favorite = favorites.getBy(key: key) {
-      activePresetManager.setActive(favorite: favorite, playSample: settings.playSample)
-    }
-  }
-
-  private func calculateSectionRowCounts() {
-    let numFullSections = viewSlots.count / IndexPath.sectionSize
-    let remaining = viewSlots.count - numFullSections * IndexPath.sectionSize
-    sectionRowCounts = [Int](repeating: IndexPath.sectionSize, count: numFullSections)
-    // There should always be at least one count, even if it is zero.
-    if remaining > 0 || sectionRowCounts.isEmpty { sectionRowCounts.append(remaining) }
-    precondition(!sectionRowCounts.isEmpty)
-  }
-
-  private func handleActivePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
-    os_log(.debug, log: log, "handleActivePresetChanged BEGIN")
-
-    if viewSlots.isEmpty {
-      regenerateViewSlots()
-      return
-    }
-
-    guard let slotIndex = getSlotIndex(for: new) else {
-      os_log(.debug, log: log, "handleActivePresetChanged END - not showing font for new preset")
-      return
-    }
-
-    viewController.slotToScrollTo = indexPath(from: slotIndex)
-    viewController.tableView.performBatchUpdates({
-      updateRow(with: old)
-      updateRow(with: new)
-    }, completion: { _ in })
-    os_log(.debug, log: log, "handleActivePresetChanged END")
-  }
-
-  private func handleSelectedSoundFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {
-    os_log(.debug, log: log, "handleSelectedSoundFontChanged BEGIN")
-
-    showingSoundFontKey = new
-
-    if viewController.isEditing {
-      os_log(.debug, log: log, "handleSelectedSoundFontChanged - stop editing")
-      viewController.afterReloadDataAction = {
-        self.viewController.endVisibilityEditing()
-      }
-    } else if activePresetManager.activeSoundFontKey == new {
-      os_log(.debug, log: log, "handleSelectedSoundFontChanged - showing active slot")
-      viewController.afterReloadDataAction = { self.showActiveSlot() }
-    }
-
-    regenerateViewSlots()
-
-    os_log(.debug, log: log, "handleSelectedSoundFontChanged END")
-  }
-
-  private func handleFavoritesRestored() {
-    os_log(.debug, log: log, "favoritesRestored BEGIN")
-    regenerateViewSlots()
-    os_log(.debug, log: log, "favoritesRestored END")
-  }
-
-  private func handleSoundFontsRestored() {
-    os_log(.debug, log: log, "soundFontsRestore BEGIN")
-    regenerateViewSlots()
-    os_log(.debug, log: log, "soundFontsRestore END")
-  }
-
-  private func getSlotIndex(for key: Favorite.Key) -> PresetViewSlotIndex? {
-    guard favorites.contains(key: key) else { return nil }
-    return isSearching ? searchSlots?.findFavoriteKey(key) : viewSlots.findFavoriteKey(key)
-  }
-
-  private func getSlotIndex(for soundFontAndPreset: SoundFontAndPreset?) -> PresetViewSlotIndex? {
-    guard let soundFontAndPreset = soundFontAndPreset,
-          let soundFont = showingSoundFont,
-          soundFont.key == soundFontAndPreset.soundFontKey else {
-            return nil
-          }
-
-    let presetIndex = soundFontAndPreset.presetIndex
-    return isSearching ? searchSlots?.findPresetIndex(presetIndex) : viewSlots.findPresetIndex(presetIndex)
-  }
-
-  private var activeSlotIndex: PresetViewSlotIndex? {
-    os_log(.debug, log: log, "activeSlotIndex BEGIN")
-    guard let activeSlot: PresetViewSlot = {
-      switch activePresetManager.active {
-      case let .preset(soundFontAndPreset):
-        os_log(.debug, log: log, "activeSlotIndex END - have preset")
-        return .preset(index: soundFontAndPreset.presetIndex)
-      case let .favorite(key, _):
-        os_log(.debug, log: log, "activeSlotIndex END - have favorite")
-        return .favorite(key: key)
-      case .none:
-        os_log(.debug, log: log, "activeSlotIndex END - has none")
-        return nil
-      }
-    }()
-    else {
-      return nil
-    }
-
-    guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else {
-      os_log(.debug, log: log, "activeSlotIndex END - slot not found in viewSlots")
-      return nil
-    }
-
-    os_log(.debug, log: log, "activeSlotIndex END - slotIndex: %d", slotIndex)
-    return .init(rawValue: slotIndex)
-  }
-
-  private func isActive(_ soundFontAndPreset: SoundFontAndPreset) -> Bool {
-    activePresetManager.active.soundFontAndPreset == soundFontAndPreset
-  }
-}
-
 // MARK: - Swipe Actions
 
 // These should be moved out into separate "actions" that are dedicated to performing one task.
@@ -478,17 +283,6 @@ extension PresetsTableViewManager {
     return makeSwipeActionConfiguration(actions: actions)
   }
 
-  private func makeSwipeActionConfiguration(actions: [UIContextualAction]) -> UISwipeActionsConfiguration {
-    let actions = UISwipeActionsConfiguration(actions: actions)
-    actions.performsFirstActionWithFullSwipe = false
-    return actions
-  }
-}
-
-// MARK: - Leading swipe actions
-
-extension PresetsTableViewManager {
-
   func beginEdit(at indexPath: IndexPath, view: UIView, completionHandler: @escaping (Bool) -> Void) {
     let slotIndex = slotIndex(from: indexPath)
     let slot = getSlot(at: slotIndex)
@@ -510,45 +304,210 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func makeEditPresetSwipeAction(at indexPath: IndexPath,
-                                         soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, actionView, completionHandler in
-      guard let self = self else { return }
-      self.favorites.beginEdit(
-        config: .preset(
-          state: .init(
-            indexPath: indexPath, sourceView: actionView, sourceRect: actionView.bounds,
-            currentLowestNote: self.keyboard?.lowestNote,
-            completionHandler: completionHandler, soundFonts: self.soundFonts,
-            soundFontAndPreset: soundFontAndPreset,
-            isActive: self.isActive(soundFontAndPreset),
-            settings: self.settings))
-      )
-    }
-  }
-
-  private func makeCreateFavoriteSwipeAction(at indexPath: IndexPath,
-                                             soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
-    UIContextualAction(icon: .favorite, color: .systemOrange) { [weak self] _, _, completionHandler in
-      guard let self = self else { return }
-      let status = self.createFavorite(at: indexPath, with: soundFontAndPreset)
-      completionHandler(status)
-    }
-  }
-
-  private func makeEditFavoriteSwipeAction(at indexPath: IndexPath) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemOrange) { [weak self] _, _, completionHandler in
-      self?.editFavorite(at: indexPath, completionHandler: completionHandler)
-    }
-  }
 }
 
-// MARK: - Trailing swipe actions
+private extension PresetsTableViewManager {
 
-extension PresetsTableViewManager {
+  func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+    switch event {
+    case let .changed(old: old, new: new, playSample: _):
+      serialQueue.async { self.handleActivePresetChanged(old: old, new: new) }
+    case let .loaded(preset: preset):
+      serialQueue.async { self.updateRow(with: preset) }
+    }
+  }
 
-  private func makeHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
-                                   soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
+  func selectedSoundFontChangedNotificationInBackground(_ event: SelectedSoundFontEvent) {
+    guard case let .changed(old, new) = event else { return }
+    os_log(.debug, log: log, "selectedSoundFontChangeNotificationInBackground - old: '%{public}s' new: '%{public}s'",
+           old.descriptionOrNil, new.descriptionOrNil)
+    serialQueue.async { self.handleSelectedSoundFontChanged(old: old, new: new) }
+  }
+
+  func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
+    os_log(.debug, log: log, "favoritesChangeNotificationInBackground BEGIN")
+    switch event {
+    case .restored:
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - restored")
+      serialQueue.async { self.handleFavoritesRestored() }
+
+    case let .added(_, favorite):
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - added - %{public}s", favorite.key.uuidString)
+
+    case let .removed(_, favorite):
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - removed - %{public}s", favorite.key.uuidString)
+
+    case let .changed(_, favorite):
+      os_log(.debug, log: log, "favoritesChangeNotificationInBackground - changed - %{public}s", favorite.key.uuidString)
+      serialQueue.async { self.updateRow(with: favorite.key) }
+
+    case .selected: break
+    case .beginEdit: break
+    case .removedAll: break
+    }
+    os_log(.debug, log: log, "favoritesChangeNotificationInBackground END")
+  }
+
+  func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
+    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground BEGIN")
+    switch event {
+    case let .unhidPresets(font: soundFont):
+      if soundFont == self.showingSoundFont {
+        serialQueue.async { self.regenerateViewSlots() }
+      }
+
+    case let .presetChanged(soundFont, index):
+      if soundFont == showingSoundFont {
+        let soundFontAndPreset = soundFont[index]
+        serialQueue.async { self.updateRow(with: soundFontAndPreset) }
+      }
+
+    case .restored: serialQueue.async { self.handleSoundFontsRestored() }
+    case .added: break
+    case .moved: break
+    case .removed: break
+    }
+    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground END")
+  }
+
+  func slotIndex(from indexPath: IndexPath) -> PresetViewSlotIndex {
+    indexPath.slotIndex(using: sectionRowCounts)
+  }
+
+  func indexPath(from slotIndex: PresetViewSlotIndex) -> IndexPath {
+    .init(slotIndex: slotIndex, sectionRowCounts: sectionRowCounts)
+  }
+
+  func selectPreset(_ presetIndex: Int) {
+    guard let soundFont = showingSoundFont else { return }
+    let soundFontAndPreset = soundFont[presetIndex]
+    activePresetManager.setActive(preset: soundFontAndPreset, playSample: settings.playSample)
+  }
+
+  func selectFavorite(_ key: Favorite.Key) {
+    if let favorite = favorites.getBy(key: key) {
+      activePresetManager.setActive(favorite: favorite, playSample: settings.playSample)
+    }
+  }
+
+  func calculateSectionRowCounts() {
+    let numFullSections = viewSlots.count / IndexPath.sectionSize
+    let remaining = viewSlots.count - numFullSections * IndexPath.sectionSize
+    sectionRowCounts = [Int](repeating: IndexPath.sectionSize, count: numFullSections)
+    // There should always be at least one count, even if it is zero.
+    if remaining > 0 || sectionRowCounts.isEmpty { sectionRowCounts.append(remaining) }
+    precondition(!sectionRowCounts.isEmpty)
+  }
+
+  func handleActivePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
+    os_log(.debug, log: log, "handleActivePresetChanged BEGIN")
+
+    if viewSlots.isEmpty {
+      regenerateViewSlots()
+      return
+    }
+
+    guard let slotIndex = getSlotIndex(for: new) else {
+      os_log(.debug, log: log, "handleActivePresetChanged END - not showing font for new preset")
+      return
+    }
+
+    viewController.slotToScrollTo = indexPath(from: slotIndex)
+    viewController.tableView.performBatchUpdates({
+      updateRow(with: old)
+      updateRow(with: new)
+    }, completion: { _ in })
+    os_log(.debug, log: log, "handleActivePresetChanged END")
+  }
+
+  func handleSelectedSoundFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {
+    os_log(.debug, log: log, "handleSelectedSoundFontChanged BEGIN")
+
+    showingSoundFontKey = new
+
+    if viewController.isEditing {
+      os_log(.debug, log: log, "handleSelectedSoundFontChanged - stop editing")
+      viewController.afterReloadDataAction = {
+        self.viewController.endVisibilityEditing()
+      }
+    } else if activePresetManager.activeSoundFontKey == new {
+      os_log(.debug, log: log, "handleSelectedSoundFontChanged - showing active slot")
+      viewController.afterReloadDataAction = { self.showActiveSlot() }
+    }
+
+    regenerateViewSlots()
+
+    os_log(.debug, log: log, "handleSelectedSoundFontChanged END")
+  }
+
+  func makeSwipeActionConfiguration(actions: [UIContextualAction]) -> UISwipeActionsConfiguration {
+    let actions = UISwipeActionsConfiguration(actions: actions)
+    actions.performsFirstActionWithFullSwipe = false
+    return actions
+  }
+
+  func handleFavoritesRestored() {
+    os_log(.debug, log: log, "favoritesRestored BEGIN")
+    regenerateViewSlots()
+    os_log(.debug, log: log, "favoritesRestored END")
+  }
+
+  func handleSoundFontsRestored() {
+    os_log(.debug, log: log, "soundFontsRestore BEGIN")
+    regenerateViewSlots()
+    os_log(.debug, log: log, "soundFontsRestore END")
+  }
+
+  func getSlotIndex(for key: Favorite.Key) -> PresetViewSlotIndex? {
+    guard favorites.contains(key: key) else { return nil }
+    return isSearching ? searchSlots?.findFavoriteKey(key) : viewSlots.findFavoriteKey(key)
+  }
+
+  func getSlotIndex(for soundFontAndPreset: SoundFontAndPreset?) -> PresetViewSlotIndex? {
+    guard let soundFontAndPreset = soundFontAndPreset,
+          let soundFont = showingSoundFont,
+          soundFont.key == soundFontAndPreset.soundFontKey else {
+            return nil
+          }
+
+    let presetIndex = soundFontAndPreset.presetIndex
+    return isSearching ? searchSlots?.findPresetIndex(presetIndex) : viewSlots.findPresetIndex(presetIndex)
+  }
+
+  var activeSlotIndex: PresetViewSlotIndex? {
+    os_log(.debug, log: log, "activeSlotIndex BEGIN")
+    guard let activeSlot: PresetViewSlot = {
+      switch activePresetManager.active {
+      case let .preset(soundFontAndPreset):
+        os_log(.debug, log: log, "activeSlotIndex END - have preset")
+        return .preset(index: soundFontAndPreset.presetIndex)
+      case let .favorite(key, _):
+        os_log(.debug, log: log, "activeSlotIndex END - have favorite")
+        return .favorite(key: key)
+      case .none:
+        os_log(.debug, log: log, "activeSlotIndex END - has none")
+        return nil
+      }
+    }()
+    else {
+      return nil
+    }
+
+    guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else {
+      os_log(.debug, log: log, "activeSlotIndex END - slot not found in viewSlots")
+      return nil
+    }
+
+    os_log(.debug, log: log, "activeSlotIndex END - slotIndex: %d", slotIndex)
+    return .init(rawValue: slotIndex)
+  }
+
+  func isActive(_ soundFontAndPreset: SoundFontAndPreset) -> Bool {
+    activePresetManager.active.soundFontAndPreset == soundFontAndPreset
+  }
+
+  func makeHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
+                           soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .hide, color: .gray) { [weak self] _, _, completionHandler in
       guard let self = self else { return }
       if self.settings.showedHidePresetPrompt {
@@ -561,14 +520,14 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func makeDeleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
+  func makeDeleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
     UIContextualAction(icon: .unfavorite, color: .systemRed) { [weak self] _, _, completionHandler in
       guard let self = self else { return }
       completionHandler(self.deleteFavorite(at: indexPath, cell: cell))
     }
   }
 
-  private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset) -> Bool {
+  func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset) -> Bool {
     guard let soundFont = self.soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else { return false }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     guard let favorite = soundFonts.createFavorite(soundFontAndPreset: soundFontAndPreset,
@@ -590,7 +549,7 @@ extension PresetsTableViewManager {
     return true
   }
 
-  private func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
+  func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
     let slotIndex = slotIndex(from: indexPath)
     guard case let .favorite(key) = getSlot(at: slotIndex) else { fatalError("unexpected slot type") }
     guard let favorite = favorites.getBy(key: key) else { return false }
@@ -611,7 +570,7 @@ extension PresetsTableViewManager {
     return true
   }
 
-  private func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
+  func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
     let slotIndex = slotIndex(from: indexPath)
     guard case let .favorite(key) = getSlot(at: slotIndex) else { fatalError("unexpected nil") }
     guard let favorite = favorites.getBy(key: key) else { return }
@@ -634,8 +593,7 @@ extension PresetsTableViewManager {
     self.favorites.beginEdit(config: config)
   }
 
-  private func hidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
-                          completionHandler: (Bool) -> Void) {
+  func hidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath, completionHandler: (Bool) -> Void) {
     let slotIndex = slotIndex(from: indexPath)
     self.soundFonts.setVisibility(soundFontAndPreset: soundFontAndPreset, state: false)
     viewController.tableView.performBatchUpdates {
@@ -648,8 +606,8 @@ extension PresetsTableViewManager {
     completionHandler(true)
   }
 
-  private func promptToHidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
-                                  completionHandler: @escaping (Bool) -> Void) {
+  func promptToHidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
+                          completionHandler: @escaping (Bool) -> Void) {
     let promptTitle = Formatters.strings.hidePresetTitle
     let promptMessage = Formatters.strings.hidePresetMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
@@ -669,18 +627,43 @@ extension PresetsTableViewManager {
 
     viewController.present(alertController, animated: true, completion: nil)
   }
-}
 
-// MARK: - Updates
+  func makeEditPresetSwipeAction(at indexPath: IndexPath, soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
+    UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, actionView, completionHandler in
+      guard let self = self else { return }
+      self.favorites.beginEdit(
+        config: .preset(
+          state: .init(
+            indexPath: indexPath, sourceView: actionView, sourceRect: actionView.bounds,
+            currentLowestNote: self.keyboard?.lowestNote,
+            completionHandler: completionHandler, soundFonts: self.soundFonts,
+            soundFontAndPreset: soundFontAndPreset,
+            isActive: self.isActive(soundFontAndPreset),
+            settings: self.settings))
+      )
+    }
+  }
 
-extension PresetsTableViewManager {
+  func makeCreateFavoriteSwipeAction(at indexPath: IndexPath, soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
+    UIContextualAction(icon: .favorite, color: .systemOrange) { [weak self] _, _, completionHandler in
+      guard let self = self else { return }
+      let status = self.createFavorite(at: indexPath, with: soundFontAndPreset)
+      completionHandler(status)
+    }
+  }
 
-  private func getSlot(at slotIndex: PresetViewSlotIndex) -> PresetViewSlot {
+  func makeEditFavoriteSwipeAction(at indexPath: IndexPath) -> UIContextualAction {
+    UIContextualAction(icon: .edit, color: .systemOrange) { [weak self] _, _, completionHandler in
+      self?.editFavorite(at: indexPath, completionHandler: completionHandler)
+    }
+  }
+
+  func getSlot(at slotIndex: PresetViewSlotIndex) -> PresetViewSlot {
     os_log(.debug, log: log, "getSlot BEGIN: %d %d %d", slotIndex.rawValue, searchSlots?.count ?? 0, viewSlots.count)
     return searchSlots?[slotIndex] ?? viewSlots[slotIndex]
   }
 
-  private func makeSoundFontAndPreset(at slotIndex: PresetViewSlotIndex) -> SoundFontAndPreset? {
+  func makeSoundFontAndPreset(at slotIndex: PresetViewSlotIndex) -> SoundFontAndPreset? {
     guard let soundFont = showingSoundFont else { return nil }
     guard let presetIndex: Int = {
       switch getSlot(at: slotIndex) {
@@ -693,7 +676,7 @@ extension PresetsTableViewManager {
     return soundFont[presetIndex]
   }
 
-  private func updateRow(with activeKind: ActivePresetKind?) {
+  func updateRow(with activeKind: ActivePresetKind?) {
     os_log(.debug, log: log, "updateRow - with activeKind")
     guard let activeKind = activeKind else { return }
     switch activeKind {
@@ -703,7 +686,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func updateRow(with favoriteKey: Favorite.Key) {
+  func updateRow(with favoriteKey: Favorite.Key) {
     os_log(.debug, log: log, "updateRow - with favorite")
     guard let slotIndex = getSlotIndex(for: favoriteKey),
           let cell: TableCell = viewController.tableView.cellForRow(at: indexPath(from: slotIndex))
@@ -711,7 +694,7 @@ extension PresetsTableViewManager {
     update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex)
   }
 
-  private func updateRow(with soundFontAndPreset: SoundFontAndPreset?) {
+  func updateRow(with soundFontAndPreset: SoundFontAndPreset?) {
     os_log(.debug, log: log, "updateRow - with soundFontAndPreset")
     guard let slotIndex = getSlotIndex(for: soundFontAndPreset),
           let cell: TableCell = viewController.tableView.cellForRow(at: indexPath(from: slotIndex))
@@ -719,7 +702,7 @@ extension PresetsTableViewManager {
     update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex)
   }
 
-  private func getSlotIndex(for activeKind: ActivePresetKind) -> PresetViewSlotIndex? {
+  func getSlotIndex(for activeKind: ActivePresetKind) -> PresetViewSlotIndex? {
     switch activeKind {
     case .none: return nil
     case .preset(let soundFontAndPreset): return getSlotIndex(for: soundFontAndPreset)
@@ -727,7 +710,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func update(cell: TableCell, at indexPath: IndexPath, slotIndex: PresetViewSlotIndex) {
+  func update(cell: TableCell, at indexPath: IndexPath, slotIndex: PresetViewSlotIndex) {
     switch getSlot(at: slotIndex) {
     case let .preset(presetIndex):
       updatePresetCell(cell, indexPath: indexPath, presetIndex: presetIndex, slot: slotIndex.rawValue)

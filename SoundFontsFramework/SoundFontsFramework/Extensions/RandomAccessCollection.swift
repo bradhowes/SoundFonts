@@ -4,7 +4,7 @@ import Foundation
 
 extension RandomAccessCollection {
 
-  public typealias OrderPredicate = (Iterator.Element, Iterator.Element) -> Bool
+  typealias OrderPredicate = (Iterator.Element, Iterator.Element) -> Bool
 
   /**
    Binary search operation for quick determination where to insert a new value into a collection that will preserve
@@ -14,7 +14,7 @@ extension RandomAccessCollection {
    - parameter predicate: a closure/function that determines ordering of two elements
    - returns: index into the collection
    */
-  public func insertionIndex(of value: Iterator.Element, predicate: OrderPredicate) -> Index {
+  func insertionIndex(of value: Iterator.Element, predicate: OrderPredicate) -> Index {
     var low = startIndex
     var high = endIndex
     while low != high {
@@ -37,7 +37,7 @@ extension RandomAccessCollection where Iterator.Element: AnyObject {
    - parameter value: the object to look for
    - returns: index of the give value or `endIndex` if not found
    */
-  public func search(for value: Iterator.Element, predicate: OrderPredicate) -> Index {
+  func search(for value: Iterator.Element, predicate: OrderPredicate) -> Index {
     let pos = insertionIndex(of: value, predicate: predicate)
     return pos < endIndex && self[pos] === value ? pos : endIndex
   }
@@ -49,7 +49,7 @@ extension RandomAccessCollection where Iterator.Element: AnyObject {
    - parameter predicate: a closure/function that determines ordering of two elements
    - returns: true if element is in the collections
    */
-  public func contains(value: Iterator.Element, predicate: OrderPredicate) -> Bool {
+  func contains(value: Iterator.Element, predicate: OrderPredicate) -> Bool {
     let pos = insertionIndex(of: value, predicate: predicate)
     return pos < endIndex && self[pos] === value
   }
@@ -63,7 +63,7 @@ extension RandomAccessCollection where Iterator.Element: Equatable {
    - parameter value: the value to look for
    - returns: index of the give value or `endIndex` if not found
    */
-  public func search(for value: Iterator.Element, predicate: OrderPredicate) -> Index {
+  func search(for value: Iterator.Element, predicate: OrderPredicate) -> Index {
     let pos = insertionIndex(of: value, predicate: predicate)
     return pos < endIndex && self[pos] == value ? pos : endIndex
   }
@@ -75,7 +75,7 @@ extension RandomAccessCollection where Iterator.Element: Equatable {
    - parameter predicate: a closure/function that determines ordering of two elements
    - returns: true if element is in the collections
    */
-  public func contains(value: Iterator.Element, predicate: OrderPredicate) -> Bool {
+  func contains(value: Iterator.Element, predicate: OrderPredicate) -> Bool {
     let pos = insertionIndex(of: value, predicate: predicate)
     return pos < endIndex && self[pos] == value
   }
@@ -88,7 +88,7 @@ extension Collection where Iterator.Element: Comparable {
 
    - returns: 2-tuple with the minimum and maximum values or nil if collection is empty
    */
-  public func minMax() -> (min: Iterator.Element, max: Iterator.Element)? {
+  func minMax() -> (min: Iterator.Element, max: Iterator.Element)? {
     guard let value = first else { return nil }
     var min = value
     var max = value

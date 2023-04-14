@@ -9,7 +9,7 @@ final class FontEditor: UIViewController {
    A Config instance communicates values for the editor to use to do its job. It is setup during the segue that will
    show the editor.
    */
-  public struct Config {
+  struct Config {
     /// The index of the sound font entry being edited
     let indexPath: IndexPath
     /// The cell view that holds the sound font entry
@@ -103,39 +103,12 @@ extension FontEditor {
   }
 }
 
-extension FontEditor {
-
-  @IBAction private func close(_ sender: UIBarButtonItem) {
-    if let soundFont = config.soundFonts.getBy(key: config.soundFontKey) {
-      let newName = name.text ?? ""
-      if !newName.isEmpty {
-        soundFont.displayName = newName
-      }
-      soundFont.tags = activeTags
-      delegate?.dismissed(reason: .done(soundFontKey: config.soundFontKey))
-    }
-
-    self.dismiss(animated: true)
-    config.completionHandler?(true)
-    AskForReview.maybe()
-  }
-
-  @IBAction private func makeAllVisible(_ sender: UIButton) {
-    config.soundFonts.makeAllVisible(key: config.soundFontKey)
-    updateHiddenCount()
-  }
-
-  @IBAction func copyOriginalName(_ sender: Any) { name.text = originalNameLabel.text }
-
-  @IBAction func copyEmbeddedName(_ sender: Any) { name.text = embeddedNameLabel.text }
-}
-
 extension FontEditor: UITextFieldDelegate {
 
   /**
    Notification that user wishes to interact with a text field. Keep it visible.
    */
-  public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     textFieldKeyboardMonitor.viewToKeepVisible = textField
     return true
   }
@@ -151,7 +124,7 @@ extension FontEditor: UITextFieldDelegate {
   /**
    Notification that editing in a text field is coming to an end
    */
-  public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+  func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
     textFieldKeyboardMonitor.viewToKeepVisible = nil
     return true
   }
@@ -177,7 +150,7 @@ extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresent
 extension FontEditor: SegueHandler {
 
   /// Segues available from this view controller. A SegueHandler protocol requirement.
-  public enum SegueIdentifier: String {
+  enum SegueIdentifier: String {
     /// Tag editor
     case tagsEdit
   }
@@ -188,16 +161,40 @@ extension FontEditor: SegueHandler {
    - parameter segue: the segue to be performed
    - parameter sender: the origin of the segue request
    */
-  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .tagsEdit: prepareToEdit(segue)
     }
   }
 }
 
-extension FontEditor {
+private extension FontEditor {
 
-  private func updateHiddenCount() {
+  @IBAction func close(_ sender: UIBarButtonItem) {
+    if let soundFont = config.soundFonts.getBy(key: config.soundFontKey) {
+      let newName = name.text ?? ""
+      if !newName.isEmpty {
+        soundFont.displayName = newName
+      }
+      soundFont.tags = activeTags
+      delegate?.dismissed(reason: .done(soundFontKey: config.soundFontKey))
+    }
+
+    self.dismiss(animated: true)
+    config.completionHandler?(true)
+    AskForReview.maybe()
+  }
+
+  @IBAction func makeAllVisible(_ sender: UIButton) {
+    config.soundFonts.makeAllVisible(key: config.soundFontKey)
+    updateHiddenCount()
+  }
+
+  @IBAction func copyOriginalName(_ sender: Any) { name.text = originalNameLabel.text }
+
+  @IBAction func copyEmbeddedName(_ sender: Any) { name.text = embeddedNameLabel.text }
+
+  func updateHiddenCount() {
     let hiddenCount = soundFont.presets.filter { $0.presetConfig.isHidden ?? false }.count
     if hiddenCount > 0 {
       hiddenCountLabel.text = "\(hiddenCount) hidden"
@@ -208,7 +205,7 @@ extension FontEditor {
     }
   }
 
-  private func prepareToEdit(_ segue: UIStoryboardSegue) {
+  func prepareToEdit(_ segue: UIStoryboardSegue) {
     guard let viewController = segue.destination as? TagsEditorTableViewController else {
       fatalError("unexpected controller relationships")
     }

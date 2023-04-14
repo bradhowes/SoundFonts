@@ -95,6 +95,7 @@ extension KeyboardController {
 }
 
 // MARK: - Configuration
+
 extension KeyboardController: ControllerConfiguration {
 
   /**
@@ -114,48 +115,6 @@ extension KeyboardController: ControllerConfiguration {
     router.subscribe(self, notifier: routerChangedNotificationInBackground)
 
     touchedKeys.processor = router.audioEngine
-  }
-
-  private func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
-    if case let .audioEngineAvailable(audioEngine) = event {
-      touchedKeys.processor = audioEngine
-    }
-  }
-
-  private func presetChangedNotificationInBackground(_ event: ActivePresetEvent) {
-    switch event {
-    case .changed:
-      if let presetConfig = activePresetManager.activePresetConfig {
-        DispatchQueue.main.async { self.updateWith(presetConfig: presetConfig) }
-      }
-    case .loaded: break
-    }
-  }
-
-  private func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
-    switch event {
-    case let .changed(index: _, favorite: favorite):
-      DispatchQueue.main.async { self.handleFavoriteChanged(favorite: favorite) }
-    case let .selected(index: _, favorite: favorite):
-      DispatchQueue.main.async { self.updateWith(presetConfig: favorite.presetConfig) }
-    case .added: break
-    case .beginEdit: break
-    case .removed: break
-    case .removedAll: break
-    case .restored: break
-    }
-  }
-
-  private func handleFavoriteChanged(favorite: Favorite) {
-    if self.activePresetManager.activeFavorite == favorite {
-      self.updateWith(presetConfig: favorite.presetConfig)
-    }
-  }
-
-  private func updateWith(presetConfig: PresetConfig) {
-    if presetConfig.keyboardLowestNoteEnabled, let lowest = presetConfig.keyboardLowestNote {
-      lowestNote = lowest
-    }
   }
 }
 
@@ -274,11 +233,11 @@ extension KeyboardController: AnyKeyboard {
 
 // MARK: - Key Generation
 
-extension KeyboardController {
+private extension KeyboardController {
 
-  private var maxMidiValue: Int { 12 * 9 } // C8
+  var maxMidiValue: Int { 12 * 9 } // C8
 
-  private func createKeys() {
+  func createKeys() {
     os_log(.debug, log: self.log, "createKeys BEGIN")
     var blackKeys = [Key]()
     for each in KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
@@ -297,7 +256,7 @@ extension KeyboardController {
     os_log(.debug, log: self.log, "createKeys END")
   }
 
-  private func layoutKeys() {
+  func layoutKeys() {
     os_log(.debug, log: self.log, "layoutKeys BEGIN")
     for (key, def) in zip(allKeys, KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height,
                                                      firstMidiNote: 0, lastMidiNote: maxMidiValue)) {
@@ -308,12 +267,12 @@ extension KeyboardController {
     os_log(.debug, log: self.log, "layoutKeys END")
   }
 
-  private func offsetKeyboard(by offset: CGFloat) {
+  func offsetKeyboard(by offset: CGFloat) {
     keyboardLeadingConstraint.constant = offset
     updateVisibleKeys()
   }
 
-  private func pressKeys(_ touches: Set<UITouch>) {
+  func pressKeys(_ touches: Set<UITouch>) {
     var firstKey: Key?
     for touch in touches {
       if let key = visibleKeys.touched(by: touch.location(in: keyboard)) {
@@ -328,14 +287,14 @@ extension KeyboardController {
     }
   }
 
-  private func releaseKeys(_ touches: Set<UITouch>) {
+  func releaseKeys(_ touches: Set<UITouch>) {
     touches.forEach { touchedKeys.release($0) }
     if let touch = trackedTouch, touches.contains(touch) {
       trackedTouch = nil
     }
   }
 
-  private func updateVisibleKeys() {
+  func updateVisibleKeys() {
     os_log(.debug, log: self.log, "updateVisibleKeys BEGIN")
     let offset = keyboardLeadingConstraint.constant
     let visible = allKeys.keySpan(for: view.bounds.offsetBy(dx: -offset, dy: 0.0))
@@ -345,7 +304,7 @@ extension KeyboardController {
     os_log(.debug, log: self.log, "updateVisibleKeys END")
   }
 
-  private func updateInfoBar(note: Note) {
+  func updateInfoBar(note: Note) {
     os_log(.debug, log: self.log, "updateInfoBar BEGIN - note: %{public}s", note.description)
     if isMuted {
       infoBar.setStatusText("🔇")
@@ -356,13 +315,8 @@ extension KeyboardController {
     }
     os_log(.debug, log: self.log, "updateInfoBar END")
   }
-}
 
-// MARK: - Keyboard Shifting
-
-extension KeyboardController {
-
-  private func shiftKeyboardUp(_ sender: AnyObject) {
+  func shiftKeyboardUp(_ sender: AnyObject) {
     os_log(.debug, log: log, "shiftKeyBoardUp")
     precondition(!allKeys.isEmpty)
     if lastMidiNoteValue < maxMidiValue {
@@ -375,7 +329,7 @@ extension KeyboardController {
     AskForReview.maybe()
   }
 
-  private func shiftKeyboardDown(_ sender: AnyObject) {
+  func shiftKeyboardDown(_ sender: AnyObject) {
     os_log(.debug, log: log, "shiftKeyBoardDown")
     precondition(!allKeys.isEmpty)
     if firstMidiNoteValue >= 12 {
@@ -387,7 +341,7 @@ extension KeyboardController {
     AskForReview.maybe()
   }
 
-  private func shiftKeys(by: Int) {
+  func shiftKeys(by: Int) {
     assert(!allKeys.isEmpty)
     if by != 0 {
       releaseAllKeys()
@@ -395,6 +349,48 @@ extension KeyboardController {
       lastMidiNoteValue += by
       if lowestNote.accented { firstMidiNoteValue += 1 }
       offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
+    }
+  }
+
+  func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
+    if case let .audioEngineAvailable(audioEngine) = event {
+      touchedKeys.processor = audioEngine
+    }
+  }
+
+  func presetChangedNotificationInBackground(_ event: ActivePresetEvent) {
+    switch event {
+    case .changed:
+      if let presetConfig = activePresetManager.activePresetConfig {
+        DispatchQueue.main.async { self.updateWith(presetConfig: presetConfig) }
+      }
+    case .loaded: break
+    }
+  }
+
+  func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
+    switch event {
+    case let .changed(index: _, favorite: favorite):
+      DispatchQueue.main.async { self.handleFavoriteChanged(favorite: favorite) }
+    case let .selected(index: _, favorite: favorite):
+      DispatchQueue.main.async { self.updateWith(presetConfig: favorite.presetConfig) }
+    case .added: break
+    case .beginEdit: break
+    case .removed: break
+    case .removedAll: break
+    case .restored: break
+    }
+  }
+
+  func handleFavoriteChanged(favorite: Favorite) {
+    if self.activePresetManager.activeFavorite == favorite {
+      self.updateWith(presetConfig: favorite.presetConfig)
+    }
+  }
+
+  func updateWith(presetConfig: PresetConfig) {
+    if presetConfig.keyboardLowestNoteEnabled, let lowest = presetConfig.keyboardLowestNote {
+      lowestNote = lowest
     }
   }
 }

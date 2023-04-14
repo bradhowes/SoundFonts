@@ -7,7 +7,7 @@ import Tagged
  The `PresetTableView` shows the presets of a soundfont as well as any `Favorite` entities that are related to the
  presets. This type represents one entry in the table.
  */
-internal enum PresetViewSlot: Equatable {
+enum PresetViewSlot: Equatable {
   case preset(index: Int)
   case favorite(key: Favorite.Key)
 }
@@ -16,14 +16,14 @@ internal enum PresetViewSlot: Equatable {
  The index into an array of PresetViewSlot items. Use `Tagged` in order to reduce chance of using wrong index value.
  Otherwise, it is just a 0-based integer index into an array of PresetViewSlot items.
  */
-internal typealias PresetViewSlotIndex = Tagged<PresetViewSlot, Int>
+typealias PresetViewSlotIndex = Tagged<PresetViewSlot, Int>
 
 extension PresetViewSlotIndex {
   /// Allow adding an integer value to a slot index
   static func + (lhs: PresetViewSlotIndex, rhs: Int) -> PresetViewSlotIndex { Self(rawValue: lhs.rawValue + rhs) }
 }
 
-internal extension IndexPath {
+extension IndexPath {
 
   /// The number of items in a section group in the presets table view
   static let sectionSize = 20
@@ -65,7 +65,7 @@ internal extension IndexPath {
   }
 }
 
-internal extension Array where Element == PresetViewSlot {
+extension Array where Element == PresetViewSlot {
 
   /**
    Indexing via PresetViewSlotIndex value.

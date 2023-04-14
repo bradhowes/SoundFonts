@@ -2,7 +2,7 @@
 
 import UIKit
 
-public extension UIButton {
+extension UIButton {
 
   /**
    Custom UIButton rendering for an 'enabled' state using an image.

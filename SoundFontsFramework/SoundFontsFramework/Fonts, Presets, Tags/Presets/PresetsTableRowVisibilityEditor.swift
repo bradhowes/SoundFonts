@@ -6,7 +6,7 @@ import os.log
 /**
  Performs the necessary table edits involved before and after visibility editing.
  */
-internal struct PresetsTableRowVisibilityEditor {
+struct PresetsTableRowVisibilityEditor {
   private let log = Logging.logger("PresetsTableRowVisibilityEditor")
   private(set) var viewSlots: [PresetViewSlot]
   private(set) var sectionRowCounts: [Int]
