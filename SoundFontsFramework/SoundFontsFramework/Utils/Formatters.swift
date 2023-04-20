@@ -5,10 +5,19 @@ import UIKit
 private class BundleTag {}
 
 /// Collection of value formatters that use localized strings.
-struct Formatters {
+public struct Formatters {
 
-  struct Strings {
+  public struct Strings {
     private var bundle: Bundle { Bundle(for: BundleTag.self) }
+
+    public var volumeIsZero: String {
+      NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
+    }
+
+    public var noPresetLoaded: String {
+      NSLocalizedString(
+        "noPresetLoaded", bundle: bundle, comment: "HUD message when no preset is loaded")
+    }
 
     var allTagName: String {
       NSLocalizedString("allTagName", bundle: bundle, comment: "The name of the 'all' tag.")
@@ -38,15 +47,6 @@ struct Formatters {
 
     var saveButton: String {
       NSLocalizedString("saveButton", bundle: bundle, comment: "Save current values")
-    }
-
-    var volumeIsZero: String {
-      NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
-    }
-
-    var noPresetLoaded: String {
-      NSLocalizedString(
-        "noPresetLoaded", bundle: bundle, comment: "HUD message when no preset is loaded")
     }
 
     var otherAppAudio: String {
@@ -213,7 +213,7 @@ struct Formatters {
     }
   }
 
-  static let strings: Strings = Strings()
+  public static let strings: Strings = Strings()
 
   /**
    Obtain a formatted slider value.

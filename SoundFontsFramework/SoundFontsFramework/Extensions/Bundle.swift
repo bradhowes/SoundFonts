@@ -9,13 +9,13 @@ extension Bundle {
   func string(forKey key: String) -> String { infoDictionary?[key] as? String ?? "" }
 
   /// Obtain the release version number from the bundle info
-  var releaseVersionNumber: String { string(forKey: "CFBundleShortVersionString") }
+  public var releaseVersionNumber: String { string(forKey: "CFBundleShortVersionString") }
 
   /// Obtain the build version number from the bundle info
-  var buildVersionNumber: String { string(forKey: "CFBundleVersion") }
+  public var buildVersionNumber: String { string(forKey: "CFBundleVersion") }
 
   /// Obtain a version string from the bundle info
-  var versionString: String { "Version \(releaseVersionNumber).\(buildVersionNumber)" }
+  public var versionString: String { "Version \(releaseVersionNumber).\(buildVersionNumber)" }
 }
 
 extension Bundle {
