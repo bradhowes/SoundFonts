@@ -316,12 +316,10 @@ public extension Settings {
     get { self[.showedChanges] }
     set { self[.showedChanges] = newValue }
   }
-
   var notifiedAboutBuiltinFonts: Bool {
     get { self[.notifiedAboutBuiltinFonts] }
     set { self[.notifiedAboutBuiltinFonts] = newValue }
   }
-
   /// The current scale factor that controls how much of the presets view to show in comparison to the fonts view
   var presetsWidthMultiplier: Double {
     get { self[.presetsWidthMultiplier] }
@@ -337,8 +335,8 @@ public extension Settings {
     get { self[.showedHidePresetPrompt] }
     set { self[.showedHidePresetPrompt] = newValue }
   }
-  @objc dynamic  var settingsVersion: Int {
-    get { self[.settingsVersion] }
-    set { self[.settingsVersion] = newValue }
+  var useSF2Engine: Bool {
+    get { self[.useSF2Engine] }
+    set { self[.useSF2Engine] = newValue }
   }
 }

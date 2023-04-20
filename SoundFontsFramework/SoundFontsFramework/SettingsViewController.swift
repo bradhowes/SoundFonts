@@ -51,6 +51,7 @@ final class SettingsViewController: UIViewController {
 
   @IBOutlet private weak var exportSoundFontsStackView: UIStackView!
   @IBOutlet private weak var importSoundFontsStackView: UIStackView!
+  @IBOutlet private weak var useSF2LibEngineStackView: UIStackView!
 
   @IBOutlet private weak var divider4: UIView!
 
@@ -90,6 +91,7 @@ final class SettingsViewController: UIViewController {
   @IBOutlet private weak var showChangeslButton: UIButton!
   @IBOutlet private weak var showTutorialButton: UIButton!
   @IBOutlet private weak var contactButton: UIButton!
+  @IBOutlet private weak var useSF2LibEngine: UISwitch!
 
   private var revealKeyboardForKeyWidthChanges = false
   private let numberKeyboardDoneProxy = UITapGestureRecognizer()
@@ -125,6 +127,7 @@ final class SettingsViewController: UIViewController {
     contactDeveloperStackView,
     pitchBendStackView,
     tuningStackView,
+    useSF2LibEngineStackView,
     divider1,
     divider2,
     divider3,
@@ -164,6 +167,12 @@ final class SettingsViewController: UIViewController {
 
     globalTuningCents.inputAssistantItem.leadingBarButtonGroups = []
     globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
+
+#if NAME_SUFFIX
+    useSF2LibEngineStackView.isHidden = true
+#else
+    useSF2LibEngineStackView.isHidden = false
+#endif
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -227,6 +236,9 @@ final class SettingsViewController: UIViewController {
       copyFiles.isOn = settings.copyFilesWhenAdding
 
       endShowKeyboard()
+
+      useSF2LibEngine.isOn = settings.useSF2Engine
+
     } else {
       keyLabelsStackView.isHidden = true
       solfegeStackView.isHidden = true
@@ -274,6 +286,10 @@ final class SettingsViewController: UIViewController {
     monitorToken = nil
 
     os_log(.debug, log: log, "viewDidDisapper BEND")
+  }
+
+  @IBAction func useSF2EngineLibChanged(_ sender: UISwitch) {
+    settings.useSF2Engine = sender.isOn
   }
 }
 

@@ -112,5 +112,5 @@ public extension SettingKeys {
   /// The current delay mix setting
   static let delayWetDryMix = SettingKey("delayWetDryMix", Float(45.0))
 
-  static let settingsVersion = SettingKey("settingsVersion", 0)
+  static let useSF2Engine = SettingKey("useSF2Engine", false)
 }

@@ -9,6 +9,7 @@ import MorkAndMIDI
  */
 public protocol AnyMIDISynth: PresetLoader {
   var avAudioUnit: AVAudioUnitMIDIInstrument { get }
+
   var synthGain: Float { get set }
   var synthStereoPan: Float { get set }
   var synthGlobalTuning: Float { get set }
@@ -89,5 +90,39 @@ extension AVAudioUnitSampler: AnyMIDISynth {
   @inlinable
   public func programChange(program: UInt8) {
     sendProgramChange(program, onChannel: 0)
+  }
+}
+
+extension AVSF2Engine: AnyMIDISynth {
+
+  public func setPitchBendRange(value: UInt8) {}
+
+  public func stopAllNotes() { sf2Engine.stopAllNotes() }
+
+  @inlinable
+  public func noteOff(note: UInt8, velocity: UInt8) { sf2Engine.stopNote(note: note, velocity: velocity) }
+
+  @inlinable
+  public func noteOn(note: UInt8, velocity: UInt8) { sf2Engine.startNote(note: note, velocity: velocity) }
+
+  @inlinable
+  public func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {}
+
+  @inlinable
+  public func controlChange(controller: UInt8, value: UInt8) {}
+
+  @inlinable
+  public func pitchBendChange(value: UInt16) {}
+
+  @inlinable
+  public func channelPressure(pressure: UInt8) {}
+
+  @inlinable
+  public func programChange(program: UInt8) {}
+
+  public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
+    sf2Engine.load(url)
+    sf2Engine.selectPreset(Int32(preset.soundFontIndex))
+    return nil
   }
 }
