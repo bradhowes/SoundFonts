@@ -9,6 +9,8 @@ public final class AVSF2Engine {
   public let avAudioUnit: AVAudioUnitMIDIInstrument
   public let sf2Engine: SF2EngineAU
 
+  private let scheduleMIDIEventBlock: AUScheduleMIDIEventBlock?
+
   public var synthGain: Float = 1.0
   public var synthStereoPan: Float = 0.0
   public var synthGlobalTuning: Float = 0.0
@@ -18,6 +20,7 @@ public final class AVSF2Engine {
     self.avAudioUnit = Self.instantiate()
     guard let sf2Engine = avAudioUnit.auAudioUnit as? SF2EngineAU else { fatalError() }
     self.sf2Engine = sf2Engine
+    self.scheduleMIDIEventBlock = sf2Engine.scheduleMIDIEventBlock
   }
 
   /// The component description for SF2EngineAU
@@ -44,6 +47,7 @@ public final class AVSF2Engine {
    - returns: AVAudioUnitMIDIInstrument that holds an SF2EngineAU instance.
    */
   public static func instantiate() -> AVAudioUnitMIDIInstrument {
+    // TODO: revamp to do this without the blocking.
     let semaphore = DispatchSemaphore(value: 0)
     var result: AVAudioUnitMIDIInstrument!
     instantiate { avAudioUnit, _ in
@@ -55,5 +59,9 @@ public final class AVSF2Engine {
     }
     _ = semaphore.wait(wallTimeout: .distantFuture)
     return result
+  }
+
+  public func sendMIDI(data: [UInt8]) {
+    scheduleMIDIEventBlock?(AUEventSampleTimeImmediate, UInt8(midiChannel), data.count, data)
   }
 }

@@ -97,28 +97,46 @@ extension AVSF2Engine: AnyMIDISynth {
 
   public func setPitchBendRange(value: UInt8) {}
 
-  public func stopAllNotes() { sf2Engine.stopAllNotes() }
+  @inlinable
+  public func noteOff(note: UInt8, velocity: UInt8) {
+    sendMIDI(data: [0x80, note, velocity])
+    // sf2Engine.stopNote(note: note, velocity: velocity)
+  }
 
   @inlinable
-  public func noteOff(note: UInt8, velocity: UInt8) { sf2Engine.stopNote(note: note, velocity: velocity) }
+  public func noteOn(note: UInt8, velocity: UInt8) {
+    sendMIDI(data: [0x90, note, velocity])
+    // sf2Engine.startNote(note: note, velocity: velocity)
+  }
 
   @inlinable
-  public func noteOn(note: UInt8, velocity: UInt8) { sf2Engine.startNote(note: note, velocity: velocity) }
+  public func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
+    sendMIDI(data: [0xA0, note, pressure])
+  }
 
   @inlinable
-  public func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {}
+  public func controlChange(controller: UInt8, value: UInt8) {
+    sendMIDI(data: [0xB0, controller, value])
+  }
 
   @inlinable
-  public func controlChange(controller: UInt8, value: UInt8) {}
+  public func programChange(program: UInt8) {
+    sendMIDI(data: [0xC0, program])
+  }
 
   @inlinable
-  public func pitchBendChange(value: UInt16) {}
+  public func channelPressure(pressure: UInt8) {
+    sendMIDI(data: [0xD0, pressure])
+  }
 
   @inlinable
-  public func channelPressure(pressure: UInt8) {}
+  public func pitchBendChange(value: UInt16) {
+    sendMIDI(data: [0xE0, UInt8(value >> 8)])
+  }
 
-  @inlinable
-  public func programChange(program: UInt8) {}
+  public func stopAllNotes() {
+    sendMIDI(data: [0xFF])
+  }
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
     sf2Engine.load(url)
