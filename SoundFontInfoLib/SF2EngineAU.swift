@@ -17,7 +17,6 @@ public final class SF2EngineAU: AUAudioUnit {
 
   /// Maximum frames to render
   private let maxFramesToRender: UInt32 = 512
-
   private var dryBus: AUAudioUnitBus!
   private var reverbSendBus: AUAudioUnitBus!
 
@@ -47,7 +46,7 @@ public final class SF2EngineAU: AUAudioUnit {
     let loggingSubsystem = "com.braysoftware.SoundFonts"
     let log = OSLog(subsystem: loggingSubsystem, category: "SF2EngineAU")
     self.log = log
-    self.engine = SF2Engine(voiceCount: 128)
+    self.engine = SF2Engine(voiceCount: getVoiceCount())
 
     os_log(.debug, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
            componentDescription.componentManufacturer, componentDescription.componentType,
@@ -275,4 +274,10 @@ extension SF2EngineAU {
       }
     }
   }
+}
+
+private func getVoiceCount() -> Int32 {
+  guard let infoDictionary: [String: Any] = Bundle(for: SF2EngineAU.self).infoDictionary else { return 128 }
+  guard let voiceCount: String = infoDictionary["SF2EngineAUVoiceCount"] as? String else { return 128 }
+  return Int32(voiceCount) ?? 128
 }

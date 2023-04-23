@@ -1,6 +1,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+NAME_SUFFIX =
+VOICE_COUNT = 128
+
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
 OTHER_SWIFT_FLAGS = $(inherited) -DRelease
-NAME_SUFFIX =
