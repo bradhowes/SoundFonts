@@ -47,7 +47,7 @@ public final class SF2EngineAU: AUAudioUnit {
     let loggingSubsystem = "com.braysoftware.SoundFonts"
     let log = OSLog(subsystem: loggingSubsystem, category: "SF2EngineAU")
     self.log = log
-    self.engine = SF2Engine(voiceCount: 32)
+    self.engine = SF2Engine(voiceCount: 128)
 
     os_log(.debug, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
            componentDescription.componentManufacturer, componentDescription.componentType,
@@ -78,7 +78,7 @@ public final class SF2EngineAU: AUAudioUnit {
   public func load(_ url: URL) { engine.load(url) }
 
   @inlinable
-  public func selectPreset(_ index: Int32) { engine.selectPreset(index) }
+  public func usePreset(bank: Int32, program: Int32) { engine.selectBank(bank, program: program) }
 
   @inlinable
   public func startNote(note: UInt8, velocity: UInt8) { engine.startNote(note, velocity: velocity) }

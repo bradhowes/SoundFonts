@@ -139,8 +139,16 @@ extension AVSF2Engine: AnyMIDISynth {
   }
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
+//    let presetMSB: UInt8 = .init(preset.soundFontIndex / 256)
+//    let presetLSB: UInt8 = .init(preset.soundFontIndex - Int(presetMSB) * 256)
+//    let encodedUrl = url.dataRepresentation.base64EncodedData()
+//    var data: [UInt8] = [0xF0, 0x7E, 0x00, presetMSB, presetLSB]
+//    data.append(contentsOf: encodedUrl)
+//
+//    sendMIDI(data: data)
     sf2Engine.load(url)
-    sf2Engine.selectPreset(Int32(preset.soundFontIndex))
+    sf2Engine.usePreset(bank: Int32(preset.bank), program: Int32(preset.program))
+
     return nil
   }
 }

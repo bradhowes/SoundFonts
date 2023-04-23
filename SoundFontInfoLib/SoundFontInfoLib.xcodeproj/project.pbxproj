@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD01D6A6280B035C00AF5586 /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD01D6A5280B035C00AF5586 /* SF2Lib */; };
 		BD05CF9B27D8B31100E58550 /* SF2Engine.h in Headers */ = {isa = PBXBuildFile; fileRef = BD05CF9A27D8B31100E58550 /* SF2Engine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */; };
 		BD05CFA127D8BB1B00E58550 /* SF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */; };
 		BD3B815627E3B484007D9144 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3B815527E3B484007D9144 /* SF2Files.framework */; };
+		BD6624CC29F2808F0048E396 /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD6624CB29F2808F0048E396 /* SF2Lib */; };
 		BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6791612973622C0055BB38 /* FourCharCode.swift */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */; };
@@ -19,7 +19,6 @@
 		BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF9C265DB1F0002AD159 /* SoundFontInfo.mm */; };
 		BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */; };
-		BDBB720627D89C33007911CF /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BDBB720527D89C33007911CF /* SF2Lib */; };
 		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; };
 		BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE99B6727BF91C000C9F1BC /* Accelerate.framework */; };
 		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
@@ -45,6 +44,7 @@
 		BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SF2EngineTests.swift; sourceTree = "<group>"; };
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		BD3B815527E3B484007D9144 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD6624CA29F2800C0048E396 /* SF2Lib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SF2Lib; path = ../../SF2Lib; sourceTree = "<group>"; };
 		BD6791612973622C0055BB38 /* FourCharCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourCharCode.swift; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDBB720627D89C33007911CF /* SF2Lib in Frameworks */,
+				BD6624CC29F2808F0048E396 /* SF2Lib in Frameworks */,
 				BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */,
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
 			);
@@ -84,7 +84,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD01D6A6280B035C00AF5586 /* SF2Lib in Frameworks */,
 				BD3B815627E3B484007D9144 /* SF2Files.framework in Frameworks */,
 				BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */,
 				BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */,
@@ -95,9 +94,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD6624C729F27F5C0048E396 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				BD6624CA29F2800C0048E396 /* SF2Lib */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
+				BD6624C729F27F5C0048E396 /* Packages */,
 				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BD8CE57127C53F67009A2FB5 /* Development.xcconfig */,
 				BD8CE57027C53F67009A2FB5 /* Release.xcconfig */,
@@ -183,7 +191,7 @@
 			);
 			name = SoundFontInfoLib;
 			packageProductDependencies = (
-				BDBB720527D89C33007911CF /* SF2Lib */,
+				BD6624CB29F2808F0048E396 /* SF2Lib */,
 			);
 			productName = SoundFontInfoLib;
 			productReference = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */;
@@ -205,7 +213,6 @@
 			);
 			name = SoundFontInfoLibTests;
 			packageProductDependencies = (
-				BD01D6A5280B035C00AF5586 /* SF2Lib */,
 			);
 			productName = SoundFontInfoLibTests;
 			productReference = BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */;
@@ -245,7 +252,6 @@
 			);
 			mainGroup = BD74D15D23CDB1D200204ED4;
 			packageReferences = (
-				BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */,
 			);
 			productRefGroup = BD74D16823CDB1D200204ED4 /* Products */;
 			projectDirPath = "";
@@ -699,14 +705,8 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BD01D6A5280B035C00AF5586 /* SF2Lib */ = {
+		BD6624CB29F2808F0048E396 /* SF2Lib */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
-			productName = SF2Lib;
-		};
-		BDBB720527D89C33007911CF /* SF2Lib */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
 			productName = SF2Lib;
 		};
 		BDFA98F6280C74760069A46F /* SF2Lib */ = {
