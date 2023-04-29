@@ -3,9 +3,9 @@
 import Accelerate
 import os.log
 import XCTest
-import SoundFontInfoLib
 import SF2Files
 import CoreAudio
+@testable import SoundFontInfoLib
 
 class AVSF2EngineTests: XCTestCase {
 

@@ -1,7 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-import SoundFontsFramework
 import XCTest
+@testable import SoundFontsFramework
 
 class TagTests: XCTestCase {
 

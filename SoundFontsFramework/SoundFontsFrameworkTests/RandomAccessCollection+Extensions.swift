@@ -1,6 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import XCTest
+@testable import SoundFontsFramework
 
 class RandomAccessCollection_Extensions: XCTestCase {
 

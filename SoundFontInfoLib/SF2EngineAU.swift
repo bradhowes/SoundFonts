@@ -77,6 +77,9 @@ public final class SF2EngineAU: AUAudioUnit {
   public func load(_ url: URL) { engine.load(url) }
 
   @inlinable
+  public func selectPreset(_ presetIndex: Int32) { engine.selectPreset(presetIndex) }
+
+  @inlinable
   public func usePreset(bank: Int32, program: Int32) { engine.selectBank(bank, program: program) }
 
   @inlinable

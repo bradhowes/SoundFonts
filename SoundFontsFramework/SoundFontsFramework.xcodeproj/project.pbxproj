@@ -143,7 +143,6 @@
 		BD62CF5F253DE22D00DBDC1B /* GuideView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */; };
 		BD6476322665120700FDD94B /* PresetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6476312665120700FDD94B /* PresetsTableViewController.swift */; };
 		BD6476342665167300FDD94B /* PresetsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6476332665167300FDD94B /* PresetsTableView.storyboard */; };
-		BD65780229A21E1900A4C47C /* UInt8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD65780129A21E1900A4C47C /* UInt8Tests.swift */; };
 		BD689B8D29D79C4700C3A5D8 /* MIDIControllersTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD689B8C29D79C4700C3A5D8 /* MIDIControllersTableCell.swift */; };
 		BD689B8F29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD689B8E29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift */; };
 		BD6E057825CC6F6E004058D9 /* Intro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057725CC6F6E004058D9 /* Intro.storyboard */; };
@@ -413,7 +412,6 @@
 		BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GuideView.storyboard; sourceTree = "<group>"; };
 		BD6476312665120700FDD94B /* PresetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewController.swift; sourceTree = "<group>"; };
 		BD6476332665167300FDD94B /* PresetsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PresetsTableView.storyboard; sourceTree = "<group>"; };
-		BD65780129A21E1900A4C47C /* UInt8Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt8Tests.swift; sourceTree = "<group>"; };
 		BD689B8C29D79C4700C3A5D8 /* MIDIControllersTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIControllersTableCell.swift; sourceTree = "<group>"; };
 		BD689B8E29D79C8400C3A5D8 /* MIDIControllersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIControllersTableViewController.swift; sourceTree = "<group>"; };
 		BD6E057725CC6F6E004058D9 /* Intro.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Intro.storyboard; sourceTree = "<group>"; };
@@ -932,7 +930,6 @@
 				BD23948925540855004E5E0D /* KeyTests.swift */,
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
 				BD1A2A8A26696AD2009E2338 /* IconTests.swift */,
-				BD65780129A21E1900A4C47C /* UInt8Tests.swift */,
 				BD1A2A882668E347009E2338 /* BundleTests.swift */,
 				BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */,
 				BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */,
@@ -1531,7 +1528,6 @@
 				BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */,
 				BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */,
 				BD1A2A852668AD07009E2338 /* NibLoadableViewTests.swift in Sources */,
-				BD65780229A21E1900A4C47C /* UInt8Tests.swift in Sources */,
 				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,
 				BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */,
