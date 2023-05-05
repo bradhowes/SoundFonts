@@ -64,7 +64,11 @@ public final class ReverbAU: AUAudioUnit {
         error.localizedDescription)
       throw error
     }
+    makeParameterTree()
+    os_log(.debug, log: log, "init - done")
+  }
 
+  func makeParameterTree() {
     let parameterTree = AUParameterTree.createTree(withChildren: [roomPreset, wetDryMix])
     self.parameterTree = parameterTree
 
@@ -101,11 +105,10 @@ public final class ReverbAU: AUAudioUnit {
         }
       }()
       os_log(
-        .debug, log: log, "parameter %d as string: %d %f %{public}s",
+        .debug, log: self.log, "parameter %d as string: %d %f %{public}s",
         param.address, param.value, formatted)
       return formatted
     }
-    os_log(.debug, log: log, "init - done")
   }
 
   public func setConfig(_ config: ReverbConfig) {

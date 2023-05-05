@@ -59,8 +59,6 @@ final class PresetsTableViewManager: NSObject {
   /**
    Construct a new presets table view manager.
 
-   TODO: refactor to remove direct dependence on `viewController`.
-
    - parameter viewController: the view controller that holds this manager
    - parameter activePresetManager: the active preset manager
    - parameter selectedSoundFontManager: the selected sound font manager

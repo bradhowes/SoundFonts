@@ -49,6 +49,4 @@ class TimerTests: XCTestCase {
       self.testOnceWhen()
     }
   }
-
-
 }

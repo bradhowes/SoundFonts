@@ -64,6 +64,7 @@ class SF2EngineTests: XCTestCase {
     XCTAssertEqual(0, engine.activeVoiceCount)
   }
 
+  // swiftlint:disable function_body_length
   func testRenderProc() throws {
     let type = FourCharCode("aumu")
     let subType = FourCharCode("sfnt")
@@ -237,6 +238,7 @@ class SF2EngineTests: XCTestCase {
     playSamples(buffer: playBuffer, count: sampleCount)
   }
 }
+// swiftlint:enable function_body_length
 
 extension SF2EngineTests: AVAudioPlayerDelegate {
 

@@ -183,90 +183,15 @@ final class SettingsViewController: UIViewController {
 
     shiftA4Stepper.value = Double(settings.globalTranspose)
 
-    let tuningComponent = TuningComponent(
-      tuning: settings.globalTuning,
-      view: view, scrollView: scrollView,
-      shiftA4Value: shiftA4Value,
-      shiftA4Stepper: shiftA4Stepper,
-      standardTuningButton: standardTuningButton,
-      scientificTuningButton: scientificTuningButton,
-      tuningCents: globalTuningCents,
-      tuningFrequency: globalTuningFrequency,
-      isActive: true
-    )
-
-    self.tuningComponent = tuningComponent
+    makeTuningComponent()
 
     pitchBendStepper.value = Double(settings.pitchBendRange)
     updatePitchBendRange()
 
     if isMainApp {
-
-      revealKeyboardForKeyWidthChanges = true
-      if let popoverPresentationVC = self.parent?.popoverPresentationController {
-        revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
-      }
-
-      playSample.isOn = settings.playSample
-      showSolfegeNotes.isOn = settings.showSolfegeLabel
-      keyLabelOption.selectedSegmentIndex = settings.keyLabelOption
-      updateButtonState()
-
-      keyWidthSlider.value = settings.keyWidth
-      slideKeyboard.isOn = settings.slideKeyboard
-
-      updateMIDIConnectionsButton()
-      midiConnectionsObserver = midi?.observe(\.activeConnections) { [weak self] _, _ in
-        DispatchQueue.main.async { [weak self] in self?.updateMIDIConnectionsButton() }
-      }
-
-      monitorToken = midiConnectionMonitor?.addConnectionActivityMonitor { data in
-        let ourChannel = self.settings.midiChannel
-        let accepted = ourChannel == -1 || ourChannel == data.channel
-        MIDIConnectionsTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
-      }
-
-      midiChannelStepper.value = Double(settings.midiChannel)
-      updateMidiChannel()
-      backgroundMIDIProcessingMode.isOn = settings.backgroundMIDIProcessingEnabled
-      midiDeviceAutoConnectEnabled.isOn = settings.autoConnectNewMIDIDeviceEnabled
-
-      slideKeyboard.isOn = settings.slideKeyboard
-
-      copyFiles.isOn = settings.copyFilesWhenAdding
-
-      endShowKeyboard()
-
-      useSF2LibEngine.isOn = settings.useSF2Engine
-
+      setupForMainApp()
     } else {
-      keyLabelsStackView.isHidden = true
-      solfegeStackView.isHidden = true
-      keyWidthStackView.isHidden = true
-      playSamplesStackView.isHidden = true
-      slideKeyboardStackView.isHidden = true
-
-      midiChannelStackView.isHidden = true
-      midiConnectionsStackView.isHidden = true
-      midiAutoConnectStackView.isHidden = true
-      bluetoothMIDIConnectStackView.isHidden = true
-      backgroundMIDIProcessingModeStackView.isHidden = true
-
-      divider2.isHidden = true
-      divider3.isHidden = true
-      divider4.isHidden = true
-
-      copyFilesStackView.isHidden = true
-      removeSoundFontsStackView.isHidden = true
-      restoreSoundFontsStackView.isHidden = true
-
-      exportSoundFontsStackView.isHidden = true
-      importSoundFontsStackView.isHidden = true
-      showTutorialStackView.isHidden = true
-      showChangeHistoryStackView.isHidden = true
-
-      // Cannot write review from AUv3
-      review.isEnabled = false
+      setupForAU()
     }
   }
 
@@ -293,33 +218,16 @@ final class SettingsViewController: UIViewController {
   }
 }
 
-extension SettingsViewController {
+private extension SettingsViewController {
 
-  private func beginShowKeyboard() {
-    for view in hideForKeyWidthChange {
-      view.isHidden = true
-    }
-    view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
-    contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
+  @IBAction func showChanges(_ sender: Any) {
+    dismiss(animated: true)
+    NotificationCenter.default.post(name: .showChanges, object: nil)
   }
 
-  private func endShowKeyboard() {
-    let isAUv3 = !isMainApp
-    for view in hideForKeyWidthChange {
-      view.isHidden = false
-    }
-
-    midiChannelStackView.isHidden = isAUv3
-    midiConnectionsStackView.isHidden = isAUv3
-    midiAutoConnectStackView.isHidden = isAUv3
-
-    slideKeyboardStackView.isHidden = isAUv3
-    bluetoothMIDIConnectStackView.isHidden = isAUv3
-    divider1.isHidden = isAUv3
-    divider5.isHidden = isAUv3
-
-    view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
-    contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
+  @IBAction func showTutorial(_ sender: Any) {
+    dismiss(animated: true)
+    NotificationCenter.default.post(name: .showTutorial, object: nil)
   }
 
   @IBAction func keyWidthEditingDidBegin(_ sender: Any) {
@@ -338,12 +246,7 @@ extension SettingsViewController {
       animations: self.endShowKeyboard)
   }
 
-  private func updateButtonState() {
-    restoreDefaultSoundFonts.isEnabled = !soundFonts.hasAllBundled
-    removeDefaultSoundFonts.isEnabled = soundFonts.hasAnyBundled
-  }
-
-  @IBAction private func close(_ sender: Any) {
+  @IBAction func close(_ sender: Any) {
     dismiss(animated: true)
   }
 
@@ -351,19 +254,19 @@ extension SettingsViewController {
     NotificationCenter.default.post(Notification(name: .visitAppStore))
   }
 
-  @IBAction private func toggleShowSolfegeNotes(_ sender: Any) {
+  @IBAction func toggleShowSolfegeNotes(_ sender: Any) {
     settings.showSolfegeLabel = self.showSolfegeNotes.isOn
   }
 
-  @IBAction private func togglePlaySample(_ sender: Any) {
+  @IBAction func togglePlaySample(_ sender: Any) {
     settings.playSample = self.playSample.isOn
   }
 
-  @IBAction private func keyLabelOptionChanged(_ sender: Any) {
+  @IBAction func keyLabelOptionChanged(_ sender: Any) {
     settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
   }
 
-  @IBAction private func toggleSlideKeyboard(_ sender: Any) {
+  @IBAction func toggleSlideKeyboard(_ sender: Any) {
     settings.slideKeyboard = self.slideKeyboard.isOn
   }
 
@@ -393,7 +296,7 @@ extension SettingsViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  @IBAction private func toggleCopyFiles(_ sender: Any) {
+  @IBAction func toggleCopyFiles(_ sender: Any) {
     if self.copyFiles.isOn == false {
       let ac = UIAlertController(
         title: "Disable Copying?",
@@ -415,7 +318,7 @@ extension SettingsViewController {
     }
   }
 
-  @IBAction private func keyWidthChange(_ sender: Any) {
+  @IBAction func keyWidthChange(_ sender: Any) {
     let previousValue = settings.keyWidth.rounded()
     var newValue = keyWidthSlider.value.rounded()
     if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
@@ -427,19 +330,19 @@ extension SettingsViewController {
     }
   }
 
-  @IBAction private func removeDefaultSoundFonts(_ sender: Any) {
+  @IBAction func removeDefaultSoundFonts(_ sender: Any) {
     soundFonts.removeBundled()
     updateButtonState()
     postNotice(msg: "Removed entries to the built-in sound fonts.")
   }
 
-  @IBAction private func restoreDefaultSoundFonts(_ sender: Any) {
+  @IBAction func restoreDefaultSoundFonts(_ sender: Any) {
     soundFonts.restoreBundled()
     updateButtonState()
     postNotice(msg: "Restored entries to the built-in sound fonts.")
   }
 
-  @IBAction private func exportSoundFonts(_ sender: Any) {
+  @IBAction func exportSoundFonts(_ sender: Any) {
     let (good, total) = soundFonts.exportToLocalDocumentsDirectory()
     switch total {
     case 0: postNotice(msg: "Nothing to export.")
@@ -448,7 +351,7 @@ extension SettingsViewController {
     }
   }
 
-  @IBAction private func importSoundFonts(_ sender: Any) {
+  @IBAction func importSoundFonts(_ sender: Any) {
     let (good, total) = soundFonts.importFromLocalDocumentsDirectory()
     switch total {
     case 0: postNotice(msg: "Nothing to import.")
@@ -458,44 +361,7 @@ extension SettingsViewController {
     }
   }
 
-  private func updateMidiChannel() {
-    let value = Int(midiChannelStepper.value)
-    os_log(.debug, log: log, "new MIDI channel %d", value)
-    midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
-    settings.midiChannel = value
-  }
-
-  private func updatePitchBendRange() {
-    let value = UInt8(pitchBendStepper.value)
-    os_log(.debug, log: log, "new pitch-bend range %d", value)
-    pitchBendRange.text = "\(value)"
-    settings.pitchBendRange = Int(value)
-    AudioEngine.pitchBendRangeChangedNotification.post(value: value)
-  }
-
-  private func postNotice(msg: String) {
-    let alertController = UIAlertController(
-      title: "SoundFonts",
-      message: msg,
-      preferredStyle: .alert)
-    let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
-    alertController.addAction(cancel)
-
-    if let popoverController = alertController.popoverPresentationController {
-      popoverController.sourceView = self.view
-      popoverController.sourceRect = CGRect(
-        x: self.view.bounds.midX, y: self.view.bounds.midY,
-        width: 0, height: 0)
-      popoverController.permittedArrowDirections = []
-    }
-
-    present(alertController, animated: true, completion: nil)
-  }
-}
-
-extension SettingsViewController: MFMailComposeViewControllerDelegate {
-
-  @IBAction private func sendEmail(_ sender: Any) {
+  @IBAction func sendEmail(_ sender: Any) {
     if MFMailComposeViewController.canSendMail() {
       let bundle = Bundle(for: Self.self)
       let mail = MFMailComposeViewController()
@@ -509,48 +375,15 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
       postNotice(msg: "Unable to send an email message from the app.")
     }
   }
+}
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate {
 
   func mailComposeController(
     _ controller: MFMailComposeViewController,
     didFinishWith result: MFMailComposeResult, error: Error?
   ) {
     controller.dismiss(animated: true)
-  }
-
-  @IBAction private func showChanges(_ sender: Any) {
-    dismiss(animated: true)
-    NotificationCenter.default.post(name: .showChanges, object: nil)
-  }
-
-  @IBAction private func showTutorial(_ sender: Any) {
-    dismiss(animated: true)
-    NotificationCenter.default.post(name: .showTutorial, object: nil)
-  }
-
-  private func updateMIDIConnectionsButton() {
-    guard let midi = self.midi else { return }
-    let count = midi.activeConnections.count
-    let suffix = count == 1 ? "connection" : "connections"
-    midiConnections.setTitle("\(count) \(suffix)", for: .normal)
-  }
-
-  private func showBackgroundMIDIProcessingNotice() {
-    let ac = UIAlertController(
-      title: "Enable Background MIDI Processing",
-      message: """
-          Background MIDI processing allows the synthesizer to generate sounds even when the app is not active. However,
-          doing so will increase power consumption and increase the rate of battery drain.
-          Are you sure you want to enable it?
-          """, preferredStyle: .alert)
-    ac.addAction(
-      UIAlertAction(title: "Yes", style: .default) { _ in
-        self.settings.backgroundMIDIProcessingEnabled = true
-      })
-    ac.addAction(
-      UIAlertAction(title: "Cancel", style: .cancel) { _ in
-        self.backgroundMIDIProcessingMode.isOn = false
-      })
-    present(ac, animated: true)
   }
 }
 
@@ -593,5 +426,185 @@ extension SettingsViewController: SegueHandler {
       }
       destination.configure(midiEventRouter: midiEventRouter)
     }
+  }
+}
+
+private extension SettingsViewController {
+
+  func setupForMainApp() {
+    revealKeyboardForKeyWidthChanges = true
+    if let popoverPresentationVC = self.parent?.popoverPresentationController {
+      revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
+    }
+
+    playSample.isOn = settings.playSample
+    showSolfegeNotes.isOn = settings.showSolfegeLabel
+    keyLabelOption.selectedSegmentIndex = settings.keyLabelOption
+    updateButtonState()
+
+    keyWidthSlider.value = settings.keyWidth
+    slideKeyboard.isOn = settings.slideKeyboard
+
+    updateMIDIConnectionsButton()
+    midiConnectionsObserver = midi?.observe(\.activeConnections) { [weak self] _, _ in
+      DispatchQueue.main.async { [weak self] in self?.updateMIDIConnectionsButton() }
+    }
+
+    monitorToken = midiConnectionMonitor?.addConnectionActivityMonitor { data in
+      let ourChannel = self.settings.midiChannel
+      let accepted = ourChannel == -1 || ourChannel == data.channel
+      MIDIConnectionsTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
+    }
+
+    midiChannelStepper.value = Double(settings.midiChannel)
+    updateMidiChannel()
+    backgroundMIDIProcessingMode.isOn = settings.backgroundMIDIProcessingEnabled
+    midiDeviceAutoConnectEnabled.isOn = settings.autoConnectNewMIDIDeviceEnabled
+
+    slideKeyboard.isOn = settings.slideKeyboard
+
+    copyFiles.isOn = settings.copyFilesWhenAdding
+
+    endShowKeyboard()
+
+    useSF2LibEngine.isOn = settings.useSF2Engine
+  }
+
+  func setupForAU() {
+    keyLabelsStackView.isHidden = true
+    solfegeStackView.isHidden = true
+    keyWidthStackView.isHidden = true
+    playSamplesStackView.isHidden = true
+    slideKeyboardStackView.isHidden = true
+
+    midiChannelStackView.isHidden = true
+    midiConnectionsStackView.isHidden = true
+    midiAutoConnectStackView.isHidden = true
+    bluetoothMIDIConnectStackView.isHidden = true
+    backgroundMIDIProcessingModeStackView.isHidden = true
+
+    divider2.isHidden = true
+    divider3.isHidden = true
+    divider4.isHidden = true
+
+    copyFilesStackView.isHidden = true
+    removeSoundFontsStackView.isHidden = true
+    restoreSoundFontsStackView.isHidden = true
+
+    exportSoundFontsStackView.isHidden = true
+    importSoundFontsStackView.isHidden = true
+    showTutorialStackView.isHidden = true
+    showChangeHistoryStackView.isHidden = true
+
+    // Cannot write review from AUv3
+    review.isEnabled = false
+  }
+
+  func makeTuningComponent() {
+    let tuningComponent = TuningComponent(
+      tuning: settings.globalTuning,
+      view: view, scrollView: scrollView,
+      shiftA4Value: shiftA4Value,
+      shiftA4Stepper: shiftA4Stepper,
+      standardTuningButton: standardTuningButton,
+      scientificTuningButton: scientificTuningButton,
+      tuningCents: globalTuningCents,
+      tuningFrequency: globalTuningFrequency,
+      isActive: true
+    )
+
+    self.tuningComponent = tuningComponent
+  }
+
+  func beginShowKeyboard() {
+    for view in hideForKeyWidthChange {
+      view.isHidden = true
+    }
+    view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
+    contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
+  }
+
+  func endShowKeyboard() {
+    let isAUv3 = !isMainApp
+    for view in hideForKeyWidthChange {
+      view.isHidden = false
+    }
+
+    midiChannelStackView.isHidden = isAUv3
+    midiConnectionsStackView.isHidden = isAUv3
+    midiAutoConnectStackView.isHidden = isAUv3
+
+    slideKeyboardStackView.isHidden = isAUv3
+    bluetoothMIDIConnectStackView.isHidden = isAUv3
+    divider1.isHidden = isAUv3
+    divider5.isHidden = isAUv3
+
+    view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
+    contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
+  }
+
+  private func updateMidiChannel() {
+    let value = Int(midiChannelStepper.value)
+    os_log(.debug, log: log, "new MIDI channel %d", value)
+    midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
+    settings.midiChannel = value
+  }
+
+  private func updatePitchBendRange() {
+    let value = UInt8(pitchBendStepper.value)
+    os_log(.debug, log: log, "new pitch-bend range %d", value)
+    pitchBendRange.text = "\(value)"
+    settings.pitchBendRange = Int(value)
+    AudioEngine.pitchBendRangeChangedNotification.post(value: value)
+  }
+
+  private func postNotice(msg: String) {
+    let alertController = UIAlertController(
+      title: "SoundFonts",
+      message: msg,
+      preferredStyle: .alert)
+    let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
+  }
+
+  private func updateButtonState() {
+    restoreDefaultSoundFonts.isEnabled = !soundFonts.hasAllBundled
+    removeDefaultSoundFonts.isEnabled = soundFonts.hasAnyBundled
+  }
+
+  private func updateMIDIConnectionsButton() {
+    guard let midi = self.midi else { return }
+    let count = midi.activeConnections.count
+    let suffix = count == 1 ? "connection" : "connections"
+    midiConnections.setTitle("\(count) \(suffix)", for: .normal)
+  }
+
+  private func showBackgroundMIDIProcessingNotice() {
+    let ac = UIAlertController(
+      title: "Enable Background MIDI Processing",
+      message: """
+          Background MIDI processing allows the synthesizer to generate sounds even when the app is not active. However,
+          doing so will increase power consumption and increase the rate of battery drain.
+          Are you sure you want to enable it?
+          """, preferredStyle: .alert)
+    ac.addAction(
+      UIAlertAction(title: "Yes", style: .default) { _ in
+        self.settings.backgroundMIDIProcessingEnabled = true
+      })
+    ac.addAction(
+      UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        self.backgroundMIDIProcessingMode.isOn = false
+      })
+    present(ac, animated: true)
   }
 }
