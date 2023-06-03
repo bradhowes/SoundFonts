@@ -108,6 +108,7 @@
 		BD28D73927958CE4000A57DE /* FontsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD28D73827958CE4000A57DE /* FontsTableViewController.swift */; };
 		BD2F4B24277F28EE0064E31B /* SettingSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4B23277F28EE0064E31B /* SettingSerializable.swift */; };
 		BD2F4B26277F2B230064E31B /* SettingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4B25277F2B230064E31B /* SettingKeys.swift */; };
+		BD2F7F852A2B654600BD0588 /* MIDIPacketList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F7F842A2B654600BD0588 /* MIDIPacketList.swift */; };
 		BD3CADD329D8644D008C957D /* MorkAndMIDI in Frameworks */ = {isa = PBXBuildFile; productRef = BD3CADD229D8644D008C957D /* MorkAndMIDI */; };
 		BD3D13AB279721DC009FED96 /* FontsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */; };
 		BD3D13AD27973608009FED96 /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3D13AC27973608009FED96 /* TagsTableViewController.swift */; };
@@ -375,6 +376,7 @@
 		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
 		BD2F4B23277F28EE0064E31B /* SettingSerializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSerializable.swift; sourceTree = "<group>"; };
 		BD2F4B25277F2B230064E31B /* SettingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingKeys.swift; sourceTree = "<group>"; };
+		BD2F7F842A2B654600BD0588 /* MIDIPacketList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIPacketList.swift; sourceTree = "<group>"; };
 		BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontsTableView.storyboard; sourceTree = "<group>"; };
 		BD3D13AC27973608009FED96 /* TagsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
 		BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TagsTableView.storyboard; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 		BD074C1C23CDAF51001987E9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				BD2F7F842A2B654600BD0588 /* MIDIPacketList.swift */,
 				BDF86311246EC4300006D8CD /* AudioUnit.swift */,
 				BDD7219C24190D9700FD3567 /* Bundle.swift */,
 				BDD913F12508DECE0068E3CE /* DispatchTime.swift */,
@@ -1408,6 +1411,7 @@
 				BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigDocument.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit.swift in Sources */,
 				BD95018129D715A90065D837 /* MIDIConnectionMonitor.swift in Sources */,
+				BD2F7F852A2B654600BD0588 /* MIDIPacketList.swift in Sources */,
 				BD3D13B12799E30B009FED96 /* TagsVisibilityManager.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* AnyKeyboard.swift in Sources */,
