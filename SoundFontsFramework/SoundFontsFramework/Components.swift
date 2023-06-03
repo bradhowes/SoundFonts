@@ -126,7 +126,7 @@ where T: ControllerConfiguration {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
         let midiInputPortUniqueId = Int32(settings[.midiInputPortUniqueId])
-        let midi: MIDI = .init(clientName: "SoundFonts", uniqueId: midiInputPortUniqueId, midiProtocol: ._1_0)
+        let midi: MIDI = .init(clientName: "SoundFonts", uniqueId: midiInputPortUniqueId, legacyAPI: true)
         let midiControllerActionStateManager: MIDIControllerActionStateManager = .init(settings: settings)
         let audioEngine: AudioEngine = .init(mode: .standalone,
                                              activePresetManager: activePresetManager,
