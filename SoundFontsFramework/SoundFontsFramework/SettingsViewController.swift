@@ -167,12 +167,6 @@ final class SettingsViewController: UIViewController {
 
     globalTuningCents.inputAssistantItem.leadingBarButtonGroups = []
     globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
-
-#if Dev
-    useSF2LibEngineStackView.isHidden = true
-#else
-    useSF2LibEngineStackView.isHidden = false
-#endif
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -180,6 +174,12 @@ final class SettingsViewController: UIViewController {
     precondition(settings != nil, "nil settings")
 
     super.viewWillAppear(animated)
+
+#if Dev
+    useSF2LibEngineStackView.isHidden = false
+#else
+    useSF2LibEngineStackView.isHidden = true
+#endif
 
     shiftA4Stepper.value = Double(settings.globalTranspose)
 
@@ -529,6 +529,12 @@ private extension SettingsViewController {
     for view in hideForKeyWidthChange {
       view.isHidden = false
     }
+
+#if Dev
+    useSF2LibEngineStackView.isHidden = false
+#else
+    useSF2LibEngineStackView.isHidden = true
+#endif
 
     midiChannelStackView.isHidden = isAUv3
     midiConnectionsStackView.isHidden = isAUv3

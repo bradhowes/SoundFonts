@@ -832,6 +832,7 @@
 /* Begin XCBuildConfiguration section */
 		BD01D6D1280B517E00AF5586 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20230614061244;
@@ -861,6 +862,7 @@
 		};
 		BD01D6D2280B517E00AF5586 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20230614061244;
@@ -889,6 +891,7 @@
 		};
 		BD05838123E4C52800E094E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
@@ -916,6 +919,7 @@
 		};
 		BD05838223E4C52800E094E0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
@@ -942,6 +946,7 @@
 		};
 		BD3CF70A241FA77A004A13D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -964,6 +969,7 @@
 		};
 		BD3CF70B241FA77A004A13D1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -985,6 +991,7 @@
 		};
 		BD59076C2565CD4C004DE941 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1011,6 +1018,7 @@
 		};
 		BD59076D2565CD4C004DE941 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1037,6 +1045,7 @@
 		};
 		BD5907A12565CDDC004DE941 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1063,6 +1072,7 @@
 		};
 		BD5907A22565CDDC004DE941 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1089,6 +1099,7 @@
 		};
 		BD75B286218B8CFE00C7EBD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1155,6 +1166,7 @@
 		};
 		BD75B287218B8CFE00C7EBD7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1217,6 +1229,7 @@
 		};
 		BD75B289218B8CFE00C7EBD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1246,6 +1259,7 @@
 		};
 		BD75B28A218B8CFE00C7EBD7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1274,6 +1288,7 @@
 		};
 		BD88BCC42419A9D400399DE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1296,6 +1311,7 @@
 		};
 		BD88BCC52419A9D400399DE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
