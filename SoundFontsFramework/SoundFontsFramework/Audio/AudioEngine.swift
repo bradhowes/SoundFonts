@@ -417,8 +417,9 @@ private extension AudioEngine {
   }
 
   func makeSynth() -> AnyMIDISynth {
+#if Dev
     if settings.useSF2Engine { return AVSF2Engine() }
-
+#endif
 #if USE_SF2ENGINE_SYNTH
     return AVSF2Engine()
 #else

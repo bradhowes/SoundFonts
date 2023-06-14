@@ -31,7 +31,7 @@ final class PresetsTableViewManager: NSObject {
   private var visibilityEditor: PresetsTableRowVisibilityEditor?
 
   private var searchBar: UISearchBar { viewController.searchBar }
-  private var isSearching: Bool { viewController.isSearching }
+  public var isSearching: Bool { searchSlots != nil }
   private var isEditing: Bool { viewController.isEditing }
 
   private var showingSoundFontKey: SoundFont.Key?
@@ -477,10 +477,10 @@ private extension PresetsTableViewManager {
     guard let activeSlot: PresetViewSlot = {
       switch activePresetManager.active {
       case let .preset(soundFontAndPreset):
-        os_log(.debug, log: log, "activeSlotIndex END - have preset")
+        os_log(.debug, log: log, "activeSlotIndex END - have preset - %s", soundFontAndPreset.description)
         return .preset(index: soundFontAndPreset.presetIndex)
       case let .favorite(key, _):
-        os_log(.debug, log: log, "activeSlotIndex END - have favorite")
+        os_log(.debug, log: log, "activeSlotIndex END - have favorite - %s", key.description)
         return .favorite(key: key)
       case .none:
         os_log(.debug, log: log, "activeSlotIndex END - has none")

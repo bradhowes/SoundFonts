@@ -13,7 +13,7 @@ final class PresetsTableViewController: UITableViewController {
   private var infoBar: AnyInfoBar!
 
   /// True when user is searching
-  var isSearching: Bool { searchBar.isFirstResponder }
+  var isSearching: Bool { presetsTableViewManager.isSearching }
 
   typealias AfterReloadDataAction = () -> Void
 
@@ -182,13 +182,7 @@ extension PresetsTableViewController {
       return
     }
 
-    // Don't let `viewDidLayoutSubviews` reposition the selected row
-    lastSelectedSlot = indexPath
     presetsTableViewManager.selectSlot(at: indexPath)
-
-    if isSearching {
-      // endSearch()
-    }
   }
 
   override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -256,7 +250,7 @@ extension PresetsTableViewController: UISearchBarDelegate {
 
   func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
     os_log(.debug, log: log, "searchBarTextDidEndEditing - %d", searchBar.isFirstResponder)
-    endSearch()
+    // endSearch()
   }
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

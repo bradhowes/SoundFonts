@@ -17,16 +17,17 @@ PLAY_AUDIO = -DPLAY_AUDIO
 DEBUG_INTERNAL_RENDER_BLOCK = -DDEBUG_INTERNAL_RENDER_BLOCK
 
 // All of the flags above. To disable one, just prepend an 'x' to its name.
-DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS) $(PLAY_AUDIO) $(DEBUG_INTERNAL_RENDER_BLOCK)
+DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS) $(PLAY_AUDIO) $(xDEBUG_INTERNAL_RENDER_BLOCK)
 
 NAME_SUFFIX = Dev
 VOICE_COUNT = 128
 
-// Use the SF2 engine for rendering when defined.
-// USE_SF2ENGINE_SYNTH = -DUSE_SF2ENGINE_SYNTH
+// Use the SF2 engine for rendering when defined. NOTE: when defined this will disable the ability to use Apple's
+// rendering engine.
+ONLY_USE_SF2ENGINE_SYNTH = -DONLY_USE_SF2ENGINE_SYNTH
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
-OTHER_SWIFT_FLAGS = $(inherited) -D$(NAME_SUFFIX) $(DEBUG_FLAGS) $(USE_SF2ENGINE_SYNTH)
+OTHER_SWIFT_FLAGS = $(inherited) -DDev $(DEBUG_FLAGS) $(xONLY_USE_SF2ENGINE_SYNTH)
 
 EXTRA_CPP = -pedantic -Wmissing-braces -Wparentheses -Wswitch -Wcompletion-handler -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wno-unknown-pragmas -Wuninitialized -Wconditional-uninitialized -Wconversion -Wconstant-conversion -Wassign-enum -Wsign-compare -Wint-conversion -Wbool-conversion -Wenum-conversion -Wfloat-conversion -Wshorten-64-to-32 -Wsign-conversion -Wmove -Wcomma -Wno-newline-eof
 

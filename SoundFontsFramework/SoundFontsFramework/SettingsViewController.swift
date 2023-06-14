@@ -168,7 +168,7 @@ final class SettingsViewController: UIViewController {
     globalTuningCents.inputAssistantItem.leadingBarButtonGroups = []
     globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
 
-#if NAME_SUFFIX
+#if Dev
     useSF2LibEngineStackView.isHidden = true
 #else
     useSF2LibEngineStackView.isHidden = false
