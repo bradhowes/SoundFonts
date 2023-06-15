@@ -7,6 +7,9 @@ import SoundFontInfoLib
 import SF2Files
 import CoreAudio
 
+
+#if ONLY_USE_SF2ENGINE_SYNTH
+
 class SF2EngineTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
@@ -334,3 +337,5 @@ public extension AVAudioPCMBuffer {
     frameLength += frameCount
   }
 }
+
+#endif
