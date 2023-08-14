@@ -20,7 +20,7 @@ DEBUG_INTERNAL_RENDER_BLOCK = -DDEBUG_INTERNAL_RENDER_BLOCK
 DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS) $(PLAY_AUDIO) $(xDEBUG_INTERNAL_RENDER_BLOCK)
 
 NAME_SUFFIX = Dev
-VOICE_COUNT = 128
+VOICE_COUNT = 64
 
 // Use the SF2 engine for rendering when defined. NOTE: when defined this will disable the ability to use Apple's
 // rendering engine.

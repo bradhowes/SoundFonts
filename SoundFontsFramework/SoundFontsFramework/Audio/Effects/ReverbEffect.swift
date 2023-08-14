@@ -5,7 +5,10 @@ import AVFoundation
 /// Reverberation audio effect by way of Apple's AVAudioUnitReverb component.
 public final class ReverbEffect: NSObject {
 
+  private let activeQueue = DispatchQueue(label: "ActiveReverbEffect", qos: .background, target: DispatchQueue.global(qos: .background))
   public let audioUnit = AVAudioUnitReverb()
+
+  private var _active: ReverbConfig
 
   private let _factoryPresetDefs = [
     AUPresetEntry(
@@ -35,11 +38,15 @@ public final class ReverbEffect: NSObject {
     AUAudioUnitPreset(number: $0.offset, name: $0.element.name)
   }
 
-  public var active: ReverbConfig {
-    didSet {
-      applyActiveConfig(self.active)
-    }
+  var active: ReverbConfig {
+    get { activeQueue.sync { self._active } }
+    set { activeQueue.async { [weak self] in
+      guard let self = self else { return }
+      self._active = newValue
+      self.applyActiveConfig(newValue)
+    } }
   }
+
 
   public static let roomNames = [
     "Room 1",  // smallRoom
@@ -74,7 +81,7 @@ public final class ReverbEffect: NSObject {
   ]
 
   public override init() {
-    self.active = ReverbConfig(
+    self._active = ReverbConfig(
       enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .smallRoom)!,
       wetDryMix: 30.0)
     super.init()

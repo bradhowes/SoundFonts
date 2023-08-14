@@ -277,8 +277,14 @@ extension SF2EngineAU {
   }
 }
 
+let defaultVoiceCount: Int32 = 64
+
 private func getVoiceCount() -> Int32 {
-  guard let infoDictionary: [String: Any] = Bundle(for: SF2EngineAU.self).infoDictionary else { return 128 }
-  guard let voiceCount: String = infoDictionary["SF2EngineAUVoiceCount"] as? String else { return 128 }
-  return Int32(voiceCount) ?? 128
+  guard let infoDictionary: [String: Any] = Bundle(for: SF2EngineAU.self).infoDictionary,
+        let voiceCountSetting: String = infoDictionary["SF2EngineAUVoiceCount"] as? String,
+        let voiceCount: Int32 = Int32(voiceCountSetting)
+  else {
+    return defaultVoiceCount
+  }
+  return voiceCount
 }

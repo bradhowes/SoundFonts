@@ -42,7 +42,6 @@ public final class AudioEngine: SynthProvider {
   private var _synth: AnyMIDISynth?
 
   public var avAudioUnit: AVAudioUnitMIDIInstrument? { synth?.avAudioUnit }
-  private var auAudioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
 
   let reverbEffect: ReverbEffect?
   private let reverbEffectActions: ReverbEffectActions?
@@ -417,14 +416,10 @@ private extension AudioEngine {
   }
 
   func makeSynth() -> AnyMIDISynth {
-#if Dev
-    if settings.useSF2Engine { return AVSF2Engine() }
-#endif
-#if USE_SF2ENGINE_SYNTH
-    return AVSF2Engine()
-#else
+    if settings.useSF2Engine {
+      return AVSF2Engine()
+    }
     return AVAudioUnitSampler()
-#endif
   }
 
   func startEngine(_ synth: AnyMIDISynth) -> StartResult {

@@ -2,7 +2,7 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 NAME_SUFFIX =
-VOICE_COUNT = 128
+VOICE_COUNT = 64
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
 OTHER_SWIFT_FLAGS = $(inherited) -DRelease
