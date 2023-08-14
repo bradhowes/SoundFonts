@@ -80,7 +80,7 @@ public final class SF2EngineAU: AUAudioUnit {
   public func selectPreset(_ presetIndex: Int32) { engine.selectPreset(presetIndex) }
 
   @inlinable
-  public func usePreset(bank: Int32, program: Int32) { engine.selectBank(bank, program: program) }
+  public func usePreset(bank: UInt16, program: UInt16) { engine.selectBank(bank, program: program) }
 
   @inlinable
   public func startNote(note: UInt8, velocity: UInt8) { engine.startNote(note, velocity: velocity) }

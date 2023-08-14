@@ -43,6 +43,7 @@ final class InfoBarController: UIViewController {
   private var soundFonts: SoundFontsProvider!
   private var isMainApp: Bool!
   private var settings: Settings!
+  private var audioEngine: AudioEngine?
   private var midi: MIDI?
   private var midiConnectionMonitor: MIDIConnectionMonitor?
 
@@ -208,7 +209,8 @@ extension InfoBarController: ControllerConfiguration {
     router.subscribe(self, notifier: routerChangedNotificationInBackground)
 
     if let audioEngine = router.audioEngine {
-      midi = audioEngine.midi
+      self.audioEngine = audioEngine
+      self.midi = audioEngine.midi
       midiConnectionMonitor = audioEngine.midiConnectionMonitor
     }
   }
@@ -320,6 +322,7 @@ private extension InfoBarController {
     os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
     switch event {
     case .audioEngineAvailable(let audioEngine):
+      self.audioEngine = audioEngine
       self.midi = audioEngine.midi
       self.midiConnectionMonitor = audioEngine.midiConnectionMonitor
     }
@@ -337,8 +340,8 @@ private extension InfoBarController {
           let viewController = navController.topViewController as? SettingsViewController
     else { return }
 
-    viewController.configure(isMainApp: isMainApp, soundFonts: soundFonts, settings: settings, midi: midi,
-                             midiConnectionMonitor: midiConnectionMonitor, infoBar: self)
+    viewController.configure(isMainApp: isMainApp, soundFonts: soundFonts, settings: settings, audioEngine: audioEngine,
+                             midi: midi, midiConnectionMonitor: midiConnectionMonitor, infoBar: self)
 
     if !isMainApp {
       viewController.modalPresentationStyle = .fullScreen

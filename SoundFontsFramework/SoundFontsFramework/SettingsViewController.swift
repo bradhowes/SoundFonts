@@ -99,6 +99,7 @@ final class SettingsViewController: UIViewController {
   private weak var settings: Settings!
   private weak var soundFonts: SoundFontsProvider!
   private weak var infoBar: AnyInfoBar!
+  private weak var audioEngine: AudioEngine?
   private weak var midi: MIDI?
   private weak var midiConnectionMonitor: MIDIConnectionMonitor?
   private weak var midiRouter: MIDIEventRouter?
@@ -136,11 +137,12 @@ final class SettingsViewController: UIViewController {
   ]
 
   // swiftlint:disable function_parameter_count
-  func configure(isMainApp: Bool, soundFonts: SoundFontsProvider, settings: Settings,
+  func configure(isMainApp: Bool, soundFonts: SoundFontsProvider, settings: Settings, audioEngine: AudioEngine?,
                  midi: MIDI?, midiConnectionMonitor: MIDIConnectionMonitor?, infoBar: AnyInfoBar) {
     self.isMainApp = isMainApp
     self.soundFonts = soundFonts
     self.settings = settings
+    self.audioEngine = audioEngine
     self.midi = midi
     self.midiConnectionMonitor = midiConnectionMonitor
     self.infoBar = infoBar
@@ -215,6 +217,8 @@ final class SettingsViewController: UIViewController {
 
   @IBAction func useSF2EngineLibChanged(_ sender: UISwitch) {
     settings.useSF2Engine = sender.isOn
+    audioEngine?.stop()
+    _ = audioEngine?.start()
   }
 }
 

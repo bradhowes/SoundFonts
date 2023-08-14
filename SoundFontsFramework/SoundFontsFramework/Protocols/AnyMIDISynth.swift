@@ -147,7 +147,7 @@ extension AVSF2Engine: AnyMIDISynth {
 //
 //    sendMIDI(data: data)
     sf2Engine.load(url)
-    sf2Engine.usePreset(bank: Int32(preset.bank), program: Int32(preset.program))
+    sf2Engine.usePreset(bank: UInt16(preset.bank), program: UInt16(preset.program))
 
     return nil
   }

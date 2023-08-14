@@ -11,7 +11,7 @@
 
 using File = SF2::IO::File;
 using Engine = SF2::Render::Engine::Engine;
-using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
+using Interpolator = SF2::Render::Voice::Sample::Interpolator;
 
 @implementation SF2Engine {
   Engine* engine_;
@@ -21,7 +21,7 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
 
 - (instancetype)initVoiceCount:(int)voicesCount {
   if (self = [super init]) {
-    self->engine_ = new Engine(44100.0, static_cast<size_t>(voicesCount), Interpolator::cubic4thOrder);
+    self->engine_ = new Engine(44100.0, static_cast<size_t>(64), Interpolator::cubic4thOrder);
     self->file_ = nullptr;
     self->url_ = nullptr;
   }
@@ -69,7 +69,7 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   return SF2EnginePresetChangeStatus_OK;
 }
 
-- (void)selectBank:(int)bank program:(int)program {
+- (void)selectBank:(uint16_t)bank program:(uint16_t)program {
   engine_->usePreset(bank, program);
 }
 

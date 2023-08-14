@@ -74,7 +74,7 @@ typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
  @param bank the bank holding the preset to load
  @param program the program ID for the preset to load
  */
-- (void)selectBank:(int)bank program:(int)program;
+- (void)selectBank:(uint16_t)bank program:(uint16_t)program;
 
 /**
  Stop playing all notes
