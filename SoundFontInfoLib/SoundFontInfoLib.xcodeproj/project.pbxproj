@@ -14,7 +14,7 @@
 		BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6791612973622C0055BB38 /* FourCharCode.swift */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */; };
-		BDA490B02A3BAA9800AEFB77 /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BDA490AF2A3BAA9800AEFB77 /* SF2Lib */; };
+		BD9C8A262A8A68C20055A95C /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD9C8A252A8A68C20055A95C /* SF2Lib */; };
 		BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF9C265DB1F0002AD159 /* SoundFontInfo.mm */; };
 		BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDA490B02A3BAA9800AEFB77 /* SF2Lib in Frameworks */,
+				BD9C8A262A8A68C20055A95C /* SF2Lib in Frameworks */,
 				BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */,
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
 			);
@@ -181,7 +181,7 @@
 			);
 			name = SoundFontInfoLib;
 			packageProductDependencies = (
-				BDA490AF2A3BAA9800AEFB77 /* SF2Lib */,
+				BD9C8A252A8A68C20055A95C /* SF2Lib */,
 			);
 			productName = SoundFontInfoLib;
 			productReference = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */;
@@ -198,7 +198,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				BDFA98F7280C74760069A46F /* PBXTargetDependency */,
 				BD74D17323CDB1D200204ED4 /* PBXTargetDependency */,
 			);
 			name = SoundFontInfoLibTests;
@@ -242,7 +241,7 @@
 			);
 			mainGroup = BD74D15D23CDB1D200204ED4;
 			packageReferences = (
-				BDA490AE2A3BAA9800AEFB77 /* XCRemoteSwiftPackageReference "SF2Lib" */,
+				BD9C8A242A8A68C20055A95C /* XCRemoteSwiftPackageReference "SF2Lib" */,
 			);
 			productRefGroup = BD74D16823CDB1D200204ED4 /* Products */;
 			projectDirPath = "";
@@ -302,10 +301,6 @@
 			isa = PBXTargetDependency;
 			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
 			targetProxy = BD74D17223CDB1D200204ED4 /* PBXContainerItemProxy */;
-		};
-		BDFA98F7280C74760069A46F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = BDFA98F6280C74760069A46F /* SF2Lib */;
 		};
 /* End PBXTargetDependency section */
 
@@ -709,15 +704,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BDA490AE2A3BAA9800AEFB77 /* XCRemoteSwiftPackageReference "SF2Lib" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bradhowes/SF2Lib";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */ = {
+		BD9C8A242A8A68C20055A95C /* XCRemoteSwiftPackageReference "SF2Lib" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bradhowes/SF2Lib";
 			requirement = {
@@ -728,14 +715,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BDA490AF2A3BAA9800AEFB77 /* SF2Lib */ = {
+		BD9C8A252A8A68C20055A95C /* SF2Lib */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BDA490AE2A3BAA9800AEFB77 /* XCRemoteSwiftPackageReference "SF2Lib" */;
-			productName = SF2Lib;
-		};
-		BDFA98F6280C74760069A46F /* SF2Lib */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BDBB720427D89C33007911CF /* XCRemoteSwiftPackageReference "SF2Lib" */;
+			package = BD9C8A242A8A68C20055A95C /* XCRemoteSwiftPackageReference "SF2Lib" */;
 			productName = SF2Lib;
 		};
 /* End XCSwiftPackageProductDependency section */
