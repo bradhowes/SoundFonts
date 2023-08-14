@@ -365,7 +365,7 @@ private extension AudioEngine {
 
    - parameter afterLoadBlock: callback to invoke after the load is successfully done
 
-   - returns: Result indicating success or failure
+   - returns: StartResult indicating success or failure
    */
   func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
     os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
