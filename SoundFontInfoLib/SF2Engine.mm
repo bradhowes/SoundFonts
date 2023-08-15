@@ -19,9 +19,9 @@ using Interpolator = SF2::Render::Voice::Sample::Interpolator;
   NSURL* url_;
 }
 
-- (instancetype)initVoiceCount:(int)voicesCount {
+- (instancetype)initVoiceCount:(int)voiceCount {
   if (self = [super init]) {
-    self->engine_ = new Engine(44100.0, static_cast<size_t>(64), Interpolator::cubic4thOrder);
+    self->engine_ = new Engine(44100.0, static_cast<size_t>(voiceCount), Interpolator::cubic4thOrder);
     self->file_ = nullptr;
     self->url_ = nullptr;
   }

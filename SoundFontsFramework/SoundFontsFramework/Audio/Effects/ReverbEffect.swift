@@ -47,7 +47,6 @@ public final class ReverbEffect: NSObject {
     } }
   }
 
-
   public static let roomNames = [
     "Room 1",  // smallRoom
     "Room 2",  // mediumRoom

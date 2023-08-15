@@ -7,8 +7,6 @@ import SoundFontInfoLib
 import SF2Files
 import CoreAudio
 
-#if ONLY_USE_SF2ENGINE_SYNTH
-
 class SF2EngineTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
@@ -80,7 +78,7 @@ class SF2EngineTests: XCTestCase {
 
     let synth = try SF2EngineAU.init(componentDescription: acd, options: [])
     synth.engine.load(urls[0])
-    synth.engine.selectPreset(125)
+    synth.engine.selectPreset(0)
     try synth.allocateRenderResources()
     let renderProc = synth.internalRenderBlock
 
@@ -111,12 +109,12 @@ class SF2EngineTests: XCTestCase {
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
     var samples = UnsafeMutableBufferPointer<AUValue>(left)
     XCTAssertEqual(0.0, samples.first)
-    XCTAssertEqual(-0.016753584, samples.last)
+    XCTAssertEqual(-0.017240595, samples.last)
     var right = buffers[1]
     XCTAssertEqual(2048, AUAudioFrameCount(right.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(right)
     XCTAssertEqual(0.0, samples.first)
-    XCTAssertEqual(0.04329596, samples.last)
+    XCTAssertEqual(0.051256128, samples.last)
 
     status = renderProc(&flags, &timestamp, maxFrameCount, 1, dryBufferList, nil, nil)
     XCTAssertEqual(status, 0)
@@ -124,13 +122,13 @@ class SF2EngineTests: XCTestCase {
     left = buffers[0]
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(left)
-    XCTAssertEqual(-0.016129782, samples.first)
-    XCTAssertEqual(0.11220041, samples.last)
+    XCTAssertEqual(-0.01577098, samples.first)
+    XCTAssertEqual(0.12198019, samples.last)
     right = buffers[1]
     XCTAssertEqual(2048, AUAudioFrameCount(right.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(right)
-    XCTAssertEqual(-0.0019930205, samples.first)
-    XCTAssertEqual(0.03206016, samples.last)
+    XCTAssertEqual(0.007818005, samples.first)
+    XCTAssertEqual(0.03993866, samples.last)
 
     let reverbSendBufferList = reverbSendBuffer.mutableAudioBufferList
     buffers = UnsafeMutableAudioBufferListPointer(reverbSendBufferList)
@@ -148,13 +146,13 @@ class SF2EngineTests: XCTestCase {
     left = buffers[0]
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(left)
-    XCTAssertEqual(0.092863545, samples.first)
-    XCTAssertEqual(-0.10127042, samples.last)
+    XCTAssertEqual(0.10019955, samples.first)
+    XCTAssertEqual(-0.09202412, samples.last)
     right = buffers[1]
     XCTAssertEqual(2048, AUAudioFrameCount(right.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(left)
-    XCTAssertEqual(0.092863545, samples.first)
-    XCTAssertEqual(-0.10127042, samples.last)
+    XCTAssertEqual(0.10019955, samples.first)
+    XCTAssertEqual(-0.09202412, samples.last)
   }
 
   func testRenderPlayback() throws {
@@ -336,5 +334,3 @@ public extension AVAudioPCMBuffer {
     frameLength += frameCount
   }
 }
-
-#endif

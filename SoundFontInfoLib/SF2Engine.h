@@ -36,9 +36,9 @@ typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
 /**
  Constructor.
 
- @param voicesCount the maximum number of voices that can play simultaneously
+ @param voiceCount the maximum number of voices that can play simultaneously
  */
-- (instancetype)initVoiceCount:(int)voicesCount;
+- (instancetype)initVoiceCount:(int)voiceCount;
 
 /**
  Set the rendering parameters prior to starting the audio unit graph.
