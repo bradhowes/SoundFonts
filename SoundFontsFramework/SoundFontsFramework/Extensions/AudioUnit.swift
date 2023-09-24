@@ -73,8 +73,9 @@ extension AudioUnit {
    - throws exception if the property is invalid or the property is read-only
    */
   func setPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32, value: T) throws {
-    var value = value
-    try AudioUnitSetProperty(self, pid, kAudioUnitScope_Global, 0, &value, size).check()
+    try withUnsafePointer(to: value) { pvalue in
+      try AudioUnitSetProperty(self, pid, kAudioUnitScope_Global, 0, pvalue, size).check()
+    }
   }
 }
 

@@ -10,7 +10,8 @@ typedef NS_ENUM(NSUInteger, SF2EnginePresetChangeStatus) {
   SF2EnginePresetChangeStatus_OK = 0,
   SF2EnginePresetChangeStatus_FileNotFound = 100,
   SF2EnginePresetChangeStatus_CannotAccessFile = 200,
-  SF2EnginePresetChangeStatus_InvalidIndex = 300
+  SF2EnginePresetChangeStatus_InvalidIndex = 300,
+  SF2EnginePresetChangeStatus_InvalidFormat = 400
 };
 
 /**

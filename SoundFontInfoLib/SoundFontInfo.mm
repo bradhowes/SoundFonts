@@ -67,7 +67,7 @@ using namespace SF2;
     if (secured) [url stopAccessingSecurityScopedResource];
     return info;
   }
-  catch (enum IO::Format value) {
+  catch (enum IO::File::LoadResponse value) {
     return nil;
   }
 }
@@ -79,7 +79,7 @@ using namespace SF2;
     if (secured) [url stopAccessingSecurityScopedResource];
     return info;
   }
-  catch (enum IO::Format value) {
+  catch (enum IO::File::LoadResponse value) {
     return nil;
   }
 }
@@ -116,7 +116,7 @@ using namespace SF2;
                                copyright:embeddedCopyright
                                  presets:presets];
   }
-  catch (enum IO::Format value) {
+  catch (enum IO::File::LoadResponse value) {
     ;
   }
   
@@ -155,7 +155,7 @@ using namespace SF2;
                                copyright:embeddedCopyright
                                  presets:presets];
   }
-  catch (enum IO::Format value) {
+  catch (enum IO::File::LoadResponse value) {
     ;
   }
   

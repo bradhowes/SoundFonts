@@ -6,7 +6,6 @@
 #import "SF2Engine.h"
 #import "SF2Lib/Configuration.h"
 #import "SF2Lib/IO/File.hpp"
-#import "SF2Lib/IO/Format.hpp"
 #import "SF2Lib/Render/Engine/Engine.hpp"
 
 using File = SF2::IO::File;
@@ -15,14 +14,12 @@ using Interpolator = SF2::Render::Voice::Sample::Interpolator;
 
 @implementation SF2Engine {
   Engine* engine_;
-  File* file_;
   NSURL* url_;
 }
 
 - (instancetype)initVoiceCount:(int)voiceCount {
   if (self = [super init]) {
     self->engine_ = new Engine(44100.0, static_cast<size_t>(voiceCount), Interpolator::cubic4thOrder);
-    self->file_ = nullptr;
     self->url_ = nullptr;
   }
 
@@ -46,21 +43,15 @@ using Interpolator = SF2::Render::Voice::Sample::Interpolator;
   engine_->allOff();
   if ([url_ isEqual:url]) return SF2EnginePresetChangeStatus_OK;
 
-  url_ = url;
-  auto oldFile = file_;
-  try {
-    file_ = new File([[url path] UTF8String]);
-    engine_->load(*file_, 0);
-  } catch (std::runtime_error&) {
-    if (oldFile != nullptr) file_ = oldFile;
-    return SF2EnginePresetChangeStatus_FileNotFound;
-  } catch (SF2::IO::Format&) {
-    if (oldFile != nullptr) file_ = oldFile;
-    return SF2EnginePresetChangeStatus_CannotAccessFile;
+  auto path = std::string([url path].UTF8String);
+  auto response = engine_->load(path, 0);
+  switch (response) {
+    case SF2::IO::File::LoadResponse::ok: 
+      url_ = url;
+      return SF2EnginePresetChangeStatus_OK;
+    case SF2::IO::File::LoadResponse::notFound: return SF2EnginePresetChangeStatus_FileNotFound;
+    case SF2::IO::File::LoadResponse::invalidFormat: return SF2EnginePresetChangeStatus_InvalidFormat;
   }
-
-  delete oldFile;
-  return SF2EnginePresetChangeStatus_OK;
 }
 
 - (SF2EnginePresetChangeStatus)selectPreset:(int)index {

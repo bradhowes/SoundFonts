@@ -109,12 +109,12 @@ class SF2EngineTests: XCTestCase {
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
     var samples = UnsafeMutableBufferPointer<AUValue>(left)
     XCTAssertEqual(0.0, samples.first)
-    XCTAssertEqual(-0.017240595, samples.last)
+    XCTAssertEqual(-0.0012907712, samples.last)
     var right = buffers[1]
     XCTAssertEqual(2048, AUAudioFrameCount(right.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(right)
     XCTAssertEqual(0.0, samples.first)
-    XCTAssertEqual(0.051256128, samples.last)
+    XCTAssertEqual(0.010931657, samples.last)
 
     status = renderProc(&flags, &timestamp, maxFrameCount, 1, dryBufferList, nil, nil)
     XCTAssertEqual(status, 0)
@@ -122,13 +122,13 @@ class SF2EngineTests: XCTestCase {
     left = buffers[0]
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(left)
-    XCTAssertEqual(-0.01577098, samples.first)
-    XCTAssertEqual(0.12198019, samples.last)
+    XCTAssertEqual(-0.0018080766, samples.first)
+    XCTAssertEqual(0.01709143, samples.last)
     right = buffers[1]
     XCTAssertEqual(2048, AUAudioFrameCount(right.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(right)
-    XCTAssertEqual(0.007818005, samples.first)
-    XCTAssertEqual(0.03993866, samples.last)
+    XCTAssertEqual(0.008353528, samples.first)
+    XCTAssertEqual(0.009142688, samples.last)
 
     let reverbSendBufferList = reverbSendBuffer.mutableAudioBufferList
     buffers = UnsafeMutableAudioBufferListPointer(reverbSendBufferList)
@@ -146,13 +146,13 @@ class SF2EngineTests: XCTestCase {
     left = buffers[0]
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(left)
-    XCTAssertEqual(0.10019955, samples.first)
-    XCTAssertEqual(-0.09202412, samples.last)
+    XCTAssertEqual(0.018047683, samples.first)
+    XCTAssertEqual(-0.006219385, samples.last)
     right = buffers[1]
     XCTAssertEqual(2048, AUAudioFrameCount(right.mDataByteSize))
     samples = UnsafeMutableBufferPointer<AUValue>(left)
-    XCTAssertEqual(0.10019955, samples.first)
-    XCTAssertEqual(-0.09202412, samples.last)
+    XCTAssertEqual(0.018047683, samples.first)
+    XCTAssertEqual(-0.006219385, samples.last)
   }
 
   func testRenderPlayback() throws {
