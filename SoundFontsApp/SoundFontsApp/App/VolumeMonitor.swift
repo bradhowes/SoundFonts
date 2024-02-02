@@ -3,6 +3,7 @@
 import AVKit
 import SoundFontsFramework
 import os
+import ProgressHUD
 
 /// Monitor volume setting on device and the "silence" or "mute" switch. When there is no apparent audio
 /// output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
@@ -101,9 +102,9 @@ extension VolumeMonitor {
 
   private func showReason() {
     switch reason {
-    case .volumeLevel: InfoHUD.show(text: Formatters.strings.volumeIsZero)
-    case .noPreset: InfoHUD.show(text: Formatters.strings.noPresetLoaded)
-    case .none: InfoHUD.clear()
+    case .volumeLevel: ProgressHUD.banner("Volume", Formatters.strings.volumeIsZero)
+    case .noPreset: ProgressHUD.banner("Preset", Formatters.strings.noPresetLoaded)
+    case .none: ProgressHUD.bannerHide()
     }
   }
 }

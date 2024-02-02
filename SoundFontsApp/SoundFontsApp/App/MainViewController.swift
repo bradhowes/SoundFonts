@@ -5,6 +5,7 @@ import SoundFontsFramework
 import MorkAndMIDI
 import UIKit
 import os
+import ProgressHUD
 
 /**
  Top-level view controller for the application. It contains the Synth which will emit sounds based on what keys are
@@ -86,7 +87,7 @@ final class MainViewController: UIViewController {
     super.willTransition(to: newCollection, with: coordinator)
     coordinator.animate(
       alongsideTransition: { _ in
-        InfoHUD.clear()
+        ProgressHUD.bannerHide()
       },
       completion: { _ in
         self.volumeMonitor?.repostNotice()
