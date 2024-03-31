@@ -16,4 +16,3 @@ FOUNDATION_EXPORT const unsigned char SoundFontInfoLibVersionString[];
 
  */
 #import <SoundFontInfoLib/SoundFontInfo.h>
-#import <SoundFontInfoLib/SF2Engine.h>

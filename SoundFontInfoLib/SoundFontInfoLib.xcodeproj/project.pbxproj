@@ -7,12 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD05CF9B27D8B31100E58550 /* SF2Engine.h in Headers */ = {isa = PBXBuildFile; fileRef = BD05CF9A27D8B31100E58550 /* SF2Engine.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */; };
-		BD05CFA127D8BB1B00E58550 /* SF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */; };
 		BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6791612973622C0055BB38 /* FourCharCode.swift */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
-		BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */; };
 		BD9C8A262A8A68C20055A95C /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD9C8A252A8A68C20055A95C /* SF2Lib */; };
 		BD9C8A282A8AC2DC0055A95C /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C8A272A8AC2DC0055A95C /* SF2Files.framework */; };
 		BD9C8A292A8AC2DC0055A95C /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C8A272A8AC2DC0055A95C /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -24,8 +20,6 @@
 		BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE99B6727BF91C000C9F1BC /* Accelerate.framework */; };
 		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
-		BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E4280C50040069A46F /* AVSF2Engine.swift */; };
-		BDFA98E7280C52450069A46F /* AVSF2EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */; };
 		BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDECD03727CC483800FEDC13 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,14 +48,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		BD05CF9A27D8B31100E58550 /* SF2Engine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SF2Engine.h; sourceTree = "<group>"; };
-		BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SF2Engine.mm; sourceTree = "<group>"; };
-		BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SF2EngineTests.swift; sourceTree = "<group>"; };
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		BD6791612973622C0055BB38 /* FourCharCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourCharCode.swift; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SF2EngineAU.swift; sourceTree = "<group>"; };
 		BD8CE57027C53F67009A2FB5 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
 		BD8CE57127C53F67009A2FB5 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
 		BD9C8A272A8AC2DC0055A95C /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,8 +65,6 @@
 		BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewTestTemplate.mm; sourceTree = "<group>"; };
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BDECD03727CC483800FEDC13 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		BDFA98E4280C50040069A46F /* AVSF2Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVSF2Engine.swift; sourceTree = "<group>"; };
-		BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSF2EngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,11 +98,7 @@
 				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BD8CE57127C53F67009A2FB5 /* Development.xcconfig */,
 				BD8CE57027C53F67009A2FB5 /* Release.xcconfig */,
-				BDFA98E4280C50040069A46F /* AVSF2Engine.swift */,
 				BD6791612973622C0055BB38 /* FourCharCode.swift */,
-				BD75DC3C27E4BCAD00C31DBA /* SF2EngineAU.swift */,
-				BD05CF9A27D8B31100E58550 /* SF2Engine.h */,
-				BD05CF9C27D8B34A00E58550 /* SF2Engine.mm */,
 				BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */,
 				BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */,
 				BDB1BF9C265DB1F0002AD159 /* SoundFontInfo.mm */,
@@ -139,8 +123,6 @@
 				BDB1BE74265DAEC7002AD159 /* Info.plist */,
 				BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */,
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
-				BD05CFA027D8BB1B00E58550 /* SF2EngineTests.swift */,
-				BDFA98E6280C52450069A46F /* AVSF2EngineTests.swift */,
 			);
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
@@ -164,7 +146,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD05CF9B27D8B31100E58550 /* SF2Engine.h in Headers */,
 				BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */,
 				BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */,
 			);
@@ -283,11 +264,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDFA98E5280C50040069A46F /* AVSF2Engine.swift in Sources */,
-				BD75DC3D27E4BCAD00C31DBA /* SF2EngineAU.swift in Sources */,
 				BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */,
 				BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */,
-				BD05CF9D27D8B34A00E58550 /* SF2Engine.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,10 +273,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDFA98E7280C52450069A46F /* AVSF2EngineTests.swift in Sources */,
 				BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */,
 				BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */,
-				BD05CFA127D8BB1B00E58550 /* SF2EngineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

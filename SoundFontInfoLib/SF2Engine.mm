@@ -4,7 +4,7 @@
 #import <os/log.h>
 
 #import "SF2Engine.h"
-#import "SF2Lib/Configuration.h"
+// #import "SF2Lib/Configuration.h"
 #import "SF2Lib/IO/File.hpp"
 #import "SF2Lib/Render/Engine/Engine.hpp"
 

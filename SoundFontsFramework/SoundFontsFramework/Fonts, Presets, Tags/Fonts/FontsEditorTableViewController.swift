@@ -14,11 +14,6 @@ final class FontsEditorTableViewController: UITableViewController {
   struct Config {
     let fonts: SoundFontsProvider
     let settings: Settings
-
-    init(fonts: SoundFontsProvider, settings: Settings) {
-      self.fonts = fonts
-      self.settings = settings
-    }
   }
 
   // NOTE: do *not* make these buttons `weak` or else they will become nil when editing mode changes.

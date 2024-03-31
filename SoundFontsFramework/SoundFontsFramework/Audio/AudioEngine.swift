@@ -415,12 +415,7 @@ private extension AudioEngine {
     return .success(synth)
   }
 
-  func makeSynth() -> AnyMIDISynth {
-    if settings.useSF2Engine {
-      return AVSF2Engine()
-    }
-    return AVAudioUnitSampler()
-  }
+  func makeSynth() -> AnyMIDISynth { AVAudioUnitSampler() }
 
   func startEngine(_ synth: AnyMIDISynth) -> StartResult {
     os_log(.debug, log: log, "creating AVAudioEngine")

@@ -130,35 +130,40 @@ extension UInt32 {
 }
 
 extension MIDIEventRouter: Receiver {
-
-  public func noteOff(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
+  func noteOff(source: MIDIUniqueID, note: UInt8, velocity: UInt8, channel: UInt8) {
     synth?.noteOff(note: note, velocity: velocity)
     keyboard.noteIsOff(note: note)
   }
 
-  public func noteOff2(source: MIDIUniqueID, note: UInt8, velocity: UInt16, attributeType: UInt8, attributeData: UInt16) {
-    noteOff(source: source, note: note, velocity: velocity.b0)
+  // swiftlint:disable function_parameter_count
+  func noteOff2(source: MIDIUniqueID, note: UInt8, velocity: UInt16, channel: UInt8, attributeType: UInt8,
+                attributeData: UInt16) {
+    noteOff(source: source, note: note, velocity: velocity.b0, channel: channel)
   }
+  // swiftlint:enable function_parameter_count
 
-  public func noteOn(source: MIDIUniqueID, note: UInt8, velocity: UInt8) {
+  func noteOn(source: MIDIUniqueID, note: UInt8, velocity: UInt8, channel: UInt8) {
     let connectionState = midiConnectionMonitor.connectionState(for: source)
     synth?.noteOn(note: note, velocity: connectionState.fixedVelocity ?? velocity)
     keyboard.noteIsOn(note: note)
   }
 
-  public func noteOn2(source: MIDIUniqueID, note: UInt8, velocity: UInt16, attributeType: UInt8, attributeData: UInt16) {
-    noteOn(source: source, note: note, velocity: velocity.b0)
+  // swiftlint:disable function_parameter_count
+  func noteOn2(source: MIDIUniqueID, note: UInt8, velocity: UInt16, channel: UInt8, attributeType: UInt8,
+               attributeData: UInt16) {
+    noteOn(source: source, note: note, velocity: velocity.b0, channel: channel)
   }
+  // swiftlint:enable function_parameter_count
 
-  public func polyphonicKeyPressure(source: MIDIUniqueID, note: UInt8, pressure: UInt8) {
+  func polyphonicKeyPressure(source: MIDIUniqueID, note: UInt8, pressure: UInt8, channel: UInt8) {
     synth?.polyphonicKeyPressure(note: note, pressure: pressure)
   }
 
-  public func polyphonicKeyPressure2(source: MIDIUniqueID, note: UInt8, pressure: UInt32) {
-    synth?.polyphonicKeyPressure(note: note, pressure: pressure.b0)
+  func polyphonicKeyPressure2(source: MIDIUniqueID, note: UInt8, pressure: UInt32, channel: UInt8) {
+    polyphonicKeyPressure(source: source, note: note, pressure: pressure.b0, channel: channel)
   }
 
-  public func controlChange(source: MIDIUniqueID, controller: UInt8, value: UInt8) {
+  public func controlChange(source: MIDIUniqueID, controller: UInt8, value: UInt8, channel: UInt8) {
     os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
 
     let midiControllerIndex = Int(controller)
@@ -184,35 +189,34 @@ extension MIDIEventRouter: Receiver {
     synth?.controlChange(controller: controller, value: value)
   }
 
-  public func controlChange2(source: MIDIUniqueID, controller: UInt8, value: UInt32) {
-    synth?.controlChange(controller: controller, value: value.b0)
-    os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
+  public func controlChange2(source: MIDIUniqueID, controller: UInt8, value: UInt32, channel: UInt8) {
+    controlChange(source: source, controller: controller, value: value.b0, channel: channel)
   }
 
-  public func programChange(source: MIDIUniqueID, program: UInt8) {
+  public func programChange(source: MIDIUniqueID, program: UInt8, channel: UInt8) {
     synth?.programChange(program: program)
     os_log(.debug, log: log, "programChange: %d", program)
   }
 
-  public func programChange2(source: MIDIUniqueID, program: UInt8, bank: UInt16) {
+  public func programChange2(source: MIDIUniqueID, program: UInt8, bank: UInt16, channel: UInt8) {
     synth?.programChange(program: program)
     os_log(.debug, log: log, "programChange: %d", program)
   }
 
-  public func channelPressure(source: MIDIUniqueID, pressure: UInt8) {
+  public func channelPressure(source: MIDIUniqueID, pressure: UInt8, channel: UInt8) {
     synth?.channelPressure(pressure: pressure)
   }
 
-  public func channelPressure2(source: MIDIUniqueID, pressure: UInt32) {
+  public func channelPressure2(source: MIDIUniqueID, pressure: UInt32, channel: UInt8) {
     synth?.channelPressure(pressure: pressure.b0)
   }
 
-  public func pitchBendChange(source: MIDIUniqueID, value: UInt16) {
+  public func pitchBendChange(source: MIDIUniqueID, value: UInt16, channel: UInt8) {
     synth?.pitchBendChange(value: value)
     os_log(.debug, log: log, "pitchBendChange: %d", value)
   }
 
-  public func pitchBendChange2(source: MIDIUniqueID, value: UInt32) {
+  public func pitchBendChange2(source: MIDIUniqueID, value: UInt32, channel: UInt8) {
     synth?.pitchBendChange(value: value.w0 & 0x7FFF)
   }
 
