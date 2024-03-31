@@ -21,7 +21,7 @@ enum SoundFontKind {
   /// Sound font file that was installed by the user. Holds the name of the SF2 file
   case installed(fileName: String)
   /// Alternative sound font file that was installed by the user but that was not copied into the app's working
-  /// directory.
+  /// directory. This could reside on an external disk for instance, or on the iCloud Drive.
   case reference(bookmark: Bookmark)
 
   /// The URL that points to the data file that defines the SoundFont.
