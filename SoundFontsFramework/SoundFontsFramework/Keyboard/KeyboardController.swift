@@ -159,10 +159,10 @@ extension KeyboardController {
           offsetKeyboard(by: newConstraint)
         }
       }
+    } else {
+      // Moved touches may become associated with a new key (releasing the old one)
+      pressKeys(touches)
     }
-
-    // Moved touches may become associated with a new key (releasing the old one)
-    pressKeys(touches)
   }
 
   /**
