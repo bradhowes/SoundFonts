@@ -22,6 +22,8 @@ final class FontsTableViewController: UITableViewController {
   private var tags: TagsProvider!
   private var settings: Settings!
 
+  private var bookmarkMonitor: Timer?
+
   private var dataSource = [SoundFont.Key]()
 }
 
@@ -50,6 +52,16 @@ extension FontsTableViewController {
         }
       }
     }
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    startBookmarkMonitor()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    stopBookmarkMonitor()
   }
 
   func activate(_ soundFontAndPreset: SoundFontAndPreset) {
@@ -132,7 +144,17 @@ extension FontsTableViewController {
                           trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
     guard let soundFont = soundFonts.getBy(key: dataSource[indexPath.row]) else { return nil }
-    let action = fontSwipeActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
+    let action: UIContextualAction = {
+      switch soundFont.kind {
+      case .builtin:
+        return fontSwipeActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
+      case .installed:
+        return fontSwipeActionGenerator.createHideSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
+      case .reference:
+        return fontSwipeActionGenerator.createUnlinkSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
+      }
+    }()
+
     let actions = UISwipeActionsConfiguration(actions: [action])
     actions.performsFirstActionWithFullSwipe = false
     return actions
@@ -142,6 +164,29 @@ extension FontsTableViewController {
 // MARK: - Private
 
 private extension FontsTableViewController {
+
+  func updateBookmarkButtons() {
+    for index in 0..<soundFonts.count {
+      let soundFont = soundFonts.getBy(index: index)
+      if soundFont.kind.reference {
+        guard let cell: TableCell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { continue }
+        cell.updateBookmarkButton()
+      }
+    }
+  }
+
+  func stopBookmarkMonitor() {
+    self.bookmarkMonitor?.invalidate()
+    self.bookmarkMonitor = nil
+  }
+
+  func startBookmarkMonitor() {
+    stopBookmarkMonitor()
+    self.bookmarkMonitor = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+      guard let self = self else { return }
+      self.updateBookmarkButtons()
+    }
+  }
 
   func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
     os_log(.debug, log: log, "soundFontsChangedNotificationInBackground BEGIN - %{public}s", event.description)

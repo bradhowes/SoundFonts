@@ -25,8 +25,18 @@
 "Bank" = "Bank";
 "Index" = "Index";
 
-"deleteFontTitle" = "Delete the soundfont file?";
-"deleteFontBody" = "Deleting will remove the file and also any favorites linked to it.";
+"deleteFontTitle" = "Delete the soundfont?";
+"deleteFontBody" = "Deleting will remove the file from your device, as well as any favorites linked to it.";
+
+"unlinkFontTitle" = "Remove the soundfont?";
+"unlinkFontBody" = "The file will still remain on your drive (iCloud or external), but all customizations including any favorites will be lost.";
+
+"unlinkFontAction" = "Remove";
+
+"hideFontTitle" = "Hide the built-in soundfont?";
+"hideFontBody" = "Hiding will only remove the listing. Hidden fonts can be restored in the Settings panel, but all customizations including any favorites will be lost.";
+
+"hideFontAction" = "Continue";
 
 "addSoundFontsStatusTitle" = "Add Sound Fonts";
 "unableToAddOneFile" = "Unable to add the sound font";

@@ -25,6 +25,25 @@ public protocol FontActionManager {
   func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction
 
   /**
+   Obtain a swipe action that will hide a built-in SoundFont instance.
+
+   - parameter view: the table cell to attach to
+   - parameter soundFont: the SoundFont instance that will be edited
+   - parameter indexPath: location of the cell to be deleted
+   - returns: new swipe action
+   */
+  func createHideSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction
+
+  /**
+   Obtain a swipe action that will remove a referenced SoundFont instance.
+
+   - parameter view: the table cell to attach to
+   - parameter soundFont: the SoundFont instance that will be edited
+   - parameter indexPath: location of the cell to be deleted
+   - returns: new swipe action
+   */
+  func createUnlinkSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction
+  /**
    Begin editing the given font.
 
    - parameter indexPath: location of the cell to be deleted

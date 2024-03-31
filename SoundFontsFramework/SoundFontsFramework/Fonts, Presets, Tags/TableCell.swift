@@ -83,8 +83,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     if case let .reference(bookmark) = kind {
       self.bookmark = bookmark
       name += "°"
-      updateButton()
-      startBookmarkMonitor()
+      updateBookmarkButton()
     }
 
     update(name: indexPath.prefixRow + name, flags: flags)
@@ -128,13 +127,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     self.name.accessibilityHint = "tag list entry for tag \(name)"
   }
 
-  /**
-   Make sure that the 'reorder' button can be seen when the table view is in edit mode
-   */
-  override public func setEditing(_ editing: Bool, animated: Bool) {
-    super.setEditing(editing, animated: animated)
-  }
-
   private func update(name: String, flags: Flags) {
     self.name.text = name
     self.name.textColor = fontColor(for: flags)
@@ -150,22 +142,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     gainIndicator.accessibilityIdentifier = flags.hasGainSetting ? "\(name) has gain" : "\(name) has no gain"
   }
 
-  private func stopBookmarkMonitor() {
-    bookmarkMonitor?.invalidate()
-    bookmarkMonitor = nil
-  }
-
-  private func startBookmarkMonitor() {
-    stopBookmarkMonitor()
-    bookmarkMonitor = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
-      self?.updateButton()
-    }
-  }
-
   override public func prepareForReuse() {
     super.prepareForReuse()
-
-    stopBookmarkMonitor()
 
     accessoryView = nil
     activeAlert = nil
@@ -187,7 +165,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     return normalFontColor
   }
 
-  private func updateButton() {
+  func updateBookmarkButton() {
     accessoryView = infoButton
     if accessoryView == nil && activeAlert != nil {
       activeAlert?.dismiss(animated: true)

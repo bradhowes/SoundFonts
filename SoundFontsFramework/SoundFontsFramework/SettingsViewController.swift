@@ -177,7 +177,7 @@ final class SettingsViewController: UIViewController {
 
     super.viewWillAppear(animated)
 
-    useSF2LibEngineStackView.isHidden = false
+    useSF2LibEngineStackView.isHidden = true
     shiftA4Stepper.value = Double(settings.globalTranspose)
 
     makeTuningComponent()
@@ -529,7 +529,7 @@ private extension SettingsViewController {
       view.isHidden = false
     }
 
-    useSF2LibEngineStackView.isHidden = false
+    useSF2LibEngineStackView.isHidden = true
     midiChannelStackView.isHidden = isAUv3
     midiConnectionsStackView.isHidden = isAUv3
     midiAutoConnectStackView.isHidden = isAUv3

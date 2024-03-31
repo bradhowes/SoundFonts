@@ -2,6 +2,8 @@
 
 import UIKit
 
+// swiftlint:disable type_body_length
+
 private class BundleTag {}
 
 /// Collection of value formatters that use localized strings.
@@ -148,16 +150,43 @@ public struct Formatters {
     }
 
     var deleteFontTitle: String {
-      NSLocalizedString("deleteFontTitle", bundle: bundle, comment: "Title of confirmation prompt")
+      NSLocalizedString("deleteFontTitle", bundle: bundle, comment: "Title of confirmation prompt for deleteing font")
     }
 
     var deleteFontMessage: String {
       NSLocalizedString(
         "deleteFontBody", bundle: bundle,
-        comment: "Body of confirmation prompt")
+        comment: "Body of confirmation prompt for delteting font")
     }
+
     var deleteAction: String {
-      NSLocalizedString("deleteAction", bundle: bundle, comment: "The delete action")
+      NSLocalizedString("deleteAction", bundle: bundle, comment: "The delete font action")
+    }
+
+    var hideFontTitle: String {
+      NSLocalizedString("hideFontTitle", bundle: bundle, comment: "Title of confirmation prompt for hiding font")
+    }
+
+    var hideFontMessage: String {
+      NSLocalizedString(
+        "hideFontBody", bundle: bundle,
+        comment: "Body of confirmation prompt for hiding font")
+    }
+
+    var hideFontAction: String {
+      NSLocalizedString("hideFontAction", bundle: bundle, comment: "The hide font action")
+    }
+
+    var unlinkFontTitle: String {
+      NSLocalizedString("unlinkFontTitle", bundle: bundle, comment: "Title of confirmation prompt for unlinking font")
+    }
+
+    var unlinkFontMessage: String {
+      NSLocalizedString("unlinkFontBody", bundle: bundle, comment: "Body of confirmation prompt for unlinking font")
+    }
+
+    var unlinkFontAction: String {
+      NSLocalizedString("unlinkFontAction", bundle: bundle, comment: "The unlink font action")
     }
 
     var cancelAction: String {
@@ -329,3 +358,5 @@ public struct Formatters {
   }()
 
 }
+
+// swiftlint:enable type_body_length

@@ -238,6 +238,36 @@ extension SoundFontsViewController: FontActionManager {
       self?.remove(soundFont: soundFont, completionHandler: completionHandler)
     }
   }
+
+  /**
+   Create left-swipe action to *hide* a SoundFont. When activated, the action will display a prompt to the user
+   asking for confirmation about the SoundFont hiding.
+
+   - parameter at: the FontCell that will hold the swipe action
+   - parameter with: the SoundFont that will be hidden by the swipe action
+   - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
+   - returns: new UIContextualAction that will perform the edit
+   */
+  func createHideSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
+    UIContextualAction(icon: .hide, color: .gray) { [weak self] _, _, completionHandler in
+      self?.hide(soundFont: soundFont, completionHandler: completionHandler)
+    }
+  }
+
+  /**
+   Create left-swipe action to *unlink* a SoundFont reference. When activated, the action will display a prompt to the user
+   asking for confirmation about the SoundFont removal.
+
+   - parameter at: the FontCell that will hold the swipe action
+   - parameter with: the SoundFont that will be hidden by the swipe action
+   - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
+   - returns: new UIContextualAction that will perform the edit
+   */
+  func createUnlinkSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
+    UIContextualAction(icon: .remove, color: .red) { [weak self] _, _, completionHandler in
+      self?.unlink(soundFont: soundFont, completionHandler: completionHandler)
+    }
+  }
 }
 
 extension SoundFontsViewController: SegueHandler {
@@ -398,6 +428,78 @@ private extension SoundFontsViewController {
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
     let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { [weak self ] _ in
+      guard let self = self else { return }
+      self.soundFonts.remove(key: soundFont.key)
+      self.favorites.removeAll(associatedWith: soundFont)
+      let url = soundFont.fileURL
+      if soundFont.kind.deletable {
+        DispatchQueue.global(qos: .userInitiated).async {
+          try? FileManager.default.removeItem(at: url)
+        }
+      }
+      completionHandler?(true)
+    }
+
+    let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
+      completionHandler?(false)
+    }
+
+    alertController.addAction(delete)
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
+  }
+
+  func hide(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    let promptTitle = Formatters.strings.hideFontTitle
+    let promptMessage = Formatters.strings.hideFontMessage
+    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+
+    let delete = UIAlertAction(title: Formatters.strings.hideFontAction, style: .destructive) { [weak self ] _ in
+      guard let self = self else { return }
+      self.soundFonts.remove(key: soundFont.key)
+      self.favorites.removeAll(associatedWith: soundFont)
+      let url = soundFont.fileURL
+      if soundFont.kind.deletable {
+        DispatchQueue.global(qos: .userInitiated).async {
+          try? FileManager.default.removeItem(at: url)
+        }
+      }
+      completionHandler?(true)
+    }
+
+    let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
+      completionHandler?(false)
+    }
+
+    alertController.addAction(delete)
+    alertController.addAction(cancel)
+
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = self.view
+      popoverController.sourceRect = CGRect(
+        x: self.view.bounds.midX, y: self.view.bounds.midY,
+        width: 0, height: 0)
+      popoverController.permittedArrowDirections = []
+    }
+
+    present(alertController, animated: true, completion: nil)
+  }
+
+  func unlink(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    let promptTitle = Formatters.strings.unlinkFontTitle
+    let promptMessage = Formatters.strings.unlinkFontMessage
+    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+
+    let delete = UIAlertAction(title: Formatters.strings.hideFontAction, style: .destructive) { [weak self ] _ in
       guard let self = self else { return }
       self.soundFonts.remove(key: soundFont.key)
       self.favorites.removeAll(associatedWith: soundFont)
