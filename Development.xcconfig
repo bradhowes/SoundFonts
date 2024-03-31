@@ -29,8 +29,6 @@ ONLY_USE_SF2ENGINE_SYNTH = -DONLY_USE_SF2ENGINE_SYNTH
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
 OTHER_SWIFT_FLAGS = $(inherited) -DDev $(DEBUG_FLAGS) $(xONLY_USE_SF2ENGINE_SYNTH)
 
-EXTRA_CPP = -pedantic -Wmissing-braces -Wparentheses -Wswitch -Wcompletion-handler -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wno-unknown-pragmas -Wuninitialized -Wconditional-uninitialized -Wconversion -Wconstant-conversion -Wassign-enum -Wsign-compare -Wint-conversion -Wbool-conversion -Wenum-conversion -Wfloat-conversion -Wshorten-64-to-32 -Wsign-conversion -Wmove -Wcomma -Wno-newline-eof
-
 OTHER_CPLUSPLUSFLAGS = $(inherited) $(DEBUG_FLAGS)
 
 OTHER_LDFLAGS = $(inherited)

@@ -220,7 +220,7 @@ extension Components {
     precondition(effectsController != nil, "nil EffectsController")
   }
 
-  private func oneTimeSet<T>(_ oldValue: T?) {
+  private func oneTimeSet<Z>(_ oldValue: Z?) {
     if oldValue != nil {
       preconditionFailure("expected nil value")
     }
