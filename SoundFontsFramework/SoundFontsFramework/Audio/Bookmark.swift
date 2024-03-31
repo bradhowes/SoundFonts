@@ -23,12 +23,25 @@ final class Bookmark: Codable {
   public let original: URL
   public var url: URL { restore() }
 
+  private var lastRestoredUrl: URL?
+  private var lastRestoredWhen: CFTimeInterval
+
   private func restore() -> URL {
+    let now = CFAbsoluteTimeGetCurrent()
+    if let lastRestoredUrl = self.lastRestoredUrl,
+       (now - lastRestoredWhen) < 1 {
+      return lastRestoredUrl
+    }
+
     let resolved = Self.resolve(from: self.bookmark)
     if resolved.stale {
       self.bookmark = resolved.url?.secureBookmarkData
       NotificationCenter.default.post(name: .bookmarkChanged, object: nil)
     }
+
+    self.lastRestoredUrl = resolved.url
+    self.lastRestoredWhen = now
+
     return resolved.url ?? original
   }
 
@@ -42,6 +55,9 @@ final class Bookmark: Codable {
     self.name = name
     original = url
     bookmark = url.secureBookmarkData
+    lastRestoredUrl = nil
+    lastRestoredWhen = 0
+
     os_log(.debug, log: log, "name: %{public}s data.count: %d url: %{public}s",
            name, bookmark?.count ?? 0, url.absoluteString)
   }
@@ -53,6 +69,8 @@ final class Bookmark: Codable {
     self.name = name
     self.original = original
     self.bookmark = bookmark
+    self.lastRestoredUrl = nil
+    self.lastRestoredWhen = 0
   }
 
   /**
@@ -66,6 +84,8 @@ final class Bookmark: Codable {
     name = try values.decode(String.self, forKey: .name)
     original = try values.decode(URL.self, forKey: .original)
     bookmark = try values.decode(Data.self, forKey: .bookmark)
+    lastRestoredUrl = nil
+    lastRestoredWhen = 0
   }
 }
 
@@ -133,7 +153,8 @@ private extension URL {
 extension Bookmark {
 
   private static func resolve(from data: Data?) -> (url: URL?, stale: Bool) {
-    os_log(.info, log: log, "resolve: data.count: %d", data?.count ?? 0)
+    let timestamp = Int(Date().timeIntervalSince1970)
+    os_log(.debug, log: log, "%d - resolve: data.count: %d", timestamp, data?.count ?? 0)
     guard let data = data else { return (url: nil, stale: false) }
     do {
       var isStale = false
