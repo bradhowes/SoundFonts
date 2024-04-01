@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFonts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
-		BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
 		BD1A2A91266A00F2009E2338 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8D266A0050009E2338 /* ScreenShots.swift */; };
 		BD21CB3A266A6ECE00D4193C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */; };
+		BD2398A62BBB6653009265E4 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
+		BD2398A72BBB6653009265E4 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BD2398A82BBB6658009265E4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
+		BD2398A92BBB6658009265E4 /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BD498F9F23F0101700755AB9 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
 		BD498FA423F07AFC00755AB9 /* VolumeMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */; };
 		BD50C7B023D479390019EF15 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BD50C7B123D479390019EF15 /* SoundFontsFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BD50C7B323D4793F0019EF15 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
-		BD50C7B423D4793F0019EF15 /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD50D34825D7747E00375455 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50D34725D7747E00375455 /* SoundFontInfoLib.framework */; };
 		BD50D34A25D7749100375455 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50D34925D7749100375455 /* SoundFontInfoLib.framework */; };
 		BD58B0902567F29900181F2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC3123C73578005BEFD5 /* Assets.xcassets */; };
@@ -91,9 +91,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */,
+				BD2398A92BBB6658009265E4 /* SoundFontInfoLib.framework in Embed Frameworks */,
+				BD2398A72BBB6653009265E4 /* SF2Files.framework in Embed Frameworks */,
 				BD50C7B123D479390019EF15 /* SoundFontsFramework.framework in Embed Frameworks */,
-				BD50C7B423D4793F0019EF15 /* SoundFontInfoLib.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,8 +205,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */,
-				BD50C7B323D4793F0019EF15 /* SoundFontInfoLib.framework in Frameworks */,
+				BD2398A62BBB6653009265E4 /* SF2Files.framework in Frameworks */,
+				BD2398A82BBB6658009265E4 /* SoundFontInfoLib.framework in Frameworks */,
 				BD50C7B023D479390019EF15 /* SoundFontsFramework.framework in Frameworks */,
 				BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */,
 			);

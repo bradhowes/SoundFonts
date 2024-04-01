@@ -68,7 +68,6 @@
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
 		BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20182555701B00D36607 /* TouchKeyMap.swift */; };
 		BD0F940B25728E610065C147 /* MIDIEventRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F940A25728E610065C147 /* MIDIEventRouter.swift */; };
-		BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC29251F692000EEF187 /* SF2Files.framework */; };
 		BD0FAC802523CAEC00EEF187 /* UIContextualAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC7F2523CAEC00EEF187 /* UIContextualAction.swift */; };
 		BD1232D9252B029F00F80056 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD1232D8252B029F00F80056 /* SoundFontInfoLib.framework */; };
 		BD125B38241006200003DE99 /* AskForReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B37241006200003DE99 /* AskForReview.swift */; };
@@ -103,6 +102,8 @@
 		BD1F11BC23FE690300AE9F3D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController.swift */; };
 		BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD239485255213CB004E5E0D /* KeyParamSequence.swift */; };
 		BD23948A25540855004E5E0D /* KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD23948925540855004E5E0D /* KeyTests.swift */; };
+		BD23989D2BBB6379009265E4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
+		BD2398A02BBB6399009265E4 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC29251F692000EEF187 /* SF2Files.framework */; };
 		BD2436B02579356200162A49 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2436AF2579356200162A49 /* ArrowView.swift */; };
 		BD2454D8278474E3004B445A /* SoundFontAndPresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2454D7278474E3004B445A /* SoundFontAndPresetTests.swift */; };
 		BD27E987251605CD00591FD0 /* ActivePresetKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E986251605CD00591FD0 /* ActivePresetKind.swift */; };
@@ -155,7 +156,6 @@
 		BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */; };
 		BD79915425795D2000943515 /* iPhone 12.png in Resources */ = {isa = PBXBuildFile; fileRef = BD79915325795D2000943515 /* iPhone 12.png */; };
 		BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B7C482660D4AF00F0D18D /* TagTests.swift */; };
-		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 		BD87DC5C29DB526E008F6470 /* MIDIConnectionsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD87DC5B29DB526E008F6470 /* MIDIConnectionsTableHeaderView.swift */; };
 		BD87DC5E29DB5528008F6470 /* MIDIConnectionsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD87DC5D29DB5528008F6470 /* MIDIConnectionsTableCell.xib */; };
 		BD87DC6029DB55ED008F6470 /* MIDIConnectionsTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD87DC5F29DB55ED008F6470 /* MIDIConnectionsTableHeaderView.xib */; };
@@ -553,12 +553,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */,
 				BD05DFF22BB9BECE008FFA34 /* ProgressHUD in Frameworks */,
 				BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */,
+				BD2398A02BBB6399009265E4 /* SF2Files.framework in Frameworks */,
 				BD3CADD329D8644D008C957D /* MorkAndMIDI in Frameworks */,
+				BD23989D2BBB6379009265E4 /* SoundFontInfoLib.framework in Frameworks */,
 				BDF1C0E02787675600E451C3 /* Tagged in Frameworks */,
-				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 				BDFD3E4729E420CF0010E3CB /* Checkbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

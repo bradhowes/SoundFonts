@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD2398A32BBB65D5009265E4 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C8A272A8AC2DC0055A95C /* SF2Files.framework */; };
 		BD6791622973622C0055BB38 /* FourCharCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6791612973622C0055BB38 /* FourCharCode.swift */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD9C8A262A8A68C20055A95C /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD9C8A252A8A68C20055A95C /* SF2Lib */; };
-		BD9C8A282A8AC2DC0055A95C /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C8A272A8AC2DC0055A95C /* SF2Files.framework */; };
-		BD9C8A292A8AC2DC0055A95C /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C8A272A8AC2DC0055A95C /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF9C265DB1F0002AD159 /* SoundFontInfo.mm */; };
 		BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -32,20 +31,6 @@
 			remoteInfo = SoundFontInfoLib;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		BD9C8A2A2A8AC2DC0055A95C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BD9C8A292A8AC2DC0055A95C /* SF2Files.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -72,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD9C8A282A8AC2DC0055A95C /* SF2Files.framework in Frameworks */,
+				BD2398A32BBB65D5009265E4 /* SF2Files.framework in Frameworks */,
 				BD9C8A262A8A68C20055A95C /* SF2Lib in Frameworks */,
 				BDFA98F3280C73280069A46F /* AudioToolbox.framework in Frameworks */,
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
@@ -95,6 +80,7 @@
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
+				BDB1BE74265DAEC7002AD159 /* Info.plist */,
 				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BD8CE57127C53F67009A2FB5 /* Development.xcconfig */,
 				BD8CE57027C53F67009A2FB5 /* Release.xcconfig */,
@@ -120,7 +106,6 @@
 		BDB1BE56265DAEC6002AD159 /* SoundFontInfoLibTests */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BE74265DAEC7002AD159 /* Info.plist */,
 				BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */,
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 			);
@@ -162,7 +147,6 @@
 				BD74D16323CDB1D200204ED4 /* Sources */,
 				BD74D16423CDB1D200204ED4 /* Frameworks */,
 				BD74D16523CDB1D200204ED4 /* Resources */,
-				BD9C8A2A2A8AC2DC0055A95C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
