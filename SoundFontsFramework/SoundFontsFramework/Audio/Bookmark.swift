@@ -153,19 +153,16 @@ private extension URL {
 extension Bookmark {
 
   private static func resolve(from data: Data?) -> (url: URL?, stale: Bool) {
-    let timestamp = Int(Date().timeIntervalSince1970)
-    os_log(.debug, log: log, "%d - resolve: data.count: %d", timestamp, data?.count ?? 0)
+    // let timestamp = Int(Date().timeIntervalSince1970)
+    // os_log(.debug, log: log, "%d - resolve: data.count: %d", timestamp, data?.count ?? 0)
     guard let data = data else { return (url: nil, stale: false) }
     do {
       var isStale = false
       let url = try URL(resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &isStale)
-      os_log(.info, log: log, "resolved - isStale: %d url: %{public}s", isStale, url.absoluteString)
-      if isStale {
-        return (url: url, stale: true)
-      }
-      return (url: url, stale: false)
+      // os_log(.info, log: log, "resolved - isStale: %d url: %{public}s", isStale, url.absoluteString)
+      return (url: url, stale: isStale)
     } catch {
-      os_log(.info, log: log, "failed to resolve - %{public}s", error.localizedDescription)
+      // os_log(.info, log: log, "failed to resolve - %{public}s", error.localizedDescription)
       return (url: nil, stale: false)
     }
   }

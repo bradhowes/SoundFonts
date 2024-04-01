@@ -392,8 +392,7 @@ private extension FavoritesViewController {
   @discardableResult
   func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
     let isActive = favorite == activePresetManager.activeFavorite
-    let isLoading = isActive && activePresetManager.isLoading
-    cell.update(favoriteName: favorite.presetConfig.name, isActive: isActive, loading: isLoading)
+    cell.update(favoriteName: favorite.presetConfig.name, isActive: isActive)
     return cell
   }
 }

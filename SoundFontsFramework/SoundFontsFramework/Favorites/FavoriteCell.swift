@@ -65,12 +65,12 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
    - parameter isActive: true if the Favorite's patch is currently active.
    - parameter loading: true if the preset is loading.
    */
-  func update(favoriteName: String, isActive: Bool, loading: Bool) {
-    os_log(.debug, log: log, "update: %{public}s %d %d", favoriteName, isActive, loading)
+  func update(favoriteName: String, isActive: Bool) {
+    os_log(.debug, log: log, "update: %{public}s %d %d", favoriteName, isActive)
 
     name.text = favoriteName
     if isActive {
-      let foregroundColor = loading ? pendingForegroundColor : activeForegroundColor
+      let foregroundColor = activeForegroundColor
       backgroundColor = activeBackgroundColor
       name.textColor = foregroundColor
       layer.borderColor = foregroundColor.cgColor

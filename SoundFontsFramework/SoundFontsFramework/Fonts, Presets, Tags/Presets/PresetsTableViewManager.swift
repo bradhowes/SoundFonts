@@ -731,9 +731,6 @@ private extension PresetsTableViewManager {
     if soundFontAndPreset == activePresetManager.active.soundFontAndPreset &&
         activePresetManager.activeFavorite == nil {
       flags.insert(.active)
-      if activePresetManager.isLoading {
-        flags.insert(.loading)
-      }
     }
     if preset.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
     if preset.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
@@ -748,9 +745,6 @@ private extension PresetsTableViewManager {
     var flags: TableCell.Flags = [.favorite]
     if activePresetManager.activeFavorite == favorite {
       flags.insert(.active)
-      if activePresetManager.isLoading {
-        flags.insert(.loading)
-      }
     }
     if favorite.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
     if favorite.presetConfig.pan != 0.0 { flags.insert(.panSetting) }

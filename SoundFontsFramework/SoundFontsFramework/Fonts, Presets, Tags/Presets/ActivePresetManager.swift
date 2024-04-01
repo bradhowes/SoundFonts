@@ -50,13 +50,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   private(set) var state: State = .starting
 
   /// The currently active preset (if any)
-  private(set) var active: ActivePresetKind = .none {
-    didSet {
-      isLoading = true
-    }
-  }
-
-  private(set) var isLoading: Bool = false
+  private(set) var active: ActivePresetKind = .none
 
   var activeSoundFontKey: SoundFont.Key? { active.soundFontAndPreset?.soundFontKey }
 
@@ -109,13 +103,6 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
     soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
     favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
-    presetLoadingObserver = AudioEngine.presetLoadingChangeNotification.registerOnAny { [weak self] loading in
-      if let self = self, !loading {
-        self.isLoading = false
-        self.notify(.loaded(preset: self.active))
-      }
-    }
-
     notificationObserver = MIDIEventRouter.monitorActionActivity { self.handleAction(payload: $0) }
   }
 }

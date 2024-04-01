@@ -26,8 +26,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     public static let panSetting = Flags(rawValue: 1 << 4)
     /// The row is showing a preset with a custom gain adjustment
     public static let gainSetting = Flags(rawValue: 1 << 5)
-    /// The row is showing a preset that is currently loading
-    public static let loading = Flags(rawValue: 1 << 6)
 
     public var isSelected: Bool { self.contains(.selected) }
     public var isActive: Bool { self.contains(.active) }
@@ -35,7 +33,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     public var hasTuningSetting: Bool { self.contains(.tuningSetting) }
     public var hasPanSetting: Bool { self.contains(.panSetting) }
     public var hasGainSetting: Bool { self.contains(.gainSetting) }
-    public var isLoading: Bool { self.contains(.loading) }
   }
 
   /// Unicode character to show when a cell refers to a preset that is in a Favorite
@@ -159,9 +156,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   private func fontColor(for flags: Flags) -> UIColor? {
-    if flags.isActive { return flags.isLoading ? activeFontColor.darker(0.7) : activeFontColor }
-    if flags.isFavorite { return flags.isLoading ? favoriteFontColor.darker(0.7) : favoriteFontColor }
-    if flags.isSelected { return flags.isLoading ? selectedFontColor.darker(0.7) : selectedFontColor }
+    if flags.isActive { return activeFontColor }
+    if flags.isFavorite { return favoriteFontColor }
+    if flags.isSelected { return selectedFontColor }
     return normalFontColor
   }
 

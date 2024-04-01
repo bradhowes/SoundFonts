@@ -27,8 +27,6 @@ public final class AudioEngine: SynthProvider {
   /// The notification that pitch bend range has changed for the sampler
   static let pitchBendRangeChangedNotification = TypedNotification<UInt8>(name: .pitchBendRangeChanged)
 
-  static let presetLoadingChangeNotification = TypedNotification<Bool>(name: .presetLoading)
-
   public typealias StartResult = Result<AnyMIDISynth, SynthStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
@@ -318,35 +316,6 @@ private extension AudioEngine {
     os_log(.debug, log: log, "setPitchBendRange END")
   }
 
-  func pauseRendering(_ synth: AnyMIDISynth) {
-    pendingPresetChanges += 1
-    if pendingPresetChanges == 1 {
-      renderingResumeTimer?.invalidate()
-      renderingResumeTimer = nil
-      if let engine = self.engine {
-        engine.pause()
-        engine.mainMixerNode.volume = 0.0
-        synth.avAudioUnit.reset()
-      }
-      Self.presetLoadingChangeNotification.post(value: true)
-    }
-  }
-
-  func resumeRendering() {
-    pendingPresetChanges -= 1
-    if pendingPresetChanges == 0 {
-      renderingResumeTimer = Timer.once(after: 0.3) { [weak self] _ in
-        guard let self = self else { return }
-        if let engine = self.engine {
-          try? engine.start()
-          engine.mainMixerNode.volume = 1.0
-        }
-        self.renderingResumeTimer = nil
-        Self.presetLoadingChangeNotification.post(value: false)
-      }
-    }
-  }
-
   func pendingPresetLoad() {
     // We delay changing preset in case there is another change coming over due to UI/MIDI controls. When another one
     // comes in we cancel the running timer and restart it, setting a new preset only after the time finishes and fires.
@@ -389,7 +358,7 @@ private extension AudioEngine {
 
     os_log(.debug, log: log, "requesting preset change - %d", pendingPresetChanges)
 
-    pauseRendering(synth)
+    // pauseRendering(synth)
 
     presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }
@@ -406,7 +375,7 @@ private extension AudioEngine {
 
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
-        self.resumeRendering()
+        // self.resumeRendering()
         afterLoadBlock?()
       }
     }

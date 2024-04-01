@@ -273,9 +273,10 @@ private extension FontsTableViewController {
 
       if let soundFontAndPreset = new.soundFontAndPreset {
         let key = soundFontAndPreset.soundFontKey
-        let row = dataSource.firstIndex(of: key)
-        os_log(.debug, log: log, "handlePresetChanged - updating new row")
-        updateRow(row: row)
+        if let row = dataSource.firstIndex(of: key) {
+          os_log(.debug, log: log, "handlePresetChanged - updating new row")
+          updateRow(row: row)
+        }
         if let soundFont = activePresetManager.resolveToSoundFont(soundFontAndPreset) {
           os_log(.debug, log: log, "handlePresetChanged - selecting font")
           selectedSoundFontManager.setSelected(soundFont)
