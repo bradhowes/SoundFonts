@@ -92,7 +92,8 @@ public final class AlertManager {
     os_log(.debug, log: log, "notify BEGIN - %{public}s", notifications.description)
     let alertConfig: AlertConfig = {
       switch notification.name {
-      case .configLoadFailure: return configLoadFailureAlert()
+      case .configLoadFailure:
+        return configLoadFailureAlert()
       case .soundFontsCollectionOrphans:
         return soundFontsCollectionOrphansAlert(count: notification.intObject)
       case .soundFontFileAccessDenied:

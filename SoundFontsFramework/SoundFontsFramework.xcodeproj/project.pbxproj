@@ -80,6 +80,7 @@
 		BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0A2561506B00D1CDF6 /* EffectsController.swift */; };
 		BD130B192561755F00D1CDF6 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B182561755F00D1CDF6 /* Knob.swift */; };
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
+		BD159F332BBA0891005DF3CA /* ChordDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD159F322BBA0891005DF3CA /* ChordDetector.swift */; };
 		BD17E25D25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */; };
 		BD1A2A772667E12D009E2338 /* Consolidated_V1.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */; };
 		BD1A2A792668171F009E2338 /* ActivePresetKindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */; };
@@ -343,6 +344,7 @@
 		BD130B0A2561506B00D1CDF6 /* EffectsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsController.swift; sourceTree = "<group>"; };
 		BD130B182561755F00D1CDF6 /* Knob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
+		BD159F322BBA0891005DF3CA /* ChordDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordDetector.swift; sourceTree = "<group>"; };
 		BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigObserver.swift; sourceTree = "<group>"; };
 		BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAppStateTests.swift; sourceTree = "<group>"; };
 		BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated_V1.plist; sourceTree = "<group>"; };
@@ -638,6 +640,7 @@
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
+				BD159F322BBA0891005DF3CA /* ChordDetector.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
@@ -1393,6 +1396,7 @@
 				BD074C7423CDAF51001987E9 /* InfoBarController.swift in Sources */,
 				BD074C8523CDAF51001987E9 /* FontEditorDelegate.swift in Sources */,
 				BD411C512778854700C9CEB0 /* Optional.swift in Sources */,
+				BD159F332BBA0891005DF3CA /* ChordDetector.swift in Sources */,
 				BDCCFCBA23F5A7D700DD518D /* Timer.swift in Sources */,
 				BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */,
 				BDF1C0DD278763A700E451C3 /* PresetViewSlot.swift in Sources */,

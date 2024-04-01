@@ -6,27 +6,36 @@ import Foundation
 public struct Note: CustomStringConvertible, Codable {
 
   static let sharpTag = "♯"
-  static let noteLabels: [String] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"]
-  static let solfegeLabels: [String] = [
-    "Do", "Do", "Re", "Re", "Mi", "Fa", "Fa", "Sol", "Sol", "La", "La",
-    "Ti"
-  ]
+  static let flatTag = "♭"
+
+  static let noteLabels: [String] = ["C",
+                                     "C" + sharpTag,
+                                     "D",
+                                     "D" + sharpTag,
+                                     "E",
+                                     "F",
+                                     "F" + sharpTag,
+                                     "G",
+                                     "G" + sharpTag,
+                                     "A",
+                                     "A" + sharpTag,
+                                     "B"]
+  static let solfegeLabels: [String] = ["Do", "Do", "Re", "Re", "Mi", "Fa", "Fa", "Sol", "Sol", "La", "La", "Ti"]
+  static let sharpIndices: Set<Int> = [1, 3, 6, 8, 10]
 
   /// The MIDI value to emit to generate this note
   public let midiNoteValue: Int
 
+  public let noteIndex: Int
+
   /// True if this note is accented (sharp or flat)
-  let accented: Bool
+  var accented: Bool { Note.sharpIndices.contains(noteIndex) }
 
   /// Obtain a textual representation of the note
-  var label: String {
-    let noteIndex = midiNoteValue % 12
-    let accent = accented ? Note.sharpTag : ""
-    return "\(Note.noteLabels[noteIndex])\(accent)\(octave)"
-  }
+  var label: String { Note.noteLabels[noteIndex % 12] + "\(octave)" }
 
   /// Obtain the solfege representation for this note
-  var solfege: String { Note.solfegeLabels[midiNoteValue % 12] }
+  var solfege: String { Note.solfegeLabels[noteIndex] }
 
   /// Obtain the octave this note is a part of
   var octave: Int { midiNoteValue / 12 - 1 }
@@ -41,8 +50,8 @@ public struct Note: CustomStringConvertible, Codable {
    */
   init(midiNoteValue: Int) {
     self.midiNoteValue = midiNoteValue
-    let offset = midiNoteValue % 12
-    self.accented = (offset < 5 && (offset & 1) == 1) || (offset > 5 && (offset & 1) == 0)
+    let noteIndex = midiNoteValue % 12
+    self.noteIndex = noteIndex
   }
 
   init?(_ tag: String) {
@@ -53,8 +62,8 @@ public struct Note: CustomStringConvertible, Codable {
     guard let note = remaining.popFirst() else { return nil }
     let sharp = remaining.popFirst()
     guard let offset = Self.noteLabels.firstIndex(of: String(note)) else { return nil }
-    self.midiNoteValue = (offset + (sharp != nil ? 1 : 0)) * octaveValue
-    self.accented = sharp != nil
+    let midiNoteValue = (offset + (sharp != nil ? 1 : 0)) * octaveValue
+    self.init(midiNoteValue: midiNoteValue)
   }
 }
 

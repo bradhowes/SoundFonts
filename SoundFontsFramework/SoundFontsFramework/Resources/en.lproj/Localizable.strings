@@ -45,7 +45,7 @@
 "addedAllFiles" = "Added all of the sound fonts";
 "addedSomeFiles" = "Added %d out of %d sound fonts";
 
-"configLoadFailureAlert" = "Startup Failure";
+"configLoadFailureTitle" = "Startup Failure";
 "configLoadFailureBody" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
 have been lost.";
 
