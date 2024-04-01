@@ -198,7 +198,8 @@ private extension ActivePresetKind {
     }
 
     switch internalKey {
-    case .preset: return .preset(soundFontAndPreset: try container.decode(SoundFontAndPreset.self))
+    case .preset:
+      return .preset(soundFontAndPreset: try container.decode(SoundFontAndPreset.self))
     case .favorite:
       let value = try container.decode(Favorite.self)
       return .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)

@@ -9,9 +9,9 @@ class FormattersTests: XCTestCase {
   func testStrings() {
     switch Locale.current.languageCode {
     case "en":
-      XCTAssertEqual("Delete the soundfont file?", Formatters.strings.deleteFontTitle)
+      XCTAssertEqual("Delete the soundfont?", Formatters.strings.deleteFontTitle)
       XCTAssertEqual(
-        "Deleting will remove the file and also any favorites linked to it.",
+        "Deleting will remove the file from your device and any favorites linked to it.",
         Formatters.strings.deleteFontMessage)
       XCTAssertEqual("Delete", Formatters.strings.deleteAction)
       XCTAssertEqual("Cancel", Formatters.strings.cancelAction)

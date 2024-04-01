@@ -373,10 +373,8 @@ private extension AudioEngine {
         self.activePresetManager.setActive(.none)
       }
 
-      DispatchQueue.main.async { [weak self] in
-        guard let self = self else { return }
-        // self.resumeRendering()
-        afterLoadBlock?()
+      if let afterLoadBlock = afterLoadBlock {
+        DispatchQueue.main.async { afterLoadBlock() }
       }
     }
 

@@ -607,9 +607,7 @@
 		BD074BD123CDAF51001987E9 /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
-				BD074BD723CDAF51001987E9 /* Favorite.swift */,
 				BD074BD223CDAF51001987E9 /* FavoriteCell.swift */,
-				BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */,
 				BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */,
 				BD074BD423CDAF51001987E9 /* FavoriteMover.swift */,
 				BD074BD523CDAF51001987E9 /* FavoritesManager.swift */,
@@ -640,6 +638,8 @@
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BD159F322BBA0891005DF3CA /* ChordDetector.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
+				BD074BD723CDAF51001987E9 /* Favorite.swift */,
+				BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,

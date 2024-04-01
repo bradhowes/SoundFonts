@@ -74,15 +74,15 @@ public class Favorite: Codable {
         let values = try decoder.container(keyedBy: V1Keys.self)
         let key = try values.decode(Key.self, forKey: .key)
         let soundFontAndPreset = try values.decode(SoundFontAndPreset.self, forKey: .soundFontAndPatch)
-        let name = try values.decode(String.self, forKey: .name)
-        let lowestNote = try values.decodeIfPresent(Note.self, forKey: .keyboardLowestNote)
-        let gain = try values.decode(Float.self, forKey: .gain)
-        let pan = try values.decode(Float.self, forKey: .pan)
+        let name = try? values.decode(String.self, forKey: .name)
+        let lowestNote = try? values.decodeIfPresent(Note.self, forKey: .keyboardLowestNote)
+        let gain = try? values.decode(Float.self, forKey: .gain)
+        let pan = try? values.decode(Float.self, forKey: .pan)
         self.key = key
         self.soundFontAndPreset = soundFontAndPreset
-        self.presetConfig = .init(name: name, keyboardLowestNote: lowestNote,
+        self.presetConfig = .init(name: name ?? "", keyboardLowestNote: lowestNote,
                                   keyboardLowestNoteEnabled: lowestNote != nil,
-                                  gain: gain, pan: pan, presetTuning: 0.0)
+                                  gain: gain ?? 1.0, pan: pan ?? 0.0, presetTuning: 0.0)
       } catch {
         throw err
       }

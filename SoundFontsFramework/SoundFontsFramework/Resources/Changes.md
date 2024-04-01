@@ -6,6 +6,13 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.30.0
+
+* Fixed alert title that was missing localization entry
+* Fixed improper note playing when keyboard is movable
+* Improved restoration of AUv3 component. Tested in GarageBand, AUM, and Cubasis 3 with 3 and 4 SoundFonts instances in
+a file.
+
 # 2.29.2
 
 * Revert back to MIDI v1.0 processing due to issues with stuck notes.

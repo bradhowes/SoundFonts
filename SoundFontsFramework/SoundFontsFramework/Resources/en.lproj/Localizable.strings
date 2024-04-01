@@ -26,7 +26,7 @@
 "Index" = "Index";
 
 "deleteFontTitle" = "Delete the soundfont?";
-"deleteFontBody" = "Deleting will remove the file from your device, as well as any favorites linked to it.";
+"deleteFontBody" = "Deleting will remove the file from your device and any favorites linked to it.";
 
 "unlinkFontTitle" = "Remove the soundfont?";
 "unlinkFontBody" = "The file will still remain on your drive (iCloud or external), but all customizations including any favorites will be lost.";
