@@ -8,8 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
     - uses: actions/checkout@v3
     - name: Build, test, and code coverage
       run: make
