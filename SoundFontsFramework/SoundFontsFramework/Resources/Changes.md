@@ -10,6 +10,9 @@ The parsing is really simplistic:
 
 * Fixed crash on iOS 18
 
+NOTE: there is a known issue where the app and AUv3 extension will fail if the SF2 file is on an iCloud Drive but needs
+to be downloaded. Best option is to tell iOS to keep them downloaded using the Files app.
+
 # 2.30.0
 
 * Fixed alert title that was missing localization entry
