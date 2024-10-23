@@ -30,8 +30,9 @@ final class FavoritesViewController: UIViewController, FavoritesViewManager {
   private var soundFontsSubscription: SubscriberToken?
   private var tagsSubscription: SubscriberToken?
 
-  private var cellForSizing: FavoriteCell!
   private var monitorActionActivity: NotificationObserver?
+
+  private let cellFont = UIFont(name: "EurostileRegular", size: 20)!
 }
 
 extension FavoritesViewController {
@@ -39,7 +40,6 @@ extension FavoritesViewController {
   override func viewDidLoad() {
 
     favoritesView.register(FavoriteCell.self)
-    cellForSizing = favoritesView.dequeueReusableCell(for: .init(item: 0, section: 0))
 
     doubleTapGestureRecognizer.numberOfTapsRequired = 2
     doubleTapGestureRecognizer.numberOfTouchesRequired = 1
@@ -174,9 +174,8 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     let favorite = favorites.getBy(index: indexPath.item)
-    let cell = update(cell: cellForSizing, with: favorite)
-    let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    return CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
+    return CGSize(width: favorite.presetConfig.name.size(
+      withAttributes: [NSAttributedString.Key.font: cellFont]).width + 25, height: 30)
   }
 }
 
