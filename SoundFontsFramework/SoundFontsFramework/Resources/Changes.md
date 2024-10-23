@@ -6,6 +6,10 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.30.1
+
+* Fixed crash on iOS 18
+
 # 2.30.0
 
 * Fixed alert title that was missing localization entry
