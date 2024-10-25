@@ -98,6 +98,7 @@
 		BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */; };
 		BD1C22ED25CDC701007C114F /* TutorialContentPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */; };
 		BD1C22F125CDC781007C114F /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C22F025CDC781007C114F /* TutorialViewController.swift */; };
+		BD1DE29F2CCC56A6004BA803 /* FontStateQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1DE29E2CCC5691004BA803 /* FontStateQuery.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BC23FE690300AE9F3D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController.swift */; };
 		BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD239485255213CB004E5E0D /* KeyParamSequence.swift */; };
@@ -364,6 +365,7 @@
 		BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TutorialContentPager.storyboard; sourceTree = "<group>"; };
 		BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentPagerViewController.swift; sourceTree = "<group>"; };
 		BD1C22F025CDC781007C114F /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		BD1DE29E2CCC5691004BA803 /* FontStateQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStateQuery.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		BD239485255213CB004E5E0D /* KeyParamSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyParamSequence.swift; sourceTree = "<group>"; };
@@ -830,6 +832,7 @@
 				BD5B5C3828C14C1E000BC5A4 /* FontsEditorTableViewController.swift */,
 				BD28D73827958CE4000A57DE /* FontsTableViewController.swift */,
 				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
+				BD1DE29E2CCC5691004BA803 /* FontStateQuery.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -1378,6 +1381,7 @@
 				BD074C7B23CDAF51001987E9 /* Foundation.swift in Sources */,
 				BD1C22F125CDC781007C114F /* TutorialViewController.swift in Sources */,
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
+				BD1DE29F2CCC56A6004BA803 /* FontStateQuery.swift in Sources */,
 				BDEB12642620939B003CE8EE /* ChangesPageViewController.swift in Sources */,
 				BDFD3E3029E3FA5B0010E3CB /* MIDIActionsTableCell.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,

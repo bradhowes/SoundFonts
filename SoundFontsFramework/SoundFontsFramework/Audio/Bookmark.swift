@@ -93,10 +93,11 @@ extension Bookmark {
 
   /// Determine the availability state for a bookmarked URL
   public var isAvailable: Bool {
-    let secured = url.startAccessingSecurityScopedResource()
-    let value = try? url.checkResourceIsReachable()
-    if secured { url.stopAccessingSecurityScopedResource() }
-    return value ?? false
+    if url.startAccessingSecurityScopedResource() {
+      defer { url.stopAccessingSecurityScopedResource() }
+      return (try? url.checkResourceIsReachable()) ?? false
+    }
+    return false
   }
 
   /// Determine if the file is located in an iCloud container
@@ -104,6 +105,8 @@ extension Bookmark {
 
   /// The various iCloud states a bookmark item may be in.
   public enum CloudState {
+    /// Item is local and not synced to iCloud
+    case local
     /// Item is on iCloud but not available locally.
     case inCloud
     /// Item is queue to be downloaded to the device
@@ -120,8 +123,13 @@ extension Bookmark {
 
   /// Obtain the current iCloud state of the bookmark item
   public var cloudState: CloudState {
+    let secured = url.startAccessingSecurityScopedResource()
+    defer { if secured { url.stopAccessingSecurityScopedResource() } }
+
     guard
       let values = try? url.resourceValues(forKeys: [
+        .isUbiquitousItemKey,
+        .ubiquitousItemDownloadRequestedKey,
         .ubiquitousItemDownloadingStatusKey,
         .ubiquitousItemIsDownloadingKey,
         .ubiquitousItemDownloadingErrorKey
@@ -129,13 +137,18 @@ extension Bookmark {
     else {
       return .unknown
     }
+
+    let isUbiquitous = (values.isUbiquitousItem ?? false)
+    if !isUbiquitous { return .local }
+
     guard values.ubiquitousItemDownloadingError == nil else { return .downloadError }
-    guard let status = values.ubiquitousItemDownloadingStatus else { return .unknown }
+
+    guard let status = values.ubiquitousItemDownloadingStatus else { return .inCloud }
     switch status {
     case .current: return .downloaded
     case .downloaded: return .downloading
     case .notDownloaded: return .inCloud
-    default: return .unknown
+    default: return .inCloud
     }
   }
 }

@@ -169,8 +169,9 @@ private extension FontsTableViewController {
     for index in 0..<soundFonts.count {
       let soundFont = soundFonts.getBy(index: index)
       if soundFont.kind.reference {
-        guard let cell: TableCell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { continue }
-        cell.updateBookmarkButton()
+        if let cell: TableCell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+          cell.updateBookmarkButton()
+        }
       }
     }
   }
@@ -182,7 +183,7 @@ private extension FontsTableViewController {
 
   func startBookmarkMonitor() {
     stopBookmarkMonitor()
-    self.bookmarkMonitor = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+    self.bookmarkMonitor = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
       guard let self = self else { return }
       self.updateBookmarkButtons()
     }

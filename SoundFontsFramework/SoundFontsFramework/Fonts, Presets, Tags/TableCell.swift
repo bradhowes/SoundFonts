@@ -175,15 +175,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       return nil
     }
 
-    if bookmark.isAvailable {
-      return nil
+    let cloudState = bookmark.cloudState
+    if cloudState == .local {
+      if bookmark.isAvailable {
+        return nil
+      } else {
+        return missingFileButton
+      }
     }
 
-    if !bookmark.isUbiquitous {
-      return missingFileButton
-    }
-
-    return downloadableFileButton
+    return cloudState == .downloaded ? nil : downloadableFileButton
   }
 
   private var downloadableFileButton: UIButton {
@@ -202,6 +203,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     activeAlert = alert
     alert.addAction(UIAlertAction(title: "OK", style: .cancel) { [weak self] _ in self?.activeAlert = nil })
     viewController?.present(alert, animated: true)
+    do {
+      if bookmark.url.startAccessingSecurityScopedResource() {
+        try FileManager.default.startDownloadingUbiquitousItem(at: bookmark.url)
+        bookmark.url.stopAccessingSecurityScopedResource()
+      } else {
+        try FileManager.default.startDownloadingUbiquitousItem(at: bookmark.url)
+      }
+    } catch {
+      print("failed to start downloading \(bookmark.url)")
+    }
   }
 
   private var missingFileButton: UIButton {

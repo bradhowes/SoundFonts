@@ -1092,6 +1092,8 @@
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SoundFonts;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1122,6 +1124,8 @@
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SoundFonts;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
