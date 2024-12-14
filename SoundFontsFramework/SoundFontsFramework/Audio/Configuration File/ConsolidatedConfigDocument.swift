@@ -64,19 +64,17 @@ final class ConsolidatedConfigDocument: UIDocument {
     guard let data = contents as? Data else {
       os_log(.error, log: log, "load - given contents was not Data")
       createDefaultContents()
-      NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
     }
 
     guard let contents = try? PropertyListDecoder().decode(ConsolidatedConfig.self, from: data) else {
       os_log(.error, log: log, "load - failed to decode Data contents")
       createDefaultContents()
-      NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
     }
 
     os_log(.debug, log: log, "load decoded contents: %{public}s", contents.description)
-    setContents(contents, save: false)
+    setContents(contents)
     os_log(.error, log: log, "load END")
   }
 
@@ -97,8 +95,11 @@ final class ConsolidatedConfigDocument: UIDocument {
     }
 
     os_log(.debug, log: log, "attemptLegacyLoad using legacy contents")
-    setContents(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true,
-                completion: completion)
+    setContents(
+      ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags),
+      saveOperation: .forCreating,
+      completion: completion
+    )
   }
 
   /**
@@ -106,17 +107,30 @@ final class ConsolidatedConfigDocument: UIDocument {
    */
   private func createDefaultContents(completion: ((Bool) -> Void)? = nil) {
     os_log(.debug, log: log, "createDefaultContents")
-    self.setContents(ConsolidatedConfig(), save: true, completion: completion)
+    self.setContents(
+      ConsolidatedConfig(),
+      saveOperation: .forCreating,
+      completion: completion
+    )
+    NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
   }
 
-  private func setContents(_ config: ConsolidatedConfig, save: Bool, completion: ((Bool) -> Void)? = nil) {
-    os_log(.debug, log: log, "restoreContents")
+  private func setContents(
+    _ config: ConsolidatedConfig,
+    saveOperation: SaveOperation? = nil,
+    completion: ((Bool) -> Void)? = nil
+  ) {
+    os_log(.debug, log: log, "setContents")
     self.contents = config
-    if save {
-      os_log(.debug, log: log, "restoreContents saving")
-      self.save(to: fileURL, for: .forCreating) { ok in
-        os_log(.debug, log: self.log, "restoreContents - save ok %d", ok)
-        completion?(ok)
+    if let saveOperation {
+      os_log(.debug, log: log, "setContents saving")
+      self.save(to: fileURL, for: saveOperation) { [weak self] ok in
+        guard let self else { return }
+        os_log(.debug, log: self.log, "setContents - save ok %d", ok)
+        if !ok {
+          self.save(to: fileURL, for: .forOverwriting)
+        }
+        completion?(true)
       }
     } else {
       completion?(true)
