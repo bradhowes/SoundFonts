@@ -11,7 +11,7 @@ struct AlertConfig {
   let body: String
 }
 
-private final class AlertOperation: Operation {
+private final class AlertOperation: Operation, @unchecked Sendable {
 
   private let alert: AlertConfig
   private let presenter: UIViewController

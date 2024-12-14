@@ -50,6 +50,6 @@ extension Comparable {
   }
 }
 
-extension CGPoint: CustomStringConvertible {
+extension CGPoint: @retroactive CustomStringConvertible {
   public var description: String { "<CGPoint x: \(x), y: \(y)>"}
 }

@@ -7,7 +7,7 @@ import SoundFontInfoLib
 @objc(ManagedPreset)
 final class ManagedPreset: NSManagedObject, Managed {
 
-  @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedPreset> {
+  @nonobjc static func fetchRequest() -> NSFetchRequest<ManagedPreset> {
     return NSFetchRequest<ManagedPreset>(entityName: "ManagedPreset")
   }
 

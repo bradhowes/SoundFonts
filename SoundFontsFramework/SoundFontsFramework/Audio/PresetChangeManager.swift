@@ -53,7 +53,7 @@ final class PresetChangeManager {
   }
 }
 
-private final class PresetChangeOperation: Operation {
+private final class PresetChangeOperation: Operation, @unchecked Sendable {
   private lazy var log = Logging.logger("PresetChangeOperation")
 
   private weak var synth: PresetLoader?

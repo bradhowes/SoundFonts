@@ -13,7 +13,7 @@ final class ManagedDelayConfig: NSManagedObject, Managed {
   @NSManaged var enabled: Bool
   @NSManaged var ownedBy: ManagedPresetConfig
 
-  @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedDelayConfig> {
+  @nonobjc static func fetchRequest() -> NSFetchRequest<ManagedDelayConfig> {
     return NSFetchRequest<ManagedDelayConfig>(entityName: "ManagedDelayConfig")
   }
 

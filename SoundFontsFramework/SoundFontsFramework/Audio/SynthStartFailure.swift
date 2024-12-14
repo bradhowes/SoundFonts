@@ -37,7 +37,7 @@ extension SynthStartFailure {
   }
 }
 
-extension Result: CustomStringConvertible {
+extension Result: @retroactive CustomStringConvertible {
   public var description: String {
     switch self {
     case .success(let value): return "<Result: success \(value)>"
