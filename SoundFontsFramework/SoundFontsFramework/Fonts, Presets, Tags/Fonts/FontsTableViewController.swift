@@ -56,6 +56,7 @@ extension FontsTableViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    startBookmarkMonitor()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -146,9 +147,9 @@ extension FontsTableViewController {
     let action: UIContextualAction = {
       switch soundFont.kind {
       case .builtin:
-        return fontSwipeActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
-      case .installed:
         return fontSwipeActionGenerator.createHideSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
+      case .installed:
+        return fontSwipeActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
       case .reference:
         return fontSwipeActionGenerator.createUnlinkSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
       }
