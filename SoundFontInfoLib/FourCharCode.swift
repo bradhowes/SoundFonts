@@ -3,7 +3,9 @@
 import Foundation
 import os.log
 
-extension FourCharCode: ExpressibleByStringLiteral {
+extension UInt32: @retroactive ExpressibleByExtendedGraphemeClusterLiteral {}
+extension UInt32: @retroactive ExpressibleByUnicodeScalarLiteral {}
+extension FourCharCode: @retroactive ExpressibleByStringLiteral {
 
   public init(stringLiteral value: StringLiteralType) {
     var code: FourCharCode = 0

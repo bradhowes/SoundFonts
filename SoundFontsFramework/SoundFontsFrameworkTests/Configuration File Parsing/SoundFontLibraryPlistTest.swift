@@ -69,9 +69,9 @@ class SoundFontLibraryPListTest: XCTestCase {
     let result = waiter.wait(for: [expectation], timeout: 10.0)
     XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
 
-    XCTAssertEqual(observer.soundFonts.count, 6)
-    XCTAssertEqual(observer.favorites.count, 2)
-    XCTAssertEqual(observer.tags.count, 3)
+    XCTAssertEqual(observer.soundFonts?.count, 6)
+    XCTAssertEqual(observer.favorites?.count, 2)
+    XCTAssertEqual(observer.tags?.count, 3)
   }
 
   func testDecodingLegacyConsolidatedFile_V2() {
@@ -88,13 +88,13 @@ class SoundFontLibraryPListTest: XCTestCase {
     let result = waiter.wait(for: [expectation], timeout: 10.0)
     XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
 
-    XCTAssertEqual(observer.soundFonts.count, 4)
-    XCTAssertEqual(observer.favorites.count, 5)
-    XCTAssertEqual(observer.tags.count, 3)
+    XCTAssertEqual(observer.soundFonts?.count, 4)
+    XCTAssertEqual(observer.favorites?.count, 5)
+    XCTAssertEqual(observer.tags?.count, 3)
 
-    for index in 0..<observer.favorites.count {
-      let favorite = observer.favorites.getBy(index: index)
-      let soundFont = observer.soundFonts.getBy(key: favorite.soundFontAndPreset.soundFontKey)
+    for index in 0..<observer.favorites!.count {
+      let favorite = observer.favorites!.getBy(index: index)
+      let soundFont = observer.soundFonts!.getBy(key: favorite.soundFontAndPreset.soundFontKey)
       XCTAssertNotNil(soundFont)
     }
 
