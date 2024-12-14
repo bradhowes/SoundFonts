@@ -13,13 +13,13 @@ public final class TutorialViewController: UIViewController {
   /**
    Create a new TutorialViewController to show the tutorial.
    */
-  public class func instantiate() -> UIViewController? {
+  public static func instantiate() -> UIViewController? {
     os_log(.debug, log: log, "instantiate")
     let viewControllers = createViewControllers()
     return viewControllers?.0
   }
 
-  private class func createViewControllers() -> (UINavigationController, TutorialViewController)? {
+  private static func createViewControllers() -> (UINavigationController, TutorialViewController)? {
     let storyboard = UIStoryboard(name: "Tutorial", bundle: Bundle(for: TutorialViewController.self))
     let viewController = storyboard.instantiateInitialViewController()
     guard let vc = viewController as? UINavigationController,
@@ -37,7 +37,7 @@ public final class TutorialViewController: UIViewController {
 
    @param changes optional collection of changes that this version contains over past ones
    */
-  public class func instantiateChanges(_ changes: [String]) -> UIViewController? {
+  public static func instantiateChanges(_ changes: [String]) -> UIViewController? {
     os_log(.debug, log: log, "instantiate - %d", changes.count)
     guard !changes.isEmpty else {
       os_log(.debug, log: log, "nothing to show")
