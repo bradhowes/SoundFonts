@@ -135,7 +135,7 @@ extension SF2EngineAU {
 
   public override func supportedViewConfigurations(_ viewConfigs: [AUAudioUnitViewConfiguration]) -> IndexSet {
     os_log(.debug, log: log, "supportedViewConfigurations")
-    let indices = viewConfigs.enumerated().compactMap { $0.0 }
+    let indices = 0..<viewConfigs.count
     os_log(.debug, log: log, "indices: %{public}s", indices.debugDescription)
     return IndexSet(indices)
   }
