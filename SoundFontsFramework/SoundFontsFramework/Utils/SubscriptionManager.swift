@@ -96,7 +96,7 @@ public class SubscriptionManager<Event: CustomStringConvertible> {
       subscriptions.values.forEach { closure in
 #if DELAY_NOTIFICATIONS // see Development.xcconfig
         let delay = Int.random(in: 100...3000)
-        Self.notificationQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) { closure(event) }
+        notificationQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) { closure(event) }
 #else
         notificationQueue.async { closure(event) }
 #endif
