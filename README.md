@@ -37,6 +37,33 @@ Here are some additional sites that have curated or custom SF2 files that should
 
 # Recent Changes
 
+## 2.30.3
+
+* Fixed crash due to accessing configuration information before config file was loaded
+* Fixed crash due to invalid assumption when saving configuration file
+
+## 2.30.2
+
+* Fixed restoration of SF2 files store on iCloud
+
+## 2.30.1
+
+* Fixed crash on iOS 18
+
+NOTE: there is a known issue where the app and AUv3 extension will fail if the SF2 file is on an iCloud Drive but needs
+to be downloaded. Best option is to tell iOS to keep them downloaded using the Files app.
+
+## 2.30.0
+
+* Fixed alert title that was missing localization entry
+* Fixed improper note playing when keyboard is movable
+* Improved restoration of AUv3 component. Tested in GarageBand, AUM, and Cubasis 3 with 3 and 4 SoundFonts instances in
+a file.
+
+## 2.29.2
+
+* Revert back to MIDI v1.0 processing due to issues with stuck notes.
+
 ## 2.29.1
 
 * Fix access to font files on external drive after device restart. Thanks to Eduard for alerting me to the problem.
