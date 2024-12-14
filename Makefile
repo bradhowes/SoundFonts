@@ -39,8 +39,6 @@ report: percentage-iOS
 	fi
 
 clean:
-	@echo "-- removing cov.txt percentage.txt"
-	@-rm -rf cov.txt percentage.txt WD WD.xcresult
-	xcodebuild clean ${DEST}
+	-rm -rf $(PWD)/.DerivedData-iOS coverage*.txt percentage*.txt
 
 .PHONY: report percentage-iOS coverage-iOS test-iOS
