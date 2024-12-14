@@ -8,28 +8,19 @@ import Foundation
 public struct ConsolidatedConfigObserver {
 
   /// Convenience accessor for the collection of installed sound fonts
-  public var soundFonts: SoundFontCollection {
-    guard let config = configProvider.config else { fatalError("attempt to access nil config") }
-    // guard !config.soundFonts.isEmpty else { fatalError("encountered empty soundFonts collection")}
-    return config.soundFonts
-  }
+  public var soundFonts: SoundFontCollection? { configProvider.config?.soundFonts }
 
   /// Convenience accessor for the collection of user favorites
-  public var favorites: FavoriteCollection {
-    guard let config = configProvider.config else { fatalError("attempt to access nil config") }
-    return config.favorites
-  }
+  public var favorites: FavoriteCollection? { configProvider.config?.favorites }
 
   /// Convenience accessor for the collection of user tags for font filtering
-  public var tags: TagCollection {
-    guard let config = configProvider.config else { fatalError("attempt to access nil config") }
-    return config.tags
-  }
+  public var tags: TagCollection? { configProvider.config?.tags }
 
   /// True if a configuration has been loaded.
   public var isRestored: Bool { configProvider.config != nil }
 
   private let configProvider: ConsolidatedConfigProvider
+
   private var configProviderObserver: NSKeyValueObservation?
 
   /**

@@ -12,7 +12,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private let settings: Settings
 
   private var observer: ConsolidatedConfigObserver!
-  public var collection: SoundFontCollection { observer.soundFonts }
+  public var collection: SoundFontCollection? { observer?.soundFonts }
 
   private var bookmarkChangeObserver: NSObjectProtocol?
 
@@ -23,10 +23,14 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   public init(_ consolidatedConfigProvider: ConsolidatedConfigProvider, settings: Settings) {
     self.settings = settings
     super.init()
-    observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider,
-                                          restored: notifyCollectionRestored)
+    self.observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider) { [weak self] in
+      guard let self else { return }
+      self.notifyCollectionRestored()
+    }
+
     bookmarkChangeObserver = NotificationCenter.default.addObserver(forName: .bookmarkChanged, object: nil,
-                                                                    queue: nil) { _ in
+                                                                    queue: nil) { [weak self] _ in
+      guard let self else { return }
       if self.observer.isRestored {
         self.markCollectionChanged()
       }
@@ -81,27 +85,26 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public var isRestored: Bool { observer.isRestored }
 
-  public var count: Int { collection.count }
+  public var count: Int { collection?.count ?? 0 }
 
-  public var isEmpty: Bool { collection.isEmpty }
+  public var isEmpty: Bool { collection?.isEmpty ?? true }
 
-  public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
+  public var soundFontNames: [String] { collection?.soundFonts.map { $0.displayName } ?? [] }
 
-  public var defaultPreset: SoundFontAndPreset? { collection.defaultPreset }
+  public var defaultPreset: SoundFontAndPreset? { collection?.defaultPreset }
 
-  public func firstIndex(of key: SoundFont.Key) -> Int? { collection.firstIndex(of: key) }
+  public func firstIndex(of key: SoundFont.Key) -> Int? { collection?.firstIndex(of: key) }
 
-  public func getBy(index: Int) -> SoundFont { collection.getBy(index: index) }
+  public func getBy(index: Int) -> SoundFont { collection!.getBy(index: index) }
 
-  public func getBy(key: SoundFont.Key) -> SoundFont? {
-    collection.getBy(key: key)
-  }
+  public func getBy(key: SoundFont.Key) -> SoundFont? { collection?.getBy(key: key) }
 
   public func getBy(soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
-    collection.getBy(soundFontAndPreset: soundFontAndPreset)
+    collection?.getBy(soundFontAndPreset: soundFontAndPreset)
   }
 
   public func validateCollections(favorites: FavoritesProvider, tags: TagsProvider) {
+    guard let collection else { fatalError("logic error -- nil collection") }
     os_log(.debug, log: log, "validateCollections")
     favorites.validate(self)
     tags.validate()
@@ -114,18 +117,21 @@ extension SoundFontsManager: SoundFontsProvider {
   }
 
   public func resolve(soundFontAndPreset: SoundFontAndPreset) -> Preset? {
+    guard let collection else { fatalError("logic error -- nil collection") }
     let soundFont = collection.getBy(soundFontAndPreset: soundFontAndPreset)
     return soundFont?.presets[soundFontAndPreset.presetIndex]
   }
 
   public func filtered(by tag: Tag.Key) -> [SoundFont.Key] {
-    collection.soundFonts.filter { soundFont in
+    guard let collection else { fatalError("logic error -- nil collection") }
+    return collection.soundFonts.filter { soundFont in
       soundFont.tags.union(soundFont.kind.builtin ? Tag.stockTagSet : Tag.allTagSet)
         .contains(tag)
     }.map { $0.key }
   }
 
   public func indexFilteredByTag(index: Int, tag: Tag.Key) -> Int {
+    guard let collection else { fatalError("logic error -- nil collection") }
     var reduction = 0
     for entry in collection.soundFonts.enumerated()
     where entry.offset <= index && !entry.element.tags.union(Tag.allTagSet).contains(tag) {
@@ -141,6 +147,7 @@ extension SoundFontsManager: SoundFontsProvider {
 
   @discardableResult
   public func add(url: URL) -> Result<(Int, SoundFont), SoundFontFileLoadFailure> {
+    guard let collection else { fatalError("logic error -- nil collection") }
     switch SoundFont.makeSoundFont(from: url, copyFilesWhenAdding: settings.copyFilesWhenAdding) {
     case .failure(let failure): return .failure(failure)
     case .success(let soundFont):
@@ -152,6 +159,7 @@ extension SoundFontsManager: SoundFontsProvider {
   }
 
   public func remove(key: SoundFont.Key) {
+    guard let collection else { fatalError("logic error -- nil collection") }
     guard let index = collection.firstIndex(of: key) else { return }
     guard let soundFont = collection.remove(index) else { return }
     defer { markCollectionChanged() }
@@ -159,6 +167,7 @@ extension SoundFontsManager: SoundFontsProvider {
   }
 
   public func rename(key: SoundFont.Key, name: String) {
+    guard let collection else { fatalError("logic error -- nil collection") }
     guard let index = collection.firstIndex(of: key) else { return }
     defer { markCollectionChanged() }
     let (newIndex, soundFont) = collection.rename(index, name: name)
@@ -166,6 +175,7 @@ extension SoundFontsManager: SoundFontsProvider {
   }
 
   public func removeTag(_ tag: Tag.Key) {
+    guard let collection else { fatalError("logic error -- nil collection") }
     defer { markCollectionChanged() }
     for soundFont in collection.soundFonts {
       var tags = soundFont.tags
@@ -227,18 +237,21 @@ extension SoundFontsManager: SoundFontsProvider {
   }
 
   public var hasAnyBundled: Bool {
+    guard let collection else { fatalError("logic error -- nil collection") }
     let urls = SF2Files.allResources
     let found = urls.first { collection.index(of: $0) != nil }
     return found != nil
   }
 
   public var hasAllBundled: Bool {
+    guard let collection else { fatalError("logic error -- nil collection") }
     let urls = SF2Files.allResources
     let found = urls.filter { collection.index(of: $0) != nil }
     return found.count == urls.count
   }
 
   public func removeBundled() {
+    guard let collection else { fatalError("logic error -- nil collection") }
     os_log(.debug, log: log, "removeBundled")
     defer { markCollectionChanged() }
     for url in SF2Files.allResources {
@@ -251,6 +264,7 @@ extension SoundFontsManager: SoundFontsProvider {
   }
 
   public func restoreBundled() {
+    guard let collection else { fatalError("logic error -- nil collection") }
     os_log(.debug, log: log, "restoreBundled")
     defer { markCollectionChanged() }
     for url in SF2Files.allResources where collection.index(of: url) == nil {
@@ -395,6 +409,7 @@ extension SoundFontsManager {
    Mark the current configuration as dirty so that it will get saved.
    */
   private func markCollectionChanged() {
+    guard let collection else { fatalError("logic error -- nil collection") }
     os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markAsChanged()
   }

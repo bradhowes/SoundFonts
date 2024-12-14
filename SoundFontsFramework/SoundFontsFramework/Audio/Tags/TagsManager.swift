@@ -9,7 +9,7 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
   private lazy var log = Logging.logger("TagsManager")
 
   private var observer: ConsolidatedConfigObserver!
-  private var collection: TagCollection { observer.tags }
+  private var collection: TagCollection? { observer.tags }
 
   /**
    Construct new manager
@@ -18,8 +18,10 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
    */
   init(_ consolidatedConfigProvider: ConsolidatedConfigProvider) {
     super.init()
-    observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider,
-                                          restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider) { [weak self] in
+      guard let self else { return }
+      self.notifyCollectionRestored()
+    }
   }
 }
 
@@ -29,20 +31,21 @@ extension TagsManager: TagsProvider {
   var isRestored: Bool { observer.isRestored }
 
   /// True if the collection is empty
-  var isEmpty: Bool { collection.isEmpty }
+  var isEmpty: Bool { collection?.isEmpty ?? true }
 
   /// The number of tags in the collection
-  var count: Int { collection.count }
+  var count: Int { collection?.count ?? 0 }
 
-  func names(of keys: Set<Tag.Key>) -> [String] { collection.names(of: keys) }
+  func names(of keys: Set<Tag.Key>) -> [String] { collection?.names(of: keys) ?? [] }
 
-  func index(of key: Tag.Key) -> Int? { collection.index(of: key) }
+  func index(of key: Tag.Key) -> Int? { collection?.index(of: key) }
 
-  func getBy(index: Int) -> Tag { collection.getBy(index: index) }
+  func getBy(index: Int) -> Tag { collection!.getBy(index: index) }
 
-  func getBy(key: Tag.Key) -> Tag? { collection.getBy(key: key) }
+  func getBy(key: Tag.Key) -> Tag? { collection?.getBy(key: key) }
 
   func append(_ tag: Tag) -> Int {
+    guard let collection else { fatalError("logic error -- nil collection") }
     defer { markCollectionChanged() }
     let index = collection.append(tag)
     notify(.added(new: index, tag: tag))
@@ -50,12 +53,14 @@ extension TagsManager: TagsProvider {
   }
 
   func insert(_ tag: Tag, at index: Int) {
+    guard let collection else { fatalError("logic error -- nil collection") }
     defer { markCollectionChanged() }
     collection.insert(tag, at: index)
     notify(.added(new: index, tag: tag))
   }
 
   func remove(at index: Int) -> Tag {
+    guard let collection else { fatalError("logic error -- nil collection") }
     defer { markCollectionChanged() }
     let tag = collection.remove(at: index)
     notify(.removed(old: index, tag: tag))
@@ -63,13 +68,15 @@ extension TagsManager: TagsProvider {
   }
 
   func rename(_ index: Int, name: String) {
+    guard let collection else { fatalError("logic error -- nil collection") }
     defer { markCollectionChanged() }
     collection.rename(index, name: name)
     notify(.changed(index: index, tag: collection.getBy(index: index)))
   }
 
   func keySet(of indices: Set<Int>) -> Set<Tag.Key> {
-    Set(indices.map { collection.getBy(index: $0).key })
+    guard let collection else { fatalError("logic error -- nil collection") }
+    return Set(indices.map { collection.getBy(index: $0).key })
   }
 
   func validate() {
@@ -103,6 +110,7 @@ extension TagsManager {
   static var defaultCollection: TagCollection { TagCollection(tags: []) }
 
   private func markCollectionChanged() {
+    guard let collection else { fatalError("logic error -- nil collection") }
     os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markAsChanged()
   }

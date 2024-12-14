@@ -56,7 +56,6 @@ extension FontsTableViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    startBookmarkMonitor()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
