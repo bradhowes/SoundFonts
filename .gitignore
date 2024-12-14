@@ -72,7 +72,8 @@ Media/
 
 .~/
 *.old
-cov.txt
-percentage.txt
+.DerivedData-iOS/
+coverage_iOS.txt
+percentage_iOS.txt
 WD
 WD.xcresult
