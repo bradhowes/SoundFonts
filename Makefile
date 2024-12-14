@@ -35,7 +35,7 @@ percentage-iOS: coverage-iOS
 
 report: percentage-iOS
 	@if [[ -n "$$GITHUB_ENV" ]]; then \
-		echo "PERCENTAGE=$$(< percentage.txt)" >> $$GITHUB_ENV; \
+		echo "PERCENTAGE=$$(< percentage_iOS.txt)" >> $$GITHUB_ENV; \
 	fi
 
 clean:
