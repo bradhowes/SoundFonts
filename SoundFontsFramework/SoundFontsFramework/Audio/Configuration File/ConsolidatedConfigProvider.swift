@@ -89,14 +89,10 @@ public final class ConsolidatedConfigProvider: NSObject {
 
   private func handleOpenFailure(_ document: ConsolidatedConfigDocument) {
     os_log(.info, log: self.log, "handleOpenFailure BEGIN")
-    document.attemptLegacyLoad { ok in
-      if ok {
-        os_log(.info, log: self.log, "handleOpenFailure - using document")
-        self.useDocument(document)
-      } else {
-        os_log(.error, log: self.log, "handleOpenFailure - failed to get initial content")
-        fatalError()
-      }
+    document.attemptLegacyLoad { [weak self] _ in
+      guard let self else { return }
+      os_log(.info, log: self.log, "handleOpenFailure - using document")
+      self.useDocument(document)
     }
     os_log(.debug, log: log, "handleOpenFailure END")
   }
