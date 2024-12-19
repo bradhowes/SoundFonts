@@ -37,6 +37,12 @@ Here are some additional sites that have curated or custom SF2 files that should
 
 # Recent Changes
 
+## 2.30.4
+
+* Fixed crash in AUv3 component when host app moved to background
+* Eliminate race conditions involving configuration file loading and saving
+* Validated fixes in AUM, Cubasis, and GarageBand hosts using multiple instances of SoundFonts
+
 ## 2.30.3
 
 * Fixed crash due to accessing configuration information before config file was loaded
