@@ -16,6 +16,9 @@ final class ConsolidatedConfigDocument: UIDocument {
   // The contents of the document
   @objc dynamic var contents: ConsolidatedConfig?
 
+  private var notificationCenterObservers = [NSObjectProtocol]()
+  private var isRegistered: Bool { NSFileCoordinator.filePresenters.contains { $0 === self } }
+
   /**
    Construct a new document container.
 
@@ -135,5 +138,70 @@ final class ConsolidatedConfigDocument: UIDocument {
     } else {
       completion?(true)
     }
+  }
+
+  func moveToBackground() {
+    os_log(.info, "ConfigFile.moveToBackground - init")
+    if isRegistered {
+      os_log(.info, "ConfigFile.moveToBackground - unregistering")
+      self.close(completionHandler: nil)
+      NSFileCoordinator.removeFilePresenter(self)
+    }
+  }
+
+  func moveToForeground() {
+    os_log(.info, "ConfigFile.moveToForeground - init")
+    if !isRegistered {
+      os_log(.info, "ConfigFile.moveToForeground - registering")
+      NSFileCoordinator.addFilePresenter(self)
+      // self.open(completionHandler: nil)
+      // loadFromFile()
+    }
+  }
+
+  private func registerNotifcations() {
+    let mainQueue = OperationQueue.main
+
+    notificationCenterObservers.append(
+      NotificationCenter.default.addObserver(
+        forName: .NSExtensionHostDidBecomeActive,
+        object: nil,
+        queue: mainQueue
+      ) { [weak self] _ in
+        os_log(.info, "ConfigFile.NSExtensionHostDidBecomeActive")
+        self?.moveToForeground()
+      }
+    )
+
+    notificationCenterObservers.append(
+      NotificationCenter.default.addObserver(
+        forName: .NSExtensionHostWillResignActive,
+        object: nil,
+        queue: mainQueue
+      ) { [weak self] _ in
+        os_log(.info, "ConfigFile.NSExtensionHostWillResignActive")
+        self?.moveToBackground()
+      }
+    )
+    //
+    //    notificationCenterObservers.append(
+    //      NotificationCenter.default.addObserver(
+    //        forName: .NSExtensionHostDidEnterBackground,
+    //        object: nil,
+    //        queue: mainQueue
+    //      ) { [weak self] _ in
+    //        self?.moveToBackground()
+    //      }
+    //    )
+    //
+    //    notificationCenterObservers.append(
+    //      NotificationCenter.default.addObserver(
+    //        forName: .NSExtensionHostWillEnterForeground,
+    //        object: nil,
+    //        queue: mainQueue
+    //      ) { [weak self] _ in
+    //        self?.moveToForeground()
+    //      }
+    //    )
   }
 }

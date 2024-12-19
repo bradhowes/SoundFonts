@@ -55,6 +55,10 @@ extension FileManager {
     (try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path)) ?? [String]()
   }
 
+  var sharedPaths: [URL] {
+    sharedFileNames.map { sharedPath(for: $0) }
+  }
+
   /// True if the user has an iCloud container available to use
   var hasCloudDirectory: Bool { return self.ubiquityIdentityToken != nil }
 
@@ -92,62 +96,5 @@ extension FileManager {
     let fileSize = try? (self.attributesOfItem(atPath: url.path) as NSDictionary).fileSize()
     os_log(.debug, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)
     return fileSize ?? 0
-  }
-}
-
-extension FileManager {
-
-  final class Identity {
-    let index: Int
-    let path: URL
-    let fileDescriptor: Int32
-
-    init(_ index: Int, _ path: URL, _ fileDescriptor: Int32) {
-      self.index = index
-      self.path = path
-      self.fileDescriptor = fileDescriptor
-    }
-
-    deinit {
-      os_log(.debug, log: log, "giving up identity")
-      close(fileDescriptor)
-    }
-  }
-
-  func openIdentity() -> Identity {
-    let identityDirectory = self.sharedPath(for: "locks")
-    if !self.fileExists(atPath: identityDirectory.path) {
-      os_log(.debug, log: log, "creating locks directory")
-      try? self.createDirectory(at: identityDirectory, withIntermediateDirectories: true, attributes: nil)
-    }
-
-    var counter = 0
-    while true {
-
-      let temporaryFileURL = identityDirectory.appendingPathComponent("AU_\(counter).lock")
-      os_log(.debug, log: log, "trying %{public}s", temporaryFileURL.path)
-
-      let fd = open(temporaryFileURL.path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-      if fd == -1 {
-        let context = String(cString: strerror(errno))
-        os_log(.debug, log: log, "failed to open file - %d %{public}s", errno, context)
-        if errno == EAGAIN {
-          continue
-        }
-        counter += 1
-        continue
-      }
-
-      let rc = flock(fd, LOCK_EX | LOCK_NB)
-      if rc == -1 {
-        let context = String(cString: strerror(errno))
-        os_log(.debug, log: log, "failed to lock file - %d %{public}s", errno, context)
-        counter += 1
-        continue
-      }
-
-      os_log(.debug, log: log, "using %{public}s", temporaryFileURL.path)
-      return .init(counter, temporaryFileURL, fd)
-    }
   }
 }

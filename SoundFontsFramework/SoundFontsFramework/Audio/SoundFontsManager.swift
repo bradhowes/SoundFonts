@@ -40,10 +40,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
 extension FileManager {
 
-  fileprivate var installedSF2Files: [URL] {
-    let fileNames = FileManager.default.sharedFileNames
-    return fileNames.map { FileManager.default.sharedPath(for: $0) }
-  }
+  fileprivate var installedSF2Files: [URL] { FileManager.default.sharedPaths }
 
   fileprivate func validateSF2Files(log: OSLog, collection: SoundFontCollection) -> Int {
     guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else {
