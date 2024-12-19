@@ -10,7 +10,7 @@ import os
  the `ActiveTagManager` view.
  */
 final class TagsEditorTableViewController: UITableViewController {
-  private lazy var log = Logging.logger("TagsEditorTableViewController")
+  private lazy var log: Logger = Logging.logger("TagsEditorTableViewController")
 
   /// The current action being undertaken by the editor. Used to manage state transitions and UI view.
   fileprivate enum Action {
@@ -125,7 +125,7 @@ final class TagsEditorTableViewController: UITableViewController {
   }
 
   override func viewWillDisappear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillDisappear")
+    log.debug("viewWillDisappear")
     stopEditingName()
     super.viewWillDisappear(animated)
     completionHandler?(active)
@@ -137,13 +137,13 @@ final class TagsEditorTableViewController: UITableViewController {
 extension TagsEditorTableViewController: UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    os_log(.debug, log: log, "textFieldShouldReturn")
+    log.debug("textFieldShouldReturn")
     textField.resignFirstResponder()
     return true
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    os_log(.debug, log: log, "textFieldDidEndEditing")
+    log.debug("textFieldDidEndEditing")
     stopEditingName()
   }
 }
@@ -236,14 +236,14 @@ private extension TagsEditorTableViewController {
    - parameter sender: the source of the action
    */
   @IBAction func addTag(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "addTag")
+    log.debug("addTag")
     let indexPath = IndexPath(row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
     startEditingName(indexPath, selected: true)
   }
 
   @IBAction func editTagName(_ sender: UILongPressGestureRecognizer) {
-    os_log(.debug, log: log, "editTagName")
+    log.debug("editTagName")
     guard case .doneEditing = currentAction,
           let indexPath = self.tableView.indexPathForRow(at: sender.location(in: tableView)),
           sender.state == .began,
@@ -261,7 +261,7 @@ private extension TagsEditorTableViewController {
    - parameter sender: the source of the action
    */
   @IBAction func beginTagEditing(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "toggleTagEditing")
+    log.debug("toggleTagEditing")
     switch currentAction {
     case .doneEditing: currentAction = .editTagEntries
     case .editTagEntries: currentAction = .doneEditing
@@ -270,7 +270,7 @@ private extension TagsEditorTableViewController {
   }
 
   @IBAction func endTagEditing(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "toggleTagEditing")
+    log.debug("toggleTagEditing")
     switch currentAction {
     case .doneEditing: currentAction = .editTagEntries
     case .editTagEntries: currentAction = .doneEditing
@@ -281,16 +281,16 @@ private extension TagsEditorTableViewController {
   func updateButtons() {
     switch currentAction {
     case .editTagEntries:
-      os_log(.debug, log: log, "updateButtons - editing rows")
+      log.debug("updateButtons - editing rows")
       navigationItem.setRightBarButtonItems([doneButton], animated: true)
       tableView.setEditing(true, animated: true)
 
     case .editTagName:
-      os_log(.debug, log: log, "updateButtons - editing tag name")
+      log.debug("updateButtons - editing tag name")
       navigationItem.setRightBarButtonItems([doneButton], animated: true)
 
     case .doneEditing:
-      os_log(.debug, log: log, "updateButtons - done editing")
+      log.debug("updateButtons - done editing")
       editButton.isEnabled = tags.count > 2
       navigationItem.setRightBarButtonItems([editButton, addButton], animated: true)
 
@@ -306,15 +306,15 @@ private extension TagsEditorTableViewController {
   }
 
   func startEditingName(_ indexPath: IndexPath, selected: Bool) {
-    os_log(.debug, log: log, "startEditingName - row: %d", indexPath.row)
+    log.debug("startEditingName - row: \(indexPath.row)")
     currentAction = .editTagName(indexPath: indexPath, selected: selected)
     tableView.reloadRows(at: [indexPath], with: .automatic)
   }
 
   func stopEditingName() {
-    os_log(.debug, log: log, "stopEditingName")
+    log.debug("stopEditingName")
     guard let indexPath = activeNameEditor else {
-      os_log(.debug, log: log, "not editing name")
+      log.debug("not editing name")
       return
     }
 
@@ -325,7 +325,7 @@ private extension TagsEditorTableViewController {
     // bit pointless and of no real concern since tag names are not involved in anything other than display and
     // ordering.
     if let text = cell.tagEditor.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
-      os_log(.debug, log: log, "new tag name: '%{public}s'", text)
+      log.debug("new tag name: '\(text, privacy: .public)'")
       tags.rename(indexPath.row, name: text)
       let tag = tags.getBy(index: indexPath.row)
       active.insert(tag.key)

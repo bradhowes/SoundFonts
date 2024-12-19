@@ -5,7 +5,7 @@ import os
 
 /// Specialization of `UICollectionViewCell` that knows how to render Favorite names.
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
-  private lazy var log = Logging.logger("FavoriteCell")
+  private lazy var log: Logger = Logging.logger("FavoriteCell")
 
   /// The name of the favorite
   @IBOutlet private weak var name: UILabel!
@@ -66,7 +66,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
    - parameter loading: true if the preset is loading.
    */
   func update(favoriteName: String, isActive: Bool) {
-    os_log(.debug, log: log, "update: %{public}s %d %d", favoriteName, isActive)
+    log.debug("update: \(favoriteName, privacy: .public) isActive: \(isActive)")
 
     name.text = favoriteName
     if isActive {

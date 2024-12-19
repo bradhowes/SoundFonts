@@ -17,7 +17,7 @@ public final class ConsolidatedConfigProvider: NSObject {
     target: .global(qos: .userInitiated)
   )
 
-  private let log: OSLog
+  private let log: Logger
   private var _config: ConsolidatedConfig?
 
   public let identity: Int = UUID().hashValue
@@ -46,13 +46,13 @@ public final class ConsolidatedConfigProvider: NSObject {
     self.log = Logging.logger("ConsolidatedConfigProvider[\(identity)]")
     self.coordinator = .init()
     self.fileURL = fileURL
-    os_log(.debug, log: self.log, "init BEGIN - %{public}s", fileURL.description)
+    log.debug("init BEGIN - \(fileURL.description, privacy: .public)")
 
     super.init()
 
     NSFileCoordinator.addFilePresenter(self)
     registerNotifcations(inApp: inApp)
-    os_log(.debug, log: self.log, "init END")
+    log.debug("init END")
   }
 
   /**
@@ -91,7 +91,7 @@ extension ConsolidatedConfigProvider {
   }
 
   private func attemptLegacyLoad() -> Bool {
-    os_log(.debug, log: self.log, "attemptLegacyLoad")
+    log.debug("attemptLegacyLoad")
     guard
       let soundFonts = LegacyConfigFileLoader<SoundFontCollection>.load(filename: "SoundFontLibrary.plist"),
       let favorites = LegacyConfigFileLoader<FavoriteCollection>.load(filename: "Favorites.plist"),
@@ -100,35 +100,35 @@ extension ConsolidatedConfigProvider {
       return false
     }
 
-    os_log(.debug, log: self.log, "attemptLegacyLoad using legacy contents")
+    log.debug("attemptLegacyLoad using legacy contents")
     self.config = ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags)
 
     return true
   }
 
   @objc private func saveToFile() {
-    os_log(.info, log: self.log, "saveToFile - init")
+    log.info("saveToFile - init")
     var err: NSError?
     coordinator.coordinate(writingItemAt: fileURL, options: .forReplacing, error: &err) { destination in
       do {
-        os_log(.info, log: self.log, "saveToFile - coordinated")
+        log.info("saveToFile - coordinated")
         let data = try self.config.encoded()
         try data.write(to: destination, options: .atomic)
         self.lastReadTimestamp = .init()
-        os_log(.info, log: self.log, "saveToFile - end")
+        log.info("saveToFile - end")
       } catch {
-        os_log(.error, log: self.log, "saveToFile - error writing data: %{public}s", error.localizedDescription)
+        log.error("saveToFile - error writing data: \(error.localizedDescription, privacy: .public)")
       }
     }
   }
 
   private func loadFromFile() {
-    os_log(.info, log: self.log, "loadFromFile BEGIN")
+    log.info("loadFromFile BEGIN")
 
     var err: NSError?
     coordinator.coordinate(readingItemAt: fileURL, options: .withoutChanges, error: &err) { destination in
       do {
-        os_log(.info, log: self.log, "loadFromFile - coordinated")
+        log.info("loadFromFile - coordinated")
 
         let doRead: Bool
         if let lastReadTimestamp {
@@ -141,14 +141,6 @@ extension ConsolidatedConfigProvider {
 
           let when = attrs[.modificationDate] as? Date ?? .init()
           doRead = when > lastReadTimestamp
-          os_log(
-            .info,
-            log: self.log,
-            "loadFromFile - doRead: %d lastReadTimestamp: %ld when: %ld",
-            doRead,
-            lastReadTimestamp.timeIntervalSince1970,
-            when.timeIntervalSince1970
-          )
         } else {
           doRead = true
         }
@@ -159,13 +151,13 @@ extension ConsolidatedConfigProvider {
           self.lastReadTimestamp = .init()
           NotificationCenter.default.post(name: .configFileChanged, object: nil)
         }
-        os_log(.info, log: self.log, "loadFromFile - end")
+        log.info("loadFromFile - end")
       } catch {
-        os_log(.error, log: self.log, "loadFromFile - error reading data: \(error)")
+        log.error("loadFromFile - error reading data: \(error)")
         self.handleLoadFailure()
       }
     }
-    os_log(.debug, log: self.log, "loadFromFile END")
+    log.debug("loadFromFile END")
   }
 
   private func handleLoadFailure() {
@@ -180,17 +172,17 @@ extension ConsolidatedConfigProvider {
 extension ConsolidatedConfigProvider {
 
   private func moveToBackground() {
-    os_log(.info, log: self.log, "moveToBackground - init")
+    log.info("moveToBackground - init")
     if isRegistered {
-      os_log(.info, log: self.log, "moveToBackground - unregistering")
+      log.info("moveToBackground - unregistering")
       NSFileCoordinator.removeFilePresenter(self)
     }
   }
 
   private func moveToForeground() {
-    os_log(.info, log: self.log, "moveToForeground - init")
+    log.info("moveToForeground - init")
     if !isRegistered {
-      os_log(.info, log: self.log, "moveToForeground - registering")
+      log.info("moveToForeground - registering")
       NSFileCoordinator.addFilePresenter(self)
       loadFromFile()
     }
@@ -207,7 +199,7 @@ extension ConsolidatedConfigProvider {
           queue: mainQueue
         ) { [weak self] _ in
           guard let self else { return }
-          os_log(.info, log: self.log, "willEnterForegroundNotification")
+          log.info("willEnterForegroundNotification")
           self.moveToForeground()
         }
       )
@@ -219,7 +211,7 @@ extension ConsolidatedConfigProvider {
           queue: mainQueue
         ) { [weak self] _ in
           guard let self else { return }
-          os_log(.info, log: self.log, "didEnterBackgroundNotification")
+          log.info("didEnterBackgroundNotification")
           self.moveToBackground()
         }
       )
@@ -231,7 +223,7 @@ extension ConsolidatedConfigProvider {
           queue: mainQueue
         ) { [weak self] _ in
           guard let self else { return }
-          os_log(.info, log: self.log, "NSExtensionHostWillEnterForeground")
+          log.info("NSExtensionHostWillEnterForeground")
           self.moveToForeground()
         }
       )
@@ -243,7 +235,7 @@ extension ConsolidatedConfigProvider {
           queue: mainQueue
         ) { [weak self] _ in
           guard let self else { return }
-          os_log(.info, log: self.log, "ConfigFile.NSExtensionHostDidEnterBackground")
+          log.info("ConfigFile.NSExtensionHostDidEnterBackground")
           self.moveToBackground()
         }
       )
@@ -256,7 +248,7 @@ extension ConsolidatedConfigProvider: NSFilePresenter {
   public var presentedItemURL: URL? { fileURL }
 
   public func presentedItemDidChange() {
-    os_log(.info, log: self.log, "ConfigFile.presentedItemDidChange")
+    log.info("ConfigFile.presentedItemDidChange")
     loadFromFile()
   }
 }

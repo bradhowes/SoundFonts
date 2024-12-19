@@ -6,7 +6,7 @@ import os
 /// Manages when to ask the user for an app review. Relies on SKStoreReviewController.requestReview to do the actual
 /// review prompt, but makes sure that the interval between asks is reasonable and within App Store policy.
 public final class AskForReview: NSObject {
-  private lazy var log = Logging.logger("AskForReview")
+  private lazy var log: Logger = Logging.logger("AskForReview")
 
   /**
    Class method that fires a notification to ask for a review check. When running as an application, there should be
@@ -72,8 +72,6 @@ public final class AskForReview: NSObject {
   public init(settings: Settings) {
     self.settings = settings
     super.init()
-    os_log(.debug, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s",
-           dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
     observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { [weak self] _ in
       self?.ask()
     }
@@ -87,28 +85,28 @@ public final class AskForReview: NSObject {
    - version of the app must be different than the last version
    */
   public func ask() {
-    os_log(.debug, log: log, "ask")
+    log.debug("ask")
 
     let now = Date()
     let currentVersion = self.currentVersion
     guard currentVersion != self.lastReviewRequestVersion else {
-      os_log(.debug, log: log, "same version as last review request")
+      log.debug("same version as last review request")
       return
     }
 
     guard now >= dateSinceFirstLaunch else {
-      os_log(.debug, log: log, "too soon after first launch")
+      log.debug("too soon after first launch")
       return
     }
 
     guard now >= dateSinceLastReviewRequest else {
-      os_log(.debug, log: log, "too soon after last review request")
+      log.debug("too soon after last review request")
       return
     }
 
     guard countDown < 1 else {
       countDown -= 1
-      os_log(.debug, log: log, "too soon after launching")
+      log.debug("too soon after launching")
       return
     }
 

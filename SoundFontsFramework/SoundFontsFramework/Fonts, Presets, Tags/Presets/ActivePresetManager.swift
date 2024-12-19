@@ -37,7 +37,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     case normal
   }
 
-  private lazy var log = Logging.logger("ActivePresetManager")
+  private lazy var log: Logger = Logging.logger("ActivePresetManager")
   private let soundFonts: SoundFontsProvider
   private let favorites: FavoritesProvider
   private let selectedSoundFontManager: SelectedSoundFontManager
@@ -99,7 +99,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     self.settings = settings
 
     super.init()
-    os_log(.debug, log: log, "init")
+    log.debug("init")
 
     soundFonts.subscribe(self, notifier: soundFontsChangedNotificationInBackground)
     favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
@@ -157,15 +157,15 @@ public extension ActivePresetManager {
    - parameter playSample: if true, play a note using the new preset
    */
   func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
-    os_log(.debug, log: log, "setActive BEGIN - %{public}s", kind.description)
+    log.debug("setActive BEGIN - \(kind.description, privacy: .public)")
 
     guard state == .normal else {
-      os_log(.debug, log: log, "setActive END - not restored")
+      log.debug("setActive END - not restored")
       return
     }
 
     guard active != kind else {
-      os_log(.debug, log: log, "setActive END - preset already active")
+      log.debug("setActive END - preset already active")
       return
     }
 
@@ -174,7 +174,7 @@ public extension ActivePresetManager {
     save(kind)
 
     notify(.changed(old: old, new: kind, playSample: playSample))
-    os_log(.debug, log: log, "setActive END")
+    log.debug("setActive END")
   }
 
   /**
@@ -183,79 +183,78 @@ public extension ActivePresetManager {
    - parameter kind: wrapped value to set
    */
   func restoreActive(_ kind: ActivePresetKind) {
-    os_log(.debug, log: log, "restoreActive BEGIN - %{public}s", kind.description)
+    log.debug("restoreActive BEGIN - \(kind.description, privacy: .public)")
     switch state {
     case .starting: state = .pending(kind)
     case .pending: state = .pending(kind)
     case .normal: setActive(kind)
     }
-    os_log(.debug, log: log, "restoreActive END")
+    log.debug("restoreActive END")
   }
 }
 
 private extension ActivePresetManager {
 
   func updateState() {
-    os_log(.debug, log: log, "updateState BEGIN")
+    log.debug("updateState BEGIN")
 
     guard soundFonts.isRestored && favorites.isRestored else {
-      os_log(.debug, log: log, "updateState END - not restored")
+      log.debug("updateState END - not restored")
       return
     }
 
     switch state {
     case .starting:
-      os_log(.debug, log: log, "updateState - starting -> normal")
+      log.debug("updateState - starting -> normal")
       state = .normal
       if let defaultPreset = soundFonts.defaultPreset {
-        os_log(.debug, log: log, "updateState - using defaultPreset")
+        log.debug("updateState - using defaultPreset")
         setActive(.preset(soundFontAndPreset: defaultPreset))
       }
 
     case .pending(let pending):
-      os_log(.debug, log: log, "updateState - pending -> normal")
+      log.debug("updateState - pending -> normal")
       state = .normal
       setActive(rebuild(pending))
 
     case .normal:
       // This can happen when the config file is reloaded
-      os_log(.debug, log: log, "updateState - normal -> normal")
+      log.debug("updateState - normal -> normal")
     }
 
     precondition(state == .normal)
-    os_log(.debug, log: log, "updateState END")
+    log.debug("updateState END")
   }
 
   func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
-    os_log(.debug, log: log, "rebuild BEGIN - %{public}s", kind.description)
+    log.debug("rebuild BEGIN - \(kind.description, privacy: .public)")
 
     switch kind {
     case .preset:
-      os_log(.debug, log: log, "rebuild END - using same")
+      log.debug("rebuild END - using same")
       return kind
 
     case let .favorite(favoriteKey, soundFontAndPreset):
-      os_log(.debug, log: log, "rebuild - favorite: %{public}s %{public}s", favoriteKey.uuidString,
-             soundFontAndPreset.itemName)
+      log.debug("rebuild - favorite: \(favoriteKey.uuidString, privacy: .public) \(soundFontAndPreset.itemName, privacy: .public)")
       if let favorite = favorites.getBy(key: favoriteKey) {
-        os_log(.debug, log: log, "rebuild END - using favorite")
+        log.debug("rebuild END - using favorite")
         return .favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset)
       } else if soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil {
-        os_log(.debug, log: log, "rebuild END - using preset")
+        log.debug("rebuild END - using preset")
         return .preset(soundFontAndPreset: soundFontAndPreset)
       } else if let preset = soundFonts.defaultPreset {
-        os_log(.debug, log: log, "rebuild END - using default preset")
+        log.debug("rebuild END - using default preset")
         return .preset(soundFontAndPreset: preset)
       } else {
-        os_log(.debug, log: log, "rebuild END - using none")
+        log.debug("rebuild END - using none")
         return .none
       }
     case .none:
       if let defaultPreset = soundFonts.defaultPreset {
-        os_log(.debug, log: log, "rebuild END - using default preset")
+        log.debug("rebuild END - using default preset")
         return .preset(soundFontAndPreset: defaultPreset)
       }
-      os_log(.debug, log: log, "rebuild END - using none")
+      log.debug("rebuild END - using none")
       return .none
     }
   }
@@ -291,7 +290,7 @@ private extension ActivePresetManager {
   }
 
   func save(_ kind: ActivePresetKind) {
-    os_log(.debug, log: log, "save - %{public}s", kind.description)
+    log.debug("save - \(kind.description, privacy: .public)")
     settings.lastActivePreset = kind
   }
 
@@ -302,7 +301,7 @@ private extension ActivePresetManager {
   }
 
   func selectNextFavorite() {
-    os_log(.debug, log: log, "selectNextFavorite")
+    log.debug("selectNextFavorite")
     guard
       let key = active.favoriteKey,
       let index = favorites.index(of: key),
@@ -320,7 +319,7 @@ private extension ActivePresetManager {
   }
 
   func selectPreviousFavorite() {
-    os_log(.debug, log: log, "selectPreviousFavorite")
+    log.debug("selectPreviousFavorite")
     guard
       let key = active.favoriteKey,
       let index = favorites.index(of: key),

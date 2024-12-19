@@ -11,8 +11,8 @@ import os
  for direct manipulation by the user.
 */
 final public class Preset: Codable {
-  private static let log = Logging.logger("Preset")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("Preset")
+  private var log: Logger { Self.log }
 
   private enum V1Keys: String, CodingKey {
     case name
@@ -94,7 +94,6 @@ final public class Preset: Codable {
       self.favorites = favorites
     } catch {
       let err = error
-      os_log(.error, log: Self.log, "failed to decode V2 - %{public}s", error.localizedDescription)
       do {
         let values = try decoder.container(keyedBy: V1Keys.self)
         let name = try values.decode(String.self, forKey: .name)
@@ -114,6 +113,7 @@ final public class Preset: Codable {
       } catch {
         throw err
       }
+      log.error("failed to decode V2 - \(error.localizedDescription, privacy: .public)")
     }
   }
 }
@@ -121,10 +121,10 @@ final public class Preset: Codable {
 extension Preset {
 
   func makeFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite {
-    os_log(.debug, log: log, "makeFavorite")
+    log.debug("makeFavorite")
     var newConfig = presetConfig
     newConfig.name = presetConfig.name
-    os_log(.debug, log: log, "makeFavorite - '%{public}s'", newConfig.name)
+    log.debug("makeFavorite - '\(newConfig.name, privacy: .public)'")
     let favorite = Favorite(soundFontAndPreset: soundFontAndPreset, presetConfig: newConfig,
                             keyboardLowestNote: keyboardLowestNote)
     favorites.append(favorite.key)
@@ -134,8 +134,7 @@ extension Preset {
   func validate(_ favorites: FavoritesProvider) {
     var invalidFavoriteIndices = [Int]()
     for (favoriteIndex, favoriteKey) in self.favorites.enumerated().reversed() where !favorites.contains(key: favoriteKey) {
-      os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'", self.presetConfig.name,
-             favoriteKey.uuidString)
+      log.error("preset '\(self.presetConfig.name)' has invalid favorite key '\(favoriteKey.uuidString)'")
       invalidFavoriteIndices.append(favoriteIndex)
     }
 

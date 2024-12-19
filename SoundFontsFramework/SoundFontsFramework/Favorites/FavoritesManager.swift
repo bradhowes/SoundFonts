@@ -8,7 +8,7 @@ import os.log
  will be restored when the app relaunches.
  */
 final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
-  private lazy var log = Logging.logger("FavoritesManager")
+  private lazy var log: Logger = Logging.logger("FavoritesManager")
 
   private var observer: ConsolidatedConfigObserver!
   private var collection: FavoriteCollection? { observer.favorites }
@@ -98,8 +98,6 @@ extension FavoritesManager: FavoritesProvider {
   }
 
   func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?) {
-    os_log(.debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
-           delay?.description ?? "nil", reverb?.description ?? "nil")
     defer { markCollectionChanged() }
     favorite.presetConfig.delayConfig = delay
     favorite.presetConfig.reverbConfig = reverb
@@ -111,11 +109,11 @@ extension FavoritesManager: FavoritesProvider {
       let favorite = self.getBy(index: index)
       if let preset = soundFonts.resolve(soundFontAndPreset: favorite.soundFontAndPreset) {
         if !preset.favorites.contains(favorite.key) {
-          os_log(.error, log: log, "linking favorite - '%{public}s'", favorite.presetConfig.name)
+          log.error("linking favorite - '\(favorite.presetConfig.name, privacy: .public)'")
           preset.favorites.append(favorite.key)
         }
       } else {
-        os_log(.error, log: log, "found orphan favorite - '%{public}s'", favorite.presetConfig.name)
+        log.error("found orphan favorite - '\(favorite.presetConfig.name, privacy: .public)'")
         invalidFavoriteKeys.append(favorite.key)
       }
     }
@@ -132,12 +130,12 @@ extension FavoritesManager {
 
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
-    os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
+    log.debug("markCollectionChanged - \(collection.description, privacy: .public)")
     observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {
-    os_log(.debug, log: log, "notifyCollectionRestored")
+    log.debug("notifyCollectionRestored")
     notify(.restored)
   }
 }

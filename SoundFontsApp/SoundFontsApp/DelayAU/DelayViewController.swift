@@ -5,7 +5,7 @@ import SoundFontsFramework
 import os
 
 public final class DelayViewController: AUViewController {
-  private lazy var log = Logging.logger("DelayViewController")
+  private lazy var log: Logger = Logging.logger("DelayViewController")
   private var audioUnit: DelayAU?
   private var parameterObserverToken: AUParameterObserverToken?
 
@@ -19,7 +19,7 @@ public final class DelayViewController: AUViewController {
   @IBOutlet weak var wetDryMixLabel: UILabel!
 
   public override func viewDidLoad() {
-    os_log(.debug, log: log, "viewDidLoad")
+    log.debug("viewDidLoad")
     super.viewDidLoad()
     if audioUnit != nil && parameterObserverToken == nil { connectAU() }
 
@@ -51,7 +51,7 @@ extension DelayViewController: AUAudioUnitFactory {
 
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     let audioUnit = try DelayAU(componentDescription: componentDescription)
-    os_log(.debug, log: log, "created DelayAU")
+    log.debug("created DelayAU")
     self.audioUnit = audioUnit
     return audioUnit
   }
@@ -84,7 +84,7 @@ extension DelayViewController {
 
     parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [weak self] address, value in
       guard let self = self else { return }
-      os_log(.error, log: self.log, "parameterObserver - address: %ld value: %f")
+      log.error("parameterObserver - address: %ld value: %f")
       switch DelayAU.Address(rawValue: address) {
       case .time: DispatchQueue.main.async { self.setTime(value: value) }
       case .feedback: DispatchQueue.main.async { self.setFeedback(value: value) }

@@ -3,7 +3,7 @@
 import AVFoundation
 import os
 
-private let log = Logging.logger("AudioUnit")
+private let log: Logger = Logging.logger("AudioUnit")
 
 extension AudioUnit {
 
@@ -15,11 +15,11 @@ extension AudioUnit {
    - throws exception if the property is invalid
    */
   func getPropertyInfo(_ pid: AudioUnitPropertyID) throws -> (size: UInt32, writable: Bool) {
-    os_log(.debug, log: log, "getPropertyInfo %d", pid)
+    log.debug("getPropertyInfo \(pid)")
     var size: UInt32 = 0
     var writable: DarwinBoolean = false
     try AudioUnitGetPropertyInfo(self, pid, kAudioUnitScope_Global, 0, &size, &writable).check()
-    os_log(.debug, log: log, "size: %d writable: %d", size, writable.boolValue)
+    log.debug("size: \(size) writable: \(writable.boolValue)")
     return (size: size, writable: writable.boolValue)
   }
 
@@ -31,7 +31,7 @@ extension AudioUnit {
    - throws exception if the property is invalid or the size is wrong
    */
   func getPropertyValue<T>(_ pid: AudioUnitPropertyID) throws -> T {
-    os_log(.debug, log: log, "getPropertyValue %d", pid)
+    log.debug("getPropertyValue \(pid)")
     let (size, _) = try getPropertyInfo(pid)
     return try getPropertyValue(pid, size: size)
   }
@@ -88,7 +88,7 @@ extension OSStatus {
    */
   func check() throws {
     if self != noErr {
-      os_log(.error, log: log, "last call set error %d", Int(self))
+      log.error("last call set error \(Int(self))")
       throw NSError(domain: NSOSStatusErrorDomain, code: Int(self), userInfo: nil)
     }
   }

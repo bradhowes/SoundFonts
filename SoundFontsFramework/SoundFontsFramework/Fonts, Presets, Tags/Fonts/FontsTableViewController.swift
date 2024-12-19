@@ -10,7 +10,7 @@ import os.log
  the user the chance to hide a built-in font or to delete a user-added one.
  */
 final class FontsTableViewController: UITableViewController {
-  private lazy var log = Logging.logger("FontsTableViewController")
+  private lazy var log: Logger = Logging.logger("FontsTableViewController")
   private let serialQueue = DispatchQueue(label: "FontsTableViewController", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .main)
   private var selectedSoundFontManager: SelectedSoundFontManager!
@@ -190,7 +190,7 @@ private extension FontsTableViewController {
   }
 
   func soundFontsChangedNotificationInBackground(_ event: SoundFontsEvent) {
-    os_log(.debug, log: log, "soundFontsChangedNotificationInBackground BEGIN - %{public}s", event.description)
+    log.debug("soundFontsChangedNotificationInBackground BEGIN - \(event.description, privacy: .public)")
     switch event {
     case let .added(new, soundFont):
       serialQueue.async { self.addSoundFont(index: new, soundFont: soundFont) }
@@ -206,14 +206,14 @@ private extension FontsTableViewController {
   }
 
   func selectedSoundFontChangedNotificationInBackground(_ event: SelectedSoundFontEvent) {
-    os_log(.debug, log: log, "selectedSoundFontChangedNotificationInBackground BEGIN - %{public}s", event.description)
+    log.debug("selectedSoundFontChangedNotificationInBackground BEGIN - \(event.description, privacy: .public)")
     if case let .changed(old: old, new: new) = event {
       serialQueue.async { self.handleFontChanged(old: old, new: new) }
     }
   }
 
   func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
-    os_log(.debug, log: log, "activePresetChangedNotificationInBackground BEGIN - %{public}s", event.description)
+    log.debug("activePresetChangedNotificationInBackground BEGIN - \(event.description, privacy: .public)")
     switch event {
     case let .changed(old: old, new: new, playSample: _):
       serialQueue.async { self.handlePresetChanged(old: old, new: new) }
@@ -223,7 +223,7 @@ private extension FontsTableViewController {
   }
 
   func activeTagChangedNotificationInBackground(_ event: ActiveTagEvent) {
-    os_log(.debug, log: log, "activeTagChangedNotificationInBackground BEGIN - %{public}s", event.description)
+    log.debug("activeTagChangedNotificationInBackground BEGIN - \(event.description, privacy: .public)")
     switch event {
     case let .change(old: old, new: new):
       serialQueue.async { self.handleActiveTagChanged(old: old, new: new) }
@@ -231,7 +231,7 @@ private extension FontsTableViewController {
   }
 
   func tagsChangedNotificationInBackground(_ event: TagsEvent) {
-    os_log(.debug, log: log, "tagsChangedNotificationInBackground BEGIN - %{public}s", event.description)
+    log.debug("tagsChangedNotificationInBackground BEGIN - \(event.description, privacy: .public)")
     if case let .removed(_, tag) = event {
       serialQueue.async { self.handleTagRemoved(tag) }
     }
@@ -247,47 +247,46 @@ private extension FontsTableViewController {
   }
 
   func updateTableView() {
-    os_log(.debug, log: log, "updateTableView BEGIN")
+    log.debug("updateTableView BEGIN")
     guard tags.isRestored && soundFonts.isRestored else {
-      os_log(.debug, log: log, "updateTableView END - not restored yet")
+      log.debug("updateTableView END - not restored yet")
       return
     }
 
     dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
-    os_log(.debug, log: log, "updateTableView - dataSource: %{public}s", dataSource.description)
-    os_log(.debug, log: log, "updateTableView - names: %{public}s", soundFonts.names(of: dataSource).description)
+    log.debug("updateTableView - dataSource: \(self.dataSource.description, privacy: .public)")
+    log.debug("updateTableView - names: \(self.soundFonts.names(of: self.dataSource).description, privacy: .public)")
 
     tableView.reloadData()
   }
 
   func handlePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
-    os_log(.debug, log: log, "handlePresetChanged BEGIN - old: %{public}s new: %{public}s", old.description,
-           new.description)
+    log.debug("handlePresetChanged BEGIN - old: \(old.description, privacy: .public) new: \(new.description, privacy: .public)")
 
     if old.soundFontAndPreset?.soundFontKey != new.soundFontAndPreset?.soundFontKey {
-      os_log(.debug, log: log, "handlePresetChanged - font key differs")
+      log.debug("handlePresetChanged - font key differs")
       if let key = old.soundFontAndPreset?.soundFontKey {
         let row = dataSource.firstIndex(of: key)
-        os_log(.debug, log: log, "handlePresetChanged - updating old row")
+        log.debug("handlePresetChanged - updating old row")
         updateRow(row: row)
       }
 
       if let soundFontAndPreset = new.soundFontAndPreset {
         let key = soundFontAndPreset.soundFontKey
         if let row = dataSource.firstIndex(of: key) {
-          os_log(.debug, log: log, "handlePresetChanged - updating new row")
+          log.debug("handlePresetChanged - updating new row")
           updateRow(row: row)
         }
         if let soundFont = activePresetManager.resolveToSoundFont(soundFontAndPreset) {
-          os_log(.debug, log: log, "handlePresetChanged - selecting font")
+          log.debug("handlePresetChanged - selecting font")
           selectedSoundFontManager.setSelected(soundFont)
         } else {
-          os_log(.debug, log: log, "handlePresetChanged - clearing font")
+          log.debug("handlePresetChanged - clearing font")
           selectedSoundFontManager.clearSelected()
         }
       }
     }
-    os_log(.debug, log: log, "handlePresetChanged END")
+    log.debug("handlePresetChanged END")
   }
 
   func handleFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {
@@ -379,7 +378,7 @@ private extension FontsTableViewController {
 
   func updateRow(row: Int?) {
     guard let row = row else { return }
-    os_log(.debug, log: log, "updateRow - %d", row)
+    log.debug("updateRow - \(row)")
     if let cell: TableCell = tableView.cellForRow(at: row.indexPath) {
       updateCell(cell: cell, indexPath: row.indexPath)
     }
@@ -389,7 +388,7 @@ private extension FontsTableViewController {
   func updateCell(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let key = dataSource[indexPath.row]
     guard let soundFont = soundFonts.getBy(key: key) else { fatalError("data out of sync") }
-    os_log(.debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
+    log.debug("updateCell - font \(soundFont.displayName, privacy: .public) row \(indexPath.row)")
     var flags: TableCell.Flags = .init()
     if selectedSoundFontManager.selected == soundFont.key { flags.insert(.selected) }
     if activePresetManager.activeSoundFontKey == soundFont.key { flags.insert(.active) }

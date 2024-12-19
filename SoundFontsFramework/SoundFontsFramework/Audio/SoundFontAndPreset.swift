@@ -7,8 +7,8 @@ import os.log
 /// active and what a `favorite` item points to. This value is safe to store in a setting or configuration file since
 /// the soundFontKey can be resolved during loading to make sure that the soundFont has not been removed.
 public struct SoundFontAndPreset: Codable, Hashable {
-  private static let log = Logging.logger("SoundFontAndPreset")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("SoundFontAndPreset")
+  private var log: Logger { Self.log }
 
   private enum V1Keys: String, CodingKey {
     case soundFontKey
@@ -53,7 +53,6 @@ public struct SoundFontAndPreset: Codable, Hashable {
       self.itemName = itemName
     } catch {
       let err = error
-      os_log(.error, log: Self.log, "failed to decode V2 - %{public}s", error.localizedDescription)
       do {
         let values = try decoder.container(keyedBy: V1Keys.self)
         let soundFontKey = try values.decode(UUID.self, forKey: .soundFontKey)
@@ -68,8 +67,7 @@ public struct SoundFontAndPreset: Codable, Hashable {
         throw err
       }
 
-      os_log(.debug, log: log, "restored - %{public}s %{public}s %d %{public}s", soundFontKey.uuidString, soundFontName,
-             presetIndex, itemName)
+      log.error("failed to decode V2 - \(error.localizedDescription, privacy: .public)")
     }
   }
 }

@@ -20,19 +20,18 @@ public enum SelectedSoundFontEvent: CustomStringConvertible {
  Selecting a preset will make the selected sound font and the active sound font the same.
  */
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {
-  private lazy var log = Logging.logger("SelectedSoundFontManager")
+  private lazy var log: Logger = Logging.logger("SelectedSoundFontManager")
 
   public private(set) var selected: SoundFont.Key?
 
   public func setSelected(_ soundFont: SoundFont) {
-    os_log(.debug, log: log, "setSelected BEGIN - %{public}s %{public}s", soundFont.displayName,
-           String.pointer(soundFont))
+    log.debug("setSelected BEGIN - \(soundFont.displayName, privacy: .public) \(String.pointer(soundFont), privacy: .public)")
     if selected != soundFont.key {
       let old = selected
       selected = soundFont.key
       notify(.changed(old: old, new: soundFont.key))
     }
-    os_log(.debug, log: log, "setSelected END")
+    log.debug("setSelected END")
   }
 
   public func clearSelected() {

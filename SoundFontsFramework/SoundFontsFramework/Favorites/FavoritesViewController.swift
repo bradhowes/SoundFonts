@@ -6,7 +6,7 @@ import os
 /// Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
 /// settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
 final class FavoritesViewController: UIViewController, FavoritesViewManager {
-  private lazy var log = Logging.logger("FavoritesViewController")
+  private lazy var log: Logger = Logging.logger("FavoritesViewController")
   private let serialQueue = DispatchQueue(label: "FavoritesViewController", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .main)
 
@@ -73,11 +73,11 @@ extension FavoritesViewController {
   }
 
   override func viewDidAppear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillAppear BEGIN")
+    log.debug("viewWillAppear BEGIN")
     super.viewDidAppear(animated)
     guard let favorite = activePresetManager?.activeFavorite else { return }
     updateCell(with: favorite)
-    os_log(.debug, log: log, "viewWillAppear END")
+    log.debug("viewWillAppear END")
   }
 }
 
@@ -207,16 +207,16 @@ private extension FavoritesViewController {
   }
 
   func activePresetChangedNotificationInBackground(_ event: ActivePresetEvent) {
-    os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
+    log.debug("activePresetChanged BEGIN - \(event.description, privacy: .public)")
     guard favorites.isRestored && soundFonts.isRestored else { return }
     switch event {
     case let .changed(old: old, new: new, playSample: _):
       if case let .favorite(oldFaveKey, _) = old, let favorite = favorites.getBy(key: oldFaveKey) {
-        os_log(.debug, log: log, "updating previous favorite cell")
+        log.debug("updating previous favorite cell")
         serialQueue.async { self.updateCell(with: favorite) }
       }
       if case let .favorite(newFaveKey, _) = new, let favorite = favorites.getBy(key: newFaveKey) {
-        os_log(.debug, log: log, "updating new favorite cell")
+        log.debug("updating new favorite cell")
         serialQueue.async { self.updateCell(with: favorite) }
       }
     case let .loaded(preset: preset):
@@ -227,7 +227,7 @@ private extension FavoritesViewController {
   }
 
   func favoritesChangedNotificationInBackground(_ event: FavoritesEvent) {
-    os_log(.debug, log: log, "favoritesChanged")
+    log.debug("favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
       serialQueue.async { self.handleFavoriteAdded(index: index, favorite: favorite) }
@@ -247,7 +247,7 @@ private extension FavoritesViewController {
   }
 
   func handleFavoriteAdded(index: Int, favorite: Favorite) {
-    os_log(.debug, log: log, "added item %d", index)
+    log.debug("added item \(index)")
     favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
     if favorite == activePresetManager.activeFavorite {
       favoritesView.selectItem(
@@ -258,7 +258,7 @@ private extension FavoritesViewController {
   }
 
   func handleFavoriteRemoved(index: Int) {
-    os_log(.debug, log: log, "removed %d", index)
+    log.debug("removed \(index)")
     guard favoritesView.delegate != nil else { return }
     let indexPath = IndexPath(item: index, section: 0)
     favoritesView.deleteItems(at: [indexPath])

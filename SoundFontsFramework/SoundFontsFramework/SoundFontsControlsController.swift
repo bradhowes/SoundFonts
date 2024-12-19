@@ -9,7 +9,7 @@ import os
  */
 final class SoundFontsControlsController: UIViewController {
 
-  private lazy var logger = Logging.logger("SoundFontsControlsController")
+  private lazy var logger: Logger = Logging.logger("SoundFontsControlsController")
 
   @IBOutlet private weak var favoritesView: UIView!
   @IBOutlet private weak var presetsView: UIView!

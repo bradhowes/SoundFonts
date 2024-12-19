@@ -5,7 +5,7 @@ import os
 
 /// Submit a sequence of MIDI events to play a A4 note. Used when switching presets.
 final class NoteInjector {
-  private let log = Logging.logger("NoteInjector")
+  private let log: Logger = Logging.logger("NoteInjector")
   private let note: UInt8 = 69  // A4
   private let noteOnDuration = 0.5
   private let noteVelocity: UInt8 = 32
@@ -46,7 +46,7 @@ final class NoteInjector {
    - parameter audioUnit: the audio unit to command
    */
   func post(to audioUnit: AUAudioUnit) {
-    os_log(.debug, log: log, "post BEGIN")
+    log.debug("post BEGIN")
     workItems.forEach { $0.cancel() }
 
     guard settings.playSample == true,
@@ -84,6 +84,6 @@ final class NoteInjector {
     playingQueue.asyncAfter(deadline: dispatchTime, execute: noteOnEmitter)
     playingQueue.asyncAfter(deadline: dispatchTime + noteOnDuration, execute: noteOffEmitter)
 
-    os_log(.debug, log: log, "post END")
+    log.debug("post END")
   }
 }

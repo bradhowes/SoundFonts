@@ -8,7 +8,7 @@ import os
  in an asynchronous but serial manner.
  */
 final class PresetChangeManager {
-  private lazy var log = Logging.logger("PresetChangeManager")
+  private lazy var log: Logger = Logging.logger("PresetChangeManager")
   private let queue = OperationQueue()
   private var active = true
 
@@ -32,7 +32,7 @@ final class PresetChangeManager {
    - parameter afterLoadBlock: block to invoke after the change is done
    */
   func change(synth: PresetLoader, url: URL, preset: Preset, afterLoadBlock: AfterLoadBlock? = nil) {
-    os_log(.debug, log: log, "change - %{public}s %{public}s", url.lastPathComponent, preset.description)
+    log.debug("change - \(url.lastPathComponent, privacy: .public) \(preset.description, privacy: .public)")
     guard active else { return }
     queue.cancelAllOperations()
     queue.addOperation(PresetChangeOperation(synth: synth, url: url, preset: preset, afterLoadBlock: afterLoadBlock))
@@ -40,13 +40,13 @@ final class PresetChangeManager {
 
   /// Start accepting preset change requests.
   func start() {
-    os_log(.debug, log: log, "start")
+    log.debug("start")
     active = true
   }
 
   /// Stop processing preset change requests.
   func stop() {
-    os_log(.debug, log: log, "stop")
+    log.debug("stop")
     active = false
     queue.cancelAllOperations()
     queue.waitUntilAllOperationsAreFinished()
@@ -54,7 +54,7 @@ final class PresetChangeManager {
 }
 
 private final class PresetChangeOperation: Operation, @unchecked Sendable {
-  private lazy var log = Logging.logger("PresetChangeOperation")
+  private lazy var log: Logger = Logging.logger("PresetChangeOperation")
 
   private weak var synth: PresetLoader?
   private let url: URL
@@ -80,14 +80,14 @@ private final class PresetChangeOperation: Operation, @unchecked Sendable {
       }
     }
 
-    os_log(.debug, log: log, "init")
+    log.debug("init")
   }
 
   override func main() {
-    os_log(.debug, log: log, "main - BEGIN")
+    log.debug("main - BEGIN")
 
     guard let synth = self.synth else {
-      os_log(.debug, log: log, "nil synth")
+      log.debug("nil synth")
       operationResult = .failure(.noSynth)
       return
     }
@@ -97,20 +97,20 @@ private final class PresetChangeOperation: Operation, @unchecked Sendable {
       return
     }
 
-    os_log(.debug, log: log, "before loadAndActivate - %{public}s", url.absoluteString)
+    log.debug("before loadAnd \(self.url.lastPathComponent, privacy: .public) \(self.preset.description, privacy: .public)")
     let secure = url.startAccessingSecurityScopedResource()
     let result = synth.loadAndActivatePreset(preset, from: url)
-    os_log(.debug, log: log, "after loadAndActivate - %d", result ?? noErr)
+    log.debug("after loadAndActivate - \(result.debugDescription)")
     if secure { url.stopAccessingSecurityScopedResource() }
-    os_log(.debug, log: log, "before afterLoadBlock")
+    log.debug("before afterLoadBlock")
     if let error = result {
       operationResult = .failure(.failedToLoad(error: error))
     } else {
       operationResult = .success(self.preset)
     }
 
-    os_log(.debug, log: log, "after afterLoadBlock")
-    os_log(.debug, log: log, "main - END")
+    log.debug("after afterLoadBlock")
+    log.debug("main - END")
   }
 }
 

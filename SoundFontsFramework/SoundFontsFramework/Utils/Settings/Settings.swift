@@ -8,10 +8,10 @@ import os.log
  handle when running as an AUv3 app extension, and not as the app.
 */
 public final class Settings: NSObject {
-  private static let log = Logging.logger("Settings")
+  private static let log: Logger = Logging.logger("Settings")
 
   @usableFromInline
-  internal var log: OSLog { Self.log }
+  internal var log: Logger { Self.log }
 
   @usableFromInline
   internal let storage: UserDefaults
@@ -25,14 +25,12 @@ public final class Settings: NSObject {
    - parameter suiteName: the UserDefaults suite to load (only for testing)
    */
   public init(suiteName: String = "") {
-    os_log(.debug, log: Self.log, "init BEGIN - suiteName: '%{public}s'", suiteName)
-    os_log(.debug, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
-
+    Self.log.debug("init BEGIN - suiteName: '\(suiteName, privacy: .public)'")
     if suiteName == "" {
       self.storage = UserDefaults.standard
     } else {
       guard let defaults = UserDefaults(suiteName: suiteName) else {
-        os_log(.error, log: Self.log, "failed to access suite '%{public}s'", suiteName)
+        Self.log.error("failed to access suite '\(suiteName, privacy: .public)'")
         fatalError("unable to access \(suiteName)")
       }
       self.storage = defaults
@@ -40,7 +38,8 @@ public final class Settings: NSObject {
 
     super.init()
 
-    os_log(.debug, log: Self.log, "init END")
+    log.debug("application directory: \(NSHomeDirectory(), privacy: .public)")
+    log.debug("init END")
   }
 }
 
@@ -53,9 +52,9 @@ extension Settings {
    */
   @inlinable
   public func setAudioUnitState(_ state: [String: Any]) {
-    os_log(.debug, log: log, "setAudioUnitState BEGIN - %{public}s", state.description)
+    log.debug("setAudioUnitState BEGIN - \(state.description, privacy: .public)")
     componentSettings = state
-    os_log(.debug, log: log, "setAudioUnitState END")
+    log.debug("setAudioUnitState END")
   }
 }
 

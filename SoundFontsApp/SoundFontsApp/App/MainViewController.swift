@@ -13,7 +13,7 @@ import ProgressHUD
  to the background or stops being active.
  */
 final class MainViewController: UIViewController {
-  private lazy var log = Logging.logger("MainViewController")
+  private lazy var log: Logger = Logging.logger("MainViewController")
 
   private var activePresetManager: ActivePresetManager!
   private var audioEngine: AudioEngine?
@@ -116,7 +116,7 @@ extension MainViewController {
    Show the tutorial screens.
    */
   func showTutorial() {
-    os_log(.debug, log: log, "showTuorial")
+    log.debug("showTuorial")
     if let viewController = TutorialViewController.instantiate() {
       present(viewController, animated: true, completion: nil)
     }
@@ -127,26 +127,26 @@ extension MainViewController {
    moved to a background thread so as not to block the main thread when app is launching.
    */
   func startAudioSession() {
-    os_log(.debug, log: log, "startAudioSession BEGIN")
+    log.debug("startAudioSession BEGIN")
 
     guard let audioEngine = self.audioEngine else {
       // The synth has not loaded yet, so we postpone until it is.
-      os_log(.debug, log: log, "startAudioSession END - no synth")
+      log.debug("startAudioSession END - no synth")
       startRequested = true
       return
     }
 
     DispatchQueue.global(qos: .userInitiated).async { self.startAudioSessionInBackground(audioEngine) }
-    os_log(.debug, log: log, "startAudioSession END")
+    log.debug("startAudioSession END")
   }
 
   @objc func handleRouteChangeInBackground(notification: Notification) {
-    os_log(.debug, log: log, "handleRouteChangeInBackground BEGIN")
+    log.debug("handleRouteChangeInBackground BEGIN")
     guard let userInfo = notification.userInfo,
           let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
           let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue)
     else {
-      os_log(.debug, log: log, "handleRouteChangeInBackground END - nothing to see")
+      log.debug("handleRouteChangeInBackground END - nothing to see")
       return
     }
 
@@ -154,12 +154,12 @@ extension MainViewController {
     switch reason {
 
     case .newDeviceAvailable: // New device found.
-      os_log(.debug, log: log, "handleRouteChangeInBackground - new device available")
+      log.debug("handleRouteChangeInBackground - new device available")
       let session = AVAudioSession.sharedInstance()
       dump(route: session.currentRoute)
 
     case .oldDeviceUnavailable: // Old device removed.
-      os_log(.debug, log: log, "handleRouteChangeInBackground - old device unavailable")
+      log.debug("handleRouteChangeInBackground - old device unavailable")
       let session = AVAudioSession.sharedInstance()
       if let previousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
         dump(route: previousRoute)
@@ -167,9 +167,9 @@ extension MainViewController {
       }
 
     default:
-      os_log(.debug, log: log, "handleRouteChangeInBackground - AVAudioSession.unknown reason - %d", reason.rawValue)
+      log.debug("handleRouteChangeInBackground - AVAudioSession.unknown reason - \(reason.rawValue)")
     }
-    os_log(.debug, log: log, "handleRouteChangeInBackground END")
+    log.debug("handleRouteChangeInBackground END")
   }
 
   /**
@@ -177,10 +177,10 @@ extension MainViewController {
    the background.
    */
   func stopAudio() {
-    os_log(.debug, log: log, "stopAudio BEGIN")
+    log.debug("stopAudio BEGIN")
 
     guard audioEngine != nil else {
-      os_log(.debug, log: log, "stopAudio END - no synth")
+      log.debug("stopAudio END - no synth")
       return
     }
 
@@ -189,14 +189,14 @@ extension MainViewController {
 
     let session = AVAudioSession.sharedInstance()
     do {
-      os_log(.debug, log: log, "stopAudio - setting AudioSession to inactive")
+      log.debug("stopAudio - setting AudioSession to inactive")
       try session.setActive(false, options: [])
-      os_log(.debug, log: log, "stopAudio - done")
+      log.debug("stopAudio - done")
     } catch let error as NSError {
-      os_log(.error, log: log, "stopAudio - Failed session.setActive(false): %{public}s", error.localizedDescription)
+      log.error("stopAudio - Failed session.setActive(false): \(error.localizedDescription)")
     }
 
-    os_log(.debug, log: log, "stopAudio END")
+    log.debug("stopAudio END")
   }
 }
 
@@ -205,7 +205,7 @@ extension MainViewController {
 extension MainViewController: ControllerConfiguration {
 
   private func startAudioSessionInBackground(_ audioEngine: AudioEngine) {
-    os_log(.debug, log: log, "startAudioSessionInBackground BEGIN")
+    log.debug("startAudioSessionInBackground BEGIN")
 
     let sampleRate: Double = 44100.0
     let bufferSize: Int = 64
@@ -214,52 +214,49 @@ extension MainViewController: ControllerConfiguration {
     setupAudioSessionNotificationsInBackground()
 
     do {
-      os_log(.debug, log: log, "startAudioSessionInBackground - setting AudioSession category")
+      log.debug("startAudioSessionInBackground - setting AudioSession category")
       try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
-      os_log(.debug, log: log, "startAudioSessionInBackground - done")
+      log.debug("startAudioSessionInBackground - done")
     } catch let error as NSError {
-      os_log(.error, log: log,
-             "startAudioSessionInBackground - failed to set the audio session category and mode: %{public}s",
-             error.localizedDescription)
+      log.error(
+        "startAudioSessionInBackground - failed to set the audio session category and mode: \(error.localizedDescription)"
+      )
     }
 
-    os_log(.debug, log: log, "startAudioSessionInBackground - sampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
-    os_log(.debug, log: log, "startAudioSessionInBackground - preferredSampleRate: %f",
-           AVAudioSession.sharedInstance().sampleRate)
+    log.debug("startAudioSessionInBackground - sampleRate: \(AVAudioSession.sharedInstance().sampleRate)")
+    log.debug("startAudioSessionInBackground - preferredSampleRate: \(AVAudioSession.sharedInstance().sampleRate)")
 
     do {
-      os_log(.debug, log: log, "startAudioSessionInBackground - setting sample rate")
+      log.debug("startAudioSessionInBackground - setting sample rate")
       try session.setPreferredSampleRate(sampleRate)
-      os_log(.debug, log: log, "startAudioSessionInBackground - done")
+      log.debug("startAudioSessionInBackground - done")
     } catch let error as NSError {
-      os_log(.error, log: log, "startAudioSessionInBackground - failed to set the preferred sample rate to %f: %{public}s",
-             sampleRate, error.localizedDescription)
+      log.error("startAudioSessionInBackground - failed to set the preferred sample rate to \(sampleRate) - \(error.localizedDescription)")
     }
 
     do {
-      os_log(.debug, log: log, "startAudioSessionInBackground - setting IO buffer duration")
+      log.debug("startAudioSessionInBackground - setting IO buffer duration")
       try session.setPreferredIOBufferDuration(Double(bufferSize) / sampleRate)
-      os_log(.debug, log: log, "startAudioSessionInBackground - done")
+      log.debug("startAudioSessionInBackground - done")
     } catch let error as NSError {
-      os_log(.error, log: log, "startAudioSessionInBackground - failed to set the preferred buffer size to %d: %{public}s",
-             bufferSize, error.localizedDescription)
+      log.error("startAudioSessionInBackground - failed to set the preferred buffer size to \(bufferSize) - \(error.localizedDescription)")
     }
 
     do {
-      os_log(.debug, log: log, "startAudioSessionInBackground - setting active audio session")
+      log.debug("startAudioSessionInBackground - setting active audio session")
       try session.setActive(true, options: [])
-      os_log(.debug, log: log, "startAudioSessionInBackground - done")
+      log.debug("startAudioSessionInBackground - done")
     } catch {
-      os_log(.error, log: log, "startAudioSessionInBackground - failed to set active", error.localizedDescription)
+      log.error("startAudioSessionInBackground - failed to set active - \(error.localizedDescription)")
     }
 
     dump(route: session.currentRoute)
 
-    os_log(.debug, log: log, "startAudioSessionInBackground - starting synth")
+    log.debug("startAudioSessionInBackground - starting synth")
     let result = audioEngine.start()
 
     DispatchQueue.main.async { self.finishStart(result) }
-    os_log(.debug, log: log, "startAudioSessionInBackground END")
+    log.debug("startAudioSessionInBackground END")
   }
 
   /**
@@ -268,7 +265,7 @@ extension MainViewController: ControllerConfiguration {
    - parameter router: the ComponentContainer that holds all of the registered managers / controllers
    */
   func establishConnections(_ router: ComponentContainer) {
-    os_log(.debug, log: log, "establishConnections BEGIN")
+    log.debug("establishConnections BEGIN")
 
     activePresetManager = router.activePresetManager
     settings = router.settings
@@ -305,11 +302,11 @@ extension MainViewController: ControllerConfiguration {
     }
 
     activePresetManager.restoreActive(settings.lastActivePreset)
-    os_log(.debug, log: log, "establishConnections END")
+    log.debug("establishConnections END")
   }
 
   private func setAudioEngineInBackground(_ audioEngine: AudioEngine) {
-    os_log(.debug, log: log, "setSynthInBackground BEGIN")
+    log.debug("setSynthInBackground BEGIN")
     guard self.audioEngine == nil else { return }
 
     self.audioEngine = audioEngine
@@ -320,28 +317,28 @@ extension MainViewController: ControllerConfiguration {
       self.startAudioSessionInBackground(audioEngine)
     }
 
-    os_log(.debug, log: log, "setSynthInBackground END")
+    log.debug("setSynthInBackground END")
   }
 
   private func finishStart(_ result: AudioEngine.StartResult) {
-    os_log(.debug, log: log, "finishStart BEGIN - %{public}s", result.description)
+    log.debug("finishStart BEGIN - \(result.description)")
 
     switch result {
     case let .failure(what):
-      os_log(.debug, log: log, "finishStart - failed to start audio session")
+      log.debug("finishStart - failed to start audio session")
       postAlertInBackground(for: what)
     case .success:
-      os_log(.debug, log: log, "finishStart - starting volumeMonitor and MIDI")
+      log.debug("finishStart - starting volumeMonitor and MIDI")
       volumeMonitor?.start()
     }
-    os_log(.error, log: log, "finishStart - END")
+    log.error("finishStart - END")
   }
 
   private func recreateSynth() {
-    os_log(.error, log: log, "recreateSynth - BEGIN")
+    log.error("recreateSynth - BEGIN")
     stopAudio()
     startAudioSession()
-    os_log(.error, log: log, "recreateSynth - END")
+    log.error("recreateSynth - END")
   }
 
   private func postAlertInBackground(for what: SynthStartFailure) {
@@ -355,10 +352,10 @@ extension MainViewController: ControllerConfiguration {
 
   private func dump(route: AVAudioSessionRouteDescription) {
     for input in route.inputs {
-      os_log(.debug, log: log, "AVAudioSession input - %{public}s", input.portName)
+      log.debug("AVAudioSession input - \(input.portName)")
     }
     for output in route.outputs {
-      os_log(.debug, log: log, "AVAudioSession output - %{public}s", output.portName)
+      log.debug("AVAudioSession output - \(output.portName)")
     }
   }
 }

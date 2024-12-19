@@ -45,7 +45,7 @@ protocol TableViewDataSourceDelegate: AnyObject {
 class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
                                                                   UITableViewDataSource,
                                                                   NSFetchedResultsControllerDelegate {
-  private lazy var log = Logging.logger("tvds")
+  private lazy var log: Logger = Logging.logger("tvds")
 
   typealias Entity = Delegate.Entity
   typealias Cell = Delegate.Cell
@@ -79,7 +79,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
     self.delegate = delegate
     super.init()
 
-    os_log(.debug, log: log, "init")
+    log.debug("init")
 
     fetchedResultsController.delegate = self
     guard (try? fetchedResultsController.performFetch()) != nil else { fatalError() }
@@ -183,7 +183,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
   func controllerWillChangeContent(
     _ controller: NSFetchedResultsController<NSFetchRequestResult>
   ) {
-    os_log(.debug, log: log, "controllerWillChangeContent - beginUpdates")
+    log.debug("controllerWillChangeContent - beginUpdates")
     tableView.beginUpdates()
   }
 
@@ -218,7 +218,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
   func controllerDidChangeContent(
     _ controller: NSFetchedResultsController<NSFetchRequestResult>
   ) {
-    os_log(.debug, log: log, "controllerDidChangeContent - endUpdates")
+    log.debug("controllerDidChangeContent - endUpdates")
     tableView.endUpdates()
     delegate.updated()
   }
@@ -228,13 +228,13 @@ private extension TableViewDataSource {
 
   func insertRow(_ indexPath: IndexPath?) {
     guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
-    os_log(.debug, log: log, "insertRow - %d", indexPath.row)
+    log.debug("insertRow - %d", indexPath.row)
     tableView.insertRows(at: [indexPath], with: .fade)
   }
 
   func updateRow(_ indexPath: IndexPath?) {
     guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
-    os_log(.debug, log: log, "updateRow - %d", indexPath.row)
+    log.debug("updateRow - %d", indexPath.row)
     guard let cell = tableView.cellForRow(at: indexPath) as? Cell else { return }
     delegate?.configure(cell, for: object(at: indexPath))
   }
@@ -242,14 +242,14 @@ private extension TableViewDataSource {
   func moveRow(_ old: IndexPath?, _ new: IndexPath?) {
     guard let indexPath = old else { fatalError("old should not be nil") }
     guard let newIndexPath = new else { fatalError("new should not be nil") }
-    os_log(.debug, log: log, "moveRow - %d %d", indexPath.row, newIndexPath.row)
+    log.debug("moveRow - %d %d", indexPath.row, newIndexPath.row)
     tableView.deleteRows(at: [indexPath], with: .fade)
     tableView.insertRows(at: [newIndexPath], with: .fade)
   }
 
   func deleteRow(_ indexPath: IndexPath?) {
     guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
-    os_log(.debug, log: log, "deleteRow")
+    log.debug("deleteRow")
     tableView.deleteRows(at: [indexPath], with: .fade)
   }
 }

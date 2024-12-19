@@ -5,7 +5,7 @@ import CoreAudioKit
 import os
 
 public final class ReverbAU: AUAudioUnit {
-  private let log: OSLog
+  private let log: Logger
   private let reverb = ReverbEffect()
   private lazy var audioUnit = reverb.audioUnit
   private lazy var wrapped = audioUnit.auAudioUnit
@@ -46,26 +46,19 @@ public final class ReverbAU: AUAudioUnit {
   }()
 
   public init(componentDescription: AudioComponentDescription) throws {
-    let log = Logging.logger("ReverbAU")
+    let log: Logger = Logging.logger("ReverbAU")
     self.log = log
 
-    os_log(
-      .debug, log: log, "init - flags: %d man: %d type: sub: %d",
-      componentDescription.componentFlags, componentDescription.componentManufacturer,
-      componentDescription.componentType, componentDescription.componentSubType)
-
-    os_log(.debug, log: log, "starting AUAudioUnit")
+    log.debug("starting AUAudioUnit")
 
     do {
       try super.init(componentDescription: componentDescription, options: [])
     } catch {
-      os_log(
-        .error, log: log, "failed to initialize AUAudioUnit - %{public}s",
-        error.localizedDescription)
+      log.error("failed to initialize AUAudioUnit - \(error.localizedDescription, privacy: .public)")
       throw error
     }
     makeParameterTree()
-    os_log(.debug, log: log, "init - done")
+    log.debug("init - done")
   }
 
   func makeParameterTree() {
@@ -104,15 +97,13 @@ public final class ReverbAU: AUAudioUnit {
         default: return "?"
         }
       }()
-      os_log(
-        .debug, log: self.log, "parameter %d as string: %d %f %{public}s",
-        param.address, param.value, formatted)
+      self.log.debug("parameter \(param.address) as string: \(param.value) \(formatted, privacy: .public)")
       return formatted
     }
   }
 
   public func setConfig(_ config: ReverbConfig) {
-    os_log(.debug, log: log, "setConfig")
+    log.debug("setConfig")
     self.roomPreset.setValue(AUValue(config.preset), originator: nil)
     self.wetDryMix.setValue(config.wetDryMix, originator: nil)
   }
@@ -129,58 +120,58 @@ extension ReverbAU {
   public override var component: AudioComponent { wrapped.component }
 
   public override func allocateRenderResources() throws {
-    os_log(.debug, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
+    log.debug("allocateRenderResources - \(self.outputBusses.count)")
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
     }
     do {
       try wrapped.allocateRenderResources()
     } catch {
-      os_log(
-        .error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
+      log
+        .error("allocateRenderResources failed - \(error.localizedDescription, privacy: .public)")
       throw error
     }
-    os_log(.debug, log: log, "allocateRenderResources - done")
+    log.debug("allocateRenderResources - done")
   }
 
   public override func deallocateRenderResources() {
-    os_log(.debug, log: log, "deallocateRenderResources")
+    log.debug("deallocateRenderResources")
     wrapped.deallocateRenderResources()
   }
 
   public override var renderResourcesAllocated: Bool {
-    os_log(.debug, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
+    log.debug("renderResourcesAllocated - \(self.wrapped.renderResourcesAllocated)")
     return wrapped.renderResourcesAllocated
   }
 
   public override func reset() {
-    os_log(.debug, log: log, "reset")
+    log.debug("reset")
     wrapped.reset()
     super.reset()
   }
 
   public override var inputBusses: AUAudioUnitBusArray {
-    os_log(.debug, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
+    log.debug("inputBusses - \(self.wrapped.inputBusses.count)")
     return wrapped.inputBusses
   }
 
   public override var outputBusses: AUAudioUnitBusArray {
-    os_log(.debug, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
+    log.debug("outputBusses - \(self.wrapped.outputBusses.count)")
     return wrapped.outputBusses
   }
 
   public override var scheduleParameterBlock: AUScheduleParameterBlock {
-    os_log(.debug, log: self.log, "scheduleParameterBlock")
+    log.debug("scheduleParameterBlock")
     return wrapped.scheduleParameterBlock
   }
 
   public override func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
-    os_log(.debug, log: self.log, "token by AddingRenderObserver")
+    log.debug("token by AddingRenderObserver")
     return wrapped.token(byAddingRenderObserver: observer)
   }
 
   public override func removeRenderObserver(_ token: Int) {
-    os_log(.debug, log: self.log, "removeRenderObserver")
+    log.debug("removeRenderObserver")
     wrapped.removeRenderObserver(token)
   }
 
@@ -198,7 +189,7 @@ extension ReverbAU {
 //  }
 //
   public override func parametersForOverview(withCount count: Int) -> [NSNumber] {
-    os_log(.debug, log: log, "parametersForOverview: %d", count)
+    log.debug("parametersForOverview: \(count)")
     return [NSNumber(value: wetDryMix.address)]
   }
 
@@ -206,7 +197,7 @@ extension ReverbAU {
   public override var isMusicDeviceOrEffect: Bool { true }
 
   public override var virtualMIDICableCount: Int {
-    os_log(.debug, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
+    log.debug("virtualMIDICableCount - \(self.wrapped.virtualMIDICableCount)")
     return wrapped.virtualMIDICableCount
   }
 
@@ -319,26 +310,21 @@ extension ReverbAU {
   public override var isRunning: Bool { wrapped.isRunning }
 
   public override func startHardware() throws {
-    os_log(.debug, log: self.log, "startHardware")
+    log.debug("startHardware")
     do {
       try wrapped.startHardware()
     } catch {
-      os_log(.error, log: self.log, "startHardware failed - %s", error.localizedDescription)
+      log.error("startHardware failed - \(error.localizedDescription, privacy: .public)")
       throw error
     }
-    os_log(.debug, log: self.log, "startHardware - done")
+    log.debug("startHardware - done")
   }
 
   public override func stopHardware() { wrapped.stopHardware() }
 
   public override var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
     let block = self.wrapped.scheduleMIDIEventBlock
-    let log = self.log
     return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
-      os_log(
-        .debug, log: log,
-        "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
-        when, channel, count, bytes[0], bytes[1], bytes[2])
       block?(when, channel, count, bytes)
     }
   }

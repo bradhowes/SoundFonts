@@ -7,7 +7,7 @@ import os
 /// the keyboard appears. Contains a slot `viewToKeepVisible` which when set to a UIView will cause the
 /// monitor to scroll so that the view is visible.
 final class TextFieldKeyboardMonitor {
-  private lazy var log = Logging.logger("TextFieldKeyboardMonitor")
+  private lazy var log: Logger = Logging.logger("TextFieldKeyboardMonitor")
   private let view: UIView
   private let scrollView: UIScrollView
   private var adjustment: CGFloat = 0.0
@@ -52,7 +52,7 @@ final class TextFieldKeyboardMonitor {
       adjustment = 0.0
     } else {
       adjustment = self.keyboardFrame.height - view.safeAreaInsets.bottom
-      os_log(.debug, log: log, "adjustment %f", adjustment)
+      log.debug("adjustment \(self.adjustment)")
       scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: adjustment, right: 0)
     }
 
@@ -63,10 +63,8 @@ final class TextFieldKeyboardMonitor {
   private func makeViewVisible() {
     guard let viewToKeepVisible = self.viewToKeepVisible else { return }
     let frame = viewToKeepVisible.convert(viewToKeepVisible.bounds, to: scrollView)
-    os_log(.debug, log: log, "makeViewVisible - frame: %{public}s", frame.debugDescription)
+    log.debug("makeViewVisible - frame: \(frame.debugDescription, privacy: .public)")
     scrollView.scrollRectToVisible(frame, animated: true)
-    os_log(
-      .debug, log: log, "makeViewVisible - contentOffset: %{public}s",
-      scrollView.contentOffset.debugDescription)
+    log.debug("makeViewVisible - contentOffset: \(self.scrollView.contentOffset.debugDescription, privacy: .public)")
   }
 }

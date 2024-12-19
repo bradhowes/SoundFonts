@@ -26,7 +26,7 @@ public enum ActiveTagEvent: CustomStringConvertible {
  Tracks and manages the active tag.
  */
 public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
-  private lazy var log = Logging.logger("ActiveTagManager")
+  private lazy var log: Logger = Logging.logger("ActiveTagManager")
   private let tags: TagsProvider
   private let settings: Settings
 

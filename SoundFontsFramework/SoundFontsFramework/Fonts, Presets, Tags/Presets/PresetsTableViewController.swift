@@ -6,7 +6,7 @@ import os
 
 /// View controller for the UITableView showing the presets of a sound font
 final class PresetsTableViewController: UITableViewController {
-  private lazy var log = Logging.logger("PresetsTableViewController")
+  private lazy var log: Logger = Logging.logger("PresetsTableViewController")
 
   /// Text field for entering preset search queries.
   @IBOutlet var searchBar: UISearchBar!
@@ -23,7 +23,7 @@ final class PresetsTableViewController: UITableViewController {
   /// A row to make visible after the table view performs `layoutSubviews`. This is reset to nil in `viewDidLayoutSubviews`.
   var slotToScrollTo: IndexPath? {
     didSet {
-      os_log(.debug, log: log, "slotToScrollTo: %{public}s", slotToScrollTo.descriptionOrNil)
+      log.debug("slotToScrollTo: \(self.slotToScrollTo.descriptionOrNil, privacy: .public)")
       if slotToScrollTo == lastSelectedSlot {
         slotToScrollTo = nil
       }
@@ -31,7 +31,7 @@ final class PresetsTableViewController: UITableViewController {
   }
 
   private var lastSelectedSlot: IndexPath? {
-    didSet { os_log(.debug, log: log, "lastSelectedSlot: %{public}s", lastSelectedSlot.descriptionOrNil) }
+    didSet { log.debug("lastSelectedSlot: \(self.lastSelectedSlot.descriptionOrNil, privacy: .public)") }
   }
 
   private var lastSearchText = ""
@@ -72,12 +72,12 @@ extension PresetsTableViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillAppear BEGIN")
+    log.debug("viewWillAppear BEGIN")
     super.viewWillAppear(animated)
     if tableView.numberOfRows(inSection: 0) == 0 {
       presetsTableViewManager?.regenerateViewSlots()
     }
-    os_log(.debug, log: log, "viewWillAppear END")
+    log.debug("viewWillAppear END")
   }
 
   /**
@@ -85,7 +85,7 @@ extension PresetsTableViewController {
    table view was updated.
    */
   override func viewDidLayoutSubviews() {
-    os_log(.debug, log: log, "viewDidLayoutSubviews BEGIN")
+    log.debug("viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
 
     if !isEditing && !isSearching && tableView.isDragging && tableView.contentOffset.y < -60 {
@@ -94,39 +94,39 @@ extension PresetsTableViewController {
     }
 
     if let action = afterReloadDataAction {
-      os_log(.debug, log: log, "viewDidLayoutSubviews - running action")
+      log.debug("viewDidLayoutSubviews - running action")
       afterReloadDataAction = nil
       action()
     }
 
     if isSearching {
-      os_log(.debug, log: log, "viewDidLayoutSubviews END - isSearching")
+      log.debug("viewDidLayoutSubviews END - isSearching")
       return
     }
 
     if let indexPath = slotToScrollTo {
       slotToScrollTo = nil
       if indexPath.row < tableView.visibleCells.count {
-        os_log(.debug, log: log, "viewDidLayoutSubviews - A slotToScrollTo %{public}s", indexPath.description)
+        log.debug("viewDidLayoutSubviews - A slotToScrollTo \(indexPath.description, privacy: .public)")
         tableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.section), at: .top, animated: false)
       } else {
-        os_log(.debug, log: log, "viewDidLayoutSubviews - slotToScrollTo %{public}s", indexPath.description)
+        log.debug("viewDidLayoutSubviews - slotToScrollTo \(indexPath.description, privacy: .public)")
         tableView.scrollToRow(at: indexPath, at: .none, animated: false)
       }
     }
 
-    os_log(.debug, log: log, "viewDidLayoutSubviews END")
+    log.debug("viewDidLayoutSubviews END")
   }
 
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    os_log(.debug, log: log, "viewWillTransition BEGIN")
+    log.debug("viewWillTransition BEGIN")
     super.viewWillTransition(to: size, with: coordinator)
     if isSearching {
       endSearch()
       coordinator.animate { _ in } completion: { _ in self.beginSearch() }
     }
 
-    os_log(.debug, log: log, "viewWillTransition END")
+    log.debug("viewWillTransition END")
   }
 }
 
@@ -176,7 +176,7 @@ extension PresetsTableViewController {
   }
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    os_log(.debug, log: log, "tableView.didSelectRow")
+    log.debug("tableView.didSelectRow")
     if isEditing {
       presetsTableViewManager.setSlotVisibility(at: indexPath, state: true)
       return
@@ -186,7 +186,7 @@ extension PresetsTableViewController {
   }
 
   override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    os_log(.debug, log: log, "tableView.didDeselectRow")
+    log.debug("tableView.didDeselectRow")
     if isEditing {
       presetsTableViewManager.setSlotVisibility(at: indexPath, state: false)
     }
@@ -238,7 +238,7 @@ extension PresetsTableViewController: UISearchBarDelegate {
    - parameter searchText: the current search term
    */
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    os_log(.debug, log: log, "searchBar.textDidChange - %{public}s", searchText)
+    log.debug("searchBar.textDidChange - \(searchText, privacy: .public)")
     guard let term = searchBar.searchTerm else {
       lastSearchText = ""
       presetsTableViewManager.cancelSearch()
@@ -249,12 +249,12 @@ extension PresetsTableViewController: UISearchBarDelegate {
   }
 
   func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    os_log(.debug, log: log, "searchBarTextDidEndEditing - %d", searchBar.isFirstResponder)
+    log.debug("searchBarTextDidEndEditing - \(searchBar.isFirstResponder)")
     // endSearch()
   }
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    os_log(.debug, log: log, "searchBarSearchButtonClicked - %d", searchBar.isFirstResponder)
+    log.debug("searchBarSearchButtonClicked - \(searchBar.isFirstResponder)")
     endSearch()
   }
 
@@ -345,7 +345,7 @@ private extension PresetsTableViewController {
   }
 
   func beginVisibilityEditing() {
-    os_log(.debug, log: log, "beginVisibilityEditing BEGIN")
+    log.debug("beginVisibilityEditing BEGIN")
 
     // We show currently-hidden items but we don't update existing IndexPath values. This is fast and not complicated,
     // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
@@ -363,11 +363,11 @@ private extension PresetsTableViewController {
       self.showVisibilityState()
     }
 
-    os_log(.debug, log: log, "beginVisibilityEditing END")
+    log.debug("beginVisibilityEditing END")
   }
 
   func showVisibilityState() {
-    os_log(.debug, log: self.log, "showVisibilityState")
+    log.debug("showVisibilityState")
     for (indexPath, isVisible) in presetsTableViewManager.visibilityState where isVisible {
       tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
     }

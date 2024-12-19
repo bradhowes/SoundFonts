@@ -3,7 +3,7 @@
 import Foundation
 import os
 
-private let log = Logging.logger("FileManager")
+private let log: Logger = Logging.logger("FileManager")
 
 extension FileManager {
   var groupIdentifier: String { "group.com.braysoftware.SoundFontsShare" }
@@ -18,7 +18,7 @@ extension FileManager {
     let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(
       ProcessInfo().globallyUniqueString)
     precondition(self.createFile(atPath: temporaryFileURL.path, contents: nil))
-    os_log(.debug, log: log, "newTemporaryFile - %{public}@", temporaryFileURL.absoluteString)
+    log.debug("newTemporaryFile - \(temporaryFileURL.absoluteString, privacy: .public)")
     return temporaryFileURL
   }
 
@@ -37,7 +37,7 @@ extension FileManager {
   /// Location of shared documents between app and extension
   var sharedDocumentsDirectory: URL {
     guard let url = self.containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier) else {
-      os_log(.error, log: log, "unable to obtain container URL for '%{public}@'", groupIdentifier)
+      log.error("unable to obtain container URL for '\(self.groupIdentifier, privacy: .public)")
       return localDocumentsDirectory
     }
 
@@ -65,7 +65,7 @@ extension FileManager {
   /// Location of documents on device that can be backed-up to iCloud if enabled.
   var localDocumentsDirectory: URL {
     let path = self.urls(for: .documentDirectory, in: .userDomainMask).last!
-    os_log(.debug, log: log, "localDocumentsDirectory - %@", path.path)
+    log.debug("localDocumentsDirectory - \(path.path, privacy: .public)")
     return path
   }
 
@@ -74,7 +74,7 @@ extension FileManager {
   var cloudDocumentsDirectory: URL? {
     precondition(Thread.current.isMainThread == false)
     guard let loc = self.url(forUbiquityContainerIdentifier: nil) else {
-      os_log(.debug, log: log, "cloudDocumentsDirectory - nil")
+      log.debug("cloudDocumentsDirectory - nil")
       return nil
     }
     let dir = loc.appendingPathComponent("Documents")
@@ -82,7 +82,7 @@ extension FileManager {
       try? self.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
     }
 
-    os_log(.debug, log: log, "cloudDocumentsDirectory - %{public}@", dir.absoluteString)
+    log.debug("cloudDocumentsDirectory - \(dir.absoluteString, privacy: .public)")
     return dir
   }
 
@@ -94,7 +94,7 @@ extension FileManager {
    */
   func fileSizeOf(url: URL) -> UInt64 {
     let fileSize = try? (self.attributesOfItem(atPath: url.path) as NSDictionary).fileSize()
-    os_log(.debug, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)
+    log.debug("fileSizeOf \(url.absoluteString, privacy: .public) \(fileSize ?? 0)")
     return fileSize ?? 0
   }
 }

@@ -14,7 +14,7 @@ enum SoundFontKindError: Error {
 /// There are two types of SoundFont instances in the application: a built-in kind that resides in the app's bundle, and
 /// a file kind which comes from an external source.
 enum SoundFontKind {
-  static let log = Logging.logger("SoundFontKind")
+  static let log: Logger = Logging.logger("SoundFontKind")
 
   /// Built-in sound font file that is comes with the app. Holds a URL to a bundle resource
   case builtin(resource: URL)

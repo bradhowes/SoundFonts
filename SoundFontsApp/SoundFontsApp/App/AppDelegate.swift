@@ -8,7 +8,7 @@ import os
 /// Delegate for the SoundFonts app.
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-  private lazy var log = Logging.logger("AppDelegate")
+  private lazy var log: Logger = Logging.logger("AppDelegate")
   private let components = Components<MainViewController>(inApp: true)
   private var observer: NSObjectProtocol?
   private var pendingAddition: URL?
@@ -77,7 +77,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter app: the app that is running
    */
   func applicationWillResignActive(_ application: UIApplication) {
-    os_log(.debug, log: log, "applicationWillResignActive")
+    log.debug("applicationWillResignActive")
     if !components.settings.backgroundMIDIProcessingEnabled {
       components.mainViewController.stopAudio()
     }
@@ -89,7 +89,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter app: the app that is running
    */
   func applicationDidEnterBackground(_ application: UIApplication) {
-    os_log(.debug, log: log, "applicationDidEnterBackground")
+    log.debug("applicationDidEnterBackground")
   }
 
   /**
@@ -98,7 +98,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter app: the app that is running
    */
   func applicationWillEnterForeground(_ application: UIApplication) {
-    os_log(.debug, log: log, "applicationWillEnterForeground")
+    log.debug("applicationWillEnterForeground")
   }
 
   /**
@@ -107,7 +107,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter app: the app that is running
    */
   func applicationDidBecomeActive(_ application: UIApplication) {
-    os_log(.debug, log: log, "applicationDidBecomeActive")
+    log.debug("applicationDidBecomeActive")
     UIApplication.shared.isIdleTimerDisabled = true
     components.mainViewController.startAudioSession()
   }
@@ -118,7 +118,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter app: the app that is running
    */
   func applicationWillTerminate(_ application: UIApplication) {
-    os_log(.debug, log: log, "applicationWillTerminate")
+    log.debug("applicationWillTerminate")
     components.mainViewController.stopAudio()
   }
 

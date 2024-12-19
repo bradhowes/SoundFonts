@@ -12,8 +12,8 @@ import os.log
  that there was even a conflict.
  */
 public class ConsolidatedConfig: NSObject, Codable {
-  private static let log = Logging.logger("ConsolidatedConfig")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("ConsolidatedConfig")
+  private var log: Logger { Self.log }
 
   /// The collection of installed soundfonts and their presets
   public var soundFonts: SoundFontCollection
@@ -39,11 +39,11 @@ public class ConsolidatedConfig: NSObject, Codable {
   /// Construct a new default collection, such as when the app is first installed or there is a problem loading a
   /// previously-saved file.
   override public init() {
-    os_log(.debug, log: Self.log, "creating default collection")
     soundFonts = SoundFontsManager.defaultCollection
     favorites = FavoritesManager.defaultCollection
     tags = TagsManager.defaultCollection
     super.init()
+    log.debug("creating default collection")
   }
 }
 

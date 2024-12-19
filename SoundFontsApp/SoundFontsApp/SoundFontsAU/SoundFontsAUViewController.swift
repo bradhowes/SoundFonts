@@ -12,16 +12,16 @@ public enum SoundFontsAUFailure: Error {
 /// The view controller class for the SoundFonts AUv3 app extension. Presents the same UI as the app except for the
 /// keyboard component.
 public final class SoundFontsAUViewController: AUViewController {
-  private lazy var log = Logging.logger("SoundFontsAUViewController")
+  private lazy var log: Logger = Logging.logger("SoundFontsAUViewController")
   private var components: Components<SoundFontsAUViewController>!
   private var audioUnit: SoundFontsAU?
 
   override public func viewDidLoad() {
-    os_log(.debug, log: log, "viewDidLoad BEGIN - %{public}s", String.pointer(self))
+    log.debug("viewDidLoad BEGIN - \(String.pointer(self))")
     super.viewDidLoad()
     components = Components<SoundFontsAUViewController>(inApp: false)
     components.setMainViewController(self)
-    os_log(.debug, log: log, "viewDidLoad END")
+    log.debug("viewDidLoad END")
   }
 }
 
@@ -34,10 +34,10 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    - returns: new SoundFontsAU instance
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-    os_log(.debug, log: log, "createAudioUnit BEGIN - %{public}s", String.pointer(self))
+    log.debug("createAudioUnit BEGIN - \(String.pointer(self))")
 
     guard let audioEngine = components.audioEngine else {
-      os_log(.fault, log: log, "missing audioEngine instance")
+      log.fault("missing audioEngine instance")
       throw SoundFontsAUFailure.missingAudioEngine
     }
 
@@ -48,7 +48,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
                                      settings: components.settings)
     self.audioUnit = audioUnit
 
-    os_log(.debug, log: log, "createAudioUnit END - %{public}s", String.pointer(audioUnit))
+    log.debug("createAudioUnit END - \(String.pointer(audioUnit))")
     return audioUnit
   }
 }

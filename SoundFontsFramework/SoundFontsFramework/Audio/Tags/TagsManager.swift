@@ -6,7 +6,7 @@ import os
 
 /// Manager of the Tag collection.
 final class TagsManager: SubscriptionManager<TagsEvent> {
-  private lazy var log = Logging.logger("TagsManager")
+  private lazy var log: Logger = Logging.logger("TagsManager")
 
   private var observer: ConsolidatedConfigObserver!
   private var collection: TagCollection? { observer.tags }
@@ -111,12 +111,12 @@ extension TagsManager {
 
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
-    os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
+    log.debug("markCollectionChanged - \(collection.description, privacy: .public)")
     observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {
-    os_log(.debug, log: log, "notifyCollectionRestored")
+    log.debug("notifyCollectionRestored")
     notify(.restored)
   }
 }

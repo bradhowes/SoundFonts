@@ -4,7 +4,7 @@ import os.log
 import CoreMIDI
 
 public class MIDIControllerActionStateManager {
-  private lazy var log = Logging.logger("MIDIControllerActionStateManager")
+  private lazy var log: Logger = Logging.logger("MIDIControllerActionStateManager")
 
   public typealias ControllerActionIndexMap = [Int: Set<Int>]
   public private(set) var actions = [MIDIControllerActionState]()
@@ -61,7 +61,7 @@ public class MIDIControllerActionStateManager {
   }
 
   public func assign(controller: Int?, kind: MIDIControllerActionKind?, to action: MIDIControllerAction) {
-    os_log(.info, log: log, "assign - %d %s %s", controller ?? -1, kind.debugDescription, action.displayName)
+    log.info("assign - \(controller ?? -1) \(kind.debugDescription, privacy: .public) \(action.displayName, privacy: .public)")
     guard let actionIndex = actions.firstIndex(where: { $0.action == action }) else { return }
     let actionState = actions[actionIndex]
 

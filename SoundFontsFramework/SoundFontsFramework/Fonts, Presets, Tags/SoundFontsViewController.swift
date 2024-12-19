@@ -11,7 +11,7 @@ import os
  is no API for this class.
  */
 final class SoundFontsViewController: UIViewController {
-  private lazy var log = Logging.logger("SoundFontsViewController")
+  private lazy var log: Logger = Logging.logger("SoundFontsViewController")
 
   @IBOutlet private weak var fontsView: UIView!
   @IBOutlet private weak var presetsView: UIView!
@@ -77,16 +77,16 @@ extension SoundFontsViewController {
   @objc func moveDivider(_ gesture: UIPanGestureRecognizer) {
     switch gesture.state {
     case .began:
-      os_log(.debug, log: log, "moveDivider - BEGIN")
+      log.debug("moveDivider - BEGIN")
       lastDividerPos = gesture.location(in: view).x
 
     case .changed:
-      os_log(.debug, log: log, "moveDivider - CHANGED")
+      log.debug("moveDivider - CHANGED")
       let pos = gesture.location(in: self.view)
       let change = CGFloat(Int(pos.x - lastDividerPos))
       guard abs(change) > 0 else { return }
 
-      os_log(.debug, log: log, "moveDivider - CHANGE: %f", change)
+      log.debug("moveDivider - CHANGE: \(change)")
       lastDividerPos += change
       gesture.setTranslation(.zero, in: view)
 
@@ -101,10 +101,8 @@ extension SoundFontsViewController {
       if fontsWidth < 80.0 && change < 0 { return }
 
       let multiplier = presetsWidth / fontsWidth
-      os_log(
-        .debug, log: log, "moveDivider - old: %f new: %f",
-        presetsWidthConstraint.multiplier,
-        multiplier)
+      log
+        .debug("moveDivider - old: \(self.presetsWidthConstraint.multiplier) new: \(multiplier)")
       presetsWidthConstraint = presetsWidthConstraint.setMultiplier(multiplier)
       settings.presetsWidthMultiplier = Double(multiplier)
 
@@ -123,7 +121,7 @@ extension SoundFontsViewController {
 extension SoundFontsViewController: UIDocumentPickerDelegate {
 
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    os_log(.debug, log: log, "documentPicker didPickDocumentAt")
+    log.debug("documentPicker didPickDocumentAt")
     addSoundFonts(urls: urls)
   }
 }
@@ -164,7 +162,7 @@ extension SoundFontsViewController: FontsViewManager {
   }
 
   func addSoundFonts(urls: [URL]) {
-    os_log(.info, log: log, "addSoundFonts - BEGIN %{public}s", String.pointer(self))
+    log.info("addSoundFonts - BEGIN \(String.pointer(self), privacy: .public)")
     guard !urls.isEmpty else { return }
 
     var ok = [String]()
@@ -172,7 +170,7 @@ extension SoundFontsViewController: FontsViewManager {
     var toActivate: SoundFontAndPreset?
 
     for each in urls {
-      os_log(.debug, log: log, "processing %{public}s", each.path)
+      log.debug("processing \(each.path)")
       switch soundFonts.add(url: each) {
       case .success(let (_, soundFont)):
         toActivate = soundFont.makeSoundFontAndPreset(at: 0)

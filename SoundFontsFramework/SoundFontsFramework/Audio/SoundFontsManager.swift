@@ -7,8 +7,8 @@ import os
 
 /// Manages a collection of SoundFont instances. Changes to the collection are communicated as SoundFontsEvent events.
 public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
-  private static let log = Logging.logger("SoundFontsManager")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("SoundFontsManager")
+  private var log: Logger { Self.log }
   private let settings: Settings
 
   private var observer: ConsolidatedConfigObserver!
@@ -42,7 +42,7 @@ extension FileManager {
 
   fileprivate var installedSF2Files: [URL] { FileManager.default.sharedPaths }
 
-  fileprivate func validateSF2Files(log: OSLog, collection: SoundFontCollection) -> Int {
+  fileprivate func validateSF2Files(log: Logger, collection: SoundFontCollection) -> Int {
     guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else {
       return -1
     }
@@ -56,18 +56,18 @@ extension FileManager {
       if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
 
       let destination = localDocumentsDirectory.appendingPathComponent(stripped)
-      os_log(.debug, log: log, "removing '%{public}s' if it exists", destination.path)
+      log.debug("removing '\(destination.path, privacy: .public)' if it exists")
 
       try? removeItem(at: destination)
-      os_log(.debug, log: log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
+      log.debug("copying '\(source.path, privacy: .public)' to '\(destination.path, privacy: .public)'")
 
       do {
         try copyItem(at: source, to: destination)
       } catch let error as NSError {
-        os_log(.error, log: log, "%{public}s", error.localizedDescription)
+        log.error("\(error.localizedDescription)")
       }
 
-      os_log(.debug, log: log, "removing '%{public}s'", source.path)
+      log.debug("removing '\(source.path)'")
       try? removeItem(at: source)
       found += 1
     }
@@ -102,7 +102,7 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public func validateCollections(favorites: FavoritesProvider, tags: TagsProvider) {
     guard let collection else { fatalError("logic error -- nil collection") }
-    os_log(.debug, log: log, "validateCollections")
+    log.debug("validateCollections")
     favorites.validate(self)
     tags.validate()
     for soundFont in collection.soundFonts {
@@ -199,7 +199,7 @@ extension SoundFontsManager: SoundFontsProvider {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
-    os_log(.debug, log: log, "updatePreset - %{public}s %{public}s", preset.originalName, config.name)
+    log.debug("updatePreset - \(preset.originalName) \(config.name)")
     preset.presetConfig = config
     notify(.presetChanged(font: soundFont, index: soundFontAndPreset.presetIndex))
   }
@@ -208,16 +208,11 @@ extension SoundFontsManager: SoundFontsProvider {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
-    os_log(.debug, log: log, "setVisibility - %{public}s %d - %d", soundFontAndPreset.soundFontKey.uuidString,
-           soundFontAndPreset.presetIndex, isVisible)
     preset.presetConfig.isHidden = !isVisible
   }
 
   public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
-    os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
-           soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.presetIndex,
-           delay?.description ?? "nil", reverb?.description ?? "nil")
     defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     preset.presetConfig.delayConfig = delay
@@ -249,11 +244,11 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public func removeBundled() {
     guard let collection else { fatalError("logic error -- nil collection") }
-    os_log(.debug, log: log, "removeBundled")
+    log.debug("removeBundled")
     defer { markCollectionChanged() }
     for url in SF2Files.allResources {
       if let index = collection.index(of: url) {
-        os_log(.debug, log: log, "removing %{public}s", url.absoluteString)
+        log.debug("removing \(url.absoluteString)")
         guard let soundFont = collection.remove(index) else { return }
         notify(.removed(old: index, font: soundFont))
       }
@@ -262,10 +257,10 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public func restoreBundled() {
     guard let collection else { fatalError("logic error -- nil collection") }
-    os_log(.debug, log: log, "restoreBundled")
+    log.debug("restoreBundled")
     defer { markCollectionChanged() }
     for url in SF2Files.allResources where collection.index(of: url) == nil {
-      os_log(.debug, log: log, "restoring %{public}s", url.absoluteString)
+      log.debug("restoring \(url.absoluteString)")
       if let soundFont = Self.addFromBundle(url: url) {
         let index = collection.add(soundFont)
         notify(.added(new: index, font: soundFont))
@@ -295,14 +290,11 @@ extension SoundFontsManager: SoundFontsProvider {
     let source = fm.sharedDocumentsDirectory.appendingPathComponent(name)
     let destination = fm.localDocumentsDirectory.appendingPathComponent(name)
     do {
-      os_log(.debug, log: Self.log, "removing '%{public}s' if it exists", destination.path)
       try? fm.removeItem(at: destination)
-      os_log(
-        .debug, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
       try fm.copyItem(at: source, to: destination)
       return true
     } catch let error as NSError {
-      os_log(.error, log: Self.log, "%{public}s", error.localizedDescription)
+      log.error("\(error.localizedDescription, privacy: .public)")
     }
     return false
   }
@@ -329,15 +321,10 @@ extension SoundFontsManager: SoundFontsProvider {
 
       let destination = fm.localDocumentsDirectory.appendingPathComponent(stripped)
       do {
-        os_log(.debug, log: Self.log, "removing '%{public}s' if it exists", destination.path)
         try? fm.removeItem(at: destination)
-        os_log(
-          .debug, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path,
-          destination.path)
         try fm.copyItem(at: source, to: destination)
         good += 1
-      } catch let error as NSError {
-        os_log(.error, log: Self.log, "%{public}s", error.localizedDescription)
+      } catch {
         bad += 1
       }
     }
@@ -407,12 +394,12 @@ extension SoundFontsManager {
    */
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
-    os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
+    log.debug("markCollectionChanged - \(collection.description, privacy: .public)")
     observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {
-    os_log(.debug, log: log, "restored")
+    log.debug("restored")
     notify(.restored)
     markCollectionChanged()
   }

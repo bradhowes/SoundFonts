@@ -12,7 +12,7 @@ private let notificationQueue = DispatchQueue.global(qos: notificationQueueQoS.q
  on the `main` thread.
  */
 public class SubscriptionManager<Event: CustomStringConvertible> {
-  private let log = Logging.logger("SubscriptionManager")
+  private let log: Logger = Logging.logger("SubscriptionManager")
 
   /// The type of function / closure that is used to subscribe to a subscription manager
   public typealias NotifierProc = (Event) -> Void
@@ -90,7 +90,7 @@ public class SubscriptionManager<Event: CustomStringConvertible> {
    */
   @discardableResult
   public func notify(_ event: Event) -> Int {
-    os_log(.debug, log: log, "notify BEGIN - %{public}s", event.description)
+    log.debug("notify BEGIN - \(event.description, privacy: .public)")
     if cacheEvent { lastEvent = event }
     return subscriptionsQueue.sync {
       subscriptions.values.forEach { closure in

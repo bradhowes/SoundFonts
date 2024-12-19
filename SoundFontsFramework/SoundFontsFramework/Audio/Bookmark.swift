@@ -7,8 +7,8 @@ import os.log
 /// without making a copy of them. However there are risks involved, namely that the bookmark may not resolve to a real
 /// file.
 final class Bookmark: Codable {
-  private static let log = Logging.logger("Bookmark")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("Bookmark")
+  private var log: Logger { Self.log }
 
   /// The custom coding keys for a bookmark encoding
   enum CodingKeys: String, CodingKey {
@@ -58,8 +58,7 @@ final class Bookmark: Codable {
     lastRestoredUrl = nil
     lastRestoredWhen = 0
 
-    os_log(.debug, log: log, "name: %{public}s data.count: %d url: %{public}s",
-           name, bookmark?.count ?? 0, url.absoluteString)
+    log.debug("name: \(name, privacy: .public) data.count: \(self.bookmark?.count ?? 0) url: \(url.absoluteString, privacy: .public)")
   }
 
   /**
@@ -167,15 +166,15 @@ extension Bookmark {
 
   private static func resolve(from data: Data?) -> (url: URL?, stale: Bool) {
     // let timestamp = Int(Date().timeIntervalSince1970)
-    // os_log(.debug, log: log, "%d - resolve: data.count: %d", timestamp, data?.count ?? 0)
+    // log.debug("%d - resolve: data.count: %d", timestamp, data?.count ?? 0)
     guard let data = data else { return (url: nil, stale: false) }
     do {
       var isStale = false
       let url = try URL(resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &isStale)
-      // os_log(.info, log: log, "resolved - isStale: %d url: %{public}s", isStale, url.absoluteString)
+      // log.info("resolved - isStale: %d url: %{public}s", isStale, url.absoluteString)
       return (url: url, stale: isStale)
     } catch {
-      // os_log(.info, log: log, "failed to resolve - %{public}s", error.localizedDescription)
+      // log.info("failed to resolve - %{public}s", error.localizedDescription)
       return (url: nil, stale: false)
     }
   }

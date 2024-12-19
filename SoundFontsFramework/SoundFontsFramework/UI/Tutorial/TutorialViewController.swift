@@ -2,8 +2,8 @@ import UIKit
 import os
 
 public final class TutorialViewController: UIViewController {
-  private static let log = Logging.logger("TutorialViewController")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("TutorialViewController")
+  private var log: Logger { Self.log }
 
   private static let changesDisabled = false
 
@@ -14,7 +14,7 @@ public final class TutorialViewController: UIViewController {
    Create a new TutorialViewController to show the tutorial.
    */
   public static func instantiate() -> UIViewController? {
-    os_log(.debug, log: log, "instantiate")
+    log.debug("instantiate")
     let viewControllers = createViewControllers()
     return viewControllers?.0
   }
@@ -24,7 +24,7 @@ public final class TutorialViewController: UIViewController {
     let viewController = storyboard.instantiateInitialViewController()
     guard let vc = viewController as? UINavigationController,
           let top = vc.topViewController as? TutorialViewController else {
-      os_log(.error, log: log, "problem instantiating TutorialViewController from storyboard")
+      log.error("problem instantiating TutorialViewController from storyboard")
       return nil
     }
 
@@ -38,9 +38,9 @@ public final class TutorialViewController: UIViewController {
    @param changes optional collection of changes that this version contains over past ones
    */
   public static func instantiateChanges(_ changes: [String]) -> UIViewController? {
-    os_log(.debug, log: log, "instantiate - %d", changes.count)
+    log.debug("instantiate - \(changes.count)")
     guard !changes.isEmpty else {
-      os_log(.debug, log: log, "nothing to show")
+      log.debug("nothing to show")
       return nil
     }
 
@@ -55,7 +55,7 @@ public final class TutorialViewController: UIViewController {
   }
 
   override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    os_log(.debug, log: log, "prepare")
+    log.debug("prepare")
     if let vc = segue.destination as? TutorialContentPagerViewController {
       vc.changes = stagedChanges
       stagedChanges = nil

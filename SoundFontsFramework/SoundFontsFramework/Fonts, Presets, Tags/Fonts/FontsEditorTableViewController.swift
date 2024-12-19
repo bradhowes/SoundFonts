@@ -6,7 +6,7 @@ import os
 /**
  */
 final class FontsEditorTableViewController: UITableViewController {
-  private lazy var log = Logging.logger("FontsEditorTableViewController")
+  private lazy var log: Logger = Logging.logger("FontsEditorTableViewController")
 
   /**
    Configuration for the controller that is passed to it via the segue that makes it appear.
@@ -45,7 +45,7 @@ final class FontsEditorTableViewController: UITableViewController {
   }
 
   override func viewWillDisappear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillDisappear")
+    log.debug("viewWillDisappear")
     self.trashButton.isEnabled = false
     self.selectedRows.removeAll()
     tableView.reloadData()

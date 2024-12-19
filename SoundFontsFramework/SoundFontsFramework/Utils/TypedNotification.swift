@@ -6,7 +6,7 @@ import os
 /// Typed notification definition. Template argument defines the type of a value that will be transmitted in the
 /// notification userInfo["value"] slot. This value will be available to blocks registered to receive it
 open class TypedNotification<ValueType: CustomStringConvertible> {
-  private let log = Logging.logger("TypedNotification")
+  private let log: Logger = Logging.logger("TypedNotification")
 
   /// The name of the notification
   public let name: Notification.Name
@@ -31,7 +31,7 @@ open class TypedNotification<ValueType: CustomStringConvertible> {
    - parameter value: the value to forward to the observers
    */
   open func post(value: ValueType) {
-    os_log(.debug, log: log, "post")
+    log.debug("post")
     NotificationCenter.default.post(name: name, object: nil, userInfo: ["value": value])
   }
 

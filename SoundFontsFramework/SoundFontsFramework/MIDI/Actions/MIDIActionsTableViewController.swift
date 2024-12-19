@@ -9,7 +9,7 @@ import MorkAndMIDI
  A table view that shows the assignments of SoundFont actions to MIDI controllers.
  */
 final class MIDIActionsTableViewController: UITableViewController {
-  private lazy var log = Logging.logger("MIDIActionsTableViewController")
+  private lazy var log: Logger = Logging.logger("MIDIActionsTableViewController")
 
   private var midiEventRouter: MIDIEventRouter!
   private var monitorToken: NotificationObserver?

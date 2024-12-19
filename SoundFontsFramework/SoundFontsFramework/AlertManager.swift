@@ -61,7 +61,7 @@ private final class AlertOperation: Operation, @unchecked Sendable {
 /// will queue until it is their turn to be shown. Although this works, there is the risk of annoying the user with a
 /// crapload of alerts because of some catastrophic failure.
 public final class AlertManager {
-  private let log = Logging.logger("AlertManager")
+  private let log: Logger = Logging.logger("AlertManager")
 
   private let queue: OperationQueue = OperationQueue()
   private weak var presenter: UIViewController?
@@ -89,7 +89,7 @@ public final class AlertManager {
   }
 
   private func notify(_ notification: Notification) {
-    os_log(.debug, log: log, "notify BEGIN - %{public}s", notifications.description)
+    log.debug("notify BEGIN - \(notification.description)")
     let alertConfig: AlertConfig = {
       switch notification.name {
       case .configFileLoadFailure:
@@ -113,9 +113,9 @@ public final class AlertManager {
    */
   func post(alert: AlertConfig) {
     guard let presenter = self.presenter else { return }
-    os_log(.debug, log: log, "post BEGIN")
+    log.debug("post BEGIN")
     queue.addOperation(AlertOperation(alert: alert, presenter: presenter))
-    os_log(.debug, log: log, "post END")
+    log.debug("post END")
   }
 }
 

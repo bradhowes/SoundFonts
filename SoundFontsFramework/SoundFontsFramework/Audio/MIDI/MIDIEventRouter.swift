@@ -9,7 +9,7 @@ import MorkAndMIDI
  and forwards MIDI commands to a synth.
  */
 final class MIDIEventRouter {
-  private lazy var log = Logging.logger("MIDIEventRouter")
+  private lazy var log: Logger = Logging.logger("MIDIEventRouter")
 
   struct ControllerActivityPayload: CustomStringConvertible {
     public var description: String { "\(source) \(controller) \(value)" }
@@ -107,7 +107,7 @@ extension MIDIEventRouter {
       guard let self = self else { return }
       let value = self.settings.midiChannel
       if value != self.channel {
-        os_log(.debug, log: self.log, "new MIDI channel: %d", value)
+        log.debug("new MIDI channel: \(value)")
         self.channel = value
       }
     }
@@ -164,7 +164,7 @@ extension MIDIEventRouter: Receiver {
   }
 
   public func controlChange(source: MIDIUniqueID, controller: UInt8, value: UInt8, channel: UInt8) {
-    os_log(.debug, log: log, "controlCHange: %d - %d", controller, value)
+    log.debug("controlCHange: \(controller) - \(value)")
 
     let midiControllerIndex = Int(controller)
     let controllerState = midiControllerState[midiControllerIndex]
@@ -195,12 +195,12 @@ extension MIDIEventRouter: Receiver {
 
   public func programChange(source: MIDIUniqueID, program: UInt8, channel: UInt8) {
     synth?.programChange(program: program)
-    os_log(.debug, log: log, "programChange: %d", program)
+    log.debug("programChange: \(program)")
   }
 
   public func programChange2(source: MIDIUniqueID, program: UInt8, bank: UInt16, channel: UInt8) {
     synth?.programChange(program: program)
-    os_log(.debug, log: log, "programChange: %d", program)
+    log.debug("programChange: \(program)")
   }
 
   public func channelPressure(source: MIDIUniqueID, pressure: UInt8, channel: UInt8) {
@@ -213,7 +213,7 @@ extension MIDIEventRouter: Receiver {
 
   public func pitchBendChange(source: MIDIUniqueID, value: UInt16, channel: UInt8) {
     synth?.pitchBendChange(value: value)
-    os_log(.debug, log: log, "pitchBendChange: %d", value)
+    log.debug("pitchBendChange: \(value)")
   }
 
   public func pitchBendChange2(source: MIDIUniqueID, value: UInt32, channel: UInt8) {

@@ -7,8 +7,8 @@ import os
 
 /// Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
 public final class SoundFont: Codable {
-  private static let log = Logging.logger("SoundFont")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("SoundFont")
+  private var log: Logger { Self.log }
 
   /// Presentation name of the sound font
   var displayName: String
@@ -93,15 +93,15 @@ extension SoundFont {
 
   public static func makeSoundFont(from url: URL,
                                    copyFilesWhenAdding: Bool) -> Result<SoundFont, SoundFontFileLoadFailure> {
-    os_log(.debug, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
+    log.debug("makeSoundFont - '\(url.lastPathComponent, privacy: .public)'")
 
     guard let info = SoundFontInfo.load(viaParser: url) else {
-      os_log(.error, log: log, "failed to process SF2 file")
+      log.error("failed to process SF2 file")
       return .failure(.invalidFile(url.lastPathComponent))
     }
 
     guard !info.presets.isEmpty else {
-      os_log(.error, log: log, "failed to locate any presets")
+      log.error("failed to locate any presets")
       return .failure(.invalidFile(url.lastPathComponent))
     }
 
@@ -120,7 +120,7 @@ extension SoundFont {
       do {
         try copyToAppFolder(source: url, destination: soundFont.fileURL)
       } catch {
-        os_log(.error, log: log, "failed to create file")
+        log.error("failed to create file")
         return .failure(.unableToCreateFile(url.lastPathComponent))
       }
     }
@@ -129,8 +129,8 @@ extension SoundFont {
   }
 
   private static func copyToAppFolder(source: URL, destination: URL) throws {
-    os_log(.debug, log: log, "SF2 source: '%{public}s'", source.absoluteString)
-    os_log(.debug, log: log, "SF2 destination: '%{public}s'", destination.absoluteString)
+    log.debug("SF2 source: '\(source.absoluteString, privacy: .public)'")
+    log.debug("SF2 destination: '\(destination.absoluteString, privacy: .public)'")
     let secured = source.startAccessingSecurityScopedResource()
     defer { if secured { source.stopAccessingSecurityScopedResource() } }
     try FileManager.default.copyItem(at: source, to: destination)
@@ -172,11 +172,11 @@ extension SoundFont {
       if let tag = tags.getBy(key: tagKey) {
         if tag.name == "All" || tag.name == "Built-in" {
           invalidTags.append(tagKey)
-          os_log(.error, log: log, "removing stock tag %{public}s", tag.name)
+          log.error("removing stock tag \(tag.name, privacy: .public)")
         }
       } else {
         invalidTags.append(tagKey)
-        os_log(.error, log: log, "tag %{public}s does not exist", tagKey.uuidString)
+        log.error("tag \(tagKey.uuidString, privacy: .public)")
       }
     }
 

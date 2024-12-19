@@ -2,9 +2,10 @@
 
 import CoreMIDI
 import MorkAndMIDI
+import os.log
 
 public final class MIDIConnectionMonitor {
-  private lazy var log = Logging.logger("MIDIMonitor")
+  private lazy var log: Logger = Logging.logger("MIDIMonitor")
 
   private let settings: Settings
   private let connectionActivityNotifier = ConnectionActivityNotifier()

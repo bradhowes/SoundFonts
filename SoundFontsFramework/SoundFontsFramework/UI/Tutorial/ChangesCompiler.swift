@@ -2,22 +2,22 @@ import UIKit
 import os
 
 public struct ChangesCompiler {
-  private static let log = Logging.logger("ChangesCompiler")
+  private static let log: Logger = Logging.logger("ChangesCompiler")
 
   public static func compile() -> [String] {
-    os_log(.debug, log: log, "compile changes")
+    log.debug("compile changes")
 
     var entries = [String]()
     let bundle = Bundle(for: TutorialViewController.self)
     guard
       let changeLogUrl = bundle.url(forResource: "Changes", withExtension: "md", subdirectory: nil)
     else {
-      os_log(.error, log: log, "no Changes.md resource found")
+      log.error("no Changes.md resource found")
       return entries
     }
 
     guard let data = try? String(contentsOfFile: changeLogUrl.path, encoding: .utf8) else {
-      os_log(.error, log: log, "failed to read from Changes.md")
+      log.error("failed to read from Changes.md")
       return entries
     }
 
@@ -25,21 +25,21 @@ public struct ChangesCompiler {
       if line.hasPrefix("# ") {
         let version = String(line[line.index(line.startIndex, offsetBy: 2)...])
           .trimmingCharacters(in: .whitespaces)
-        os_log(.debug, log: log, "found version line - '%{public}s'", version)
+        log.debug("found version line - '\(version, privacy: .public)'")
         entries.append("#" + version)
       } else if line.hasPrefix("* ") {
         let entry = String(line[line.index(line.startIndex, offsetBy: 2)...])
           .trimmingCharacters(in: .whitespaces)
-        os_log(.debug, log: log, "entry: '%{public}s'", entry)
+        log.debug("entry: '\(entry, privacy: .public)'")
         entries.append(entry)
       } else if line.hasPrefix(" ") && !entries.isEmpty {
         entries[entries.count - 1] = entries.last! + " " + line.trimmingCharacters(in: .whitespaces)
       } else {
-        os_log(.debug, log: log, "skipping: '%{public}s'", line)
+        log.debug("skipping: '\(line, privacy: .public)'")
       }
     }
 
-    os_log(.debug, log: log, "done - %d", entries.count)
+    log.debug("done - \(entries.count)")
     return entries
   }
 

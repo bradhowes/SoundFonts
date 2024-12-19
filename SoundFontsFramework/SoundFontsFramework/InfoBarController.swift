@@ -7,7 +7,7 @@ import MorkAndMIDI
 /// Manager of the strip informational strip between the keyboard and the SoundFont presets / favorites screens. Supports
 /// left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
 final class InfoBarController: UIViewController {
-  private lazy var log = Logging.logger("InfoBarController")
+  private lazy var log: Logger = Logging.logger("InfoBarController")
 
   @IBOutlet private weak var status: UILabel!
   @IBOutlet private weak var presetInfo: UILabel!
@@ -319,7 +319,7 @@ private extension InfoBarController {
   }
 
   func routerChangedNotificationInBackground(_ event: ComponentContainerEvent) {
-    os_log(.debug, log: log, "routerChangedNotificationInBackground: %{public}s", event.description)
+    log.debug("routerChangedNotificationInBackground: \(event.description, privacy: .public)")
     switch event {
     case .audioEngineAvailable(let audioEngine):
       self.audioEngine = audioEngine
@@ -404,7 +404,7 @@ private extension InfoBarController {
 
   func showActivePreset() {
     let activePresetKind = activePresetManager.active
-    os_log(.debug, log: log, "useActivePresetKind BEGIN - %{public}s", activePresetKind.description)
+    log.debug("useActivePresetKind BEGIN - \(activePresetKind.description, privacy: .public)")
     if activePresetKind.favoriteKey != nil,
        let presetConfig = activePresetManager.activePresetConfig {
       setPresetInfo(presetConfig: presetConfig, isFavored: true)
@@ -417,7 +417,7 @@ private extension InfoBarController {
   }
 
   func setPresetInfo(presetConfig: PresetConfig, isFavored: Bool) {
-    os_log(.debug, log: log, "setPresetInfo: %{public}s %d %f", presetConfig.name, isFavored)
+    log.debug("setPresetInfo: \(presetConfig.name, privacy: .public) - \(isFavored)")
     presetInfo.text = TableCell.favoriteTag(isFavored) + presetConfig.name
     updateTuningIndicator(presetConfig.presetTuning)
     updatePanIndicator(presetConfig.pan)
@@ -426,9 +426,9 @@ private extension InfoBarController {
   }
 
   func updateTuningIndicator(_ presetTuning: Float) {
-    os_log(.debug, log: log, "updateTuningIndicator BEGIN - %f", presetTuning)
+    log.debug("updateTuningIndicator BEGIN - \(presetTuning)")
     tuningIndicator.isHidden = presetTuning == 0.0 && settings.globalTuning == 0.0
-    os_log(.debug, log: log, "updateTuningIndicator END")
+    log.debug("updateTuningIndicator END")
   }
 
   func updatePanIndicator(_ presetPan: Float) {

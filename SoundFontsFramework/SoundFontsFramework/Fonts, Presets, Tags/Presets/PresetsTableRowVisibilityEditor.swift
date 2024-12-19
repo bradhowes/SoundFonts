@@ -7,7 +7,7 @@ import os.log
  Performs the necessary table edits involved before and after visibility editing.
  */
 struct PresetsTableRowVisibilityEditor {
-  private let log = Logging.logger("PresetsTableRowVisibilityEditor")
+  private let log: Logger = Logging.logger("PresetsTableRowVisibilityEditor")
   private(set) var viewSlots: [PresetViewSlot]
   private(set) var sectionRowCounts: [Int]
   private let soundFont: SoundFont
@@ -27,16 +27,13 @@ struct PresetsTableRowVisibilityEditor {
    - returns: the list of indices that were added
    */
   mutating func begin() -> [IndexPath] {
-    os_log(.debug, log: log, "begin BEGIN")
+    log.debug("begin BEGIN")
     var tableViewChanges = [IndexPath]()
     var slotIndex: PresetViewSlotIndex = 0
 
     func processPresetConfig(_ presetConfig: PresetConfig, slotGenerator: () -> PresetViewSlot) {
       guard presetConfig.isVisible == false else { return }
       let indexPath = IndexPath(slotIndex: slotIndex, sectionRowCounts: sectionRowCounts)
-      os_log(.debug, log: log, "calculateVisibilityRowChanges - showing slot %d [%d.%d] '%{public}s'",
-             slotIndex.rawValue, indexPath.section, indexPath.row, presetConfig.name)
-
       viewSlots.insert(slotGenerator(), at: slotIndex.rawValue)
       tableViewChanges.append(indexPath)
       sectionRowCounts[indexPath.section] += 1
@@ -63,7 +60,7 @@ struct PresetsTableRowVisibilityEditor {
    - returns: the list of indices that were removed
    */
   mutating func end() -> [IndexPath] {
-    os_log(.debug, log: log, "end BEGIN")
+    log.debug("end BEGIN")
 
     var tableViewChanges = [IndexPath]()
     var slotIndex: PresetViewSlotIndex = .init(rawValue: viewSlots.count - 1)
@@ -71,8 +68,6 @@ struct PresetsTableRowVisibilityEditor {
     func processPresetConfig(_ presetConfig: PresetConfig) {
       guard presetConfig.isVisible == false else { return }
       let indexPath = IndexPath(slotIndex: slotIndex, sectionRowCounts: sectionRowCounts)
-      os_log(.debug, log: log, "calculateVisibilityRowChanges - hiding slot %d [%d.%d] '%{public}s'",
-             slotIndex.rawValue, indexPath.section, indexPath.row, presetConfig.name)
       viewSlots.remove(at: slotIndex.rawValue)
       tableViewChanges.append(indexPath)
       sectionRowCounts[indexPath.section] -= 1

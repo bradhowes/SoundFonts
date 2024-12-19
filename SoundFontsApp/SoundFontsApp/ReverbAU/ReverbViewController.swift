@@ -5,7 +5,7 @@ import SoundFontsFramework
 import os
 
 public final class ReverbViewController: AUViewController {
-  private let log = Logging.logger("ReverbViewController")
+  private let log: Logger = Logging.logger("ReverbViewController")
   private var audioUnit: ReverbAU?
   private var parameterObserverToken: AUParameterObserverToken?
 
@@ -14,7 +14,7 @@ public final class ReverbViewController: AUViewController {
   @IBOutlet private weak var room: UIPickerView!
 
   public override func viewDidLoad() {
-    os_log(.debug, log: log, "viewDidLoad")
+    log.debug("viewDidLoad")
     super.viewDidLoad()
 
     wetDryMix.minimumValue = 0
@@ -38,7 +38,7 @@ extension ReverbViewController: AUAudioUnitFactory {
   -> AUAudioUnit
   {
     let audioUnit = try ReverbAU(componentDescription: componentDescription)
-    os_log(.debug, log: log, "created ReverbAU")
+    log.debug("created ReverbAU")
     self.audioUnit = audioUnit
     return audioUnit
   }
@@ -57,7 +57,7 @@ extension ReverbViewController: UIPickerViewDelegate {
   public func pickerView(
     _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int
   ) {
-    os_log(.debug, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
+    log.debug("new reverb room: \(ReverbEffect.roomPresets[row].rawValue)")
     setParameter(ReverbAU.Address.roomPreset, AUValue(row))
   }
 

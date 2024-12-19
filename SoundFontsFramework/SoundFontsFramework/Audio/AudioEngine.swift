@@ -15,8 +15,8 @@ public protocol SynthProvider {
  This class manages the actual synth.
  */
 public final class AudioEngine: SynthProvider {
-  private static let log = Logging.logger("AudioEngine")
-  private var log: OSLog { Self.log }
+  private static let log: Logger = Logging.logger("AudioEngine")
+  private var log: Logger { Self.log }
 
   /// The notification that tuning value has changed for the sampler
   static let tuningChangedNotification = TypedNotification<Float>(name: .tuningChanged)
@@ -81,8 +81,6 @@ public final class AudioEngine: SynthProvider {
    */
   init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?,
        midiControllerActionStateManager: MIDIControllerActionStateManager?) {
-    os_log(.debug, log: Self.log, "init BEGIN")
-
     self.mode = mode
     self.activePresetManager = activePresetManager
     self.settings = settings
@@ -111,6 +109,8 @@ public final class AudioEngine: SynthProvider {
     panChangedNotifier = Self.panChangedNotification.registerOnAny(block: setPan(_:))
     pitchBendRangeChangedNotifier = Self.pitchBendRangeChangedNotification.registerOnAny(block: setPitchBendRange)
 
+    log.debug("init BEGIN")
+
     activePresetManager.subscribe(self) { event in
       switch event {
       case .changed: self.pendingPresetLoad()
@@ -118,7 +118,7 @@ public final class AudioEngine: SynthProvider {
       }
     }
 
-    os_log(.debug, log: Self.log, "init END")
+    log.debug("init END")
   }
 }
 
@@ -147,7 +147,7 @@ public extension AudioEngine {
    - returns: Result value indicating success or failure
    */
   func start() -> StartResult {
-    os_log(.debug, log: log, "start BEGIN")
+    log.debug("start BEGIN")
     let synth = makeSynth()
     self._synth = synth
 
@@ -169,7 +169,7 @@ public extension AudioEngine {
       }
     }
 
-    os_log(.debug, log: log, "start END - %{public}s", result.description)
+    log.debug("start END - \(result.description, privacy: .public)")
     return result
   }
 
@@ -177,38 +177,38 @@ public extension AudioEngine {
    Stop the existing audio engine. NOTE: this only applies to the standalone case.
    */
   func stop() {
-    os_log(.debug, log: log, "stop BEGIN")
+    log.debug("stop BEGIN")
     guard mode == .standalone else { fatalError("unexpected `stop` called on audioUnit") }
 
     presetChangeManager.stop()
     midi?.stop()
 
     if let engine = self.engine {
-      os_log(.debug, log: log, "stopping engine")
+      log.debug("stopping engine")
       engine.stop()
       if let synth = self.synth {
-        os_log(.debug, log: log, "resetting sampler")
+        log.debug("resetting sampler")
         synth.stopAllNotes()
-        os_log(.debug, log: log, "detaching sampler")
+        log.debug("detaching sampler")
         engine.detach(synth.avAudioUnit)
-        os_log(.debug, log: log, "dropping sampler")
+        log.debug("dropping sampler")
         self._synth = nil
       }
 
-      os_log(.debug, log: log, "resetting engine")
+      log.debug("resetting engine")
       engine.reset()
-      os_log(.debug, log: log, "dropping engine")
+      log.debug("dropping engine")
       self.engine = nil
     }
 
     if let sampler = self.synth {
-      os_log(.debug, log: log, "resetting sampler")
+      log.debug("resetting sampler")
       sampler.stopAllNotes()
-      os_log(.debug, log: log, "dropping sampler")
+      log.debug("dropping sampler")
       self._synth = nil
     }
 
-    os_log(.debug, log: log, "stop END")
+    log.debug("stop END")
   }
 
   /**
@@ -227,7 +227,7 @@ private extension AudioEngine {
    - parameter presetConfig: the configuration to use
    */
   func applyPresetConfig(_ presetConfig: PresetConfig) {
-    os_log(.debug, log: log, "applyPresetConfig BEGIN")
+    log.debug("applyPresetConfig BEGIN")
 
     if presetConfig.presetTuning != 0.0 {
       setTuning(presetConfig.presetTuning)
@@ -251,25 +251,25 @@ private extension AudioEngine {
     // - Otherwise, if effect was enabled disable it
     if let delay = delayEffect, !settings.delayGlobal {
       if let config = presetConfig.delayConfig {
-        os_log(.debug, log: log, "reverb preset config")
+        log.debug("reverb preset config")
         delay.active = config
       } else if delay.active.enabled {
-        os_log(.debug, log: log, "reverb disabled")
+        log.debug("reverb disabled")
         delay.active = delay.active.setEnabled(false)
       }
     }
 
     if let reverb = reverbEffect, !settings.reverbGlobal {
       if let config = presetConfig.reverbConfig {
-        os_log(.debug, log: log, "delay preset config")
+        log.debug("delay preset config")
         reverb.active = config
       } else if reverb.active.enabled {
-        os_log(.debug, log: log, "delay disabled")
+        log.debug("delay disabled")
         reverb.active = reverb.active.setEnabled(false)
       }
     }
 
-    os_log(.debug, log: log, "applyPresetConfig END")
+    log.debug("applyPresetConfig END")
   }
 
   /**
@@ -278,9 +278,9 @@ private extension AudioEngine {
    - parameter value: the value to set in cents (+/- 2400)
    */
   func setTuning(_ value: Float) {
-    os_log(.debug, log: log, "setTuning BEGIN - %f", value)
+    log.debug("setTuning BEGIN - \(value)")
     synth?.synthGlobalTuning = value
-    os_log(.debug, log: log, "setTuning END")
+    log.debug("setTuning END")
   }
 
   /**
@@ -289,9 +289,9 @@ private extension AudioEngine {
    - parameter value: the value to set
    */
   func setGain(_ value: Float) {
-    os_log(.debug, log: log, "setGain BEGIN - %f", value)
+    log.debug("setGain BEGIN - \(value)")
     synth?.synthGain = value
-    os_log(.debug, log: log, "setGain END")
+    log.debug("setGain END")
   }
 
   /**
@@ -300,9 +300,9 @@ private extension AudioEngine {
    - parameter value: the value to set
    */
   func setPan(_ value: Float) {
-    os_log(.debug, log: log, "setPan BEGIN - %f", value)
+    log.debug("setPan BEGIN - \(value)")
     synth?.synthStereoPan = value
-    os_log(.debug, log: log, "setPan END")
+    log.debug("setPan END")
   }
 
   /**
@@ -311,9 +311,9 @@ private extension AudioEngine {
    - parameter value: range in semitones
    */
   func setPitchBendRange(value: UInt8) {
-    os_log(.debug, log: log, "setPitchBendRange BEGIN - %d", value)
+    log.debug("setPitchBendRange BEGIN - \(value)")
     synth?.setPitchBendRange(value: value)
-    os_log(.debug, log: log, "setPitchBendRange END")
+    log.debug("setPitchBendRange END")
   }
 
   func pendingPresetLoad() {
@@ -336,33 +336,33 @@ private extension AudioEngine {
    - returns: StartResult indicating success or failure
    */
   func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
-    os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
+    log.debug("loadActivePreset BEGIN - \(self.activePresetManager.active.description, privacy: .public)")
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
     guard let synth = _synth else {
-      os_log(.debug, log: log, "no sampler yet")
+      log.debug("no sampler yet")
       return .failure(.noSynth)
     }
 
     guard let soundFont = activePresetManager.activeSoundFont else {
-      os_log(.debug, log: log, "activePresetManager.activeSoundFont is nil")
+      log.debug("activePresetManager.activeSoundFont is nil")
       return .success(synth)
     }
 
     guard let preset = activePresetManager.activePreset else {
-      os_log(.debug, log: log, "activePresetManager.activePreset is nil")
+      log.debug("activePresetManager.activePreset is nil")
       return .success(synth)
     }
 
     let presetConfig = activePresetManager.activePresetConfig
 
-    os_log(.debug, log: log, "requesting preset change - %d", pendingPresetChanges)
+    log.debug("requesting preset change - \(self.pendingPresetChanges)")
 
     // pauseRendering(synth)
 
     presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }
-      os_log(.debug, log: self.log, "request complete - %{public}s", result.description)
+      log.debug("request complete - \(result.description, privacy: .public)")
 
       switch result {
       case .success:
@@ -378,28 +378,28 @@ private extension AudioEngine {
       }
     }
 
-    os_log(.debug, log: log, "loadActivePreset END")
+    log.debug("loadActivePreset END")
     return .success(synth)
   }
 
   func makeSynth() -> AnyMIDISynth { AVAudioUnitSampler() }
 
   func startEngine(_ synth: AnyMIDISynth) -> StartResult {
-    os_log(.debug, log: log, "creating AVAudioEngine")
+    log.debug("creating AVAudioEngine")
     let engine = AVAudioEngine()
     self.engine = engine
 
     let hardwareFormat = engine.outputNode.outputFormat(forBus: 0)
     engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hardwareFormat)
 
-    os_log(.debug, log: log, "attaching sampler")
+    log.debug("attaching sampler")
     engine.attach(synth.avAudioUnit)
 
-    os_log(.debug, log: log, "attaching reverb")
+    log.debug("attaching reverb")
     guard let reverb = reverbEffect?.audioUnit else { fatalError("unexpected nil Reverb") }
     engine.attach(reverb)
 
-    os_log(.debug, log: log, "attaching delay")
+    log.debug("attaching delay")
     guard let delay = delayEffect?.audioUnit else { fatalError("unexpected nil Delay") }
     engine.attach(delay)
 
@@ -408,11 +408,11 @@ private extension AudioEngine {
     engine.connect(delay, to: reverb, format: nil)
     engine.connect(synth.avAudioUnit, to: delay, format: nil)
 
-    os_log(.debug, log: log, "preparing engine for start")
+    log.debug("preparing engine for start")
     engine.prepare()
 
     do {
-      os_log(.debug, log: log, "starting engine")
+      log.debug("starting engine")
       try engine.start()
     } catch let error as NSError {
       return .failure(.engineStarting(error: error))

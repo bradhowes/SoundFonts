@@ -7,7 +7,7 @@ import os
 /// View controller for the effects controls view. Much of this functionality is duplicated in the AUv3 effects
 /// components. Should be refactored and shared between the two.
 final class EffectsController: UIViewController {
-  private lazy var log = Logging.logger("EffectsController")
+  private lazy var log: Logger = Logging.logger("EffectsController")
 
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet private weak var reverbEnabled: UIButton!
@@ -217,7 +217,7 @@ extension EffectsController: UIPickerViewDelegate {
     _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int
   ) {
     guard let reverbEffect = self.reverbEffect else { return }
-    os_log(.debug, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
+    log.debug("new reverb room: \(ReverbEffect.roomPresets[row].rawValue)")
     reverbEffect.active = reverbEffect.active.setPreset(row)
     updatePresetConfig()
   }
@@ -246,7 +246,7 @@ private extension EffectsController {
 
   func updateGlobalConfig() {
     if let reverbEffect = self.reverbEffect, settings.reverbGlobal {
-      os_log(.debug, log: log, "updating global reverb settings")
+      log.debug("updating global reverb settings")
       let config = reverbEffect.active
       settings.reverbEnabled = config.enabled
       settings.reverbPreset = config.preset
@@ -254,7 +254,7 @@ private extension EffectsController {
     }
 
     if let delayEffect = self.delayEffect, settings.delayGlobal {
-      os_log(.debug, log: log, "updating global delay settings")
+      log.debug("updating global delay settings")
       let config = delayEffect.active
       settings.delayEnabled = config.enabled
       settings.delayTime = config.time
@@ -271,41 +271,37 @@ private extension EffectsController {
       return
     }
 
-    os_log(.debug, log: log, "updatePresetConfig")
+    log.debug("updatePresetConfig")
 
     let reverbConfig: ReverbConfig? = {
       if settings.reverbGlobal {
-        os_log(.debug, log: log, "updating global reverb")
+        log.debug("updating global reverb")
         return activePresetManager.activePresetConfig?.reverbConfig
       } else if reverbEffect.active.enabled {
-        os_log(.debug, log: log, "updating preset reverb")
+        log.debug("updating preset reverb")
         return reverbEffect.active
       } else {
-        os_log(.debug, log: log, "nil reverb preset")
+        log.debug("nil reverb preset")
         return nil
       }
     }()
 
     let delayConfig: DelayConfig? = {
       if settings.delayGlobal {
-        os_log(.debug, log: log, "updating global delay")
+        log.debug("updating global delay")
         return activePresetManager.activePresetConfig?.delayConfig
       } else if delayEffect.active.enabled {
-        os_log(.debug, log: log, "updating preset delay")
+        log.debug("updating preset delay")
         return delayEffect.active
       } else {
-        os_log(.debug, log: log, "nil delay preset")
+        log.debug("nil delay preset")
         return nil
       }
     }()
 
     if let favorite = activePresetManager.activeFavorite {
-      os_log(.debug, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
-             delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
     } else if let soundFontAndPreset = activePresetManager.active.soundFontAndPreset {
-      os_log(.debug, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
-             delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig)
     }
 
@@ -329,29 +325,29 @@ private extension EffectsController {
   }
 
   func updateState() {
-    os_log(.debug, log: log, "updateState")
+    log.debug("updateState")
     let presetConfig = activePresetManager.activePresetConfig
 
     reverbGlobal.showEnabled(settings.reverbGlobal)
     if settings.reverbGlobal {
-      os_log(.debug, log: log, "showing global reverb state")
+      log.debug("showing global reverb state")
       let config = ReverbConfig(settings: settings)
       update(config: config)
     } else {
       guard let reverbEffect = self.reverbEffect else { return }
       let config = presetConfig?.reverbConfig ?? reverbEffect.active.setEnabled(false)
-      os_log(.debug, log: log, "showing preset reverb state - %{public}s", config.description)
+      log.debug("showing preset reverb state - \(config.description, privacy: .public)")
       update(config: config)
     }
 
     delayGlobal.showEnabled(settings.delayGlobal)
     if settings.delayGlobal {
-      os_log(.debug, log: log, "showing global delay state")
+      log.debug("showing global delay state")
       update(config: DelayConfig(settings: settings))
     } else {
       guard let delayEffect = self.delayEffect else { return }
       let config = presetConfig?.delayConfig ?? delayEffect.active.setEnabled(false)
-      os_log(.debug, log: log, "showing preset delay state - %{public}s", config.description)
+      log.debug("showing preset delay state - \(config.description, privacy: .public)")
       update(config: config)
     }
   }
@@ -359,7 +355,7 @@ private extension EffectsController {
   func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
   func update(config: ReverbConfig) {
-    os_log(.debug, log: log, "update ReverbConfig - %{public}s", config.description)
+    log.debug("update ReverbConfig - \(config.description, privacy: .public)")
     reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
     reverbWetDryMix.setValue(config.wetDryMix, animated: true)
     showReverbMixValue()
@@ -367,7 +363,7 @@ private extension EffectsController {
   }
 
   func updateReverbState(_ enabled: Bool) {
-    os_log(.debug, log: log, "updateReverbState - %d", enabled)
+    log.debug("updateReverbState - \(enabled)")
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.reverbEnabled.accessibilityLabel = enabled ? "DisableReverbEffect" : "EnableReverbEffect"
     animator.addAnimations {
@@ -384,7 +380,7 @@ private extension EffectsController {
   }
 
   func update(config: DelayConfig) {
-    os_log(.debug, log: log, "update DelayConfig - %{public}s", config.description)
+    log.debug("update DelayConfig - \(config.description, privacy: .public)")
     delayTime.setValue(config.time, animated: true)
     showDelayTimeValue()
     delayFeedback.setValue(config.feedback, animated: true)
@@ -397,7 +393,7 @@ private extension EffectsController {
   }
 
   func updateDelayState(_ enabled: Bool) {
-    os_log(.debug, log: log, "updateDelayState - %d", enabled)
+    log.debug("updateDelayState - \(enabled)")
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.delayEnabled.accessibilityLabel = enabled ? "DisableDelayEffect" : "EnableDelayEffect"
     animator.addAnimations {

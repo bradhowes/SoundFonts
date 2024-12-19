@@ -19,4 +19,8 @@ public struct Logging {
   public static func logger(_ category: String) -> OSLog {
     OSLog(subsystem: subsystem, category: category)
   }
+
+  public static func logger(_ category: String) -> Logger {
+    .init(subsystem: subsystem, category: category)
+  }
 }
