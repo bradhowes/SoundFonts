@@ -63,6 +63,8 @@ final class MainViewController: UIViewController {
       if !settings.showedTutorial {
         showTutorial()
         settings.showedTutorial = true
+        // Don't annoy first-time users with 'change' sheet.
+        settings.showedChanges = Bundle.main.releaseVersionNumber
       } else {
         showChanges()
       }

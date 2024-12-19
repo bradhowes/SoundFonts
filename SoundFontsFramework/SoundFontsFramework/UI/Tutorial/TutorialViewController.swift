@@ -5,10 +5,8 @@ public final class TutorialViewController: UIViewController {
   private static let log: Logger = Logging.logger("TutorialViewController")
   private var log: Logger { Self.log }
 
-  private static let changesDisabled = false
-
   // Temporary holding area for changes until the segue for the TutorialContentPagerViewController fires
-  private var stagedChanges: [String]?
+  public private(set) var stagedChanges: [String]?
 
   /**
    Create a new TutorialViewController to show the tutorial.
@@ -44,21 +42,20 @@ public final class TutorialViewController: UIViewController {
       return nil
     }
 
-    if changesDisabled { return nil }
     let viewControllers = createViewControllers()
     viewControllers?.1.stagedChanges = changes
     return viewControllers?.0
   }
 
   @IBAction func doneButtonPressed(_ sender: Any) {
-    dismiss(animated: true)
+    presentingViewController?.dismiss(animated: true)
   }
 
   override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     log.debug("prepare")
     if let vc = segue.destination as? TutorialContentPagerViewController {
       vc.changes = stagedChanges
-      stagedChanges = nil
+      // stagedChanges = nil
     }
     super.prepare(for: segue, sender: sender)
   }
