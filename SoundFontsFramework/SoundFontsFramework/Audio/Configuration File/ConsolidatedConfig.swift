@@ -52,3 +52,11 @@ extension ConsolidatedConfig {
   /// Custom description for the instance
   override public var description: String { "<Config \(soundFonts), \(favorites), \(tags)>" }
 }
+
+extension Encodable {
+  func encoded() throws -> Data { try PropertyListEncoder().encode(self) }
+}
+
+extension Data {
+  func decoded<T: Decodable>() throws -> T { try PropertyListDecoder().decode(T.self, from: self) }
+}

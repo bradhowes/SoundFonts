@@ -12,6 +12,7 @@ where T: ControllerConfiguration {
 
   private let accessQueue = DispatchQueue(label: "ComponentsQueue", qos: .background, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .background))
+  public static var configurationFileURL: URL { FileManager.default.sharedPath(for: "Consolidated.plist") }
   public let settings: Settings
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigProvider: ConsolidatedConfigProvider
@@ -99,7 +100,7 @@ where T: ControllerConfiguration {
     self.inApp = inApp
     self.settings = Settings()
 
-    self.consolidatedConfigProvider = .init(inApp: inApp)
+    self.consolidatedConfigProvider = .init(inApp: inApp, fileURL: Self.configurationFileURL)
 
     if inApp {
       self.askForReview = .init(settings: settings)
@@ -157,6 +158,7 @@ where T: ControllerConfiguration {
     mvc.children.forEach { processChildController($0) }
     validate()
     establishConnections()
+    self.consolidatedConfigProvider.load()
   }
 
   /**

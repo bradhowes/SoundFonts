@@ -80,7 +80,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     os_log(.debug, log: log, "applicationWillResignActive")
     if !components.settings.backgroundMIDIProcessingEnabled {
       components.mainViewController.stopAudio()
-      NotificationCenter.default.post(Notification(name: .appResigningActive))
     }
   }
 

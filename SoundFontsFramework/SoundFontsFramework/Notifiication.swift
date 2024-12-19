@@ -11,8 +11,6 @@ extension Notification.Name {
   public static let showChanges = Notification.Name("showChanges")
   /// Notification to show the tutorial screen
   public static let showTutorial = Notification.Name("showTutorial")
-  /// Notification that app is resigning active state
-  public static let appResigningActive = Notification.Name("appResigningActive")
 
   /// Notification to check if now is a good time to ask for a review of the app
   static let askForReview = Notification.Name(rawValue: "askForReview")
@@ -36,8 +34,10 @@ extension Notification.Name {
   static let panChanged = Notification.Name("panChanged")
   /// Notification that the synth pitch-bend range should changed
   static let pitchBendRangeChanged = Notification.Name("pitchBendRangeChanged")
+  /// Config file changed since last time it was read
+  static let configFileChanged = Notification.Name("configFileChanged")
   /// Failed to load the consolidated config file
-  static let configLoadFailure = Notification.Name("configLoadFailure")
+  static let configFileLoadFailure = Notification.Name("configFileLoadFailure")
   /// Notification that the effects view is appearing.
   static let showingEffects = Notification.Name("showingEffects")
   /// Notification that the effects view is going away.

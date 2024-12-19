@@ -67,7 +67,7 @@ public final class AlertManager {
   private weak var presenter: UIViewController?
   private var observers: [NSObjectProtocol] = []
   private let notifications: [Notification.Name] = [
-    .configLoadFailure,
+    .configFileLoadFailure,
     .soundFontsCollectionOrphans,
     .soundFontFileAccessDenied,
     .synthStartFailure
@@ -92,7 +92,7 @@ public final class AlertManager {
     os_log(.debug, log: log, "notify BEGIN - %{public}s", notifications.description)
     let alertConfig: AlertConfig = {
       switch notification.name {
-      case .configLoadFailure:
+      case .configFileLoadFailure:
         return configLoadFailureAlert()
       case .soundFontsCollectionOrphans:
         return soundFontsCollectionOrphansAlert(count: notification.intObject)
