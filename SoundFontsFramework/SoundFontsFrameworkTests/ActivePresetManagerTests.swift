@@ -42,7 +42,7 @@ class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFontsProvider {
   
   func validateCollections(favorites: FavoritesProvider, tags: TagsProvider) {}
 
-  func getBy(index: Int) -> SoundFont { collection[index] }
+  func getBy(index: Int) -> SoundFont? { collection[index] }
 
   func firstIndex(of: SoundFont.Key) -> Int? { collection.firstIndex { $0.key == of } }
   func getBy(key: SoundFont.Key) -> SoundFont? { collection.first { $0.key == key } }
@@ -81,7 +81,7 @@ class FavoritesMock: SubscriptionManager<FavoritesEvent>, FavoritesProvider {
   var count: Int { favorites.count }
   func contains(key: Favorite.Key) -> Bool { false }
   func index(of favorite: Favorite.Key) -> Int? { fatalError() }
-  func getBy(index: Int) -> Favorite { fatalError() }
+  func getBy(index: Int) -> Favorite? { fatalError() }
   func getBy(key: Favorite.Key) -> Favorite? { favorites[0] }
   func add(favorite: Favorite) { fatalError() }
   func beginEdit(config: FavoriteEditor.Config) { fatalError() }

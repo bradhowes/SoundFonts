@@ -4,6 +4,7 @@ import XCTest
 
 @testable import SoundFontsFramework
 
+// swiftlint:disable force_unwrapping
 class SoundFontLibraryPListTest: XCTestCase {
 
   func testDecodingLegacyConfigurationFiles() {
@@ -17,16 +18,16 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(soundFonts.count, 9)
 
     let soundFont = soundFonts.getBy(index: 0)
-    XCTAssertEqual(soundFont.displayName, "Dirtelec")
-    XCTAssertEqual(soundFont.embeddedName, "User Define Bank")
-    XCTAssertEqual(soundFont.presets.count, 1)
-    XCTAssertEqual(soundFont.key.uuidString, "00180D06-F33A-4164-A04F-D57CC25B6893")
+    XCTAssertEqual(soundFont?.displayName, "Dirtelec")
+    XCTAssertEqual(soundFont?.embeddedName, "User Define Bank")
+    XCTAssertEqual(soundFont?.presets.count, 1)
+    XCTAssertEqual(soundFont?.key.uuidString, "00180D06-F33A-4164-A04F-D57CC25B6893")
 
-    let preset = soundFont.presets[0]
-    XCTAssertEqual(preset.originalName, "Dirty Elec Organ")
-    XCTAssertEqual(preset.soundFontIndex, 0)
-    XCTAssertEqual(preset.bank, 0)
-    XCTAssertEqual(preset.program, 0)
+    let preset = soundFont?.presets[0]
+    XCTAssertEqual(preset?.originalName, "Dirty Elec Organ")
+    XCTAssertEqual(preset?.soundFontIndex, 0)
+    XCTAssertEqual(preset?.bank, 0)
+    XCTAssertEqual(preset?.program, 0)
 
     let favorites: FavoriteCollection = {
       let bundle = Bundle(for: type(of: self))
@@ -110,9 +111,9 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertTrue(tags.isRestored)
 
     let tag = tags.getBy(index: 0)
-    XCTAssertEqual("One", tag.name)
+    XCTAssertEqual("One", tag?.name)
 
-    let filtered = soundFonts.filtered(by: tag.key)
+    let filtered = soundFonts.filtered(by: tag!.key)
     XCTAssertEqual(1, filtered.count)
     let sf = soundFonts.getBy(key: filtered[0])
     XCTAssertNotNil(sf)
@@ -134,3 +135,4 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertTrue(resolved1 === resolved2)
   }
 }
+// swiftlint:enable force_unwrapping

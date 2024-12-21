@@ -38,7 +38,7 @@ final class KeyboardController: UIViewController {
   private var panPending: CGFloat = 0.0
 
   private var keyLabelOption: KeyLabelOption {
-    get { KeyLabelOption(rawValue: settings.keyLabelOption)! }
+    get { KeyLabelOption(rawValue: settings.keyLabelOption) ?? .off }
     set { _ = newValue; allKeys.forEach { $0.setNeedsDisplay() } }
   }
 

@@ -32,7 +32,10 @@ final class FavoritesViewController: UIViewController, FavoritesViewManager {
 
   private var monitorActionActivity: NotificationObserver?
 
-  private let cellFont = UIFont(name: "EurostileRegular", size: 20)!
+  private lazy var cellFont = {
+    guard let font = UIFont(name: "EurostileRegular", size: 20) else { fatalError("Failed to load font") }
+    return font
+  }()
 }
 
 extension FavoritesViewController {
@@ -173,9 +176,12 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let favorite = favorites.getBy(index: indexPath.item)
-    return CGSize(width: favorite.presetConfig.name.size(
-      withAttributes: [NSAttributedString.Key.font: cellFont]).width + 25, height: 30)
+    if let favorite = favorites.getBy(index: indexPath.item) {
+      return CGSize(width: favorite.presetConfig.name.size(
+        withAttributes: [NSAttributedString.Key.font: cellFont]).width + 25, height: 30)
+    }
+    self.log.error("Invalid favorite index \(indexPath.item)")
+    return .zero
   }
 }
 
@@ -331,7 +337,7 @@ private extension FavoritesViewController {
   @objc func editFavorite(_ recognizer: UITapGestureRecognizer) {
     let pos = recognizer.location(in: view)
     guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
-    let favorite = favorites.getBy(index: indexPath.item)
+    guard let favorite = favorites.getBy(index: indexPath.item) else { return }
     guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
 
     if activePresetManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
@@ -389,7 +395,11 @@ private extension FavoritesViewController {
   }
 
   @discardableResult
-  func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
+  func update(cell: FavoriteCell, with favorite: Favorite?) -> FavoriteCell {
+    guard let favorite else {
+      self.log.error("Favorite is nil -- not good!")
+      return cell
+    }
     let isActive = favorite == activePresetManager.activeFavorite
     cell.update(favoriteName: favorite.presetConfig.name, isActive: isActive)
     return cell

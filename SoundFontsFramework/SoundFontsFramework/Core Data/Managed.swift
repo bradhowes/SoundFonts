@@ -39,7 +39,7 @@ extension Managed {
 
 extension Managed where Self: NSManagedObject {
 
-  public static var entityName: String { entity().name! }
+  public static var entityName: String { entity().name ?? "!!!" }
 
   /**
    Create a fetch request and execute it.

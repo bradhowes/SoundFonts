@@ -74,9 +74,10 @@ extension FontsEditorTableViewController {
       self.selectedRows.remove(indexPath.row)
     } else {
       self.selectedRows.insert(indexPath.row)
-      let font = fonts.getBy(index: indexPath.row)
-      if !font.kind.installed {
-        notifyAboutBuiltinFonts()
+      if let font = fonts.getBy(index: indexPath.row) {
+        if !font.kind.installed {
+          notifyAboutBuiltinFonts()
+        }
       }
     }
 
@@ -176,7 +177,7 @@ private extension FontsEditorTableViewController {
   }
 
   private func doDelete() {
-    let keys = selectedRows.map { fonts.getBy(index: $0).key }
+    let keys = selectedRows.compactMap { fonts.getBy(index: $0)?.key }
     tableView.performBatchUpdates {
       for key in keys {
         guard let font = fonts.getBy(key: key) else { continue }
@@ -194,7 +195,7 @@ private extension FontsEditorTableViewController {
   }
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-    let font = fonts.getBy(index: indexPath.row)
+    guard let font = fonts.getBy(index: indexPath.row) else { return cell }
 
     // Show the normal name view
     cell.name.isHidden = false

@@ -169,8 +169,9 @@ extension TagsEditorTableViewController {
       return
     }
 
-    if selectable {
-      let tagKey = tags.getBy(index: indexPath.row).key
+    if selectable,
+       let tag = tags.getBy(index: indexPath.row) {
+      let tagKey = tag.key
       if !Tag.stockTagSet.contains(tagKey) {
         if active.contains(tagKey) {
           active.remove(tagKey)
@@ -192,7 +193,8 @@ extension TagsEditorTableViewController {
   override func tableView(_ tableView: UITableView,
                           editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     // Do not allow the `All` tag and the `Built-in` tags to be edited.
-    Tag.stockTagSet.contains(tags.getBy(index: indexPath.row).key) ? .none : .delete
+    guard let tag = tags.getBy(index: indexPath.row) else { return .none }
+    return Tag.stockTagSet.contains(tag.key) ? .none : .delete
   }
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -247,11 +249,11 @@ private extension TagsEditorTableViewController {
     guard case .doneEditing = currentAction,
           let indexPath = self.tableView.indexPathForRow(at: sender.location(in: tableView)),
           sender.state == .began,
-          !Tag.stockTagSet.contains(tags.getBy(index: indexPath.row).key)
+          let tag = tags.getBy(index: indexPath.row),
+          !Tag.stockTagSet.contains(tag.key)
     else {
       return
     }
-
     startEditingName(indexPath, selected: false)
   }
 
@@ -327,15 +329,16 @@ private extension TagsEditorTableViewController {
     if let text = cell.tagEditor.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
       log.debug("new tag name: '\(text, privacy: .public)'")
       tags.rename(indexPath.row, name: text)
-      let tag = tags.getBy(index: indexPath.row)
-      active.insert(tag.key)
+      if let tag = tags.getBy(index: indexPath.row) {
+        active.insert(tag.key)
+      }
       tableView.reloadRows(at: [indexPath], with: .automatic)
       cell.tagEditor.resignFirstResponder()
     }
   }
 
   func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-    let tag = tags.getBy(index: indexPath.row)
+    guard let tag = tags.getBy(index: indexPath.row) else { return cell }
 
     if case let .editTagName(editIndexPath, selected) = currentAction, editIndexPath == indexPath {
 

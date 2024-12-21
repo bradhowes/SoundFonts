@@ -140,7 +140,10 @@ private extension MIDIActionsTableViewController {
     if learningValues.count > 15 {
       let uniqueSorted = Set(learningValues).sorted()
       let kind: MIDIControllerActionKind
-      if uniqueSorted.count < 15 && (uniqueSorted.last! - uniqueSorted.first!) < 9 {
+      if let last = uniqueSorted.last,
+         let first = uniqueSorted.first,
+         uniqueSorted.count < 15,
+         (last - first) < 9 {
         kind = .relative // small changes around 64
       } else {
         kind = .absolute

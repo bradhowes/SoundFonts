@@ -37,8 +37,10 @@ final class FavoriteMover: NSObject {
       cell.moving = true
 
     case .changed:
-      let pos = recognizer.location(in: recognizer.view!)
-      view.updateInteractiveMovementTargetPosition(pos)
+      if let view = recognizer.view {
+        let pos = recognizer.location(in: view)
+        self.view.updateInteractiveMovementTargetPosition(pos)
+      }
 
     case .ended:
       view.endInteractiveMovement()

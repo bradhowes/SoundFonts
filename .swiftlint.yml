@@ -9,6 +9,7 @@ disabled_rules:
 
 opt_in_rules:
   - empty_count
+  - force_unwrapping
 
 included: # paths to include during linting. `--path` is ignored if present.
   - SoundFonts
@@ -21,11 +22,14 @@ excluded:
   - SoundFontsFramework/SoundFontsFrameworkTests
   - SoundFontsFramework/SoundFontsFramework/Keyboard/KeyboardRender.swift
 
-# binary rules can set their severity level
-force_cast: warning # implicitly
+force_unwrapping:
+  severity: error
+
+force_cast:
+  severity: error
 
 force_try:
-  severity: warning # explicitly
+  severity: error
 
 # Xcode guidepost at 120 but do not warn until 140 and error at 240
 line_length:

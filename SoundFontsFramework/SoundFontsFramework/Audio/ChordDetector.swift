@@ -50,7 +50,7 @@ public struct ChordDetector {
     guard from.count > 1 else { return [] }
     let midi = from.map { $0.noteIndex }
     let ordered = midi.sorted()
-    let rotated = ordered.dropFirst() + [ordered.first! + 12]
+    let rotated = ordered.dropFirst() + [ordered[0] + 12]
     return zip(ordered, rotated).map { NoteInterval(note: Note(midiNoteValue: $0.0), interval: $0.1 - $0.0) }
   }
 

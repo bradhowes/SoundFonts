@@ -87,7 +87,7 @@ extension TutorialContentPagerViewController: UIPageViewControllerDataSource {
     guard let viewController = viewControllers?.first as? TutorialPageViewController else {
       return 0
     }
-    return changes != nil ? 0 : pages.firstIndex(of: viewController)!
+    return changes != nil ? 0 : pages.firstIndex(of: viewController) ?? 0
   }
 }
 

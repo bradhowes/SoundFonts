@@ -76,7 +76,7 @@ public protocol FavoritesProvider {
    - parameter index: the location to get
    - returns: Favorite at the index
    */
-  func getBy(index: Int) -> Favorite
+  func getBy(index: Int) -> Favorite?
 
   /**
    Obtain the Favorite by its key.

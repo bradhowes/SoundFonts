@@ -65,7 +65,7 @@ public protocol SoundFontsProvider: AnyObject {
    - parameter index: the index of the sound font to fetch
    - returns: the sound font
    */
-  func getBy(index: Int) -> SoundFont
+  func getBy(index: Int) -> SoundFont?
 
   /**
    Obtain the index in the collection of a SoundFont with the given Key.

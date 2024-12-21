@@ -33,7 +33,7 @@ public struct ChangesCompiler {
         log.debug("entry: '\(entry, privacy: .public)'")
         entries.append(entry)
       } else if line.hasPrefix(" ") && !entries.isEmpty {
-        entries[entries.count - 1] = entries.last! + " " + line.trimmingCharacters(in: .whitespaces)
+        entries[entries.count - 1] = (entries.last ?? "") + " " + line.trimmingCharacters(in: .whitespaces)
       } else {
         log.debug("skipping: '\(line, privacy: .public)'")
       }

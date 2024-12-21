@@ -59,7 +59,7 @@ public protocol TagsProvider: AnyObject {
    - parameter index: the index to fetch
    - returns tag at the index
    */
-  func getBy(index: Int) -> Tag
+  func getBy(index: Int) -> Tag?
 
   /**
    Get the tag by its key.

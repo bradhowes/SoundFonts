@@ -51,14 +51,18 @@ public final class AskForReview: NSObject {
   /// Get the date N days days since the first launch
   private lazy var dateSinceFirstLaunch: Date =
     Calendar.current.date(
-      byAdding: .day, value: settings.daysAfterFirstLaunchBeforeRequest,
-      to: firstLaunchDate)!
+      byAdding: .day,
+      value: settings.daysAfterFirstLaunchBeforeRequest,
+      to: firstLaunchDate
+    ) ?? Date()
 
   /// Get the date N months since the last review request
   private lazy var dateSinceLastReviewRequest: Date =
     Calendar.current.date(
-      byAdding: .month, value: settings.monthsAfterLastReviewBeforeRequest,
-      to: lastReviewRequestDate)!
+      byAdding: .month,
+      value: settings.monthsAfterLastReviewBeforeRequest,
+      to: lastReviewRequestDate
+    ) ?? Date()
 
   private var countDown = 3
   private var observer: NSObjectProtocol?

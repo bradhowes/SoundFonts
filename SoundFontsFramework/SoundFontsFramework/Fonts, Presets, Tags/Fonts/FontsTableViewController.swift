@@ -84,7 +84,7 @@ extension FontsTableViewController: ControllerConfiguration {
     selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChangedNotificationInBackground)
     activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
     activeTagManager.subscribe(self, notifier: activeTagChangedNotificationInBackground)
-    tags!.subscribe(self, notifier: tagsChangedNotificationInBackground)
+    tags.subscribe(self, notifier: tagsChangedNotificationInBackground)
 
     router.infoBar.addEventClosure(.editSoundFonts) { sender in
       if let sender = sender as? UILongPressGestureRecognizer {
@@ -167,10 +167,11 @@ private extension FontsTableViewController {
 
   func updateBookmarkButtons() {
     for index in 0..<soundFonts.count {
-      let soundFont = soundFonts.getBy(index: index)
-      if soundFont.kind.reference {
-        if let cell: TableCell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) {
-          cell.updateBookmarkButton()
+      if let soundFont = soundFonts.getBy(index: index) {
+        if soundFont.kind.reference {
+          if let cell: TableCell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            cell.updateBookmarkButton()
+          }
         }
       }
     }

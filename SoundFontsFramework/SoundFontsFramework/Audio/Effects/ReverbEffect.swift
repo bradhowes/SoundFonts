@@ -14,22 +14,22 @@ public final class ReverbEffect: NSObject {
     AUPresetEntry(
       name: "Metallic Taste",
       config: ReverbConfig(
-        enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .plate)!,
+        enabled: true, preset: ReverbEffect.roomPresets.forcedFirstIndex(of: .plate),
         wetDryMix: 100)),
     AUPresetEntry(
       name: "Shower",
       config: ReverbConfig(
-        enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .smallRoom)!,
+        enabled: true, preset: ReverbEffect.roomPresets.forcedFirstIndex(of: .smallRoom),
         wetDryMix: 60)),
     AUPresetEntry(
       name: "Bedroom",
       config: ReverbConfig(
-        enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .mediumRoom)!,
+        enabled: true, preset: ReverbEffect.roomPresets.forcedFirstIndex(of: .mediumRoom),
         wetDryMix: 40)),
     AUPresetEntry(
       name: "Church",
       config: ReverbConfig(
-        enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .cathedral)!,
+        enabled: true, preset: ReverbEffect.roomPresets.forcedFirstIndex(of: .cathedral),
         wetDryMix: 30))
   ]
 
@@ -81,7 +81,7 @@ public final class ReverbEffect: NSObject {
 
   public override init() {
     self._active = ReverbConfig(
-      enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .smallRoom)!,
+      enabled: true, preset: ReverbEffect.roomPresets.forcedFirstIndex(of: .smallRoom),
       wetDryMix: 30.0)
     super.init()
     applyActiveConfig(self.active)
@@ -98,5 +98,15 @@ extension ReverbEffect {
     DispatchQueue.main.async {
       NotificationCenter.default.post(name: .reverbConfigChanged, object: nil)
     }
+  }
+}
+
+extension Array where Element: Equatable {
+
+  @inlinable public func forcedFirstIndex(of element: Element) -> Int {
+    guard let value = firstIndex(of: element) else {
+      fatalError("Element \(element) not found in array")
+    }
+    return value
   }
 }

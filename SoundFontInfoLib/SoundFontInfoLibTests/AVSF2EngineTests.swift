@@ -7,6 +7,8 @@ import SF2Files
 import CoreAudio
 @testable import SoundFontInfoLib
 
+// swiftlint:disable force_unwrapping
+
 class AVSF2EngineTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
@@ -111,3 +113,5 @@ extension AVSF2EngineTests: AVAudioPlayerDelegate {
     playFinishedExpectation!.fulfill()
   }
 }
+
+// swiftlint:enable force_unwrapping

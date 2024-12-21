@@ -34,7 +34,7 @@ extension FavoritesManager: FavoritesProvider {
 
   func index(of key: Favorite.Key) -> Int? { collection?.index(of: key) }
 
-  func getBy(index: Int) -> Favorite { collection!.getBy(index: index) }
+  func getBy(index: Int) -> Favorite? { collection?.getBy(index: index) }
 
   func getBy(key: Favorite.Key) -> Favorite? { collection?.getBy(key: key) }
 
@@ -106,18 +106,20 @@ extension FavoritesManager: FavoritesProvider {
   func validate(_ soundFonts: SoundFontsProvider) {
     var invalidFavoriteKeys = [Favorite.Key]()
     for index in 0..<self.count {
-      let favorite = self.getBy(index: index)
-      if let preset = soundFonts.resolve(soundFontAndPreset: favorite.soundFontAndPreset) {
-        if !preset.favorites.contains(favorite.key) {
-          log.error("linking favorite - '\(favorite.presetConfig.name, privacy: .public)'")
-          preset.favorites.append(favorite.key)
+      if let favorite = self.getBy(index: index) {
+        if let preset = soundFonts.resolve(soundFontAndPreset: favorite.soundFontAndPreset) {
+          if !preset.favorites.contains(favorite.key) {
+            log.error("linking favorite - '\(favorite.presetConfig.name, privacy: .public)'")
+            preset.favorites.append(favorite.key)
+          }
+        } else {
+          log.error("found orphan favorite - '\(favorite.presetConfig.name, privacy: .public)'")
+          invalidFavoriteKeys.append(favorite.key)
         }
       } else {
-        log.error("found orphan favorite - '\(favorite.presetConfig.name, privacy: .public)'")
-        invalidFavoriteKeys.append(favorite.key)
+        log.error("encountered nil favorite at index \(index)")
       }
     }
-
     for key in invalidFavoriteKeys {
       self.remove(key: key)
     }

@@ -25,8 +25,14 @@ public final class SF2EngineAU: AUAudioUnit {
   AUAudioUnitBusArray(audioUnit: self, busType: .input, busses: [])
 
   // We have two outputs -- dry, reverb
-  private lazy var _outputBusses: AUAudioUnitBusArray =
-  AUAudioUnitBusArray(audioUnit: self, busType: .output, busses: [dryBus!, reverbSendBus!])
+  private lazy var _outputBusses: AUAudioUnitBusArray = AUAudioUnitBusArray(
+    audioUnit: self,
+    busType: .output,
+    busses: [
+      dryBus,
+      reverbSendBus
+    ]
+  )
 
   public override var inputBusses: AUAudioUnitBusArray { return _inputBusses }
   public override var outputBusses: AUAudioUnitBusArray { return _outputBusses }

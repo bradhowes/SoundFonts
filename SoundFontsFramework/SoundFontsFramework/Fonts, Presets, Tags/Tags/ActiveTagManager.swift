@@ -56,11 +56,12 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
    - parameter index: the index of the Tag in the `Tags` collection to make active.
    */
   func setActiveTag(index: Int) {
-    let newTag = tags.getBy(index: index)
-    if activeTag != newTag {
-      let oldTag = activeTag
-      activeTag = newTag
-      notify(.change(old: oldTag, new: newTag))
+    if let newTag = tags.getBy(index: index) {
+      if activeTag != newTag {
+        let oldTag = activeTag
+        activeTag = newTag
+        notify(.change(old: oldTag, new: newTag))
+      }
     }
   }
 

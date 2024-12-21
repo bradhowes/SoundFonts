@@ -34,7 +34,9 @@ public enum SF2FilesError: Error {
   }
 
   /// Collection of URLs for the SF2 resources in the bundle.
-  public class var allResources: [URL] { bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil)! }
+  public class var allResources: [URL] {
+    bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil) ?? []
+  }
 
   public class func validate(expectedResourceCount: Int = 4) throws {
     let urls = allResources

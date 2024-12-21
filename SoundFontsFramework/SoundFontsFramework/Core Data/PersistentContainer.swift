@@ -18,8 +18,16 @@ open class PersistentContainer: NSPersistentContainer {
    */
   public init(modelName: String) {
     let bundle = Bundle(for: PersistentContainer.self)
-    let momUrl = bundle.url(forResource: modelName, withExtension: "momd")!
-    let mom = NSManagedObjectModel(contentsOf: momUrl)!
+    guard
+      let momUrl = bundle.url(forResource: modelName, withExtension: "momd")
+    else {
+      fatalError("failed to get URL for \(modelName).momd")
+    }
+    guard
+      let mom = NSManagedObjectModel(contentsOf: momUrl)
+    else {
+      fatalError("failed to get NSManagedObjectModel")
+    }
     super.init(name: modelName, managedObjectModel: mom)
   }
 }

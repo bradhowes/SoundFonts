@@ -14,7 +14,7 @@ extension ReusableView where Self: UIView {
 
   /// Default implementation of the reuseIdentifier that uses the name of the class
   public static var reuseIdentifier: String {
-    return NSStringFromClass(self).components(separatedBy: ".").last!
+    return NSStringFromClass(self).components(separatedBy: ".").last ?? ""
   }
 }
 
@@ -22,6 +22,6 @@ extension ReusableView where Self: UITableViewHeaderFooterView {
 
   /// Default implementation of the reuseIdentifier that uses the name of the class
   public static var reuseIdentifier: String {
-    return NSStringFromClass(self).components(separatedBy: ".").last!
+    return NSStringFromClass(self).components(separatedBy: ".").last ?? ""
   }
 }

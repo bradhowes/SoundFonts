@@ -4,6 +4,7 @@ import XCTest
 import SoundFontInfoLib
 import SF2Files
 
+// swiftlint:disable force_unwrapping
 class SoundFontInfoLibTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
@@ -113,3 +114,4 @@ class SoundFontInfoLibTests: XCTestCase {
     }
   }
 }
+// swiftlint:enable force_unwrapping

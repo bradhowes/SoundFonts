@@ -12,7 +12,7 @@ final class Key: UIView {
   static var isMuted: Bool = false
 
   /// How to label the key
-  private var keyLabelOption: KeyLabelOption { KeyLabelOption(rawValue: settings.keyLabelOption)! }
+  private var keyLabelOption: KeyLabelOption { KeyLabelOption(rawValue: settings.keyLabelOption) ?? .off }
 
   /// Current user-adjustable key width from settings
   private var keyWidth: CGFloat { CGFloat(settings.keyWidth) }

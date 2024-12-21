@@ -40,7 +40,7 @@ extension TagsManager: TagsProvider {
 
   func index(of key: Tag.Key) -> Int? { collection?.index(of: key) }
 
-  func getBy(index: Int) -> Tag { collection!.getBy(index: index) }
+  func getBy(index: Int) -> Tag? { collection?.getBy(index: index) }
 
   func getBy(key: Tag.Key) -> Tag? { collection?.getBy(key: key) }
 
@@ -82,9 +82,12 @@ extension TagsManager: TagsProvider {
   func validate() {
     var invalidTags = [Tag.Key]()
     for index in 0..<self.count {
-      let tag = self.getBy(index: index)
-      if (tag.name == "All" && tag.key != Tag.allTag.key) || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key) {
-        invalidTags.append(tag.key)
+      if let tag = self.getBy(index: index) {
+        if (tag.name == "All" && tag.key != Tag.allTag.key) || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key) {
+          invalidTags.append(tag.key)
+        }
+      } else {
+        log.error("nil tag found at index \(index)")
       }
     }
 

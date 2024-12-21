@@ -25,7 +25,7 @@ extension FileManager {
   /// Location of app documents that we want to keep private but backed-up. We need to create it if it does not
   /// exist, so this could be a high latency call.
   var privateDocumentsDirectory: URL {
-    let url = urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+    let url = urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
     if !self.fileExists(atPath: url.path) {
       DispatchQueue.global(qos: .userInitiated).async {
         try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
@@ -64,8 +64,8 @@ extension FileManager {
 
   /// Location of documents on device that can be backed-up to iCloud if enabled.
   var localDocumentsDirectory: URL {
-    let path = self.urls(for: .documentDirectory, in: .userDomainMask).last!
-    log.debug("localDocumentsDirectory - \(path.path, privacy: .public)")
+    let path = self.urls(for: .documentDirectory, in: .userDomainMask).reversed()[0]
+    log.info("localDocumentsDirectory - \(path.path, privacy: .public)")
     return path
   }
 

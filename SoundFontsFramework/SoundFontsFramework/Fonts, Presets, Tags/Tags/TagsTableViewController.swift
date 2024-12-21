@@ -128,11 +128,12 @@ extension TagsTableViewController {
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let row = indexPath.row
-    let tag = tags.getBy(index: row)
-    let name = tag.name
-    var flags: TableCell.Flags = .init()
-    if activeTagManager.activeTag == tag { flags.insert(.active) }
-    cell.updateForTag(at: indexPath, name: name, flags: flags)
+    if let tag = tags.getBy(index: row) {
+      let name = tag.name
+      var flags: TableCell.Flags = .init()
+      if activeTagManager.activeTag == tag { flags.insert(.active) }
+      cell.updateForTag(at: indexPath, name: name, flags: flags)
+    }
     return cell
   }
 }

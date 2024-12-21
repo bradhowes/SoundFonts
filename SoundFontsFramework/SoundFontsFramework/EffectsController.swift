@@ -226,7 +226,7 @@ extension EffectsController: UIPickerViewDelegate {
     _ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
     reusing view: UIView?
   ) -> UIView {
-    var pickerLabel: UILabel? = (view as? UILabel)
+    var pickerLabel: UILabel! = (view as? UILabel)
     if pickerLabel == nil {
       pickerLabel = UILabel()
       pickerLabel?.font = UIFont(name: "Eurostile", size: 17.0)
@@ -238,7 +238,7 @@ extension EffectsController: UIPickerViewDelegate {
         string: ReverbEffect.roomNames[row],
         attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
 
-    return pickerLabel!
+    return pickerLabel
   }
 }
 

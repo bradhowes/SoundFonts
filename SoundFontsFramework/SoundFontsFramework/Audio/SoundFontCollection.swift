@@ -22,7 +22,14 @@ public final class SoundFontCollection: Codable {
   public var count: Int { sortedKeys.count }
 
   /// Obtain the first preset of the first sound font if one exists.
-  public var defaultPreset: SoundFontAndPreset? { isEmpty ? nil : getBy(index: 0)[0] }
+  public var defaultPreset: SoundFontAndPreset? {
+    guard !isEmpty,
+          let first = getBy(index: 0)
+    else {
+      return nil
+    }
+    return first[0]
+  }
 
   /**
    Create a new collection.
@@ -37,7 +44,7 @@ public final class SoundFontCollection: Codable {
   }
 
   /// Immutable array of SoundFont instances, ordered by their names
-  public var soundFonts: [SoundFont] { sortedKeys.map { self.catalog[$0]! } }
+  public var soundFonts: [SoundFont] { sortedKeys.compactMap { self.catalog[$0] } }
 
   /**
    Obtain the index of the given SoundFont.Key value.
@@ -79,7 +86,7 @@ public final class SoundFontCollection: Codable {
    - parameter index: the SoundFont.Key to look for
    - returns: the SoundFont value found
    */
-  public func getBy(index: Int) -> SoundFont { catalog[sortedKeys[index]]! }
+  public func getBy(index: Int) -> SoundFont? { catalog[sortedKeys[index]] }
 
   /**
    Obtain a SoundFont by its UUID value
@@ -122,17 +129,18 @@ public final class SoundFontCollection: Codable {
    - parameter name: the new name for the SoundFont
    - returns: 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
    */
-  public func rename(_ index: Int, name: String) -> (Int, SoundFont) {
+  public func rename(_ index: Int, name: String) -> (Int, SoundFont?) {
     let key = sortedKeys.remove(at: index)
 
-    let soundFont = catalog[key]!
-    soundFont.displayName = name
-
-    let newIndex = insertionIndex(of: soundFont.key)
-    sortedKeys.insert(soundFont.key, at: newIndex)
+    if let soundFont = catalog[key] {
+      soundFont.displayName = name
+      let newIndex = insertionIndex(of: soundFont.key)
+      sortedKeys.insert(soundFont.key, at: newIndex)
+      return (newIndex, soundFont)
+    }
 
     AskForReview.maybe()
-    return (newIndex, soundFont)
+    return (-1, nil)
   }
 
   /**
@@ -144,8 +152,12 @@ public final class SoundFontCollection: Codable {
    */
   private func insertionIndex(of key: SoundFont.Key) -> Int {
     sortedKeys.insertionIndex(of: key) {
-      catalog[$0]!.displayName.localizedCaseInsensitiveCompare(catalog[$1]!.displayName)
-        == .orderedAscending
+      guard let lhs = catalog[$0],
+            let rhs = catalog[$1]
+      else {
+        return false
+      }
+      return lhs.displayName.localizedCaseInsensitiveCompare(rhs.displayName) == .orderedAscending
     }
   }
 }

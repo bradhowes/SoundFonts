@@ -7,6 +7,8 @@ import SoundFontInfoLib
 import SF2Files
 import CoreAudio
 
+// swiftlint:disable force_unwrapping
+
 class SF2EngineTests: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
@@ -334,3 +336,4 @@ public extension AVAudioPCMBuffer {
     frameLength += frameCount
   }
 }
+// swiftlint:enable force_unwrapping

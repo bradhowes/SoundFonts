@@ -12,15 +12,25 @@ public enum SoundFontsAUFailure: Error {
 /// The view controller class for the SoundFonts AUv3 app extension. Presents the same UI as the app except for the
 /// keyboard component.
 public final class SoundFontsAUViewController: AUViewController {
-  private var log: Logger!
-  private var components: Components<SoundFontsAUViewController>!
+  private let identity = RandomWords.uniqueIdentifier
+  private let log: Logger
+  private let components: Components<SoundFontsAUViewController>
   private var audioUnit: SoundFontsAU?
+
+  public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    self.log = Logging.logger("SoundFontsAUViewController[\(identity)]")
+    self.components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
+  
+  required init?(coder: NSCoder) {
+    self.log = Logging.logger("SoundFontsAUViewController[\(identity)]")
+    self.components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
+    super.init(coder: coder)
+  }
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    let identity = RandomWords.uniqueIdentifier
-    log = Logging.logger("SoundFontsAUViewController[\(identity)]")
-    components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
     components.setMainViewController(self)
     log.debug("viewDidLoad END")
   }

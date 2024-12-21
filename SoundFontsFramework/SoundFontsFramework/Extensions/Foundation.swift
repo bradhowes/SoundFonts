@@ -15,7 +15,12 @@ extension UUID: SettingSerializable {
 
   @inlinable
   public static func get(key: String, defaultValue: UUID, source: Settings) -> UUID {
-    .init(uuidString: source.get(key: key, defaultValue: defaultValue.uuidString))!
+    guard
+      let uuid = UUID(uuidString: source.get(key: key, defaultValue: defaultValue.uuidString))
+    else {
+      return defaultValue
+    }
+    return uuid
   }
 
   @inlinable

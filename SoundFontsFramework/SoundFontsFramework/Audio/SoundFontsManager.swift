@@ -92,7 +92,7 @@ extension SoundFontsManager: SoundFontsProvider {
 
   public func firstIndex(of key: SoundFont.Key) -> Int? { collection?.firstIndex(of: key) }
 
-  public func getBy(index: Int) -> SoundFont { collection!.getBy(index: index) }
+  public func getBy(index: Int) -> SoundFont? { collection?.getBy(index: index) }
 
   public func getBy(key: SoundFont.Key) -> SoundFont? { collection?.getBy(key: key) }
 
@@ -168,7 +168,9 @@ extension SoundFontsManager: SoundFontsProvider {
     guard let index = collection.firstIndex(of: key) else { return }
     defer { markCollectionChanged() }
     let (newIndex, soundFont) = collection.rename(index, name: name)
-    notify(.moved(old: index, new: newIndex, font: soundFont))
+    if let soundFont {
+      notify(.moved(old: index, new: newIndex, font: soundFont))
+    }
   }
 
   public func removeTag(_ tag: Tag.Key) {

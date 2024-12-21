@@ -16,7 +16,7 @@ public protocol NibLoadableView: AnyObject {
 extension NibLoadableView where Self: UIView {
 
   /// Default implementation where the NIB name is the name of the class name
-  public static var nibName: String { NSStringFromClass(self).components(separatedBy: ".").last! }
+  public static var nibName: String { NSStringFromClass(self).components(separatedBy: ".").last ?? "" }
 
   /// Default implementation where the UINib is found in  the same bundle as this protocol
   public static var nib: UINib { UINib(nibName: nibName, bundle: Bundle(for: self)) }

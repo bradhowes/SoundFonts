@@ -93,6 +93,11 @@ enum Icon: CaseIterable {
   }
 
   var image: UIImage {
-    UIImage(named: resourceName, in: Bundle(for: BundleTag.self), compatibleWith: .none)!
+    guard
+      let image = UIImage(named: resourceName, in: Bundle(for: BundleTag.self), compatibleWith: .none)
+    else {
+      fatalError("Couldn't find image \(resourceName)")
+    }
+    return image
   }
 }

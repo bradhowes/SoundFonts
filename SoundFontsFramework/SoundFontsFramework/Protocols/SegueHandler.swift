@@ -17,10 +17,15 @@ extension SegueHandler where Self: UIViewController, SegueIdentifier.RawValue ==
    - returns: the identifier for the segue
    */
   func segueIdentifier(for segue: UIStoryboardSegue) -> SegueIdentifier {
-    guard let identifier = segue.identifier,
-          let segueIdentifier = SegueIdentifier(rawValue: identifier)
+    guard
+      let identifier = segue.identifier
     else {
-      fatalError("unknown segue '\(segue.identifier!)'")
+      fatalError("nil segue identifier")
+    }
+    guard
+      let segueIdentifier = SegueIdentifier(rawValue: identifier)
+    else {
+      fatalError("unknown segue '\(identifier)'")
     }
     return segueIdentifier
   }

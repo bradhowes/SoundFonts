@@ -65,7 +65,11 @@ extension MIDIControllersTableViewController {
     }.joined(separator: ", ")
 
     cell.action.text = assignments
-    cell.value.text = midiControllerState.lastValue != nil ? "\(midiControllerState.lastValue!)" : ""
+    if let lastValue = midiControllerState.lastValue {
+      cell.value.text = "\(lastValue)"
+    } else {
+      cell.value.text = ""
+    }
 
     cell.used.isOn = midiControllerState.allowed
     cell.used.tag = indexPath.row

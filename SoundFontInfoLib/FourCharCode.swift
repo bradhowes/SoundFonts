@@ -36,7 +36,13 @@ extension FourCharCode {
   public var stringValue: String {
     withUnsafePointer(to: bigEndian) { pointer in
       pointer.withMemoryRebound(to: UInt8.self, capacity: Self.bytesSizeForStringValue) { bytes in
-        String(bytes: UnsafeBufferPointer(start: bytes, count: Self.bytesSizeForStringValue), encoding: .utf8)!
+        String(
+          bytes: UnsafeBufferPointer(
+            start: bytes,
+            count: Self.bytesSizeForStringValue
+          ),
+          encoding: .utf8
+        ) ?? "????"
       }
     }
   }
