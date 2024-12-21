@@ -6,6 +6,13 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.30.5
+
+* Fixed repeated and unnecessary loading of configuration file.
+* Fixed issue where AUM session loading times would increase over time.
+* Removed forced-unwrapping of values in code -- unclear if source of any crashes, but better to be safe.
+* Greatly improved start up and configuration loading times.
+
 # 2.30.4
 
 * Fixed crash in AUv3 component when host app moved to background
