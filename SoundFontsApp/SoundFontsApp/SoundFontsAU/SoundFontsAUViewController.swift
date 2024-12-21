@@ -12,14 +12,15 @@ public enum SoundFontsAUFailure: Error {
 /// The view controller class for the SoundFonts AUv3 app extension. Presents the same UI as the app except for the
 /// keyboard component.
 public final class SoundFontsAUViewController: AUViewController {
-  private lazy var log: Logger = Logging.logger("SoundFontsAUViewController")
+  private var log: Logger!
   private var components: Components<SoundFontsAUViewController>!
   private var audioUnit: SoundFontsAU?
 
   override public func viewDidLoad() {
-    log.debug("viewDidLoad BEGIN - \(String.pointer(self))")
     super.viewDidLoad()
-    components = Components<SoundFontsAUViewController>(inApp: false)
+    let identity = RandomWords.uniqueIdentifier
+    log = Logging.logger("SoundFontsAUViewController[\(identity)]")
+    components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
     components.setMainViewController(self)
     log.debug("viewDidLoad END")
   }
@@ -34,22 +35,23 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    - returns: new SoundFontsAU instance
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-    log.debug("createAudioUnit BEGIN - \(String.pointer(self))")
+    return try log.measure("createAudioUnit") {
+      guard let audioEngine = components.audioEngine else {
+        log.fault("missing audioEngine instance")
+        throw SoundFontsAUFailure.missingAudioEngine
+      }
 
-    guard let audioEngine = components.audioEngine else {
-      log.fault("missing audioEngine instance")
-      throw SoundFontsAUFailure.missingAudioEngine
+      let audioUnit = try SoundFontsAU(
+        componentDescription: componentDescription,
+        audioEngine: audioEngine,
+        identity: components.identity,
+        activePresetManager: components.activePresetManager,
+        settings: components.settings
+      )
+
+      self.audioUnit = audioUnit
+      return audioUnit
     }
-
-    let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
-                                     audioEngine: audioEngine,
-                                     identity: components.identity,
-                                     activePresetManager: components.activePresetManager,
-                                     settings: components.settings)
-    self.audioUnit = audioUnit
-
-    log.debug("createAudioUnit END - \(String.pointer(audioUnit))")
-    return audioUnit
   }
 }
 

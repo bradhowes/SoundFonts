@@ -13,12 +13,14 @@ import os
 public final class SoundFontsAU: AUAudioUnit {
   private let log: Logger
   private let audioEngine: AudioEngine
-  private let identity: Int
+
+  // NOTE: this holds a random word selected using a UUID value generated for this instance. It should only be used
+  // for logging and nothing more.
+  private let identity: String
   private let activePresetManager: ActivePresetManager
   private let settings: Settings
   private let wrapped: AUAudioUnit
 
-  private var currentPresetObserver: NSKeyValueObservation?
   private var activePresetSubscriberToken: SubscriberToken?
 
   private var _audioUnitName: String?
@@ -37,7 +39,7 @@ public final class SoundFontsAU: AUAudioUnit {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, audioEngine: AudioEngine, identity: Int,
+  public init(componentDescription: AudioComponentDescription, audioEngine: AudioEngine, identity: String,
               activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log: Logger = Logging.logger("SoundFontsAU[\(identity)]")
     self.log = log
@@ -46,16 +48,16 @@ public final class SoundFontsAU: AUAudioUnit {
     self.activePresetManager = activePresetManager
     self.settings = settings
 
-    log.debug("starting synth")
+    log.info("init")
 
     switch audioEngine.start() {
     case let .success(synth): self.wrapped = synth.avAudioUnit.auAudioUnit
     case .failure(let what):
-      log.debug("failed to start synth - \(what.localizedDescription, privacy: .public)")
+      log.error("failed to start synth - \(what.localizedDescription, privacy: .public)")
       throw what
     }
 
-    log.debug("super.init")
+    log.info("super.init")
     do {
       try super.init(componentDescription: componentDescription, options: [])
     } catch {
@@ -67,11 +69,7 @@ public final class SoundFontsAU: AUAudioUnit {
     activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
     useActivePreset()
 
-    log.debug("init - done")
-  }
-
-  deinit {
-    self.currentPresetObserver?.invalidate()
+    log.info("init - done")
   }
 }
 

@@ -97,7 +97,7 @@ private final class PresetChangeOperation: Operation, @unchecked Sendable {
       return
     }
 
-    log.debug("before loadAnd \(self.url.lastPathComponent, privacy: .public) \(self.preset.description, privacy: .public)")
+    log.debug("before loadAndActivatePreset \(self.url.lastPathComponent, privacy: .public) \(self.preset.description, privacy: .public)")
     let secure = url.startAccessingSecurityScopedResource()
     let result = synth.loadAndActivatePreset(preset, from: url)
     log.debug("after loadAndActivate - \(result.debugDescription)")

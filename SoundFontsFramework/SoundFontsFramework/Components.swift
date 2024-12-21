@@ -2,6 +2,7 @@
 
 import UIKit
 import MorkAndMIDI
+import os.log
 
 /// Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
 /// application launch. Each view controller is responsible for establishing the connections in their
@@ -9,7 +10,7 @@ import MorkAndMIDI
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
 public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>, ComponentContainer
 where T: ControllerConfiguration {
-
+  private let log: Logger
   private let accessQueue = DispatchQueue(label: "ComponentsQueue", qos: .background, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .background))
   public static var configurationFileURL: URL { FileManager.default.sharedPath(for: "Consolidated.plist") }
@@ -17,7 +18,7 @@ where T: ControllerConfiguration {
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigProvider: ConsolidatedConfigProvider
   /// The unique identity associated with this instance (app or AUv3)
-  public var identity: Int { consolidatedConfigProvider.identity }
+  public var identity: String { consolidatedConfigProvider.identity }
   /// Manager that controls when to ask for a review from the customer
   public let askForReview: AskForReview?
   /// The manager of the active preset
@@ -92,15 +93,36 @@ where T: ControllerConfiguration {
   }
 
   /**
+   Factory function to create a new instance.
+
+   - parameter inApp: true if running in the app, false if running as audio unit
+   - parameter identity: unique-ish identifier for this instance. Only used for logging purposes to distinguish between
+   multiple AUv3 instances.
+   */
+  public static func make(inApp: Bool, identity: String) -> Components<T> {
+    let log: Logger = Logging.logger("Components[\(identity)]")
+    return log.measure("init") {
+      Components(log: log, inApp: inApp, identity: identity)
+    }
+  }
+
+  /**
    Create a new instance
 
    - parameter inApp: true if running in the app, false if running as audio unit
    */
-  public init(inApp: Bool) {
+  private init(log: Logger, inApp: Bool, identity: String) {
+    self.log = log
+
+    let consolidatedConfigProvider = ConsolidatedConfigProvider(
+      inApp: inApp,
+      fileURL: Self.configurationFileURL,
+      identity: identity
+    )
+
     self.inApp = inApp
     self.settings = Settings()
-
-    self.consolidatedConfigProvider = .init(inApp: inApp, fileURL: Self.configurationFileURL)
+    self.consolidatedConfigProvider = consolidatedConfigProvider
 
     if inApp {
       self.askForReview = .init(settings: settings)
@@ -139,11 +161,13 @@ where T: ControllerConfiguration {
         }
       }
     } else {
-      self._audioEngine = AudioEngine(mode: .audioUnit,
-                                      activePresetManager: activePresetManager,
-                                      settings: settings,
-                                      midi: nil,
-                                      midiControllerActionStateManager: nil)
+      self.log.measure("create AudioEngine") {
+        self._audioEngine = AudioEngine(mode: .audioUnit,
+                                        activePresetManager: activePresetManager,
+                                        settings: settings,
+                                        midi: nil,
+                                        midiControllerActionStateManager: nil)
+      }
     }
   }
 

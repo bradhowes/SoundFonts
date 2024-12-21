@@ -58,7 +58,7 @@ class SoundFontLibraryPListTest: XCTestCase {
   func testDecodingLegacyConsolidatedFile_V1() {
     let bundle = Bundle(for: type(of: self))
     let url = bundle.url(forResource: "Consolidated_V1", withExtension: "plist")!
-    let configProvider = ConsolidatedConfigProvider(inApp: true, fileURL: url)
+    let configProvider = ConsolidatedConfigProvider(inApp: true, fileURL: url, identity: "Foo")
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")
@@ -79,7 +79,7 @@ class SoundFontLibraryPListTest: XCTestCase {
   func testDecodingLegacyConsolidatedFile_V2() {
     let bundle = Bundle(for: type(of: self))
     let url = bundle.url(forResource: "Consolidated_V2", withExtension: "plist")!
-    let configProvider = ConsolidatedConfigProvider(inApp: true, fileURL: url)
+    let configProvider = ConsolidatedConfigProvider(inApp: true, fileURL: url, identity: "Foo")
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")

@@ -36,7 +36,7 @@ public final class AudioEngine: SynthProvider {
   }
 
   /// The internal synthesizer that does the actual sound generation.
-  public var synth: AnyMIDISynth? { self.pendingPresetChanges == 0 && renderingResumeTimer == nil ? _synth : nil }
+  public var synth: AnyMIDISynth? { _synth }
   private var _synth: AnyMIDISynth?
 
   public var avAudioUnit: AVAudioUnitMIDIInstrument? { synth?.avAudioUnit }
@@ -54,8 +54,6 @@ public final class AudioEngine: SynthProvider {
 
   private let presetChangeManager = PresetChangeManager()
   private var engine: AVAudioEngine?
-  private var pendingPresetChanges: Int = 0
-  private var renderingResumeTimer: Timer?
 
   private var activePresetConfigChangedNotifier: NotificationObserver?
   private var tuningChangedNotifier: NotificationObserver?
@@ -356,9 +354,7 @@ private extension AudioEngine {
 
     let presetConfig = activePresetManager.activePresetConfig
 
-    log.debug("requesting preset change - \(self.pendingPresetChanges)")
-
-    // pauseRendering(synth)
+    log.debug("requesting preset change")
 
     presetChangeManager.change(synth: synth, url: soundFont.fileURL, preset: preset) { [weak self] result in
       guard let self = self else { return }

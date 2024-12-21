@@ -20,7 +20,7 @@ public final class ConsolidatedConfigProvider: NSObject {
   private let log: Logger
   private var _config: ConsolidatedConfig?
 
-  public let identity: Int = UUID().hashValue
+  public let identity: String
   private let fileURL: URL
   private let coordinator: NSFileCoordinator
   private var idleTimer: Timer?
@@ -42,8 +42,9 @@ public final class ConsolidatedConfigProvider: NSObject {
    - parameter inApp: `true` if running as an app, `false` if as an AUv3 app extension
    - parameter fileURL: the location for the document
    */
-  public init(inApp: Bool, fileURL: URL) {
+  public init(inApp: Bool, fileURL: URL, identity: String) {
     self.log = Logging.logger("ConsolidatedConfigProvider[\(identity)]")
+    self.identity = identity
     self.coordinator = .init()
     self.fileURL = fileURL
     log.debug("init BEGIN - \(fileURL.description, privacy: .public)")
@@ -53,6 +54,10 @@ public final class ConsolidatedConfigProvider: NSObject {
     NSFileCoordinator.addFilePresenter(self)
     registerNotifcations(inApp: inApp)
     log.debug("init END")
+  }
+
+  deinit {
+    self.stopMonitoringFile()
   }
 
   /**
@@ -171,18 +176,18 @@ extension ConsolidatedConfigProvider {
 
 extension ConsolidatedConfigProvider {
 
-  private func moveToBackground() {
-    log.info("moveToBackground - init")
+  private func stopMonitoringFile() {
+    log.info("stopMonitoringFile - init")
     if isRegistered {
-      log.info("moveToBackground - unregistering")
+      log.info("stopMonitoringFile - unregistering")
       NSFileCoordinator.removeFilePresenter(self)
     }
   }
 
-  private func moveToForeground() {
-    log.info("moveToForeground - init")
+  private func startMonitoringFile() {
+    log.info("startMonitoringFile - init")
     if !isRegistered {
-      log.info("moveToForeground - registering")
+      log.info("startMonitoringFile - registering")
       NSFileCoordinator.addFilePresenter(self)
       loadFromFile()
     }
@@ -200,7 +205,7 @@ extension ConsolidatedConfigProvider {
         ) { [weak self] _ in
           guard let self else { return }
           log.info("willEnterForegroundNotification")
-          self.moveToForeground()
+          self.startMonitoringFile()
         }
       )
 
@@ -212,7 +217,7 @@ extension ConsolidatedConfigProvider {
         ) { [weak self] _ in
           guard let self else { return }
           log.info("didEnterBackgroundNotification")
-          self.moveToBackground()
+          self.stopMonitoringFile()
         }
       )
     } else {
@@ -224,7 +229,7 @@ extension ConsolidatedConfigProvider {
         ) { [weak self] _ in
           guard let self else { return }
           log.info("NSExtensionHostWillEnterForeground")
-          self.moveToForeground()
+          self.startMonitoringFile()
         }
       )
 
@@ -236,7 +241,7 @@ extension ConsolidatedConfigProvider {
         ) { [weak self] _ in
           guard let self else { return }
           log.info("ConfigFile.NSExtensionHostDidEnterBackground")
-          self.moveToBackground()
+          self.stopMonitoringFile()
         }
       )
     }

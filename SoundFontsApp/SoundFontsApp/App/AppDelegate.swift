@@ -9,7 +9,11 @@ import os
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
   private lazy var log: Logger = Logging.logger("AppDelegate")
-  private let components = Components<MainViewController>(inApp: true)
+  private let components = Components<MainViewController>.make(
+    inApp: true,
+    identity: RandomWords.uniqueIdentifier
+  )
+
   private var observer: NSObjectProtocol?
   private var pendingAddition: URL?
   private var configObserver: ConsolidatedConfigObserver?

@@ -394,13 +394,12 @@ extension SoundFontsManager {
    */
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
-    log.debug("markCollectionChanged - \(collection.description, privacy: .public)")
+    log.info("markCollectionChanged - \(collection.description, privacy: .public)")
     observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {
     log.debug("restored")
     notify(.restored)
-    markCollectionChanged()
   }
 }

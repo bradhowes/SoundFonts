@@ -154,6 +154,8 @@
 		BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB824058C6200067AE2 /* SettingsTests.swift */; };
 		BD6EEA2C251E030300253D96 /* SoundFontFileLoadFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */; };
 		BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */; };
+		BD7779422D16B05E004AA250 /* RandomWords.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7779412D16B05E004AA250 /* RandomWords.swift */; };
+		BD7779442D16B4B4004AA250 /* RandomWordsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7779432D16B4B4004AA250 /* RandomWordsTests.swift */; };
 		BD79915425795D2000943515 /* iPhone 12.png in Resources */ = {isa = PBXBuildFile; fileRef = BD79915325795D2000943515 /* iPhone 12.png */; };
 		BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B7C482660D4AF00F0D18D /* TagTests.swift */; };
 		BD87DC5C29DB526E008F6470 /* MIDIConnectionsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD87DC5B29DB526E008F6470 /* MIDIConnectionsTableHeaderView.swift */; };
@@ -421,6 +423,8 @@
 		BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontFileLoadFailure.swift; sourceTree = "<group>"; };
 		BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
 		BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD7779412D16B05E004AA250 /* RandomWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomWords.swift; sourceTree = "<group>"; };
+		BD7779432D16B4B4004AA250 /* RandomWordsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomWordsTests.swift; sourceTree = "<group>"; };
 		BD79915325795D2000943515 /* iPhone 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 12.png"; sourceTree = "<group>"; };
 		BD7B7C482660D4AF00F0D18D /* TagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTests.swift; sourceTree = "<group>"; };
 		BD7DF754265EE99F0083B246 /* ManagdDelayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagdDelayConfig.swift; sourceTree = "<group>"; };
@@ -838,6 +842,7 @@
 				BDC8EA3427870F900010595F /* ConsolidatedConfig.swift */,
 				BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */,
 				BDCAE70325C7E0B100202BAC /* ConsolidatedConfigProvider.swift */,
+				BD7779412D16B05E004AA250 /* RandomWords.swift */,
 				BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */,
 			);
 			path = "Configuration File";
@@ -923,6 +928,7 @@
 				BD1A2A7A266820A1009E2338 /* TouchKeyMapTests.swift */,
 				BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */,
 				BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */,
+				BD7779432D16B4B4004AA250 /* RandomWordsTests.swift */,
 				BDC961A624FFA745003D9BEF /* StringTests.swift */,
 				BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */,
 				BD23948925540855004E5E0D /* KeyTests.swift */,
@@ -1490,6 +1496,7 @@
 				BDFE80082983368D00F400A7 /* MIDIActivityNotifier.swift in Sources */,
 				BD074C5423CDAF51001987E9 /* AudioEngine.swift in Sources */,
 				BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */,
+				BD7779422D16B05E004AA250 /* RandomWords.swift in Sources */,
 				BD87DC5C29DB526E008F6470 /* MIDIConnectionsTableHeaderView.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,
@@ -1510,6 +1517,7 @@
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
 				BD1A2A812668A9C7009E2338 /* ReusableViewTests.swift in Sources */,
+				BD7779442D16B4B4004AA250 /* RandomWordsTests.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
 				BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */,
 				BD1A2A8B26696AD2009E2338 /* IconTests.swift in Sources */,
