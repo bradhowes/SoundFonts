@@ -254,7 +254,6 @@
 		BDFD3E3F29E405850010E3CB /* MIDIControllerActionStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD3E3E29E405850010E3CB /* MIDIControllerActionStateManager.swift */; };
 		BDFD3E4229E411BE0010E3CB /* MIDIActionsTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDFD3E4129E411BE0010E3CB /* MIDIActionsTableHeaderView.xib */; };
 		BDFD3E4429E411CB0010E3CB /* MIDIActionsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDFD3E4329E411CB0010E3CB /* MIDIActionsTableCell.xib */; };
-		BDFD3E4729E420CF0010E3CB /* Checkbox in Frameworks */ = {isa = PBXBuildFile; productRef = BDFD3E4629E420CF0010E3CB /* Checkbox */; };
 		BDFD3E4929E53AD00010E3CB /* ReverbActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD3E4829E53AD00010E3CB /* ReverbActions.swift */; };
 		BDFD3E4B29E55D3C0010E3CB /* DelayActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD3E4A29E55D3C0010E3CB /* DelayActions.swift */; };
 		BDFD3E4D29E571BE0010E3CB /* MIDICC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD3E4C29E571BE0010E3CB /* MIDICC.swift */; };
@@ -561,7 +560,6 @@
 				BD3CADD329D8644D008C957D /* MorkAndMIDI in Frameworks */,
 				BD23989D2BBB6379009265E4 /* SoundFontInfoLib.framework in Frameworks */,
 				BDF1C0E02787675600E451C3 /* Tagged in Frameworks */,
-				BDFD3E4729E420CF0010E3CB /* Checkbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1194,7 +1192,6 @@
 				BDA52C19277CB72F0010BBF1 /* DictionaryCoder */,
 				BDF1C0DF2787675600E451C3 /* Tagged */,
 				BD3CADD229D8644D008C957D /* MorkAndMIDI */,
-				BDFD3E4629E420CF0010E3CB /* Checkbox */,
 				BD05DFF12BB9BECE008FFA34 /* ProgressHUD */,
 			);
 			productName = SoundFontsFramework;
@@ -1254,7 +1251,6 @@
 				BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */,
 				BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */,
 				BD3CADD129D8644D008C957D /* XCRemoteSwiftPackageReference "morkandmidi" */,
-				BDFD3E4529E420CF0010E3CB /* XCRemoteSwiftPackageReference "Checkbox" */,
 				BD05DFF02BB9BECE008FFA34 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 			);
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
@@ -1859,8 +1855,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bradhowes/morkandmidi.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 4.0.0;
 			};
 		};
 		BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */ = {
@@ -1877,14 +1873,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.6.0;
-			};
-		};
-		BDFD3E4529E420CF0010E3CB /* XCRemoteSwiftPackageReference "Checkbox" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bradhowes/Checkbox";
-			requirement = {
-				branch = main;
-				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1909,11 +1897,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */;
 			productName = Tagged;
-		};
-		BDFD3E4629E420CF0010E3CB /* Checkbox */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BDFD3E4529E420CF0010E3CB /* XCRemoteSwiftPackageReference "Checkbox" */;
-			productName = Checkbox;
 		};
 /* End XCSwiftPackageProductDependency section */
 
