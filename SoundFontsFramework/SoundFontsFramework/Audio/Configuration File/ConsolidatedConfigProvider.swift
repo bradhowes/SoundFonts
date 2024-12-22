@@ -41,6 +41,7 @@ public final class ConsolidatedConfigProvider: NSObject {
 
    - parameter inApp: `true` if running as an app, `false` if as an AUv3 app extension
    - parameter fileURL: the location for the document
+   - parameter identity: the unique tag assigned to this instance
    */
   public init(inApp: Bool, fileURL: URL, identity: String) {
     self.log = Logging.logger("ConsolidatedConfigProvider[\(identity)]")

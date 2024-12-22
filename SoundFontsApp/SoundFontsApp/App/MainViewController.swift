@@ -15,9 +15,9 @@ import ProgressHUD
 final class MainViewController: UIViewController {
   private lazy var log: Logger = Logging.logger("MainViewController")
 
-  private var activePresetManager: ActivePresetManager!
+  private var activePresetManager: ActivePresetManager?
   private var audioEngine: AudioEngine?
-  private var settings: Settings!
+  private var settings: Settings?
   private var askForReview: AskForReview?
 
   private var startRequested = false
@@ -40,7 +40,7 @@ final class MainViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    UIApplication.shared.appDelegate.setMainViewController(self)
+    UIApplication.shared.appDelegate?.setMainViewController(self)
     setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     observers.append(NotificationCenter.default.addObserver(forName: .showChanges, object: nil,
                                                             queue: nil) { [weak self] _ in
@@ -58,7 +58,7 @@ final class MainViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-
+    guard let settings else { return }
     if !skipTutorial {
       if !settings.showedTutorial {
         showTutorial()
@@ -103,8 +103,9 @@ extension MainViewController {
    Show the changes screen if there are changes to be shown.
    */
   func showChanges(_ force: Bool = false) {
+    guard let settings else { return }
     let currentVersion = alwaysShowChanges ? "" : Bundle.main.releaseVersionNumber
-    
+
     if settings.showedChanges != currentVersion || alwaysShowChanges || force {
       let changes = ChangesCompiler.compile()
       settings.showedChanges = currentVersion
@@ -288,7 +289,7 @@ extension MainViewController: ControllerConfiguration {
     }
 
     if let audioEngine = router.audioEngine {
-      activePresetManager.runOnNotifyQueue {
+      router.activePresetManager.runOnNotifyQueue {
         audioEngine.attachKeyboard(keyboard)
         self.setAudioEngineInBackground(audioEngine)
       }
@@ -303,7 +304,7 @@ extension MainViewController: ControllerConfiguration {
       }
     }
 
-    activePresetManager.restoreActive(settings.lastActivePreset)
+    router.activePresetManager.restoreActive(router.settings.lastActivePreset)
     log.debug("establishConnections END")
   }
 

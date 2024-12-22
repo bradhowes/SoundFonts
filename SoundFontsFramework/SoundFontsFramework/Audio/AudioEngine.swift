@@ -76,6 +76,8 @@ public final class AudioEngine: SynthProvider {
    - parameter mode: determines how the sampler is hosted.
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: user-adjustable settings
+   - parameter midi: the provider of MIDI events
+   - parameter midiControllerActionStateManager: manager for mapping of MIDI controller events to internal actions
    */
   init(mode: Mode, activePresetManager: ActivePresetManager, settings: Settings, midi: MIDI?,
        midiControllerActionStateManager: MIDIControllerActionStateManager?) {
@@ -122,9 +124,9 @@ public final class AudioEngine: SynthProvider {
 
 // MARK: - Control
 
-public extension AudioEngine {
+extension AudioEngine {
 
-  func attachKeyboard(_ keyboard: AnyKeyboard) {
+  public func attachKeyboard(_ keyboard: AnyKeyboard) {
     guard let midi = self.midi,
           let midiConnectionMonitor = self.midiConnectionMonitor,
           let midiControllerActionStateManager = self.midiControllerActionStateManager
@@ -144,7 +146,7 @@ public extension AudioEngine {
 
    - returns: Result value indicating success or failure
    */
-  func start() -> StartResult {
+  public func start() -> StartResult {
     log.debug("start BEGIN")
     let synth = makeSynth()
     self._synth = synth
@@ -174,7 +176,7 @@ public extension AudioEngine {
   /**
    Stop the existing audio engine. NOTE: this only applies to the standalone case.
    */
-  func stop() {
+  public func stop() {
     log.debug("stop BEGIN")
     guard mode == .standalone else { fatalError("unexpected `stop` called on audioUnit") }
 
@@ -212,19 +214,19 @@ public extension AudioEngine {
   /**
    Command the synth to stop playing active notes.
    */
-  func stopAllNotes() { synth?.stopAllNotes()  }
+  public func stopAllNotes() { synth?.stopAllNotes()  }
 }
 
 // MARK: - Configuration Changes
 
-private extension AudioEngine {
+extension AudioEngine {
 
   /**
    Change the synth to use the given preset configuration values.
 
    - parameter presetConfig: the configuration to use
    */
-  func applyPresetConfig(_ presetConfig: PresetConfig) {
+  private func applyPresetConfig(_ presetConfig: PresetConfig) {
     log.debug("applyPresetConfig BEGIN")
 
     if presetConfig.presetTuning != 0.0 {
@@ -275,7 +277,7 @@ private extension AudioEngine {
 
    - parameter value: the value to set in cents (+/- 2400)
    */
-  func setTuning(_ value: Float) {
+  private func setTuning(_ value: Float) {
     log.debug("setTuning BEGIN - \(value)")
     synth?.synthGlobalTuning = value
     log.debug("setTuning END")
@@ -286,7 +288,7 @@ private extension AudioEngine {
 
    - parameter value: the value to set
    */
-  func setGain(_ value: Float) {
+  private func setGain(_ value: Float) {
     log.debug("setGain BEGIN - \(value)")
     synth?.synthGain = value
     log.debug("setGain END")
@@ -297,7 +299,7 @@ private extension AudioEngine {
 
    - parameter value: the value to set
    */
-  func setPan(_ value: Float) {
+  private func setPan(_ value: Float) {
     log.debug("setPan BEGIN - \(value)")
     synth?.synthStereoPan = value
     log.debug("setPan END")
@@ -308,13 +310,13 @@ private extension AudioEngine {
 
    - parameter value: range in semitones
    */
-  func setPitchBendRange(value: UInt8) {
+  private func setPitchBendRange(value: UInt8) {
     log.debug("setPitchBendRange BEGIN - \(value)")
     synth?.setPitchBendRange(value: value)
     log.debug("setPitchBendRange END")
   }
 
-  func pendingPresetLoad() {
+  private func pendingPresetLoad() {
     // We delay changing preset in case there is another change coming over due to UI/MIDI controls. When another one
     // comes in we cancel the running timer and restart it, setting a new preset only after the time finishes and fires.
     DispatchQueue.main.async { [weak self] in
@@ -333,7 +335,7 @@ private extension AudioEngine {
 
    - returns: StartResult indicating success or failure
    */
-  func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
+  private func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
     log.debug("loadActivePreset BEGIN - \(self.activePresetManager.active.description, privacy: .public)")
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
@@ -378,9 +380,9 @@ private extension AudioEngine {
     return .success(synth)
   }
 
-  func makeSynth() -> AnyMIDISynth { AVAudioUnitSampler() }
+  private func makeSynth() -> AnyMIDISynth { AVAudioUnitSampler() }
 
-  func startEngine(_ synth: AnyMIDISynth) -> StartResult {
+  private func startEngine(_ synth: AnyMIDISynth) -> StartResult {
     log.debug("creating AVAudioEngine")
     let engine = AVAudioEngine()
     self.engine = engine

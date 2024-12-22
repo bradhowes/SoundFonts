@@ -48,15 +48,21 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   /**
-   Notification handler for when the application starts.
+   Notification handler for when the application starts. Handles requests to visit the AppStore and view the SoundFonts
+   page there.
 
    - parameter application: the application that is running
    - parameter launchOptions: the options used to start the application
    */
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil,
-                                                      queue: nil) { [weak self] _ in
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    observer = NotificationCenter.default.addObserver(
+      forName: .visitAppStore,
+      object: nil,
+      queue: nil
+    ) { [weak self] _ in
       self?.visitAppStore()
     }
     return true
@@ -69,8 +75,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter url: the URL of the file to open
    - parameter options: dictionary of options that may affect the opening (unused)
    */
-  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-    // DispatchQueue.main.async { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
+  func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+  ) -> Bool {
     pendingAddition = url
     return true
   }
@@ -130,10 +139,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     false
   }
 
-  @objc private func visitAppStore() {
-    guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review") else {
-      fatalError("Expected a valid URL")
+  private func visitAppStore() {
+    if let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review") {
+      UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
     }
-    UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
   }
 }
