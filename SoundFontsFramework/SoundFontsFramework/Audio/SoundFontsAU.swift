@@ -183,9 +183,12 @@ extension SoundFontsAU {
       return
     }
 
-    // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
-    try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(activePreset.program),
-                                         bankMSB: UInt8(activePreset.bankMSB), bankLSB: UInt8(activePreset.bankLSB))
+    if FileManager.default.fileExists(atPath: soundFont.fileURL.path) {
+      // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
+      try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(activePreset.program),
+                                           bankMSB: UInt8(activePreset.bankMSB), bankLSB: UInt8(activePreset.bankLSB))
+    }
+
     log.debug("reloadActivePreset END")
   }
 
