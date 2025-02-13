@@ -149,6 +149,8 @@ extension SoundFontsAU {
       throw error
     }
 
+    reloadActivePreset()
+
     log.debug("allocateRenderResources END")
   }
 
@@ -171,10 +173,13 @@ extension SoundFontsAU {
 
   private func reloadActivePreset() {
     log.debug("reloadActivePreset BEGIN")
-    guard let activePreset = activePresetManager.activePreset,
-          let soundFont = activePresetManager.activeSoundFont
-    else {
+    guard let activePreset = activePresetManager.activePreset else {
       log.debug("reloadActivePreset END - no active preset")
+      return
+    }
+
+    guard let soundFont = activePresetManager.activeSoundFont else {
+      log.debug("reloadActivePreset END - no active soundFont")
       return
     }
 
@@ -183,12 +188,21 @@ extension SoundFontsAU {
       return
     }
 
+    // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
     if FileManager.default.fileExists(atPath: soundFont.fileURL.path) {
-      // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
-      try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(activePreset.program),
-                                           bankMSB: UInt8(activePreset.bankMSB), bankLSB: UInt8(activePreset.bankLSB))
+      do {
+        try sampler.loadSoundBankInstrument(
+          at: soundFont.fileURL,
+          program: UInt8(activePreset.program),
+          bankMSB: UInt8(activePreset.bankMSB),
+          bankLSB: UInt8(activePreset.bankLSB)
+        )
+      } catch {
+        log.error("reloadActivePreset - failed to load sound font: \(error)")
+      }
+    } else {
+      log.error("reloadActivePreset - soundFont file \(soundFont.fileURL.path) does not exist")
     }
-
     log.debug("reloadActivePreset END")
   }
 
