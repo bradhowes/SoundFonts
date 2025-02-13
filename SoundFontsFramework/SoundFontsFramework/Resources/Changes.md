@@ -6,6 +6,14 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.30.8
+
+* Always restore active patch in AUv3 before rendering. Thanks to Soup2953 for pointing out this issue.
+
+# 2.30.7
+
+* Verify SF2 file availability before attempting to use.
+
 # 2.30.6
 
 * Pin SF2Lib dependency to v6.1.0 which works on iOS versions older than v17
