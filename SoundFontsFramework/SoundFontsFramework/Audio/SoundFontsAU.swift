@@ -484,29 +484,43 @@ extension SoundFontsAU {
     }
   }
 
+  public override var transportStateBlock: AUHostTransportStateBlock? {
+    get { wrapped.transportStateBlock }
+    set { wrapped.transportStateBlock = newValue }
+  }
+
   public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
+  // public typealias AUHostMusicalContextBlock = (UnsafeMutablePointer<Double>?, UnsafeMutablePointer<Double>?, UnsafeMutablePointer<Int>?, UnsafeMutablePointer<Double>?, UnsafeMutablePointer<Int>?, UnsafeMutablePointer<Double>?) -> Bool
+
+  // public override var internalRenderBlock: AUInternalRenderBlock { return wrapped.internalRenderBlock }
+
+#if true
   public override var internalRenderBlock: AUInternalRenderBlock {
-#if DEBUG_INTERNAL_RENDER_BLOCK
     let block = self.wrapped.internalRenderBlock
-    let log = self.log
+    let tsb = self.wrapped.transportStateBlock
+
     return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput in
-      var eventPtr = realtimeEventListHead?.pointee
-      while let event = eventPtr {
-        switch event.head.eventType {
-        case .parameter: log.debug("internalRenderBlock - parameter")
-        case .parameterRamp: log.debug("internalRenderBlock - parameterRamp")
-        case .MIDI: log.debug("internalRenderBlock - MIDI")
-        case .midiSysEx: log.debug("internalRenderBlock - midiSysEx")
-        case .midiEventList: log.debug("internalRenderBlock - midiEventList")
-        @unknown default: fatalError()
+
+      let err = block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
+
+      // If the transport is not running, then we are probably not generating the right samples, at least for Cubasis
+      // so we zero out the samples.
+      //
+      // The ordering here was done on purpose, so that all real-time event messages are still being processed
+      // above even if we are ultimately zeroing out the sample values here.
+      var tsbFlags = AUHostTransportStateFlags(rawValue: 0)
+      if let tsb,
+         tsb(&tsbFlags, nil, nil, nil),
+         !tsbFlags.contains(.moving) {
+        let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
+        for buffer in abl {
+          memset(buffer.mData, 0, Int(buffer.mDataByteSize))
         }
-        eventPtr = event.head.next?.pointee
       }
-      return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
+
+      return err
     }
-#else
-    return self.wrapped.internalRenderBlock
-#endif
   }
+#endif
 }
