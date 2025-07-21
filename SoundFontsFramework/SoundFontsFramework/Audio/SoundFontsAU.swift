@@ -491,28 +491,54 @@ extension SoundFontsAU {
 
   public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
-  // public typealias AUHostMusicalContextBlock = (UnsafeMutablePointer<Double>?, UnsafeMutablePointer<Double>?, UnsafeMutablePointer<Int>?, UnsafeMutablePointer<Double>?, UnsafeMutablePointer<Int>?, UnsafeMutablePointer<Double>?) -> Bool
-
   // public override var internalRenderBlock: AUInternalRenderBlock { return wrapped.internalRenderBlock }
 
-#if true
   public override var internalRenderBlock: AUInternalRenderBlock {
+    let log = self.log
     let block = self.wrapped.internalRenderBlock
     let tsb = self.wrapped.transportStateBlock
+    let smeb = self.wrapped.scheduleMIDIEventBlock
+    var moving = false
+    var zap = 0
 
     return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput in
-
       let err = block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
 
-      // If the transport is not running, then we are probably not generating the right samples, at least for Cubasis
-      // so we zero out the samples.
-      //
-      // The ordering here was done on purpose, so that all real-time event messages are still being processed
-      // above even if we are ultimately zeroing out the sample values here.
+      // Track transitions in the transport head. When it stops, set up a counter to clear out the audio buffer
+      // for a short amount of time to remove audio artifacts in Cubasis. This is a hack.
       var tsbFlags = AUHostTransportStateFlags(rawValue: 0)
       if let tsb,
-         tsb(&tsbFlags, nil, nil, nil),
-         !tsbFlags.contains(.moving) {
+         tsb(&tsbFlags, nil, nil, nil) {
+        if tsbFlags.contains(.changed) {
+          if tsbFlags.contains(.moving) {
+            log.debug("moving")
+            moving = true
+          } else if moving {
+            log.debug("stopped")
+            moving = false
+            zap = 6
+            if let smeb {
+              let allSoundOff: [UInt8] = [176, 120, 0]
+              allSoundOff.withUnsafeBufferPointer { ptr in
+                if let ptr = ptr.baseAddress {
+                  log.debug("allSoundOff")
+                  smeb(AUEventSampleTimeImmediate, 0, 3, ptr)
+                }
+              }
+              let allNotesOff: [UInt8] = [176, 123, 0]
+              allNotesOff.withUnsafeBufferPointer { ptr in
+                if let ptr = ptr.baseAddress {
+                  log.debug("allNotesOff")
+                  smeb(AUEventSampleTimeImmediate, 0, 3, ptr)
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if zap > 0 {
+        zap -= 1
         let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
         for buffer in abl {
           memset(buffer.mData, 0, Int(buffer.mDataByteSize))
@@ -522,5 +548,4 @@ extension SoundFontsAU {
       return err
     }
   }
-#endif
 }
