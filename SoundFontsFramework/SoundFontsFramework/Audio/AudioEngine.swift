@@ -367,8 +367,8 @@ extension AudioEngine {
         if let presetConfig = presetConfig {
           self.applyPresetConfig(presetConfig)
         }
-      case .failure:
-        self.activePresetManager.setActive(.none)
+      case .failure(let why):
+        handleLoadFailure(why: why)
       }
 
       if let afterLoadBlock = afterLoadBlock {
@@ -378,6 +378,18 @@ extension AudioEngine {
 
     log.debug("loadActivePreset END")
     return .success(synth)
+  }
+
+  private func handleLoadFailure(why: PresetChangeFailure) {
+    switch why {
+    case .cancelled:
+      break
+    case .noSynth:
+      break
+    case .failedToLoad(let error):
+      log.error("failed to load: \(error.localizedDescription)")
+      self.activePresetManager.setActive(.none)
+    }
   }
 
   private func makeSynth() -> AnyMIDISynth { AVAudioUnitSampler() }

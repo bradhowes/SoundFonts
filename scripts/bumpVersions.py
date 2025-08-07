@@ -103,13 +103,14 @@ def locateFiles(cond: PathPredicate) -> PathList:
  given `cond` returned `True`.
     '''
     found = []
-    for dirname, dirnames, filenames in os.walk('.'):
+    for root, dirs, files in os.walk('.'):
         for exclude in ['DerivedData', '.build']:
-            if exclude in dirnames:
-                dirnames.remove(exclude)
-        for path in filenames:
+            drops = [d for d in dirs if exclude in d]
+            for drop in drops:
+                dirs.remove(drop)
+        for path in files:
             if cond(path):
-                found.append(os.path.join(dirname, path))
+                found.append(os.path.join(root, path))
     return found
 
 

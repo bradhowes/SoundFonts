@@ -7,19 +7,22 @@ DEST = -scheme 'iOS App' -destination platform="$(PLATFORM_IOS)"
 default: report
 
 build: clean
-	xcodebuild -workspace SoundFonts.xcworkspace build-for-testing $(DEST) -resultBundlePath $PWD
+	USE_UNSAFE_FLAGS="1" set -o pipefail && xcodebuild \
+		-workspace SoundFonts.xcworkspace build-for-testing $(DEST) -resultBundlePath $PWD \
+		| xcbeautify --renderer github-actions
 
 test: build
-	xcodebuild test-without-building $(DEST) 
+	xcodebuild test-without-building $(DEST) | xcbeautify --renderer github-actions
+
 
 test-iOS:
 	rm -rf "$(PWD)/.DerivedData-iOS"
-	xcodebuild test  \
+	USE_UNSAFE_FLAGS="1" ENABLE_TESTING_SEARCH_PATHS="YES" set -o pipefail && xcodebuild test \
 		-scheme 'iOS App' \
 		-derivedDataPath "$(PWD)/.DerivedData-iOS" \
 		-destination platform="$(PLATFORM_IOS)" \
 		-enableCodeCoverage YES \
-		ENABLE_TESTING_SEARCH_PATHS=YES
+		| xcbeautify --renderer github-actions
 
 coverage-iOS: test-iOS
 	$(XCCOV) $(PWD)/.DerivedData-iOS/Logs/Test/*.xcresult > coverage_iOS.txt

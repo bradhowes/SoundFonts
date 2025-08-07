@@ -30,8 +30,19 @@ extension AVAudioUnitSampler: AnyMIDISynth {
   public var avAudioUnit: AVAudioUnitMIDIInstrument { self }
 
   public var synthGain: Float {
-    get { self.masterGain }
-    set { self.masterGain = newValue }
+    get {
+      if #available(iOS 15.0, *) {
+        self.overallGain
+      } else {
+        self.masterGain
+      }
+    }
+    set {
+      if #available(iOS 15.0, *) {
+        self.overallGain = newValue
+      } else {
+        self.masterGain = newValue }
+    }
   }
 
   public var synthStereoPan: Float {
