@@ -6,6 +6,13 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.30.12
+
+* Various fixes related to accessibility -- thanks to Neal Hibbard for raising the issue
+* Effects knobs now work via Voice Over and report their units
+* Fixed the order of the controls in Voice Over
+* Improved use of on-screen keyboard with Voice Over
+
 # 2.30.11
 
 * Fix crash on iOS v16 and older
