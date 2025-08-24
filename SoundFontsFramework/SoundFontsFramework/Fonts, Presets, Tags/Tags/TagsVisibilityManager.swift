@@ -38,6 +38,7 @@ struct TagsVisibilityManager {
     self.fontsView = fontsView
     self.containerView = containerView
     self.tagsTableViewController = tagsTableViewController
+    tagsTableViewController.view.accessibilityElementsHidden = true
     self.infoBar = infoBar
     self.maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
 
@@ -75,9 +76,15 @@ private extension TagsVisibilityManager {
     let button = sender as? UIButton
     if tagsBottomConstraint.constant == 0.0 {
       hideTags()
+      button?.accessibilityValue = "Show"
+      button?.accessibilityHint = "Show tags list"
+      tagsTableViewController.view.accessibilityElementsHidden = true
     } else {
       button?.tintColor = .systemOrange
       showTags()
+      button?.accessibilityValue = "Hide"
+      button?.accessibilityHint = "Hide tags list"
+      tagsTableViewController.view.accessibilityElementsHidden = false
     }
   }
 

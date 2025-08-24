@@ -85,8 +85,9 @@ final class Key: UIView {
   private func configure() {
     self.backgroundColor = .clear
     self.contentMode = .redraw
-    self.accessibilityLabel = self.note.label
     self.isAccessibilityElement = true
+    self.accessibilityLabel = self.note.label
+    self.accessibilityTraits = .allowsDirectInteraction
   }
 }
 

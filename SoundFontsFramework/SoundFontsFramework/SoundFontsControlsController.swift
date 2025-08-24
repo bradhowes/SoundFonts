@@ -105,6 +105,7 @@ private extension SoundFontsControlsController {
       showEffects()
     }
     button?.tintColor = showingEffects ? .systemOrange : .systemTeal
+    button?.accessibilityValue = showingEffects ? "Hide" : "Show"
   }
 
   func showEffects(_ animated: Bool = true) {

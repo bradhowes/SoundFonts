@@ -78,6 +78,9 @@ extension InfoBarController {
     effectsButtonLongPressGesture.minimumPressDuration = 0.5
     showEffects.addGestureRecognizer(effectsButtonLongPressGesture)
 
+    showMoreButtonsButton.accessibilityLabel = "More buttons"
+    showMoreButtonsButton.accessibilityValue = "Show"
+
     let panner = UIPanGestureRecognizer(target: self, action: #selector(panKeyboard))
     panner.minimumNumberOfTouches = 1
     panner.maximumNumberOfTouches = 1
@@ -102,7 +105,10 @@ extension InfoBarController {
       self.updateMIDIIndicator(accepted: accepted)
     }
 
+    showTags.accessibilityValue = "Show"
+
     showEffects.tintColor = settings.showEffects ? .systemOrange : .systemTeal
+    showEffects.accessibilityValue = settings.showEffects ? "Hide" : "Show"
 
     // NOTE: begin observing *after* first accessing setting value.
     updateSlidingKeyboardState()
@@ -372,6 +378,9 @@ private extension InfoBarController {
     let newAlpha: CGFloat = willBeHidden ? 1.0 : 0.5
 
     moreButtons.isHidden = false
+    showMoreButtonsButton.accessibilityLabel = "More buttons"
+    showMoreButtonsButton.accessibilityValue = willBeHidden ? "Show" : "Hide"
+
     UIViewPropertyAnimator.runningPropertyAnimator(
       withDuration: 0.4,
       delay: 0.0,
@@ -499,6 +508,7 @@ private extension InfoBarController {
 
   func updateSlidingKeyboardState() {
     slidingKeyboardToggle.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
+    slidingKeyboardToggle.accessibilityValue = settings.slideKeyboard ? "On" : "Off"
   }
 
   func updateMIDIIndicator(accepted: Bool) {

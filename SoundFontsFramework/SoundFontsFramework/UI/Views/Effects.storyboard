@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,13 +18,13 @@
         <scene sceneID="GTL-k8-6DV">
             <objects>
                 <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" id="erm-79-XXa" customClass="EffectsController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h" userLabel="Effects">
                         <rect key="frame" x="0.0" y="0.0" width="1274" height="132"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQU-9E-SkR">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQU-9E-SkR" userLabel="EffectsScrollView">
                                 <rect key="frame" x="0.0" y="0.0" width="1274" height="132"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="EffectsBlock">
                                         <rect key="frame" x="0.0" y="0.0" width="689" height="132"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
@@ -37,10 +37,10 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="282" height="124"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OAQ-F1-Cv4">
-                                                                        <rect key="frame" x="4" y="14" width="150" height="96.5"/>
+                                                                        <rect key="frame" x="4" y="0.0" width="274" height="124"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-Yz-uJo">
-                                                                                <rect key="frame" x="0.0" y="16" width="66" height="64"/>
+                                                                                <rect key="frame" x="0.0" y="30" width="66" height="64"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vkv-Bw-zse">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="66" height="25"/>
@@ -77,12 +77,24 @@
                                                                                     </button>
                                                                                 </subviews>
                                                                             </stackView>
+                                                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCb-jT-Avp">
+                                                                                <rect key="frame" x="70" y="0.0" width="120" height="124"/>
+                                                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                                                <accessibility key="accessibilityConfiguration" hint="The room preset for the reverb effect" label="ReverbPreset">
+                                                                                    <bool key="isElement" value="YES"/>
+                                                                                </accessibility>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="120" id="wYc-Qb-DDg"/>
+                                                                                </constraints>
+                                                                            </pickerView>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="79O-Jd-cFg" userLabel="Mix">
-                                                                                <rect key="frame" x="70" y="0.0" width="80" height="96.5"/>
+                                                                                <rect key="frame" x="194" y="14" width="80" height="96.5"/>
                                                                                 <subviews>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T20-Wa-s33" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                                                        <accessibility key="accessibilityConfiguration" hint="Controls how much reverb is output" label="ReverbMixControl"/>
+                                                                                        <accessibility key="accessibilityConfiguration" hint="Amount of reverb in mix" label="ReverbMixControl">
+                                                                                            <bool key="isElement" value="YES"/>
+                                                                                        </accessibility>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" secondItem="T20-Wa-s33" secondAttribute="height" id="7V0-Eb-LF9"/>
                                                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="rQq-eB-If9"/>
@@ -94,7 +106,9 @@
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liX-ZF-LkS" userLabel="Mix">
                                                                                         <rect key="frame" x="29" y="80" width="22" height="16.5"/>
                                                                                         <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                        <accessibility key="accessibilityConfiguration" hint="Label for the mix control" label="MixEffectLabel"/>
+                                                                                        <accessibility key="accessibilityConfiguration">
+                                                                                            <bool key="isElement" value="NO"/>
+                                                                                        </accessibility>
                                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                         <color key="textColor" systemColor="systemTealColor"/>
                                                                                         <nil key="highlightedColor"/>
@@ -103,16 +117,6 @@
                                                                             </stackView>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCb-jT-Avp">
-                                                                        <rect key="frame" x="158" y="0.0" width="120" height="124"/>
-                                                                        <color key="tintColor" systemColor="systemTealColor"/>
-                                                                        <accessibility key="accessibilityConfiguration" hint="The room preset for the reverb effect" label="ReverbPreset">
-                                                                            <bool key="isElement" value="YES"/>
-                                                                        </accessibility>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" constant="120" id="wYc-Qb-DDg"/>
-                                                                        </constraints>
-                                                                    </pickerView>
                                                                 </subviews>
                                                                 <edgeInsets key="layoutMargins" top="0.0" left="4" bottom="0.0" right="4"/>
                                                             </stackView>
@@ -173,7 +177,7 @@
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                                                <accessibility key="accessibilityConfiguration" hint="Controls amount time before stored samples repeat" label="DelayTimeControl">
+                                                                                <accessibility key="accessibilityConfiguration" hint="Time before delay plays" label="Delay time">
                                                                                     <bool key="isElement" value="YES"/>
                                                                                 </accessibility>
                                                                                 <constraints>
@@ -187,7 +191,9 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
                                                                                 <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <accessibility key="accessibilityConfiguration" hint="Label for the time control" label="DelayTimeLabel"/>
+                                                                                <accessibility key="accessibilityConfiguration" hint="Label for the time control" label="DelayTimeLabel">
+                                                                                    <bool key="isElement" value="NO"/>
+                                                                                </accessibility>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -199,7 +205,7 @@
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" userLabel="Feedback" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                                                <accessibility key="accessibilityConfiguration" hint="Controls how much signal is repeated" label="DelayFeedbackControl">
+                                                                                <accessibility key="accessibilityConfiguration" hint="Recycled delayed signal" label="Delay feedback">
                                                                                     <bool key="isElement" value="YES"/>
                                                                                 </accessibility>
                                                                                 <constraints>
@@ -213,7 +219,9 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
                                                                                 <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <accessibility key="accessibilityConfiguration" label="DelayFeedbackLabel"/>
+                                                                                <accessibility key="accessibilityConfiguration" label="DelayFeedbackLabel">
+                                                                                    <bool key="isElement" value="NO"/>
+                                                                                </accessibility>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -225,7 +233,7 @@
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" userLabel="Cutoff" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                                                <accessibility key="accessibilityConfiguration" hint="Controls low-pass filter cutoff" label="DelayCutoffControl">
+                                                                                <accessibility key="accessibilityConfiguration" hint="Low-pass filter cutoff" label="Delay cutoff">
                                                                                     <bool key="isElement" value="YES"/>
                                                                                 </accessibility>
                                                                                 <constraints>
@@ -239,7 +247,9 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
                                                                                 <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <accessibility key="accessibilityConfiguration" label="DelayCutoffLabel"/>
+                                                                                <accessibility key="accessibilityConfiguration" label="DelayCutoffLabel">
+                                                                                    <bool key="isElement" value="NO"/>
+                                                                                </accessibility>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -251,7 +261,7 @@
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ex1-3w-meW" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                                                <accessibility key="accessibilityConfiguration" hint="Controls how much delay is output" label="DelayMixControl">
+                                                                                <accessibility key="accessibilityConfiguration" hint="Amount of delay in mix" label="Delay mix">
                                                                                     <bool key="isElement" value="YES"/>
                                                                                 </accessibility>
                                                                                 <constraints>
@@ -265,7 +275,9 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
                                                                                 <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <accessibility key="accessibilityConfiguration" label="DelayMixLabel"/>
+                                                                                <accessibility key="accessibilityConfiguration" label="DelayMixLabel">
+                                                                                    <bool key="isElement" value="NO"/>
+                                                                                </accessibility>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -283,6 +295,9 @@
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration" label="Effects">
+                                            <bool key="isElement" value="NO"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="FXQ-A6-sfv" secondAttribute="bottom" id="Kns-pw-xrT"/>
                                             <constraint firstItem="FXQ-A6-sfv" firstAttribute="top" secondItem="UHf-8z-8DL" secondAttribute="top" constant="8" id="eMA-8M-Q1Y"/>
@@ -306,6 +321,9 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Dhe-Tz-U6h"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" label="Effects">
+                            <bool key="isElement" value="NO"/>
+                        </accessibility>
                         <constraints>
                             <constraint firstItem="tQU-9E-SkR" firstAttribute="bottom" secondItem="w3i-H0-L4h" secondAttribute="bottom" id="6jL-1O-6DZ"/>
                             <constraint firstItem="tQU-9E-SkR" firstAttribute="top" secondItem="w3i-H0-L4h" secondAttribute="top" id="9oP-z4-efp"/>
@@ -325,13 +343,16 @@
                         <outlet property="delayFeedback" destination="iM2-XN-xlU" id="VOP-qf-6Al"/>
                         <outlet property="delayFeedbackLabel" destination="SpL-9N-09R" id="yRU-9i-3Uh"/>
                         <outlet property="delayGlobal" destination="vQM-4Z-qzy" id="6xc-d0-2ye"/>
+                        <outlet property="delayStackView" destination="q8p-ND-Why" id="2or-hZ-PdJ"/>
                         <outlet property="delayTime" destination="Htb-6b-YVY" id="SEA-6r-xiI"/>
                         <outlet property="delayTimeLabel" destination="R2c-fd-4vs" id="aDj-1U-9zf"/>
                         <outlet property="delayWetDryMix" destination="Ex1-3w-meW" id="LNe-MS-Ryf"/>
                         <outlet property="delayWetDryMixLabel" destination="JT9-c9-CTS" id="KDg-3q-Op8"/>
+                        <outlet property="effectsBlock" destination="UHf-8z-8DL" id="L3o-Ni-mBF"/>
                         <outlet property="reverbEnabled" destination="Vkv-Bw-zse" id="Uok-ks-AxR"/>
                         <outlet property="reverbGlobal" destination="QeJ-Yv-Djw" id="gc2-y8-H2n"/>
                         <outlet property="reverbRoom" destination="MCb-jT-Avp" id="qkz-Xt-UVx"/>
+                        <outlet property="reverbStackView" destination="OAQ-F1-Cv4" id="qSA-sK-Vuk"/>
                         <outlet property="reverbWetDryMix" destination="T20-Wa-s33" id="Vyn-BI-Wee"/>
                         <outlet property="reverbWetDryMixLabel" destination="liX-ZF-LkS" id="gCz-CY-wPl"/>
                         <outlet property="scrollView" destination="tQU-9E-SkR" id="cLD-Pq-QpY"/>

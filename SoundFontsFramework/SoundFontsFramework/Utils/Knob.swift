@@ -227,6 +227,21 @@ extension Knob {
 
 extension Knob {
 
+  private var accessibilityStep: Float { (maximumValue - minimumValue) / 100.0 }
+
+  public override func accessibilityDecrement() {
+    value = max(value - accessibilityStep, minimumValue)
+    sendActions(for: .valueChanged)
+  }
+
+  public override func accessibilityIncrement() {
+    value = min(value + accessibilityStep, maximumValue)
+    sendActions(for: .valueChanged)
+  }
+}
+
+extension Knob {
+
   private func initialize() {
     trackLayer.fillColor = UIColor.clear.cgColor
     progressLayer.fillColor = UIColor.clear.cgColor
