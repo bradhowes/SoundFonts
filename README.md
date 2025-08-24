@@ -37,6 +37,45 @@ Here are some additional sites that have curated or custom SF2 files that should
 
 # Recent Changes
 
+## 2.30.12
+
+* Various fixes related to accessibility -- thanks to Neal Hibbard for raising the issue
+* Effects knobs now work via Voice Over and report their units
+* Fixed the order of the controls in Voice Over
+* Improved use of on-screen keyboard with Voice Over
+
+## 2.30.11
+
+* Fix crash on iOS v16 and older
+* Fix UI issue involving preset selection
+
+## 2.30.10
+
+* Fix previous attempt to silence audio when transport head is stopped.
+
+## 2.30.9
+
+* Silence audio when transport head is stopped.
+
+## 2.30.8
+
+* Always restore active patch in AUv3 before rendering. Thanks to Soup2953 for pointing out this issue.
+
+## 2.30.7
+
+* Verify SF2 file availability before attempting to use.
+
+## 2.30.6
+
+* Pin SF2Lib dependency to v6.1.0 which works on iOS versions older than v17
+
+## 2.30.5
+
+* Fixed repeated and unnecessary loading of configuration file.
+* Fixed issue where AUM session loading times would increase over time.
+* Removed forced-unwrapping of values in code -- unclear if source of any crashes, but better to be safe.
+* Greatly improved start up and configuration loading times.
+
 ## 2.30.4
 
 * Fixed crash in AUv3 component when host app moved to background
