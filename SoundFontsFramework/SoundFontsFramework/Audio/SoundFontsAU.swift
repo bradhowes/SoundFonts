@@ -188,21 +188,28 @@ extension SoundFontsAU {
       return
     }
 
-    // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
-    if FileManager.default.fileExists(atPath: soundFont.fileURL.path) {
-      do {
-        try sampler.loadSoundBankInstrument(
-          at: soundFont.fileURL,
-          program: UInt8(activePreset.program),
-          bankMSB: UInt8(activePreset.bankMSB),
-          bankLSB: UInt8(activePreset.bankLSB)
-        )
-      } catch {
-        log.error("reloadActivePreset - failed to load sound font: \(error)")
-      }
-    } else {
-      log.error("reloadActivePreset - soundFont file \(soundFont.fileURL.path) does not exist")
+    let url = soundFont.fileURL
+    let secured = url.startAccessingSecurityScopedResource()
+    defer { if secured { url.stopAccessingSecurityScopedResource() } }
+
+    guard FileManager.default.fileExists(atPath: url.path) else {
+      log.error("reloadActivePreset - soundFont file \(url.path) does not exist")
+      return
     }
+
+    // NOTE: do this here instead of using the PresetChangeManager as we want this to run in the current thread.
+    do {
+      sampler.reset()
+      try sampler.loadSoundBankInstrument(
+        at: url,
+        program: UInt8(activePreset.program),
+        bankMSB: UInt8(activePreset.bankMSB),
+        bankLSB: UInt8(activePreset.bankLSB)
+      )
+    } catch {
+      log.error("reloadActivePreset - failed to load sound font: \(error)")
+    }
+
     log.debug("reloadActivePreset END")
   }
 

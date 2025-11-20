@@ -23,9 +23,22 @@ public protocol PresetLoader: AnyObject {
 extension AVAudioUnitSampler: PresetLoader {
 
   public func loadAndActivatePreset(_ preset: Preset, from url: URL) -> NSError? {
+    let secured = url.startAccessingSecurityScopedResource()
+    defer { if secured { url.stopAccessingSecurityScopedResource() } }
+
+    guard FileManager.default.fileExists(atPath: url.path) else {
+      os_log(.error, "reloadActivePreset - soundFont file %{public}s does not exist", url.path)
+      return nil
+    }
+
     do {
-      try loadSoundBankInstrument(at: url, program: UInt8(preset.program), bankMSB: UInt8(preset.bankMSB),
-                                  bankLSB: UInt8(preset.bankLSB))
+      reset()
+      try loadSoundBankInstrument(
+        at: url,
+        program: UInt8(preset.program),
+        bankMSB: UInt8(preset.bankMSB),
+        bankLSB: UInt8(preset.bankLSB)
+      )
     } catch let error as NSError {
       switch error.code {
       case -43: // not found
