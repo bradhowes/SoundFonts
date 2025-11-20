@@ -744,7 +744,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -756,7 +756,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				MERGEABLE_LIBRARY = NO;
 				MERGED_BINARY_TYPE = none;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
@@ -777,7 +777,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_DEBUG_DYLIB = YES;
@@ -790,7 +790,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				MERGEABLE_LIBRARY = NO;
 				MERGED_BINARY_TYPE = none;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
@@ -852,7 +852,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
@@ -862,7 +862,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -880,7 +880,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
@@ -890,7 +890,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -908,7 +908,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
@@ -918,7 +918,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -936,7 +936,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
@@ -946,7 +946,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -996,7 +996,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				ENABLE_DEBUG_DYLIB = YES;
@@ -1069,7 +1069,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				ENABLE_DEBUG_DYLIB = NO;
@@ -1108,7 +1108,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -1122,7 +1122,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1142,7 +1142,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20251120123739;
+				CURRENT_PROJECT_VERSION = 20251120134123;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -1156,7 +1156,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.30.13;
+				MARKETING_VERSION = 2.30.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
