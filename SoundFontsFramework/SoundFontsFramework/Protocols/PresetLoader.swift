@@ -28,7 +28,7 @@ extension AVAudioUnitSampler: PresetLoader {
 
     guard FileManager.default.fileExists(atPath: url.path) else {
       os_log(.error, "reloadActivePreset - soundFont file %{public}s does not exist", url.path)
-      return nil
+      return NSError(domain: NSCocoaErrorDomain, code: -43)
     }
 
     do {
