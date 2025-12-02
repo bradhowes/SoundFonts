@@ -17,7 +17,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Select Xcode 16.4
-      run: ls -l /Applications && sudo xcode-select -s /APplications/Xcode_16.4.app
+      run: ls -l /Applications && sudo xcode-select -s /Applications/Xcode_16.4.app
     - name: Build, test, and code coverage
       run: env && make
     - name: Create Coverage Badge
