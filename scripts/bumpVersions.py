@@ -46,12 +46,13 @@ class MarketingVersion(NamedTuple):
     patch: int
 
     @classmethod
-    def fromTuple(cls, value: Tuple[str]) -> 'MarketingVersion':
+    def fromTuple(cls, value: Tuple[str, str, str]) -> 'MarketingVersion':
         return cls(int(value[0]), int(value[1]), int(value[2]))
 
     @classmethod
     def fromString(cls, value: str) -> 'MarketingVersion':
-        return MarketingVersion.fromTuple(value.split('.'))
+        bits = value.split('.')
+        return MarketingVersion.fromTuple((bits[0], bits[1], bits[2]))
 
     def __str__(self):
         return f"{self.major}.{self.minor}.{self.patch}"
@@ -74,7 +75,7 @@ def errorAndExit(*args) -> NoReturn:
     sys.exit(1)
 
 
-def error(*args) -> NoReturn:
+def error(*args) -> None:
     print('**', *args)
 
 
@@ -141,7 +142,7 @@ def getCurrentMarketingVersion(projectFiles: PathList) -> MarketingVersion:
 
 
 def getNewProjectVersion() -> ProjectVersion:
-    return datetime.utcnow().strftime('%Y%m%d%H%M%S')
+    return datetime.now().strftime('%Y%m%d%H%M%S')
 
 
 def updateProjectContents(contents: str, marketingVersion: MarketingVersion, projectVersion: ProjectVersion) -> str:
@@ -293,14 +294,14 @@ class Tests(unittest.TestCase):
         self.assertEqual(795192, MarketingVersion(12, 34, 56).asInt())
 
     def test_updateProjectContents(self):
-        marketingVersion = str(MarketingVersion(1, 2, 3))
+        marketingVersion = MarketingVersion(1, 2, 3)
         projectVersion = getNewProjectVersion()
         contents = 'one MARKETING_VERSION = 9.8.7; one\ntwo CURRENT_PROJECT_VERSION = 123123; two'
         self.assertEqual(f'one MARKETING_VERSION = 1.2.3; one\ntwo CURRENT_PROJECT_VERSION = {projectVersion}; two',
                          updateProjectContents(contents, marketingVersion, projectVersion))
 
     def test_updateUIContents(self):
-        marketingVersion = str(MarketingVersion(1, 2, 3))
+        marketingVersion = MarketingVersion(1, 2, 3)
         contents = 'foo userLabel="APP_VERSION" text="blah" blah'
         self.assertEqual(f'foo userLabel="APP_VERSION" text="v{marketingVersion}" blah',
                          updateUIContents(contents, marketingVersion))
