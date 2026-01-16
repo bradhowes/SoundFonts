@@ -25,6 +25,10 @@ final class FontsTableViewController: UITableViewController {
   private var bookmarkMonitor: Timer?
 
   private var dataSource = [SoundFont.Key]()
+
+  @IBOutlet var searchBar: UISearchBar!
+  private var isSearching: Bool { tableView.tableHeaderView == searchBar }
+  private var lastSearchText = ""
 }
 
 extension FontsTableViewController {
@@ -39,6 +43,8 @@ extension FontsTableViewController {
     let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
     longPressGesture.minimumPressDuration = 0.5
     tableView.addGestureRecognizer(longPressGesture)
+
+    searchBar.delegate = self
   }
 
   @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -62,6 +68,14 @@ extension FontsTableViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     stopBookmarkMonitor()
+  }
+
+  override func viewDidLayoutSubviews() {
+
+    if !isSearching && tableView.isDragging && tableView.contentOffset.y < -60 {
+      beginSearch()
+      return
+    }
   }
 
   func activate(_ soundFontAndPreset: SoundFontAndPreset) {
@@ -96,6 +110,7 @@ extension FontsTableViewController: ControllerConfiguration {
       }
     }
 
+    tableView.tableHeaderView = nil
     updateTableView()
   }
 }
@@ -106,7 +121,9 @@ extension FontsTableViewController {
 
   override func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { dataSource.count }
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    dataSource.count
+  }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     updateCell(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
@@ -161,9 +178,88 @@ extension FontsTableViewController {
   }
 }
 
+// MARK: - Searching
+
+extension FontsTableViewController: UISearchBarDelegate {
+
+  /**
+   Notification from searchBar that the text value changed. NOTE: this is not invoked when programmatically set.
+
+   - parameter searchBar: the UISearchBar where the change took place
+   - parameter searchText: the current search term
+   */
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    log.debug("searchBar.textDidChange - \(searchText, privacy: .public)")
+    guard let term = searchBar.searchTerm else {
+      lastSearchText = ""
+      cancelSearch()
+      return
+    }
+    search(for: term)
+    lastSearchText = term
+  }
+
+  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    log.debug("searchBarTextDidEndEditing - \(searchBar.isFirstResponder)")
+    // endSearch()
+  }
+
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    log.debug("searchBarSearchButtonClicked - \(searchBar.isFirstResponder)")
+    endSearch()
+  }
+
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    endSearch()
+  }
+
+  func endSearch() {
+    lastSearchText = searchBar.nonNilSearchTerm
+    cancelSearch()
+    searchBar.endSearch()
+
+    UIView.animate(withDuration: 0.25) {
+      self.tableView.contentOffset = .init(x: 0, y: self.searchBar.frame.height)
+    } completion: { _ in
+      self.tableView.tableHeaderView = nil
+      self.tableView.contentOffset = .zero
+      // self.showActiveSlot()
+    }
+  }
+}
+
 // MARK: - Private
 
 private extension FontsTableViewController {
+
+  func beginSearch() {
+    guard searchBar.isFirstResponder == false else { return }
+    let offset: CGPoint = .init(x: self.tableView.contentOffset.x, y: 0)
+    tableView.tableHeaderView = searchBar
+    UIView.animate(withDuration: 0.25) {
+      self.tableView.contentOffset = offset
+      self.searchBar.beginSearch(with: self.lastSearchText)
+    } completion: { _ in
+      self.search(for: self.lastSearchText)
+    }
+  }
+
+  func search(for term: String) {
+    dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
+    if isSearching,
+       !term.isEmpty {
+      dataSource = dataSource.filter { key in
+        guard let soundFont = soundFonts.getBy(key: key) else { fatalError("data out of sync") }
+        return soundFont.displayName.localizedCaseInsensitiveContains(term)
+      }
+    }
+    tableView.reloadData()
+  }
+
+  func cancelSearch() {
+    dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
+    tableView.reloadData()
+  }
 
   func updateBookmarkButtons() {
     for index in 0..<soundFonts.count {
@@ -254,7 +350,14 @@ private extension FontsTableViewController {
       return
     }
 
-    dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
+    if isSearching,
+       let searchTerm = searchBar.text,
+       !searchTerm.isEmpty {
+      search(for: searchTerm)
+    } else {
+      dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
+    }
+
     log.debug("updateTableView - dataSource: \(self.dataSource.description, privacy: .public)")
     log.debug("updateTableView - names: \(self.soundFonts.names(of: self.dataSource).description, privacy: .public)")
 
