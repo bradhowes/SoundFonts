@@ -4,7 +4,7 @@ PLATFORM_MACOS = macOS
 XCCOV = xcrun xccov view --report --only-targets
 
 DEST = -scheme 'iOS App' -destination platform="$(PLATFORM_IOS)"
-# XCB = | xcbeautify --renderer github-actions
+XCB = | xcbeautify --renderer github-actions
 
 default: report
 
