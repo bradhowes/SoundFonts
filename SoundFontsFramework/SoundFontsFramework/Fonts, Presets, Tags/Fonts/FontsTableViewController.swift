@@ -71,10 +71,8 @@ extension FontsTableViewController {
   }
 
   override func viewDidLayoutSubviews() {
-
     if !isSearching && tableView.isDragging && tableView.contentOffset.y < -60 {
       beginSearch()
-      return
     }
   }
 
@@ -206,7 +204,7 @@ extension FontsTableViewController: UISearchBarDelegate {
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     log.debug("searchBarSearchButtonClicked - \(searchBar.isFirstResponder)")
-    endSearch()
+    searchBar.resignFirstResponder()
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

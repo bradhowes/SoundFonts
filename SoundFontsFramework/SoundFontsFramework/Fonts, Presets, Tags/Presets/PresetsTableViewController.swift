@@ -255,7 +255,7 @@ extension PresetsTableViewController: UISearchBarDelegate {
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     log.debug("searchBarSearchButtonClicked - \(searchBar.isFirstResponder)")
-    endSearch()
+    searchBar.resignFirstResponder()
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
