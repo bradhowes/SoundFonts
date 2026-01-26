@@ -1,15 +1,17 @@
 PLATFORM_IOS = iOS Simulator,name=iPad mini (A17 Pro)
+# PLATFORM_IOS = iOS Simulator,name=Any iOS Simulator Device
 PLATFORM_MACOS = macOS
 XCCOV = xcrun xccov view --report --only-targets
 
 DEST = -scheme 'iOS App' -destination platform="$(PLATFORM_IOS)"
+# XCB = | xcbeautify --renderer github-actions
 
 default: report
 
 build: clean
+	xcodebuild -workspace SoundFonts.xcworkspace -scheme 'iOS App' -showdestinations
 	USE_UNSAFE_FLAGS="1" set -o pipefail && xcodebuild \
-		-workspace SoundFonts.xcworkspace build-for-testing $(DEST) -resultBundlePath $PWD \
-		| xcbeautify --renderer github-actions
+		-workspace SoundFonts.xcworkspace build-for-testing $(DEST) -resultBundlePath $PWD $(XCB)
 
 test: build
 	xcodebuild test-without-building $(DEST) | xcbeautify --renderer github-actions
@@ -21,8 +23,7 @@ test-iOS:
 		-scheme 'iOS App' \
 		-derivedDataPath "$(PWD)/.DerivedData-iOS" \
 		-destination platform="$(PLATFORM_IOS)" \
-		-enableCodeCoverage YES \
-		| xcbeautify --renderer github-actions
+		-enableCodeCoverage YES $(XCB)
 
 coverage-iOS: test-iOS
 	$(XCCOV) $(PWD)/.DerivedData-iOS/Logs/Test/*.xcresult > coverage_iOS.txt
