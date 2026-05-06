@@ -6,6 +6,16 @@ The parsing is really simplistic:
 - always put most-recent changes at the top of the file (versions in descending order)
 - if a line begins with '* ' then it is a change entry to show to the user. The change *must* be all on one line (keep it short and sweet)
 
+# 2.32.1
+
+* Small AUv3 interface update to fix crash in Camelot host.
+
+# 2.32.0
+
+* Update to latest SF2Lib version.
+* Incorporate SceneDelegate to future-proof app against later iOS releases.
+* Internal build changes to improve releases.
+
 # 2.31.1
 
 * Pressing "Done" when searching only dismisses the text keyboard and keeps showing the current search results.
