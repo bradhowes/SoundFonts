@@ -168,17 +168,17 @@ def locateUIFiles() -> PathList:
     return locateFiles(cond)
 
 
-def updateUIContents(contents: str, marketingVersion: MarketingVersion) -> str:
-    contents1 = re.sub(r'(text|title)="[^\"]*"(.*userLabel="APP_VERSION")', f'\\1="v{marketingVersion}"\\2', contents)
-    contents2 = re.sub(r'(userLabel="APP_VERSION".*(text|title))="[^\"]*"', f'\\1="v{marketingVersion}"', contents1)
+def updateUIContents(contents: str, marketingVersion: MarketingVersion, projectVersion: ProjectVersion) -> str:
+    contents1 = re.sub(r'(text|title)="[^\"]*"(.*userLabel="APP_VERSION")', f'\\1="v{marketingVersion} ({projectVersion})"\\2', contents)
+    contents2 = re.sub(r'(userLabel="APP_VERSION".*(text|title))="[^\"]*"', f'\\1="v{marketingVersion} ({projectVersion})"', contents1)
     return contents2
 
 
-def updateUIFiles(uiFiles: PathList, marketingVersion: MarketingVersion):
+def updateUIFiles(uiFiles: PathList, marketingVersion: MarketingVersion, projectVersion: ProjectVersion):
     for path in uiFiles:
         log(f"processing UI file '{path}'")
         contents = getAndBackupFile(path)
-        contents = updateUIContents(contents, marketingVersion)
+        contents = updateUIContents(contents, marketingVersion, projectVersion)
         saveFile(path, contents)
 
 
@@ -189,7 +189,7 @@ def main(args):
     group.add_argument('-1', '--major', action='store_true', help='bump major version')
     group.add_argument('-2', '--minor', action='store_true', help='bump minor version')
     group.add_argument('-3', '--patch', action='store_true', help='bump patch version')
-    group.add_argument('-b', '--build', action='store_true', help='set the build version')
+    group.add_argument('-b', '--build', action='store_true', help='update build version')
     group.add_argument('-s', '--set', help='set the version')
     parsed = parser.parse_args(args[1:])
 
@@ -214,7 +214,7 @@ def main(args):
     log(f"new marketingVersion: {marketingVersion}")
 
     updateConfigFiles(configFiles, marketingVersion, projectVersion)
-    updateUIFiles(locateUIFiles(), marketingVersion)
+    updateUIFiles(locateUIFiles(), marketingVersion, projectVersion)
 
 
 if __name__ == '__main__':
@@ -264,15 +264,16 @@ class Tests(unittest.TestCase):
 
     def test_updateUIContents(self):
         marketingVersion = MarketingVersion(1, 2, 3)
+        projectVersion = ProjectVersion("20260506101923")
         contents = 'foo userLabel="APP_VERSION" text="blah" blah'
-        self.assertEqual(f'foo userLabel="APP_VERSION" text="v{marketingVersion}" blah',
-                         updateUIContents(contents, marketingVersion))
+        self.assertEqual(f'foo userLabel="APP_VERSION" text="v{marketingVersion} ({projectVersion})" blah',
+                         updateUIContents(contents, marketingVersion, projectVersion))
         contents = 'foo userLabel="APP_VERSION" title="blah" blah'
-        self.assertEqual(f'foo userLabel="APP_VERSION" title="v{marketingVersion}" blah',
-                         updateUIContents(contents, marketingVersion))
+        self.assertEqual(f'foo userLabel="APP_VERSION" title="v{marketingVersion} ({projectVersion})" blah',
+                         updateUIContents(contents, marketingVersion, projectVersion))
         contents = 'foo text="BLAH" between userLabel="APP_VERSION" silly'
-        self.assertEqual(f'foo text="v{marketingVersion}" between userLabel="APP_VERSION" silly',
-                         updateUIContents(contents, marketingVersion))
+        self.assertEqual(f'foo text="v{marketingVersion} ({projectVersion})" between userLabel="APP_VERSION" silly',
+                         updateUIContents(contents, marketingVersion, projectVersion))
         contents = '<textFieldCell key="cell" lineBreakMode="clipping" title="v3.0.0" id="p30-Bk-a8R" userLabel="APP_VERSION">'
-        self.assertEqual(f'<textFieldCell key="cell" lineBreakMode="clipping" title="v{marketingVersion}" id="p30-Bk-a8R" userLabel="APP_VERSION">',
-                         updateUIContents(contents, marketingVersion))
+        self.assertEqual(f'<textFieldCell key="cell" lineBreakMode="clipping" title="v{marketingVersion} ({projectVersion})" id="p30-Bk-a8R" userLabel="APP_VERSION">',
+                         updateUIContents(contents, marketingVersion, projectVersion))
