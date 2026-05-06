@@ -13,25 +13,36 @@ public enum SoundFontsAUFailure: Error {
 /// keyboard component.
 public final class SoundFontsAUViewController: AUViewController {
   private let identity = RandomWords.uniqueIdentifier
-  private let log: Logger
-  private let components: Components<SoundFontsAUViewController>
-  private var audioUnit: SoundFontsAU?
+  private lazy var log: Logger = Logging.logger("SoundFontsAUViewController[\(identity)]")
+  private var components: Components<SoundFontsAUViewController>?
 
-  public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    self.log = Logging.logger("SoundFontsAUViewController[\(identity)]")
-    self.components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  private var audioUnit: SoundFontsAU? {
+    didSet {
+      DispatchQueue.main.async {
+        if self.isViewLoaded {
+          self.attachView()
+        }
+      }
+    }
   }
-  
-  required init?(coder: NSCoder) {
-    self.log = Logging.logger("SoundFontsAUViewController[\(identity)]")
-    self.components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
-    super.init(coder: coder)
-  }
+
+//  public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//    self.log = Logging.logger("SoundFontsAUViewController[\(identity)]")
+//    self.components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
+//    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//  }
+//  
+//  required init?(coder: NSCoder) {
+//    self.log = Logging.logger("SoundFontsAUViewController[\(identity)]")
+//    self.components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
+//    super.init(coder: coder)
+//  }
 
   override public func viewDidLoad() {
+    if audioUnit != nil {
+      self.attachView()
+    }
     super.viewDidLoad()
-    components.setMainViewController(self)
     log.debug("viewDidLoad END")
   }
 }
@@ -45,8 +56,10 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    - returns: new SoundFontsAU instance
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-    return try log.measure("createAudioUnit") {
-      guard let audioEngine = components.audioEngine else {
+    try DispatchQueue.main.sync {
+      components = Components<SoundFontsAUViewController>.make(inApp: false, identity: identity)
+
+      guard let components, let audioEngine = components.audioEngine else {
         log.fault("missing audioEngine instance")
         throw SoundFontsAUFailure.missingAudioEngine
       }
@@ -63,6 +76,10 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
       return audioUnit
     }
   }
+
+  private func attachView() {
+    components?.setMainViewController(self)
+  }
 }
 
 // MARK: - Controller Configuration
@@ -74,5 +91,8 @@ extension SoundFontsAUViewController: ControllerConfiguration {
 
    - parameter context: the RunContext that holds all of the registered managers / controllers
    */
-  public func establishConnections(_ router: ComponentContainer) {}
+  public func establishConnections(_ router: ComponentContainer) {
+    log.debug("establishConnections BEGIN")
+    log.debug("establishConnections END")
+  }
 }

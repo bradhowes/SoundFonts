@@ -1818,7 +1818,7 @@
 				BD58251423CDABCE0034A31B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		BD58251523CDABCE0034A31B /* Build configuration list for PBXNativeTarget "SoundFontsFramework" */ = {
 			isa = XCConfigurationList;
@@ -1827,7 +1827,7 @@
 				BD58251723CDABCE0034A31B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		BD58251823CDABCE0034A31B /* Build configuration list for PBXNativeTarget "SoundFontsFrameworkTests" */ = {
 			isa = XCConfigurationList;
@@ -1836,7 +1836,7 @@
 				BD58251A23CDABCE0034A31B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
