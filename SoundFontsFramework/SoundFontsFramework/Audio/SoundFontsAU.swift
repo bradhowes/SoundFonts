@@ -498,61 +498,11 @@ extension SoundFontsAU {
 
   public override var renderBlock: AURenderBlock { wrapped.renderBlock }
 
-  // public override var internalRenderBlock: AUInternalRenderBlock { return wrapped.internalRenderBlock }
-
   public override var internalRenderBlock: AUInternalRenderBlock {
-    let log = self.log
     let block = self.wrapped.internalRenderBlock
-    let tsb = self.wrapped.transportStateBlock
-    let smeb = self.wrapped.scheduleMIDIEventBlock
-    var moving = false
-    var zap = 0
 
     return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput in
-      let err = block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
-
-      // Track transitions in the transport head. When it stops, set up a counter to clear out the audio buffer
-      // for a short amount of time to remove audio artifacts in Cubasis. This is a hack.
-      var tsbFlags = AUHostTransportStateFlags(rawValue: 0)
-      if let tsb,
-         tsb(&tsbFlags, nil, nil, nil) {
-        if tsbFlags.contains(.changed) {
-          if tsbFlags.contains(.moving) {
-            log.debug("moving")
-            moving = true
-          } else if moving {
-            log.debug("stopped")
-            moving = false
-            zap = 6
-            if let smeb {
-              let allSoundOff: [UInt8] = [176, 120, 0]
-              allSoundOff.withUnsafeBufferPointer { ptr in
-                if let ptr = ptr.baseAddress {
-                  log.debug("allSoundOff")
-                  smeb(AUEventSampleTimeImmediate, 0, 3, ptr)
-                }
-              }
-              let allNotesOff: [UInt8] = [176, 123, 0]
-              allNotesOff.withUnsafeBufferPointer { ptr in
-                if let ptr = ptr.baseAddress {
-                  log.debug("allNotesOff")
-                  smeb(AUEventSampleTimeImmediate, 0, 3, ptr)
-                }
-              }
-            }
-          }
-        }
-      }
-
-      if zap > 0 {
-        zap -= 1
-        let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
-        for buffer in abl {
-          memset(buffer.mData, 0, Int(buffer.mDataByteSize))
-        }
-      }
-
-      return err
+      return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
     }
   }
 }
