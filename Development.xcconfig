@@ -1,6 +1,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+#include "Common.xcconfig"
+
 // Periodically force an AV media services restart sequence
 TEST_MEDIA_SERVICES_RESTART = -DTEST_MEDIA_SERVICES_RESTART
 

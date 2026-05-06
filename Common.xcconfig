@@ -1,0 +1,54 @@
+// Your personal Apple developer account value
+DEVELOPMENT_TEAM = UP6SS5ES7E
+
+// The unique App Store ID for your macOS/iOS app
+APP_STORE_ID = 1453325077
+
+// The name of the AUv3 audio unit
+AU_BASE_NAME = SoundFonts
+
+// The component name. This is made up of a presentable manufacturer name followed by a ':' *and* a space, and
+// then the presentable component name.
+AU_COMPONENT_NAME = B-Ray: $(AU_BASE_NAME)
+
+// The component type - aumu = musical instrument/device
+AU_COMPONENT_TYPE = aumu
+
+// The component subtype. This should be unique for effects from the same manufacturer. For a quick demonstration,
+// set this to some 4-character tag like "abcd" (but without the quotation marks).
+AU_COMPONENT_SUBTYPE = sfnt
+
+// The unique manufacturer ID. Pick your own, but values with all lowercase letters are reserved
+// by Apple. There used to be a registry...
+AU_COMPONENT_MANUFACTURER = bray
+
+// The bundle / class that will be used to instantiate the AUv3. It must implement the `AUAudioUnitFactory`
+// protocol.
+AU_FACTORY_FUNCTION = $(PRODUCT_MODULE_NAME).SoundFontsAUViewController
+
+// Copyright notice to put in the Info.plist files
+COPYRIGHT_NOTICE = Copyright © 2026 B-Ray Software
+
+// The "build" version -- the `bumpVersions.py -b` option sets this to a date/time stamp
+CURRENT_PROJECT_VERSION = 20260506102708
+
+// The visible version (eg. 1.2.3)
+MARKETING_VERSION = 2.31.2
+
+// The bundle ID prefix to use for the app host and app extension.
+APP_BUNDLE_IDENTIFIER_PREFIX = com.braysoftware
+
+// The Product Bundle Identifier to use for the host app
+HOST_PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_IDENTIFIER_PREFIX).$(AU_BASE_NAME)
+
+// The Product Bundle Identifier
+AU_PRODUCT_BUNDLE_IDENTIFIER = $(HOST_PRODUCT_BUNDLE_IDENTIFIER).appex
+
+// The Product Name for the app hosts
+HOST_PRODUCT_NAME = $(AU_BASE_NAME)Host
+
+// The Product Name for the app extensions
+AU_PRODUCT_NAME = $(AU_BASE_NAME)AU
+
+// The bundle that holds the AUv3 component
+AUDIO_COMPONENT_BUNDLE = $(HOST_PRODUCT_BUNDLE_IDENTIFIER).framework

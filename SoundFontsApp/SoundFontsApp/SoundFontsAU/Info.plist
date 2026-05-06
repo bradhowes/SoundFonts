@@ -4,8 +4,22 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>$(COPYRIGHT_NOTICE)</string>
+	<key>AU_BASE_NAME</key>
+	<string>$(AU_BASE_NAME)</string>
+	<key>AU_COMPONENT_MANUFACTURER</key>
+	<string>$(AU_COMPONENT_MANUFACTURER)</string>
+	<key>AU_COMPONENT_NAME</key>
+	<string>$(AU_COMPONENT_NAME)</string>
+	<key>AU_COMPONENT_SUBTYPE</key>
+	<string>$(AU_COMPONENT_SUBTYPE)</string>
+	<key>AU_COMPONENT_TYPE</key>
+	<string>$(AU_COMPONENT_TYPE)</string>
+	<key>AU_FACTORY_FUNCTION</key>
+	<string>$(AU_FACTORY_FUNCTION)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SoundFonts</string>
+	<string>$(AU_BASE_NAME) AUv3</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +27,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>$(AU_BASE_NAME) AUv3</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
@@ -28,23 +42,23 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>SoundFonts</string>
+					<string>$(AU_BASE_NAME)</string>
 					<key>factoryFunction</key>
-					<string>$(PRODUCT_MODULE_NAME).SoundFontsAUViewController</string>
+					<string>$(AU_FACTORY_FUNCTION)</string>
 					<key>manufacturer</key>
-					<string>bray</string>
+					<string>$(AU_COMPONENT_MANUFACTURER)</string>
 					<key>name</key>
-					<string>bray: SoundFonts</string>
+					<string>$(AU_COMPONENT_NAME)</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
-					<string>sfnt</string>
+					<string>$(AU_COMPONENT_SUBTYPE)</string>
 					<key>tags</key>
 					<array>
 						<string>Synthesizer</string>
 					</array>
 					<key>type</key>
-					<string>aumu</string>
+					<string>$(AU_COMPONENT_TYPE)</string>
 					<key>version</key>
 					<real>139009</real>
 				</dict>

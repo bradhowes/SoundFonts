@@ -30,6 +30,9 @@
       location = "group:Release.xcconfig">
    </FileRef>
    <FileRef
+      location = "group:Common.xcconfig">
+   </FileRef>
+   <FileRef
       location = "group:SoundFontsApp/SoundFontsApp.xcodeproj">
    </FileRef>
    <FileRef
