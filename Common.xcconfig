@@ -30,10 +30,10 @@ AU_FACTORY_FUNCTION = $(PRODUCT_MODULE_NAME).SoundFontsAUViewController
 COPYRIGHT_NOTICE = Copyright © 2026 B-Ray Software
 
 // The "build" version -- the `bumpVersions.py -b` option sets this to a date/time stamp
-CURRENT_PROJECT_VERSION = 20260506192845
+CURRENT_PROJECT_VERSION = 20260506202202
 
 // The visible version (eg. 1.2.3)
-MARKETING_VERSION = 2.32.0
+MARKETING_VERSION = 2.32.1
 
 // The bundle ID prefix to use for the app host and app extension.
 APP_BUNDLE_IDENTIFIER_PREFIX = com.braysoftware
