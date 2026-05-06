@@ -104,24 +104,27 @@ extension SoundFontsAU {
 }
 
 extension SoundFontsAU {
+  private var audioUnitNameName: String { "audioUnitName" }
 
   public override var audioUnitName: String? {
     get { _audioUnitName }
     set {
       log.debug("audioUnitName set - \(newValue ?? "???", privacy: .public)")
-      willChangeValue(forKey: "audioUnitName")
+      willChangeValue(forKey: audioUnitNameName )
       _audioUnitName = newValue
-      didChangeValue(forKey: "audioUnitName")
+      didChangeValue(forKey: audioUnitNameName )
     }
   }
+
+  private var audioUnitShortNameName: String { "audioUnitShortName" }
 
   public override var audioUnitShortName: String? {
     get { _audioUnitShortName }
     set {
       log.debug("audioUnitShortName set - \(newValue ?? "???", privacy: .public)")
-      willChangeValue(forKey: "audioUnitShortName")
+      willChangeValue(forKey: audioUnitShortNameName )
       _audioUnitShortName = newValue
-      didChangeValue(forKey: "audioUnitShortName")
+      didChangeValue(forKey: audioUnitShortNameName )
     }
   }
 
@@ -167,7 +170,9 @@ extension SoundFontsAU {
   public override func reset() {
     log.debug("reset BEGIN - \(self.renderResourcesAllocated)")
     wrapped.reset()
-    reloadActivePreset()
+//    if !renderResourcesAllocated {
+//      reloadActivePreset()
+//    }
     log.debug("reset END")
   }
 
@@ -244,7 +249,7 @@ extension SoundFontsAU {
 
   public override var parameterTree: AUParameterTree? {
     get {
-      wrapped.parameterTree
+      nil // wrapped.parameterTree
     }
     set {
       wrapped.parameterTree = newValue
@@ -265,6 +270,12 @@ extension SoundFontsAU {
   public override var midiOutputEventBlock: AUMIDIOutputEventBlock? {
     get { wrapped.midiOutputEventBlock }
     set { wrapped.midiOutputEventBlock = newValue }
+  }
+
+  @available(iOS 15.0, *)
+  public override var midiOutputEventListBlock: AUMIDIEventListBlock? {
+    get { wrapped.midiOutputEventListBlock }
+    set { wrapped.midiOutputEventListBlock = newValue }
   }
 }
 
@@ -482,7 +493,19 @@ extension SoundFontsAU {
     log.debug("startHardware - done")
   }
 
+  public override var canProcessInPlace: Bool { wrapped.canProcessInPlace }
+
   public override func stopHardware() { wrapped.stopHardware() }
+
+  public override var musicalContextBlock: AUHostMusicalContextBlock? {
+    get { wrapped.musicalContextBlock }
+    set { wrapped.musicalContextBlock = newValue }
+  }
+
+  public override var isRenderingOffline: Bool {
+    get { wrapped.isRenderingOffline }
+    set { wrapped.isRenderingOffline = newValue }
+  }
 
   public override var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
     let block = self.wrapped.scheduleMIDIEventBlock
@@ -490,6 +513,9 @@ extension SoundFontsAU {
       block?(when, channel, count, bytes)
     }
   }
+
+  @available(iOS 15.0, *)
+  public override var scheduleMIDIEventListBlock: AUMIDIEventListBlock? { wrapped.scheduleMIDIEventListBlock }
 
   public override var transportStateBlock: AUHostTransportStateBlock? {
     get { wrapped.transportStateBlock }
@@ -500,9 +526,8 @@ extension SoundFontsAU {
 
   public override var internalRenderBlock: AUInternalRenderBlock {
     let block = self.wrapped.internalRenderBlock
-
-    return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput in
-      return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, pullInput)
+    return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, _ in
+      return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, nil)
     }
   }
 }
