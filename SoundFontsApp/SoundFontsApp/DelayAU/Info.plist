@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHumanReadableCopyright</key>
+	<string>$(COPYRIGHT_NOTICE)</string>
+	<key>AU_BASE_NAME</key>
+	<string>$(AU_BASE_NAME)</string>
+	<key>AU_COMPONENT_MANUFACTURER</key>
+	<string>$(AU_COMPONENT_MANUFACTURER)</string>
+	<key>AU_COMPONENT_NAME</key>
+	<string>$(AU_COMPONENT_NAME)</string>
+	<key>AU_COMPONENT_SUBTYPE</key>
+	<string>$(AU_COMPONENT_SUBTYPE)</string>
+	<key>AU_COMPONENT_TYPE</key>
+	<string>$(AU_COMPONENT_TYPE)</string>
+	<key>AU_FACTORY_FUNCTION</key>
+	<string>$(AU_FACTORY_FUNCTION)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -32,9 +46,9 @@
 					<key>factoryFunction</key>
 					<string>$(PRODUCT_MODULE_NAME).DelayViewController</string>
 					<key>manufacturer</key>
-					<string>bray</string>
+					<string>$(AU_COMPONENT_MANUFACTURER)</string>
 					<key>name</key>
-					<string>bray: SoundFonts Delay</string>
+					<string>B-Ray: SoundFonts Delay</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>

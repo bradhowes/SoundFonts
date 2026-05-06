@@ -91,9 +91,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationWillResignActive(_ application: UIApplication) {
     log.debug("applicationWillResignActive")
-    if !components.settings.backgroundMIDIProcessingEnabled {
-      components.mainViewController.stopAudio()
-    }
+    application.stopAudio(quitting: false)
   }
 
   /**
@@ -121,8 +119,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationDidBecomeActive(_ application: UIApplication) {
     log.debug("applicationDidBecomeActive")
-    UIApplication.shared.isIdleTimerDisabled = true
-    components.mainViewController.startAudioSession()
+    application.startAudio()
   }
 
   /**
@@ -132,7 +129,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationWillTerminate(_ application: UIApplication) {
     log.debug("applicationWillTerminate")
-    components.mainViewController.stopAudio()
+    application.stopAudio(quitting: true)
   }
 
   func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
@@ -142,6 +139,33 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   private func visitAppStore() {
     if let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review") {
       UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
+    }
+  }
+
+  // MARK: UISceneSession Lifecycle
+
+  public func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+    // Called when a new scene session is being created.
+    // Use this method to select a configuration to create the new scene with.
+    return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+  }
+
+  public func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
+    // Called when the user discards a scene session.
+    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+  }
+}
+
+extension AppDelegate {
+
+  func startAudioSession() {
+    components.mainViewController.startAudioSession()
+  }
+
+  func stopAudioSession(quitting: Bool) {
+    if !components.settings.backgroundMIDIProcessingEnabled || quitting {
+      components.mainViewController.stopAudio()
     }
   }
 }

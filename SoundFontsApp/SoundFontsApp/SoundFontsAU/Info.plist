@@ -19,7 +19,7 @@
 	<key>AU_FACTORY_FUNCTION</key>
 	<string>$(AU_FACTORY_FUNCTION)</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(AU_BASE_NAME) AUv3</string>
+	<string>$(AU_BASE_NAME)AU</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(AU_BASE_NAME) AUv3</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>

@@ -15,6 +15,7 @@
 		BD2398A72BBB6653009265E4 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD2398A82BBB6658009265E4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
 		BD2398A92BBB6658009265E4 /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BD3412E02FAB517D0068EEFF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3412DF2FAB517D0068EEFF /* SceneDelegate.swift */; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BD498F9F23F0101700755AB9 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
 		BD498FA423F07AFC00755AB9 /* VolumeMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */; };
@@ -124,6 +125,7 @@
 		BD1A2A8E266A0050009E2338 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		BD2CD98327075879007DDBF7 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		BD3412DF2FAB517D0068EEFF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		BD3CF702241FA779004A13D1 /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3CF704241FA77A004A13D1 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		BD3CF706241FA77A004A13D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				BDAE7C982219540A0003A353 /* UI */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
+				BD3412DF2FAB517D0068EEFF /* SceneDelegate.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */,
 				BD42F3572388697200E6D576 /* Resources */,
@@ -688,6 +691,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD3412E02FAB517D0068EEFF /* SceneDelegate.swift in Sources */,
 				BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
