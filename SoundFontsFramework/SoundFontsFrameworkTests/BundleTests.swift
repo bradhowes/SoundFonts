@@ -24,8 +24,8 @@ class BundleTests: XCTestCase {
 
   func testStringForKey() {
     let bundle = Bundle(for: SoundFont.self)
-    XCTAssertEqual(bundle.string(forKey: "  "), "")
-    XCTAssertEqual(bundle.string(forKey: "UIAppFonts"), "")
+    XCTAssertEqual(bundle.info(for: "  "), "")
+    XCTAssertEqual(bundle.info(for: "UIAppFonts"), "")
   }
 
   func testEffectsButtonImage() {
