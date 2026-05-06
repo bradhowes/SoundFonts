@@ -20,21 +20,21 @@ final class SoundFontsViewController: UIViewController {
   @IBOutlet private weak var dividerControl: UIView!
   @IBOutlet private weak var presetsWidthConstraint: NSLayoutConstraint!
 
-  private weak var fontsTableViewController: FontsTableViewController!
-  private weak var presetsTableViewController: PresetsTableViewController!
-  private weak var tagsTableViewController: TagsTableViewController!
+  private weak var fontsTableViewController: FontsTableViewController?
+  private weak var presetsTableViewController: PresetsTableViewController?
+  private weak var tagsTableViewController: TagsTableViewController?
 
   private var maxTagsViewHeightConstraint: CGFloat = 0.0
-  private var soundFonts: SoundFontsProvider!
-  private var favorites: FavoritesProvider!
-  private var infoBar: AnyInfoBar!
-  private var tags: TagsProvider!
-  private var settings: Settings!
+  private var soundFonts: SoundFontsProvider?
+  private var favorites: FavoritesProvider?
+  private var infoBar: AnyInfoBar?
+  private var tags: TagsProvider?
+  private var settings: Settings?
 
-  private var selectedSoundFontManager: SelectedSoundFontManager!
-  private var activeTagManager: ActiveTagManager!
+  private var selectedSoundFontManager: SelectedSoundFontManager?
+  private var activeTagManager: ActiveTagManager?
   private var keyboard: AnyKeyboard?
-  private var tagsVisibilityManager: TagsVisibilityManager!
+  private var tagsVisibilityManager: TagsVisibilityManager?
 
   private var dividerDragGesture = UIPanGestureRecognizer()
   private var lastDividerPos: CGFloat = .zero
@@ -104,7 +104,9 @@ extension SoundFontsViewController {
       log
         .debug("moveDivider - old: \(self.presetsWidthConstraint.multiplier) new: \(multiplier)")
       presetsWidthConstraint = presetsWidthConstraint.setMultiplier(multiplier)
-      settings.presetsWidthMultiplier = Double(multiplier)
+      if let settings {
+        settings.presetsWidthMultiplier = Double(multiplier)
+      }
 
     default: break
     }
@@ -112,7 +114,7 @@ extension SoundFontsViewController {
 
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
-    if tagsVisibilityManager.showingTags {
+    if let tagsVisibilityManager, tagsVisibilityManager.showingTags {
       tagsVisibilityManager.hideTags()
     }
   }
@@ -131,12 +133,14 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
 extension SoundFontsViewController: ControllerConfiguration {
 
   func establishConnections(_ router: ComponentContainer) {
-    settings = router.settings
+    let settings = router.settings
+    self.settings = settings
     soundFonts = router.soundFonts
     favorites = router.favorites
     keyboard = router.keyboard
     selectedSoundFontManager = router.selectedSoundFontManager
-    infoBar = router.infoBar
+    let infoBar = router.infoBar
+    self.infoBar = infoBar
     tags = router.tags
 
     let multiplier = settings.presetsWidthMultiplier
@@ -144,6 +148,17 @@ extension SoundFontsViewController: ControllerConfiguration {
 
     router.infoBar.addEventClosure(.addSoundFont, self.showSoundFontPicker(_:))
 
+    if let tagsTableViewController {
+      tagsVisibilityManager = .init(tagsBottonConstraint: tagsBottomConstraint,
+                                    tagsViewHeightConstrain: tagsViewHeightConstraint,
+                                    fontsView: fontsView,
+                                    containerView: self.view,
+                                    tagsTableViewController: tagsTableViewController,
+                                    infoBar: infoBar)
+    }
+  }
+
+  func makeTagsVisibilityManager(tagsTableViewController: TagsTableViewController, infoBar: AnyInfoBar) {
     tagsVisibilityManager = .init(tagsBottonConstraint: tagsBottomConstraint,
                                   tagsViewHeightConstrain: tagsViewHeightConstraint,
                                   fontsView: fontsView,
@@ -158,12 +173,12 @@ extension SoundFontsViewController: ControllerConfiguration {
 extension SoundFontsViewController: FontsViewManager {
 
   func dismissSearchKeyboard() {
-    presetsTableViewController.searchBar.endSearch()
+    presetsTableViewController?.searchBar.endSearch()
   }
 
   func addSoundFonts(urls: [URL]) {
     log.info("addSoundFonts - BEGIN \(String.pointer(self), privacy: .public)")
-    guard !urls.isEmpty else { return }
+    guard !urls.isEmpty, let soundFonts else { return }
 
     var ok = [String]()
     var failures = [SoundFontFileLoadFailure]()
@@ -181,8 +196,8 @@ extension SoundFontsViewController: FontsViewManager {
     }
 
     // Activate the first preset of the last valid sound font that was added
-    if let soundFontAndPreset = toActivate {
-      self.fontsTableViewController.activate(soundFontAndPreset)
+    if let soundFontAndPreset = toActivate, let fontsTableViewController {
+      fontsTableViewController.activate(soundFontAndPreset)
     }
 
     if urls.count > 1 || !failures.isEmpty {
@@ -215,6 +230,7 @@ extension SoundFontsViewController: FontActionManager {
 
   func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont,
                         completionHandler: ((Bool) -> Void)? = nil) {
+    guard let soundFonts, let favorites, let tags else { return }
     let config = FontEditor.Config(indexPath: at, view: cell, rect: cell.bounds, soundFonts: soundFonts,
                                    soundFontKey: soundFont.key,
                                    favoriteCount: favorites.count(associatedWith: soundFont), tags: tags,
@@ -315,6 +331,9 @@ private extension SoundFontsViewController {
       fatalError("expected TagsTableViewController for segue destination")
     }
     tagsTableViewController = destination
+    if tagsVisibilityManager == nil, let infoBar {
+      makeTagsVisibilityManager(tagsTableViewController: destination, infoBar: infoBar)
+    }
   }
 
   func prepareForFontEditor(_ segue: UIStoryboardSegue, sender: Any?) {
@@ -411,6 +430,7 @@ private extension SoundFontsViewController {
   }
 
   func showSoundFontPicker(_ button: AnyObject) {
+    guard let settings else { return }
     let types = ["com.braysoftware.sf2", "com.soundblaster.soundfont"].compactMap { UTType($0) }
     let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: types,
                                                         asCopy: settings.copyFilesWhenAdding)
@@ -421,14 +441,15 @@ private extension SoundFontsViewController {
   }
 
   func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    guard let soundFonts, let favorites else { return }
+
     let promptTitle = Formatters.strings.deleteFontTitle
     let promptMessage = Formatters.strings.deleteFontMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
-    let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { [weak self ] _ in
-      guard let self = self else { return }
-      self.soundFonts.remove(key: soundFont.key)
-      self.favorites.removeAll(associatedWith: soundFont)
+    let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { _ in
+      soundFonts.remove(key: soundFont.key)
+      favorites.removeAll(associatedWith: soundFont)
       let url = soundFont.fileURL
       if soundFont.kind.deletable {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -457,14 +478,14 @@ private extension SoundFontsViewController {
   }
 
   func hide(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    guard let soundFonts, let favorites else { return }
     let promptTitle = Formatters.strings.hideFontTitle
     let promptMessage = Formatters.strings.hideFontMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
-    let delete = UIAlertAction(title: Formatters.strings.hideFontAction, style: .destructive) { [weak self ] _ in
-      guard let self = self else { return }
-      self.soundFonts.remove(key: soundFont.key)
-      self.favorites.removeAll(associatedWith: soundFont)
+    let delete = UIAlertAction(title: Formatters.strings.hideFontAction, style: .destructive) { _ in
+      soundFonts.remove(key: soundFont.key)
+      favorites.removeAll(associatedWith: soundFont)
       let url = soundFont.fileURL
       if soundFont.kind.deletable {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -493,14 +514,14 @@ private extension SoundFontsViewController {
   }
 
   func unlink(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    guard let soundFonts, let favorites else { return }
     let promptTitle = Formatters.strings.unlinkFontTitle
     let promptMessage = Formatters.strings.unlinkFontMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
-    let delete = UIAlertAction(title: Formatters.strings.hideFontAction, style: .destructive) { [weak self ] _ in
-      guard let self = self else { return }
-      self.soundFonts.remove(key: soundFont.key)
-      self.favorites.removeAll(associatedWith: soundFont)
+    let delete = UIAlertAction(title: Formatters.strings.hideFontAction, style: .destructive) { _ in
+      soundFonts.remove(key: soundFont.key)
+      favorites.removeAll(associatedWith: soundFont)
       let url = soundFont.fileURL
       if soundFont.kind.deletable {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -534,7 +555,7 @@ private extension SoundFontsViewController {
 extension SoundFontsViewController: FontEditorDelegate {
   func dismissed(reason: FontEditorDismissedReason) {
     if case let .done(soundFontKey) = reason {
-      guard let soundFont = soundFonts.getBy(key: soundFontKey) else { return }
+      guard let soundFonts, let soundFont = soundFonts.getBy(key: soundFontKey) else { return }
       soundFonts.rename(key: soundFontKey, name: soundFont.displayName)
     }
     dismiss(animated: true, completion: nil)

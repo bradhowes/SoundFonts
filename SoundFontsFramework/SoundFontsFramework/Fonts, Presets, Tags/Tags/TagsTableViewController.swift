@@ -7,13 +7,13 @@ import os.log
  The view controller for the tags table. Display data comes from the tags collection  The controller
  allows for setting the active tag, a value maintained by the ActiveTagManager.
  */
-final class TagsTableViewController: UITableViewController {
+final public class TagsTableViewController: UITableViewController {
   private let serialQueue = DispatchQueue(label: "TagsTableViewController", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .main)
   private var tags: TagsProvider!
   private var activeTagManager: ActiveTagManager!
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
 
     tableView.register(TableCell.self)
@@ -46,7 +46,7 @@ extension TagsTableViewController {
 
 extension TagsTableViewController: ControllerConfiguration {
 
-  func establishConnections(_ router: ComponentContainer) {
+  public func establishConnections(_ router: ComponentContainer) {
     tags = router.tags
     tags.subscribe(self, notifier: tagsRestoredNotificationInBackground)
 
@@ -61,13 +61,13 @@ extension TagsTableViewController: ControllerConfiguration {
 
 extension TagsTableViewController {
 
-  override func numberOfSections(in tableView: UITableView) -> Int { 1 }
+  override public func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     (tags != nil && tags.isRestored) ? tags.count : 0
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
   }
 }
@@ -76,12 +76,14 @@ extension TagsTableViewController {
 
 extension TagsTableViewController {
 
-  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     activeTagManager.setActiveTag(index: indexPath.row)
   }
 
-  override func tableView(_ tableView: UITableView,
-                          editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+  override public func tableView(
+    _ tableView: UITableView,
+    editingStyleForRowAt indexPath: IndexPath
+  ) -> UITableViewCell.EditingStyle {
     .none
   }
 }

@@ -96,18 +96,20 @@ final class SettingsViewController: UIViewController {
   private var revealKeyboardForKeyWidthChanges = false
   private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
-  private weak var settings: Settings!
-  private weak var soundFonts: SoundFontsProvider!
-  private weak var infoBar: AnyInfoBar!
+  private weak var settings: Settings?
+  private weak var soundFonts: SoundFontsProvider?
+  private weak var infoBar: AnyInfoBar?
   private weak var audioEngine: AudioEngine?
   private weak var midi: MIDI?
   private weak var midiConnectionMonitor: MIDIConnectionMonitor?
   private weak var midiRouter: MIDIEventRouter?
+
   private var isMainApp = true
   private var monitorToken: NotificationObserver?
-  private var midiConnectionsObserver: NSKeyValueObservation!
+  private var midiConnectionsObserver: NSKeyValueObservation?
   private var tuningComponent: TuningComponent?
-  private var tuningObserver: NSKeyValueObservation!
+  private var tuningObserver: NSKeyValueObservation?
+
   private lazy var hideForKeyWidthChange: [UIView] = [
     playSamplesStackView,
     copyFilesStackView,
@@ -173,7 +175,7 @@ final class SettingsViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     precondition(soundFonts != nil, "nil soundFonts")
-    precondition(settings != nil, "nil settings")
+    guard let settings else { fatalError("nil settings") }
 
     super.viewWillAppear(animated)
 
@@ -197,10 +199,10 @@ final class SettingsViewController: UIViewController {
     super.viewDidDisappear(animated)
     guard let tuningComponent = self.tuningComponent else { fatalError("unexpected nil tuningComponent") }
 
-    settings.globalTuning = tuningComponent.tuning
-    settings.globalTranspose = Int(shiftA4Stepper.value)
+    settings?.globalTuning = tuningComponent.tuning
+    settings?.globalTranspose = Int(shiftA4Stepper.value)
 
-    infoBar.updateTuningIndicator()
+    infoBar?.updateTuningIndicator()
 
     self.tuningComponent = nil
     self.midiConnectionsObserver = nil
@@ -211,7 +213,7 @@ final class SettingsViewController: UIViewController {
   }
 
   @IBAction func useSF2EngineLibChanged(_ sender: UISwitch) {
-    settings.useSF2Engine = sender.isOn
+    settings?.useSF2Engine = sender.isOn
     audioEngine?.stop()
     _ = audioEngine?.start()
   }
@@ -254,19 +256,19 @@ private extension SettingsViewController {
   }
 
   @IBAction func toggleShowSolfegeNotes(_ sender: Any) {
-    settings.showSolfegeLabel = self.showSolfegeNotes.isOn
+    settings?.showSolfegeLabel = self.showSolfegeNotes.isOn
   }
 
   @IBAction func togglePlaySample(_ sender: Any) {
-    settings.playSample = self.playSample.isOn
+    settings?.playSample = self.playSample.isOn
   }
 
   @IBAction func keyLabelOptionChanged(_ sender: Any) {
-    settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
+    settings?.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
   }
 
   @IBAction func toggleSlideKeyboard(_ sender: Any) {
-    settings.slideKeyboard = self.slideKeyboard.isOn
+    settings?.slideKeyboard = self.slideKeyboard.isOn
   }
 
   @IBAction func midiChannelStep(_ sender: UIStepper) {
@@ -274,14 +276,14 @@ private extension SettingsViewController {
   }
 
   @IBAction func toggleAutoConnectNewMIDIDeviceEnabled(_ sender: UISwitch) {
-    settings.autoConnectNewMIDIDeviceEnabled = sender.isOn
+    settings?.autoConnectNewMIDIDeviceEnabled = sender.isOn
   }
 
   @IBAction func toggleBackgroundMIDIProcessingEnabled(_ sender: Any) {
     if backgroundMIDIProcessingMode.isOn {
       showBackgroundMIDIProcessingNotice()
     } else {
-      settings.backgroundMIDIProcessingEnabled = false
+      settings?.backgroundMIDIProcessingEnabled = false
     }
   }
 
@@ -305,7 +307,7 @@ private extension SettingsViewController {
           """, preferredStyle: .alert)
       ac.addAction(
         UIAlertAction(title: "Yes", style: .default) { _ in
-          self.settings.copyFilesWhenAdding = false
+          self.settings?.copyFilesWhenAdding = false
         })
       ac.addAction(
         UIAlertAction(title: "Cancel", style: .cancel) { [weak self]_ in
@@ -313,11 +315,12 @@ private extension SettingsViewController {
         })
       present(ac, animated: true)
     } else {
-      settings.copyFilesWhenAdding = true
+      settings?.copyFilesWhenAdding = true
     }
   }
 
   @IBAction func keyWidthChange(_ sender: Any) {
+    guard let settings else { fatalError("nil settings") }
     let previousValue = settings.keyWidth.rounded()
     var newValue = keyWidthSlider.value.rounded()
     if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
@@ -330,18 +333,19 @@ private extension SettingsViewController {
   }
 
   @IBAction func removeDefaultSoundFonts(_ sender: Any) {
-    soundFonts.removeBundled()
+    soundFonts?.removeBundled()
     updateButtonState()
     postNotice(msg: "Removed entries to the built-in sound fonts.")
   }
 
   @IBAction func restoreDefaultSoundFonts(_ sender: Any) {
-    soundFonts.restoreBundled()
+    soundFonts?.restoreBundled()
     updateButtonState()
     postNotice(msg: "Restored entries to the built-in sound fonts.")
   }
 
   @IBAction func exportSoundFonts(_ sender: Any) {
+    guard let soundFonts else { fatalError("nil soundFonts") }
     let (good, total) = soundFonts.exportToLocalDocumentsDirectory()
     switch total {
     case 0: postNotice(msg: "Nothing to export.")
@@ -351,6 +355,7 @@ private extension SettingsViewController {
   }
 
   @IBAction func importSoundFonts(_ sender: Any) {
+    guard let soundFonts else { fatalError("nil soundFonts") }
     let (good, total) = soundFonts.importFromLocalDocumentsDirectory()
     switch total {
     case 0: postNotice(msg: "Nothing to import.")
@@ -396,6 +401,7 @@ extension SettingsViewController: SegueHandler {
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    guard let settings else { return }
     switch segueIdentifier(for: segue) {
     case .midiConnectionsTableView:
       guard
@@ -431,6 +437,7 @@ extension SettingsViewController: SegueHandler {
 private extension SettingsViewController {
 
   func setupForMainApp() {
+    guard let settings else { return }
     revealKeyboardForKeyWidthChanges = true
     if let popoverPresentationVC = self.parent?.popoverPresentationController {
       revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
@@ -450,7 +457,7 @@ private extension SettingsViewController {
     }
 
     monitorToken = midiConnectionMonitor?.addConnectionActivityMonitor { data in
-      let ourChannel = self.settings.midiChannel
+      let ourChannel = settings.midiChannel
       let accepted = ourChannel == -1 || ourChannel == data.channel
       MIDIConnectionsTableViewController.midiSeenLayerChange(self.midiConnections.layer, accepted)
     }
@@ -500,6 +507,7 @@ private extension SettingsViewController {
   }
 
   func makeTuningComponent() {
+    guard let settings else { return }
     let tuningComponent = TuningComponent(
       tuning: settings.globalTuning,
       view: view, scrollView: scrollView,
@@ -547,14 +555,14 @@ private extension SettingsViewController {
     let value = Int(midiChannelStepper.value)
     log.debug("new MIDI channel \(value)")
     midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
-    settings.midiChannel = value
+    settings?.midiChannel = value
   }
 
   private func updatePitchBendRange() {
     let value = UInt8(pitchBendStepper.value)
     log.debug("new pitch-bend range \(value)")
     pitchBendRange.text = "\(value)"
-    settings.pitchBendRange = Int(value)
+    settings?.pitchBendRange = Int(value)
     AudioEngine.pitchBendRangeChangedNotification.post(value: value)
   }
 
@@ -578,6 +586,7 @@ private extension SettingsViewController {
   }
 
   private func updateButtonState() {
+    guard let soundFonts else { return }
     restoreDefaultSoundFonts.isEnabled = !soundFonts.hasAllBundled
     removeDefaultSoundFonts.isEnabled = soundFonts.hasAnyBundled
   }
@@ -590,6 +599,7 @@ private extension SettingsViewController {
   }
 
   private func showBackgroundMIDIProcessingNotice() {
+    guard let settings else { return }
     let ac = UIAlertController(
       title: "Enable Background MIDI Processing",
       message: """
@@ -599,7 +609,7 @@ private extension SettingsViewController {
           """, preferredStyle: .alert)
     ac.addAction(
       UIAlertAction(title: "Yes", style: .default) { _ in
-        self.settings.backgroundMIDIProcessingEnabled = true
+        settings.backgroundMIDIProcessingEnabled = true
       })
     ac.addAction(
       UIAlertAction(title: "Cancel", style: .cancel) { _ in

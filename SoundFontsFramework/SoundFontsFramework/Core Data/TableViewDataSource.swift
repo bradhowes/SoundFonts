@@ -53,7 +53,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
   private let tableView: UITableView
   private let cellIdentifier: String
   private let fetchedResultsController: NSFetchedResultsController<Entity>
-  private weak var delegate: Delegate!  // Lifetime is always as long as that of the delegate.
+  private weak var delegate: Delegate?
 
   /// Obtain the managed object for the currently selected row
   var selectedObject: Entity? {
@@ -141,7 +141,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
     guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? Cell else {
       fatalError("unexpected cell type at \(indexPath)")
     }
-    delegate.configure(cell, for: obj)
+    delegate?.configure(cell, for: obj)
     return cell
   }
 
@@ -153,7 +153,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
    - returns: true if so
    */
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    return self.delegate.canDelete(indexPath)
+    delegate?.canDelete(indexPath)
   }
 
   /**
@@ -169,7 +169,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
   ) {
     if editingStyle == .delete {
       let obj = object(at: indexPath)
-      delegate.delete(obj, at: indexPath)
+      delegate?.delete(obj, at: indexPath)
     }
   }
 
@@ -220,7 +220,7 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject,
   ) {
     log.debug("controllerDidChangeContent - endUpdates")
     tableView.endUpdates()
-    delegate.updated()
+    delegate?.updated()
   }
 }
 
