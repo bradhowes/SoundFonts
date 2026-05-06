@@ -25,7 +25,7 @@ import os
 import re
 import sys
 from datetime import datetime
-from typing import Callable, List, NamedTuple, NoReturn, Tuple
+from typing import Callable, List, NamedTuple, NoReturn, Optional, Tuple
 
 
 Path = str
@@ -79,19 +79,33 @@ def log(*args) -> None:
     print('--', *args)
 
 
-def saveFile(path: Path, contents: str) -> None:
-    '''Write the contents to a file at the given path.
+def contentsChanged(path: Path, contents: str) -> Optional[str]:
     '''
-    with open(path, 'w') as fd:
-        fd.write(contents)
+    Determine if the given contents differs from the contents at the given path. If so, return the original's content.
+    '''
+    original = getFileContents(path)
+    return original if original != contents else None
 
+def saveFileContents(path: Path, contents: str) -> None:
+    '''
+    Write the contents to a file at the given path.
 
-def getAndBackupFile(path: Path) -> str:
-    '''Read the contents from a file at the given path and make a backup of the file with the extension '.old'
+    Only writes if there was a change made to the contents of the file, creating a backup of the original contents with a
+    '.old' suffix first.
+    '''
+    original = contentsChanged(path, contents)
+    if original is not None:
+        with open(path + '.old', 'w') as fd:
+            fd.write(original)
+        with open(path, 'w') as fd:
+            fd.write(contents)
+
+def getFileContents(path: Path) -> str:
+    '''
+    Read the contents from a file at the given path and make a backup of the file with the extension '.old'
     '''
     with open(path, 'r') as fd:
         contents = fd.read()
-    saveFile(path + '.old', contents)
     return contents
 
 
@@ -157,9 +171,9 @@ def updateConfigContents(contents: str, marketingVersion: MarketingVersion, proj
 def updateConfigFiles(configFiles: PathList, marketingVersion: MarketingVersion, projectVersion: ProjectVersion) -> None:
     for path in configFiles:
         log(f"processing config file '{path}'")
-        contents = getAndBackupFile(path)
+        contents = getFileContents(path)
         contents = updateConfigContents(contents, marketingVersion, projectVersion)
-        saveFile(path, contents)
+        saveFileContents(path, contents)
 
 
 def locateUIFiles() -> PathList:
@@ -177,9 +191,9 @@ def updateUIContents(contents: str, marketingVersion: MarketingVersion, projectV
 def updateUIFiles(uiFiles: PathList, marketingVersion: MarketingVersion, projectVersion: ProjectVersion):
     for path in uiFiles:
         log(f"processing UI file '{path}'")
-        contents = getAndBackupFile(path)
+        contents = getFileContents(path)
         contents = updateUIContents(contents, marketingVersion, projectVersion)
-        saveFile(path, contents)
+        saveFileContents(path, contents)
 
 
 def main(args):
