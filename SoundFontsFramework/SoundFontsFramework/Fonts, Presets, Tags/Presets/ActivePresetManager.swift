@@ -56,14 +56,14 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
   /// The currently active sound font (if any)
   public var activeSoundFont: SoundFont? {
-    guard let key = active.soundFontAndPreset?.soundFontKey else { return nil }
-    return soundFonts.getBy(key: key)
+    guard let key = active.soundFontAndPreset else { return nil }
+    return soundFonts.getBy(soundFontAndPreset: key)
   }
 
   /// The currently active preset instance (if any)
   public var activePreset: Preset? {
     guard let soundFontAndPreset = active.soundFontAndPreset,
-          let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey)
+          let soundFont = soundFonts.getBy(soundFontAndPreset: soundFontAndPreset)
     else {
       return nil
     }
@@ -110,13 +110,14 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 public extension ActivePresetManager {
 
   /**
-   Obtain the sound font instance that corresponds to the given preset key.
+   Obtain the sound font instance that corresponds to the given preset key. Strategy is to attempt to match by the UUID key for the
+   sound font, and if that fails, then attempt to locate one with the same name and use the first one that matches.
 
    - parameter soundFontAndPreset: the preset key to resolve
    - returns: optional sound font instance that corresponds to the given key
    */
   func resolveToSoundFont(_ soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
-    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)
+    soundFonts.getBy(soundFontAndPreset: soundFontAndPreset)
   }
 
   /**
@@ -126,7 +127,7 @@ public extension ActivePresetManager {
    - returns: optional patch instance that corresponds to the given key
    */
   func resolveToPreset(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
-    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.presets[soundFontAndPreset.presetIndex]
+    soundFonts.getBy(soundFontAndPreset: soundFontAndPreset)?.presets[soundFontAndPreset.presetIndex]
   }
 
   /**

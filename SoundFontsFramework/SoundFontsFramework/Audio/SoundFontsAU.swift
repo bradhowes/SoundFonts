@@ -170,9 +170,6 @@ extension SoundFontsAU {
   public override func reset() {
     log.debug("reset BEGIN - \(self.renderResourcesAllocated)")
     wrapped.reset()
-//    if !renderResourcesAllocated {
-//      reloadActivePreset()
-//    }
     log.debug("reset END")
   }
 
@@ -249,10 +246,12 @@ extension SoundFontsAU {
 
   public override var parameterTree: AUParameterTree? {
     get {
-      nil // wrapped.parameterTree
+      // There really is no need to reveal the parameter tree of the AVAudioUnitSampler -- it is undocumented and
+      // exposing it causes crashes in the Camelot host on iOS.
+      nil
     }
     set {
-      wrapped.parameterTree = newValue
+
     }
   }
 
@@ -437,8 +436,15 @@ extension SoundFontsAU {
     }
   }
 
-  public override var latency: TimeInterval { wrapped.latency }
-  public override var tailTime: TimeInterval { wrapped.tailTime }
+  public override var latency: TimeInterval {
+    log.debug("latency: \(self.wrapped.latency)")
+    return wrapped.latency
+  }
+
+  public override var tailTime: TimeInterval {
+    log.debug("tailTime: \(self.wrapped.tailTime)")
+    return wrapped.tailTime
+  }
 
   public override var renderQuality: Int {
     get { wrapped.renderQuality }
@@ -527,6 +533,13 @@ extension SoundFontsAU {
   public override var internalRenderBlock: AUInternalRenderBlock {
     let block = self.wrapped.internalRenderBlock
     return {flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, _ in
+
+      // For CUBASIS: clear the incoming audio buffers. Otherwise, there are artifacts when the rendering stops. There are still
+      // CUBASIS issues but this helps.
+      let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
+      for buffer in abl {
+        memset(buffer.mData, 0, Int(buffer.mDataByteSize))
+      }
       return block(flags, when, frameCount, bus, audioBufferList, realtimeEventListHead, nil)
     }
   }
