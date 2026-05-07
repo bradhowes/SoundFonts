@@ -11,7 +11,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private var log: Logger { Self.log }
   private let settings: Settings
 
-  private var observer: ConsolidatedConfigObserver!
+  private var observer: ConsolidatedConfigObserver?
   public var collection: SoundFontCollection? { observer?.soundFonts }
 
   private var bookmarkChangeObserver: NSObjectProtocol?
@@ -31,7 +31,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
     bookmarkChangeObserver = NotificationCenter.default.addObserver(forName: .bookmarkChanged, object: nil,
                                                                     queue: nil) { [weak self] _ in
       guard let self else { return }
-      if self.observer.isRestored {
+      if self.observer?.isRestored == true {
         self.markCollectionChanged()
       }
     }
@@ -80,7 +80,7 @@ extension FileManager {
 
 extension SoundFontsManager: SoundFontsProvider {
 
-  public var isRestored: Bool { observer.isRestored }
+  public var isRestored: Bool { observer?.isRestored == true }
 
   public var count: Int { collection?.count ?? 0 }
 
@@ -397,7 +397,7 @@ extension SoundFontsManager {
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
     log.info("markCollectionChanged - \(collection.description, privacy: .public)")
-    observer.markAsChanged()
+    observer?.markAsChanged()
   }
 
   private func notifyCollectionRestored() {

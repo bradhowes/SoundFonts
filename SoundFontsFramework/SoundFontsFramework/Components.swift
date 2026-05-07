@@ -38,7 +38,9 @@ where T: ControllerConfiguration {
   public let inApp: Bool
   /// The main view controller of the app
   public private(set) weak var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
+  // swiftlint:disable:previous implicitly_unwrapped_optional
 
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var soundFontsControlsController: SoundFontsControlsController! {
     didSet {
       oneTimeSet(oldValue)
@@ -46,6 +48,7 @@ where T: ControllerConfiguration {
     }
   }
 
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var soundFontsViewController: SoundFontsViewController! {
     didSet {
       oneTimeSet(oldValue)
@@ -53,13 +56,19 @@ where T: ControllerConfiguration {
     }
   }
 
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
   private weak var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
   private weak var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var fontsTableViewController: FontsTableViewController! { didSet { oneTimeSet(oldValue) } }
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var presetsTableViewController: PresetsTableViewController! { didSet { oneTimeSet(oldValue) } }
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private weak var tagsTableViewController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
 
   /// The controller for the info bar
@@ -79,6 +88,7 @@ where T: ControllerConfiguration {
 
   /// The manager for posting alerts
   public var alertManager: AlertManager { _alertManager }
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private var _alertManager: AlertManager!
 
   /// The synth engine that generates audio from sound font files.

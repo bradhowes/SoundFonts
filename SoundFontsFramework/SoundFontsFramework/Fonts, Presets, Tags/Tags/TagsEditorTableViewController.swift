@@ -76,7 +76,8 @@ final class TagsEditorTableViewController: UITableViewController {
   @IBOutlet private var editButton: UIBarButtonItem!
   @IBOutlet private var doneButton: UIBarButtonItem!
 
-  private var tags: TagsProvider!
+  private var tags: TagsProvider?
+
   private var active = Set<Tag.Key>()
   private var builtIn: Bool = false
   private var selectable: Bool = true
@@ -153,7 +154,7 @@ extension TagsEditorTableViewController: UITextFieldDelegate {
 extension TagsEditorTableViewController {
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    tags.count
+    tags?.count ?? 0
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -170,7 +171,7 @@ extension TagsEditorTableViewController {
     }
 
     if selectable,
-       let tag = tags.getBy(index: indexPath.row) {
+       let tag = tags?.getBy(index: indexPath.row) {
       let tagKey = tag.key
       if !Tag.stockTagSet.contains(tagKey) {
         if active.contains(tagKey) {
@@ -193,7 +194,7 @@ extension TagsEditorTableViewController {
   override func tableView(_ tableView: UITableView,
                           editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     // Do not allow the `All` tag and the `Built-in` tags to be edited.
-    guard let tag = tags.getBy(index: indexPath.row) else { return .none }
+    guard let tag = tags?.getBy(index: indexPath.row) else { return .none }
     return Tag.stockTagSet.contains(tag.key) ? .none : .delete
   }
 
@@ -207,17 +208,19 @@ extension TagsEditorTableViewController {
 
   override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,
                           to destinationIndexPath: IndexPath) {
+    guard let tags else { return }
     tags.insert(tags.remove(at: sourceIndexPath.row), at: destinationIndexPath.row)
   }
 
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
                           forRowAt indexPath: IndexPath) {
+    guard let tags else { return }
     if editingStyle == .delete {
       tableView.performBatchUpdates {
         active.remove(tags.remove(at: indexPath.row).key)
         tableView.deleteRows(at: [indexPath], with: .automatic)
       } completion: { _ in
-        if self.tags.count <= 2 {
+        if tags.count <= 2 {
           self.currentAction = .doneEditing
         }
       }
@@ -239,6 +242,7 @@ private extension TagsEditorTableViewController {
    */
   @IBAction func addTag(_ sender: UIBarButtonItem) {
     log.debug("addTag")
+    guard let tags else { return }
     let indexPath = IndexPath(row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
     startEditingName(indexPath, selected: true)
@@ -247,6 +251,7 @@ private extension TagsEditorTableViewController {
   @IBAction func editTagName(_ sender: UILongPressGestureRecognizer) {
     log.debug("editTagName")
     guard case .doneEditing = currentAction,
+          let tags,
           let indexPath = self.tableView.indexPathForRow(at: sender.location(in: tableView)),
           sender.state == .began,
           let tag = tags.getBy(index: indexPath.row),
@@ -281,6 +286,7 @@ private extension TagsEditorTableViewController {
   }
 
   func updateButtons() {
+    guard let tags else { return }
     switch currentAction {
     case .editTagEntries:
       log.debug("updateButtons - editing rows")
@@ -328,8 +334,8 @@ private extension TagsEditorTableViewController {
     // ordering.
     if let text = cell.tagEditor.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
       log.debug("new tag name: '\(text, privacy: .public)'")
-      tags.rename(indexPath.row, name: text)
-      if let tag = tags.getBy(index: indexPath.row) {
+      tags?.rename(indexPath.row, name: text)
+      if let tag = tags?.getBy(index: indexPath.row) {
         active.insert(tag.key)
       }
       tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -338,7 +344,7 @@ private extension TagsEditorTableViewController {
   }
 
   func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-    guard let tag = tags.getBy(index: indexPath.row) else { return cell }
+    guard let tag = tags?.getBy(index: indexPath.row) else { return cell }
 
     if case let .editTagName(editIndexPath, selected) = currentAction, editIndexPath == indexPath {
 

@@ -7,7 +7,7 @@ import os.log
 class ConsolidatedConfigFileMonitor: NSObject {
   private let log = Logging.logger("ConsolidatedConfigFileMonitor")
 
-  private weak var configFile: ConsolidatedConfigFile!
+  private weak var configFile: ConsolidatedConfigFile?
   private var stateObserver: Any?
   private var documentState: UIDocument.State { configFile.documentState }
   private var transferring: Bool = false

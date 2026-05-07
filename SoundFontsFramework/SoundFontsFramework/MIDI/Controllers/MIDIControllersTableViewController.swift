@@ -8,7 +8,7 @@ import MorkAndMIDI
  A table view that shows the known MIDI devices.
  */
 final class MIDIControllersTableViewController: UITableViewController {
-  private var midiEventRouter: MIDIEventRouter!
+  private var midiEventRouter: MIDIEventRouter?
   private var monitorToken: NotificationObserver?
 
   func configure(midiEventRouter: MIDIEventRouter) {
@@ -56,22 +56,22 @@ extension MIDIControllersTableViewController {
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIControllersTableCell = tableView.dequeueReusableCell(at: indexPath)
-    let midiControllerState = midiEventRouter.midiControllerState[indexPath.row]
+    let midiControllerState = midiEventRouter?.midiControllerState[indexPath.row]
     cell.identifier.text = "\(indexPath.row)"
-    cell.name.text = midiControllerState.name
+    cell.name.text = midiControllerState?.name ?? "?"
 
-    let assignments = (midiEventRouter.midiControllerActionStateManager.lookup[indexPath.row] ?? []) .map {
-      midiEventRouter.midiControllerActionStateManager.actions[$0].action.displayName
+    let assignments = (midiEventRouter?.midiControllerActionStateManager.lookup[indexPath.row] ?? []) .compactMap {
+      midiEventRouter?.midiControllerActionStateManager.actions[$0].action.displayName
     }.joined(separator: ", ")
 
     cell.action.text = assignments
-    if let lastValue = midiControllerState.lastValue {
+    if let lastValue = midiControllerState?.lastValue {
       cell.value.text = "\(lastValue)"
     } else {
       cell.value.text = ""
     }
 
-    cell.used.isOn = midiControllerState.allowed
+    cell.used.isOn = midiControllerState?.allowed ?? false
     cell.used.tag = indexPath.row
     if cell.used.target(forAction: #selector(allowedStateChanged(_:)), withSender: cell.used) == nil {
       cell.used.addTarget(self, action: #selector(allowedStateChanged(_:)), for: .valueChanged)
@@ -81,20 +81,20 @@ extension MIDIControllersTableViewController {
 
   @IBAction func disableAll(_ sender: Any) {
     for controller in 0..<128 {
-      midiEventRouter.allowedStateChanged(controller: controller, allowed: false)
+      midiEventRouter?.allowedStateChanged(controller: controller, allowed: false)
       tableView.reloadData()
     }
   }
 
   @IBAction func enableAll(_ sender: Any) {
     for controller in 0..<128 {
-      midiEventRouter.allowedStateChanged(controller: controller, allowed: true)
+      midiEventRouter?.allowedStateChanged(controller: controller, allowed: true)
       tableView.reloadData()
     }
   }
 
   @IBAction func allowedStateChanged(_ sender: UISwitch) {
-    midiEventRouter.allowedStateChanged(controller: sender.tag, allowed: sender.isOn)
+    midiEventRouter?.allowedStateChanged(controller: sender.tag, allowed: sender.isOn)
   }
 
   private func controllerAllowedSettingName(controller: Int) -> String { "controllerAllowed\(controller)" }

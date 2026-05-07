@@ -9,11 +9,11 @@ import os
 final class KeyboardController: UIViewController {
   private lazy var log: Logger = Logging.logger("KeyCon")
 
-  private var settings: Settings!
+  private var settings: Settings?
 
   /// MIDI value of the first note in the keyboard
   private var firstMidiNoteValue = 48 {
-    didSet { settings.lowestKeyNote = firstMidiNoteValue }
+    didSet { settings?.lowestKeyNote = firstMidiNoteValue }
   }
 
   /// MIDI value of the last note in the keyboard
@@ -26,19 +26,19 @@ final class KeyboardController: UIViewController {
   private var allKeys = [Key]()
   private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
-  private lazy var keyWidth: CGFloat = CGFloat(settings.keyWidth)
-  private var activePresetManager: ActivePresetManager!
+  private lazy var keyWidth: CGFloat = CGFloat(settings?.keyWidth ?? 10)
+  private var activePresetManager: ActivePresetManager?
   private var keyLabelOptionObservation: NSKeyValueObservation?
   private var keyWidthObservation: NSKeyValueObservation?
 
-  private var infoBar: AnyInfoBar!
+  private var infoBar: AnyInfoBar?
   private var touchedKeys = TouchKeyMap()
 
   private var trackedTouch: UITouch?
   private var panPending: CGFloat = 0.0
 
   private var keyLabelOption: KeyLabelOption {
-    get { KeyLabelOption(rawValue: settings.keyLabelOption) ?? .off }
+    get { KeyLabelOption(rawValue: settings?.keyLabelOption ?? 0) ?? .off }
     set { _ = newValue; allKeys.forEach { $0.setNeedsDisplay() } }
   }
 
@@ -58,6 +58,7 @@ extension KeyboardController {
   override func viewWillAppear(_ animated: Bool) {
     log.debug("viewWillAppear - BEGIN")
     super.viewWillAppear(animated)
+    guard let settings else { return }
 
     createKeys()
     let lowestKeyNote = settings.lowestKeyNote
@@ -107,8 +108,8 @@ extension KeyboardController: ControllerConfiguration {
     settings = router.settings
     activePresetManager = router.activePresetManager
     infoBar = router.infoBar
-    infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
-    infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
+    infoBar?.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
+    infoBar?.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
 
     router.activePresetManager.subscribe(self, notifier: presetChangedNotificationInBackground)
     router.favorites.subscribe(self, notifier: favoritesChangedNotificationInBackground)
@@ -139,7 +140,7 @@ extension KeyboardController {
    - parameter event: the event that spawned the touches
    */
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if settings.slideKeyboard {
+    if settings?.slideKeyboard == true {
       if trackedTouch == nil {
         trackedTouch = touches.first
         panPending = 0.0
@@ -239,6 +240,8 @@ private extension KeyboardController {
 
   func createKeys() {
     log.debug("createKeys BEGIN")
+    guard let settings else { return }
+
     var blackKeys = [Key]()
     for each in KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
                                   lastMidiNote: maxMidiValue) {
@@ -282,7 +285,7 @@ private extension KeyboardController {
       }
     }
 
-    if let firstKey = firstKey, settings.showSolfegeLabel == true {
+    if let firstKey = firstKey, settings?.showSolfegeLabel == true {
       updateInfoBar(note: firstKey.note)
     }
   }
@@ -307,11 +310,11 @@ private extension KeyboardController {
   func updateInfoBar(note: Note) {
     log.debug("updateInfoBar BEGIN - note: \(note.description, privacy: .public)")
     if isMuted {
-      infoBar.setStatusText("🔇")
-    } else if settings.showSolfegeLabel {
-      infoBar.setStatusText(note.label + " - " + note.solfege)
+      infoBar?.setStatusText("🔇")
+    } else if settings?.showSolfegeLabel == true {
+      infoBar?.setStatusText(note.label + " - " + note.solfege)
     } else {
-      infoBar.setStatusText(note.label)
+      infoBar?.setStatusText(note.label)
     }
     log.debug("updateInfoBar END")
   }
@@ -361,7 +364,7 @@ private extension KeyboardController {
   func presetChangedNotificationInBackground(_ event: ActivePresetEvent) {
     switch event {
     case .changed:
-      if let presetConfig = activePresetManager.activePresetConfig {
+      if let presetConfig = activePresetManager?.activePresetConfig {
         DispatchQueue.main.async { self.updateWith(presetConfig: presetConfig) }
       }
     case .loaded: break
@@ -383,8 +386,8 @@ private extension KeyboardController {
   }
 
   func handleFavoriteChanged(favorite: Favorite) {
-    if self.activePresetManager.activeFavorite == favorite {
-      self.updateWith(presetConfig: favorite.presetConfig)
+    if activePresetManager?.activeFavorite == favorite {
+      updateWith(presetConfig: favorite.presetConfig)
     }
   }
 

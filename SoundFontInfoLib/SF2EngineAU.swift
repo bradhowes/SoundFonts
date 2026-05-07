@@ -17,7 +17,9 @@ public final class SF2EngineAU: AUAudioUnit {
 
   /// Maximum frames to render
   private let maxFramesToRender: UInt32 = 512
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private var dryBus: AUAudioUnitBus!
+  // swiftlint:disable:next implicitly_unwrapped_optional
   private var reverbSendBus: AUAudioUnitBus!
 
   // We have no inputs

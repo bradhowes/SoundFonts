@@ -49,14 +49,16 @@ final public class FavoriteEditor: UIViewController {
     case favorite(config: PresetConfig)
   }
 
-  private var config: Config!
+  private var config: Config?
+
   private var presetConfig = PresetConfig(name: "")
   private var position: IndexPath = IndexPath(row: -1, section: -1)
   private var currentLowestNote: Note?
   private var completionHandler: ((Bool) -> Void)?
-  private var soundFonts: SoundFontsProvider! = nil
-  private var soundFontAndPreset: SoundFontAndPreset! = nil
-  private var settings: Settings!
+
+  private var soundFonts: SoundFontsProvider?
+  private var soundFontAndPreset: SoundFontAndPreset?
+  private var settings: Settings?
 
   weak var delegate: FavoriteEditorDelegate?
 
@@ -141,11 +143,11 @@ final public class FavoriteEditor: UIViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    precondition(config != nil && soundFonts != nil && soundFontAndPreset != nil)
-
+    guard let config, let settings, let soundFonts, let soundFontAndPreset else { fatalError() }
     guard let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else {
       fatalError()
     }
+
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     let editingFavorite = config.favorite != nil
 
@@ -266,6 +268,7 @@ private extension FavoriteEditor {
   @IBAction func pitchBendStep(_ sender: UIStepper) { updatePitchBendRange() }
 
   @IBAction func resetPitchBend(_ sender: UIButton) {
+    guard let settings else { return }
     presetConfig.pitchBendRange = nil
     setPitchBendRange(settings.pitchBendRange)
   }
@@ -300,6 +303,9 @@ private extension FavoriteEditor {
 
   func save() {
     guard
+      let config,
+      let soundFonts,
+      let soundFontAndPreset,
       let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey),
       let tuningComponent = self.tuningComponent
     else {
@@ -328,7 +334,7 @@ private extension FavoriteEditor {
     presetConfig.notes = notesTextView.text
 
     let response: Response =
-      self.config.isFavorite
+      config.isFavorite
       ? .favorite(config: presetConfig)
       : .preset(soundFontAndPreset: soundFontAndPreset, config: presetConfig)
 
@@ -350,7 +356,7 @@ private extension FavoriteEditor {
     let value = UInt8(pitchBendStepper.value)
     pitchBendRange.text = "\(value)"
     presetConfig.pitchBendRange = Int(value)
-    if config.state.isActive {
+    if let config, config.state.isActive {
       AudioEngine.pitchBendRangeChangedNotification.post(value: value)
     }
   }
@@ -364,7 +370,7 @@ private extension FavoriteEditor {
     gainValue.text = "\(formatFloat(value)) dB"
     gainSlider.value = value
     presetConfig.gain = value
-    if config.state.isActive {
+    if let config, config.state.isActive {
       AudioEngine.gainChangedNotification.post(value: value)
     }
   }
@@ -376,7 +382,7 @@ private extension FavoriteEditor {
     panRight.text = "\(right)"
     panSlider.value = value
     presetConfig.pan = value
-    if config.state.isActive {
+    if let config, config.state.isActive {
       AudioEngine.panChangedNotification.post(value: value)
     }
   }

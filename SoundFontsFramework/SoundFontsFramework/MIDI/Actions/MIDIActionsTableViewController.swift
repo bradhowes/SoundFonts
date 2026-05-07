@@ -11,10 +11,10 @@ import MorkAndMIDI
 final class MIDIActionsTableViewController: UITableViewController {
   private lazy var log: Logger = Logging.logger("MIDIActionsTableViewController")
 
-  private var midiEventRouter: MIDIEventRouter!
+  private var midiEventRouter: MIDIEventRouter?
   private var monitorToken: NotificationObserver?
   private var learningRow: Int?
-  private var actions: [MIDIControllerActionState] { midiEventRouter.midiControllerActionStateManager.actions }
+  private var actions: [MIDIControllerActionState] { midiEventRouter?.midiControllerActionStateManager.actions ?? [] }
   private var learningValues = [UInt8]()
 
   enum ButtonState: String {
@@ -153,16 +153,16 @@ private extension MIDIActionsTableViewController {
   }
 
   func assign(controller: Int, kind: MIDIControllerActionKind, to row: Int) {
-    midiEventRouter.midiControllerActionStateManager.assign(controller: controller,
-                                                            kind: kind,
-                                                            to: actions[row].action)
+    midiEventRouter?.midiControllerActionStateManager.assign(controller: controller,
+                                                             kind: kind,
+                                                             to: actions[row].action)
     learningRow = nil
     learningValues.removeAll()
     tableView.reloadRows(at: [.init(row: row, section: 0)], with: .automatic)
   }
 
   func removeAssign(row: Int) {
-    midiEventRouter.midiControllerActionStateManager.assign(controller: nil, kind: nil, to: actions[row].action)
+    midiEventRouter?.midiControllerActionStateManager.assign(controller: nil, kind: nil, to: actions[row].action)
     learningRow = nil
     learningValues.removeAll()
     tableView.reloadRows(at: [.init(row: row, section: 0)], with: .automatic)

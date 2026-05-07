@@ -10,8 +10,8 @@ import os.log
 final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private lazy var log: Logger = Logging.logger("FavoritesManager")
 
-  private var observer: ConsolidatedConfigObserver!
-  private var collection: FavoriteCollection? { observer.favorites }
+  private var observer: ConsolidatedConfigObserver?
+  private var collection: FavoriteCollection? { observer?.favorites }
 
   init(_ consolidatedConfigProvider: ConsolidatedConfigProvider) {
     super.init()
@@ -26,7 +26,7 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
 extension FavoritesManager: FavoritesProvider {
 
-  var isRestored: Bool { observer.isRestored }
+  var isRestored: Bool { observer?.isRestored ?? false }
 
   var count: Int { collection? .count ?? 0 }
 
@@ -133,7 +133,7 @@ extension FavoritesManager {
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
     log.info("markCollectionChanged - \(collection.description, privacy: .public)")
-    observer.markAsChanged()
+    observer?.markAsChanged()
   }
 
   private func notifyCollectionRestored() {

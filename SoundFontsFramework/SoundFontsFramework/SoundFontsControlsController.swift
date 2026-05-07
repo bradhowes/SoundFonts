@@ -17,9 +17,9 @@ final class SoundFontsControlsController: UIViewController {
   @IBOutlet private weak var effectsBottomConstraint: NSLayoutConstraint!
 
   private var upperViewManager = SlidingViewManager()
-  private var fontsViewManager: FontsViewManager!
-  private var infoBar: AnyInfoBar!
-  private var settings: Settings!
+  private var fontsViewManager: FontsViewManager?
+  private var infoBar: AnyInfoBar?
+  private var settings: Settings?
   private var isMainApp: Bool = false
 
   public override func viewDidLoad() {
@@ -41,7 +41,7 @@ final class SoundFontsControlsController: UIViewController {
 
     let showingFavorites: Bool = {
       if CommandLine.arguments.contains("--screenshots") { return false }
-      return settings.showingFavorites
+      return settings?.showingFavorites ?? false
     }()
 
     presetsView.isHidden = showingFavorites
@@ -51,6 +51,7 @@ final class SoundFontsControlsController: UIViewController {
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    guard let settings else { return }
     if isMainApp && settings.showEffects {
       showEffects(false)
     }
@@ -71,14 +72,14 @@ extension SoundFontsControlsController: ControllerConfiguration {
   func establishConnections(_ router: ComponentContainer) {
     settings = router.settings
     fontsViewManager = router.fontsViewManager
-    fontsViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
+    fontsViewManager?.addEventClosure(.swipeLeft, showNextConfigurationView)
 
     let favoritesViewManager = router.favoritesViewManager
     favoritesViewManager.addEventClosure(.swipeRight, showPreviousConfigurationView)
 
     infoBar = router.infoBar
-    infoBar.addEventClosure(.doubleTap, toggleConfigurationViews)
-    infoBar.addEventClosure(.showEffects, toggleShowEffects)
+    infoBar?.addEventClosure(.doubleTap, toggleConfigurationViews)
+    infoBar?.addEventClosure(.showEffects, toggleShowEffects)
 
     isMainApp = router.isMainApp
   }
@@ -119,7 +120,7 @@ private extension SoundFontsControlsController {
         NotificationCenter.default.post(name: .showingEffects, object: nil)
       }
     }
-    settings.showEffects = true
+    settings?.showEffects = true
   }
 
   func hideEffects(_ animated: Bool = true) {
@@ -133,7 +134,7 @@ private extension SoundFontsControlsController {
       ) { _ in
       }
     }
-    settings.showEffects = false
+    settings?.showEffects = false
   }
 
   /**
@@ -141,10 +142,10 @@ private extension SoundFontsControlsController {
    */
   private func showNextConfigurationView(_ action: AnyObject) {
     if upperViewManager.active == 0 {
-      fontsViewManager.dismissSearchKeyboard()
+      fontsViewManager?.dismissSearchKeyboard()
     }
     upperViewManager.slideNextHorizontally()
-    settings.showingFavorites = upperViewManager.active == 1
+    settings?.showingFavorites = upperViewManager.active == 1
     updateInfoBarButtons()
   }
 
@@ -153,12 +154,12 @@ private extension SoundFontsControlsController {
    */
   private func showPreviousConfigurationView(_ action: AnyObject) {
     upperViewManager.slidePrevHorizontally()
-    settings.showingFavorites = upperViewManager.active == 1
+    settings?.showingFavorites = upperViewManager.active == 1
     updateInfoBarButtons()
   }
 
   private func updateInfoBarButtons() {
-    infoBar.updateButtonsForPresetsViewState(visible: upperViewManager.active == 0)
+    infoBar?.updateButtonsForPresetsViewState(visible: upperViewManager.active == 0)
   }
 }
 

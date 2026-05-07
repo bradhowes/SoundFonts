@@ -8,8 +8,8 @@ import os
 final class TagsManager: SubscriptionManager<TagsEvent> {
   private lazy var log: Logger = Logging.logger("TagsManager")
 
-  private var observer: ConsolidatedConfigObserver!
-  private var collection: TagCollection? { observer.tags }
+  private var observer: ConsolidatedConfigObserver?
+  private var collection: TagCollection? { observer?.tags }
 
   /**
    Construct new manager
@@ -28,7 +28,7 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
 extension TagsManager: TagsProvider {
 
   /// Indicator that the collection of tags has been restored
-  var isRestored: Bool { observer.isRestored }
+  var isRestored: Bool { observer?.isRestored ?? false }
 
   /// True if the collection is empty
   var isEmpty: Bool { collection?.isEmpty ?? true }
@@ -115,7 +115,7 @@ extension TagsManager {
   private func markCollectionChanged() {
     guard let collection else { fatalError("logic error -- nil collection") }
     log.info("markCollectionChanged - \(collection.description, privacy: .public)")
-    observer.markAsChanged()
+    observer?.markAsChanged()
   }
 
   private func notifyCollectionRestored() {

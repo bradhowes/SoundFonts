@@ -49,6 +49,7 @@ public final class AVSF2Engine {
   public static func instantiate() -> AVAudioUnitMIDIInstrument {
     // TODO: revamp to do this without the blocking.
     let semaphore = DispatchSemaphore(value: 0)
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var result: AVAudioUnitMIDIInstrument!
     instantiate { avAudioUnit, _ in
       guard let avAudioUnit = avAudioUnit as? AVAudioUnitMIDIInstrument else {

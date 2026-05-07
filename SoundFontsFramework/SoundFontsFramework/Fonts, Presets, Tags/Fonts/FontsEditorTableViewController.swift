@@ -21,8 +21,8 @@ final class FontsEditorTableViewController: UITableViewController {
   @IBOutlet private var trashButton: UIBarButtonItem!
   @IBOutlet private var selectAllButton: UIBarButtonItem!
 
-  private var fonts: SoundFontsProvider!
-  private var settings: Settings!
+  private var fonts: SoundFontsProvider?
+  private var settings: Settings?
   private var selectedRows = Set<Int>()
 
   /**
@@ -58,7 +58,7 @@ final class FontsEditorTableViewController: UITableViewController {
 extension FontsEditorTableViewController {
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    fonts.count
+    fonts?.count ?? 0
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -74,7 +74,7 @@ extension FontsEditorTableViewController {
       self.selectedRows.remove(indexPath.row)
     } else {
       self.selectedRows.insert(indexPath.row)
-      if let font = fonts.getBy(index: indexPath.row) {
+      if let font = fonts?.getBy(index: indexPath.row) {
         if !font.kind.installed {
           notifyAboutBuiltinFonts()
         }
@@ -86,7 +86,7 @@ extension FontsEditorTableViewController {
   }
 
   private func notifyAboutBuiltinFonts() {
-    guard !settings[.notifiedAboutBuiltinFonts] else { return }
+    guard let settings, !settings[.notifiedAboutBuiltinFonts] else { return }
     settings[.notifiedAboutBuiltinFonts] = true
 
     let alertController = UIAlertController(title: "Built-in Font",
@@ -142,6 +142,7 @@ private extension FontsEditorTableViewController {
   }
 
   @IBAction func selectAllFonts(_ sender: UIBarButtonItem) {
+    guard let fonts else { return }
     if selectedRows.count == fonts.count {
       selectedRows.removeAll()
     } else {
@@ -177,11 +178,11 @@ private extension FontsEditorTableViewController {
   }
 
   private func doDelete() {
-    let keys = selectedRows.compactMap { fonts.getBy(index: $0)?.key }
+    let keys = selectedRows.compactMap { fonts?.getBy(index: $0)?.key }
     tableView.performBatchUpdates {
       for key in keys {
-        guard let font = fonts.getBy(key: key) else { continue }
-        fonts.remove(key: key)
+        guard let font = fonts?.getBy(key: key) else { continue }
+        fonts?.remove(key: key)
         if font.kind.deletable {
           DispatchQueue.global(qos: .userInitiated).async {
             try? FileManager.default.removeItem(at: font.fileURL)
@@ -195,7 +196,7 @@ private extension FontsEditorTableViewController {
   }
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-    guard let font = fonts.getBy(index: indexPath.row) else { return cell }
+    guard let font = fonts?.getBy(index: indexPath.row) else { return cell }
 
     // Show the normal name view
     cell.name.isHidden = false

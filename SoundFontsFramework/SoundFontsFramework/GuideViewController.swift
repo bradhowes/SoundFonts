@@ -4,9 +4,9 @@ import UIKit
 
 final class GuideViewController: UIViewController {
 
-  private var savedParent: UIViewController!
-  private var infoBar: AnyInfoBar!
-  private var settings: Settings!
+  private var savedParent: UIViewController?
+  private var infoBar: AnyInfoBar?
+  private var settings: Settings?
 
   @IBOutlet private weak var fontPresetPanel: UIView!
   @IBOutlet private weak var infoBarPanel: UIView!
@@ -29,7 +29,7 @@ extension GuideViewController: ControllerConfiguration {
     settings = router.settings
     infoBar = router.infoBar
     isMainApp = router.isMainApp
-    infoBar.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
+    infoBar?.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
     savedParent = parent
     removeFromParent()
   }
@@ -44,7 +44,7 @@ private extension GuideViewController {
     keySlideLabel.isHidden = isAUv3
     keyRangeLabel.isHidden = isAUv3
     keyRangeArrow.isHidden = isAUv3
-    if settings.showingFavorites {
+    if let settings, settings.showingFavorites {
       fontPresetPanel.isHidden = true
       favoritesPanel.isHidden = false
     } else {
@@ -55,7 +55,7 @@ private extension GuideViewController {
 
   func showGuide(_ sender: AnyObject) {
     prepareGuide()
-    savedParent.add(self)
+    savedParent?.add(self)
     view.alpha = 0.0
     view.isHidden = false
     UIViewPropertyAnimator.runningPropertyAnimator(
@@ -79,7 +79,7 @@ private extension GuideViewController {
           self.removeFromParent()
           AskForReview.maybe()
         })
-      self.infoBar.hideMoreButtons()
+      self.infoBar?.hideMoreButtons()
       self.view.removeGestureRecognizer(gesture)
     }
 

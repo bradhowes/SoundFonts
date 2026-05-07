@@ -10,8 +10,8 @@ import os.log
 final public class TagsTableViewController: UITableViewController {
   private let serialQueue = DispatchQueue(label: "TagsTableViewController", qos: .userInteractive, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .main)
-  private var tags: TagsProvider!
-  private var activeTagManager: ActiveTagManager!
+  private var tags: TagsProvider?
+  private var activeTagManager: ActiveTagManager?
 
   override public func viewDidLoad() {
     super.viewDidLoad()
@@ -48,10 +48,10 @@ extension TagsTableViewController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
     tags = router.tags
-    tags.subscribe(self, notifier: tagsRestoredNotificationInBackground)
+    tags?.subscribe(self, notifier: tagsRestoredNotificationInBackground)
 
     activeTagManager = router.activeTagManager
-    activeTagManager.subscribe(self, notifier: activeTagChangedNotificationInBackground)
+    activeTagManager?.subscribe(self, notifier: activeTagChangedNotificationInBackground)
 
     refresh()
   }
@@ -64,7 +64,8 @@ extension TagsTableViewController {
   override public func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    (tags != nil && tags.isRestored) ? tags.count : 0
+    guard let tags else { return 0 }
+    return tags.isRestored ? tags.count : 0
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -77,7 +78,7 @@ extension TagsTableViewController {
 extension TagsTableViewController {
 
   override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    activeTagManager.setActiveTag(index: indexPath.row)
+    activeTagManager?.setActiveTag(index: indexPath.row)
   }
 
   override public func tableView(
@@ -95,7 +96,7 @@ extension TagsTableViewController {
   }
 
   private func activeTagChangedNotificationInBackground(_ event: ActiveTagEvent) {
-    guard tags.isRestored else { return }
+    guard let tags, tags.isRestored else { return }
     if case let .change(oldTag, newTag) = event {
       serialQueue.async { self.handleTagChange(oldTag, newTag) }
     } else {
@@ -104,7 +105,7 @@ extension TagsTableViewController {
   }
 
   @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
-    if sender.state == .began {
+    if let tags, sender.state == .began {
       let config = TagsEditorTableViewController.Config(tags: tags)
       guard let parent = parent as? SoundFontsViewController else { fatalError() }
       parent.performSegue(withIdentifier: .tagsEditor, sender: config)
@@ -113,7 +114,7 @@ extension TagsTableViewController {
 
   private func handleTagChange(_ oldTag: Tag?, _ newTag: Tag) {
     if let oldTag = oldTag {
-      let rows = [oldTag, newTag].compactMap { tags.index(of: $0.key) }
+      let rows = [oldTag, newTag].compactMap { tags?.index(of: $0.key) }
       let indexPaths = rows.map { $0.indexPath }
       if !indexPaths.isEmpty {
         tableView.reloadRows(at: indexPaths, with: .automatic)
@@ -124,16 +125,16 @@ extension TagsTableViewController {
   }
 
   private func refresh() {
-    guard tags.isRestored else { return }
+    guard let tags, tags.isRestored else { return }
     tableView.reloadData()
   }
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let row = indexPath.row
-    if let tag = tags.getBy(index: row) {
+    if let tag = tags?.getBy(index: row) {
       let name = tag.name
       var flags: TableCell.Flags = .init()
-      if activeTagManager.activeTag == tag { flags.insert(.active) }
+      if activeTagManager?.activeTag == tag { flags.insert(.active) }
       cell.updateForTag(at: indexPath, name: name, flags: flags)
     }
     return cell

@@ -31,10 +31,10 @@ final class EffectsController: UIViewController {
   @IBOutlet private weak var delayWetDryMixLabel: UILabel!
 
   private var isMainApp: Bool = false
-  private var activePresetManager: ActivePresetManager!
-  private var soundFonts: SoundFontsProvider!
-  private var favorites: FavoritesProvider!
-  private var settings: Settings!
+  private var activePresetManager: ActivePresetManager?
+  private var soundFonts: SoundFontsProvider?
+  private var favorites: FavoritesProvider?
+  private var settings: Settings?
 
   private var audioEngine: AudioEngine?
   private var reverbEffect: ReverbEffect? { audioEngine?.reverbEffect }
@@ -152,6 +152,7 @@ extension EffectsController {
   }
 
   @IBAction func toggleReverbGlobal(_ sender: UIButton) {
+    guard let settings else { return }
     let value = !settings.reverbGlobal
     settings.reverbGlobal = value
     reverbGlobal.showEnabled(value)
@@ -179,6 +180,7 @@ extension EffectsController {
   }
 
   @IBAction func toggleDelayGlobal(_ sender: UIButton) {
+    guard let settings else { return }
     let value = !settings.delayGlobal
     settings.delayGlobal = value
     delayGlobal.showEnabled(value)
@@ -225,7 +227,8 @@ extension EffectsController: ControllerConfiguration {
     isMainApp = router.isMainApp
     soundFonts = router.soundFonts
     favorites = router.favorites
-    activePresetManager = router.activePresetManager
+    let activePresetManager = router.activePresetManager
+    self.activePresetManager = activePresetManager
 
     router.subscribe(self, notifier: routerChangeNotificationInBackground)
     activePresetManager.subscribe(self, notifier: activePresetChangedNotificationInBackground)
@@ -259,17 +262,19 @@ extension EffectsController: UIPickerViewDelegate {
   }
 
   public func pickerView(
-    _ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
+    _ pickerView: UIPickerView,
+    viewForRow row: Int,
+    forComponent component: Int,
     reusing view: UIView?
   ) -> UIView {
-    var pickerLabel: UILabel! = (view as? UILabel)
-    if pickerLabel == nil {
-      pickerLabel = UILabel()
-      pickerLabel?.font = UIFont(name: "Eurostile", size: 17.0)
-      pickerLabel?.textAlignment = .center
-    }
+    let pickerLabel = (view as? UILabel) ?? {
+      let tmp = UILabel()
+      tmp.font = UIFont(name: "Eurostile", size: 17.0)
+      tmp.textAlignment = .center
+      return tmp
+    }()
 
-    pickerLabel?.attributedText =
+    pickerLabel.attributedText =
       NSAttributedString(
         string: ReverbEffect.roomNames[row],
         attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
@@ -281,7 +286,7 @@ extension EffectsController: UIPickerViewDelegate {
 private extension EffectsController {
 
   func updateGlobalConfig() {
-    if let reverbEffect = self.reverbEffect, settings.reverbGlobal {
+    if let reverbEffect = self.reverbEffect, let settings, settings.reverbGlobal {
       log.debug("updating global reverb settings")
       let config = reverbEffect.active
       settings.reverbEnabled = config.enabled
@@ -289,7 +294,7 @@ private extension EffectsController {
       settings.reverbWetDryMix = config.wetDryMix
     }
 
-    if let delayEffect = self.delayEffect, settings.delayGlobal {
+    if let delayEffect = self.delayEffect, let settings, settings.delayGlobal {
       log.debug("updating global delay settings")
       let config = delayEffect.active
       settings.delayEnabled = config.enabled
@@ -301,8 +306,10 @@ private extension EffectsController {
   }
 
   func updatePresetConfig() {
-    guard let reverbEffect = self.reverbEffect,
-          let delayEffect = self.delayEffect
+    guard let reverbEffect,
+          let delayEffect,
+          let settings,
+          let activePresetManager
     else {
       return
     }
@@ -336,9 +343,9 @@ private extension EffectsController {
     }()
 
     if let favorite = activePresetManager.activeFavorite {
-      favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
+      favorites?.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
     } else if let soundFontAndPreset = activePresetManager.active.soundFontAndPreset {
-      soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig)
+      soundFonts?.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig)
     }
 
     updateGlobalConfig()
@@ -361,6 +368,7 @@ private extension EffectsController {
   }
 
   func updateState() {
+    guard let activePresetManager, let settings else { return }
     log.debug("updateState")
     let presetConfig = activePresetManager.activePresetConfig
 

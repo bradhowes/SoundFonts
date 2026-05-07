@@ -39,10 +39,11 @@ final class InfoBarController: UIViewController {
 
   private var panOrigin: CGPoint = CGPoint.zero
   private var fader: UIViewPropertyAnimator?
-  private var activePresetManager: ActivePresetManager!
-  private var soundFonts: SoundFontsProvider!
-  private var isMainApp: Bool!
-  private var settings: Settings!
+
+  private var activePresetManager: ActivePresetManager?
+  private var soundFonts: SoundFontsProvider?
+  private var isMainApp: Bool = false
+  private var settings: Settings?
   private var audioEngine: AudioEngine?
   private var midi: MIDI?
   private var midiConnectionMonitor: MIDIConnectionMonitor?
@@ -99,9 +100,10 @@ extension InfoBarController {
 
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    guard let settings else { fatalError("nil settings") }
 
     monitorToken = midiConnectionMonitor?.addConnectionActivityMonitor { payload in
-      let accepted = self.settings.midiChannel == -1 || self.settings.midiChannel == payload.channel
+      let accepted = settings.midiChannel == -1 || settings.midiChannel == payload.channel
       self.updateMIDIIndicator(accepted: accepted)
     }
 
@@ -193,7 +195,7 @@ extension InfoBarController {
   }
 
   func updateTuningIndicator() {
-    updateTuningIndicator(activePresetManager.activePresetConfig?.presetTuning ?? 0.0)
+    updateTuningIndicator(activePresetManager?.activePresetConfig?.presetTuning ?? 0.0)
   }
 }
 
@@ -201,7 +203,8 @@ extension InfoBarController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
     settings = router.settings
-    activePresetManager = router.activePresetManager
+    let activePresetManager = router.activePresetManager
+    self.activePresetManager = activePresetManager
     soundFonts = router.soundFonts
     isMainApp = router.isMainApp
 
@@ -282,8 +285,8 @@ private extension InfoBarController {
     updatePanIndicator(presetConfig.pan)
   }
 
-  func updatePanIndicator() { updatePanIndicator(activePresetManager.activePresetConfig?.pan ?? 0.0) }
-  func updateGainIndicator() { updateGainIndicator(activePresetManager.activePresetConfig?.gain ?? 0.0) }
+  func updatePanIndicator() { updatePanIndicator(activePresetManager?.activePresetConfig?.pan ?? 0.0) }
+  func updateGainIndicator() { updateGainIndicator(activePresetManager?.activePresetConfig?.gain ?? 0.0) }
   func addDoubleTapClosure(_ closure: @escaping UIControl.Closure) { doubleTap.addClosure(closure) }
   func addSoundFontClosure(_ closure: @escaping UIControl.Closure) { addSoundFont.addClosure(closure) }
   func addButtonLongPressGestureClosure(_ closure: @escaping UIControl.Closure) { addButtonLongPressGesture.addClosure(closure) }
@@ -339,12 +342,20 @@ private extension InfoBarController {
 
   @IBAction func toggleMoreButtons(_ sender: UIButton) { setMoreButtonsVisible(state: !showingMoreButtons) }
   @IBAction func showSettings(_ sender: UIButton) { setMoreButtonsVisible(state: false) }
-  @IBAction func toggleSlideKeyboard(_ sender: UIButton) { settings.slideKeyboard = !settings.slideKeyboard }
+  @IBAction func toggleSlideKeyboard(_ sender: UIButton) {
+    guard let settings else { return }
+    settings.slideKeyboard = !settings.slideKeyboard
+  }
 
   func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
-    guard let navController = segue.destination as? UINavigationController,
-          let viewController = navController.topViewController as? SettingsViewController
-    else { return }
+    guard
+      let navController = segue.destination as? UINavigationController,
+      let viewController = navController.topViewController as? SettingsViewController,
+      let settings,
+      let soundFonts
+    else {
+      return
+    }
 
     viewController.configure(isMainApp: isMainApp, soundFonts: soundFonts, settings: settings, audioEngine: audioEngine,
                              midi: midi, midiConnectionMonitor: midiConnectionMonitor, infoBar: self)
@@ -412,6 +423,7 @@ private extension InfoBarController {
   }
 
   func showActivePreset() {
+    guard let activePresetManager else { return }
     let activePresetKind = activePresetManager.active
     log.debug("useActivePresetKind BEGIN - \(activePresetKind.description, privacy: .public)")
     if activePresetKind.favoriteKey != nil,
@@ -436,7 +448,7 @@ private extension InfoBarController {
 
   func updateTuningIndicator(_ presetTuning: Float) {
     log.debug("updateTuningIndicator BEGIN - \(presetTuning)")
-    tuningIndicator.isHidden = presetTuning == 0.0 && settings.globalTuning == 0.0
+    tuningIndicator.isHidden = presetTuning == 0.0 && settings?.globalTuning == 0.0
     log.debug("updateTuningIndicator END")
   }
 
@@ -507,6 +519,7 @@ private extension InfoBarController {
   }
 
   func updateSlidingKeyboardState() {
+    guard let settings else { return }
     slidingKeyboardToggle.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
     slidingKeyboardToggle.accessibilityValue = settings.slideKeyboard ? "On" : "Off"
   }

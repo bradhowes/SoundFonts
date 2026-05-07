@@ -28,7 +28,9 @@ final class FontEditor: UIViewController {
     let completionHandler: ((Bool) -> Void)?
   }
 
-  private var config: Config!
+  private var config: Config?
+  private var textFieldKeyboardMonitor: TextFieldKeyboardMonitor?
+
   private var activeTags = Set<Tag.Key>()
 
   weak var delegate: FontEditorDelegate?
@@ -50,10 +52,8 @@ final class FontEditor: UIViewController {
   @IBOutlet private weak var embeddedAuthor: UILabel!
   @IBOutlet private weak var path: UILabel!
 
-  private var textFieldKeyboardMonitor: TextFieldKeyboardMonitor!
-
   private var soundFont: SoundFont {
-    guard let soundFont = config.soundFonts.getBy(key: config.soundFontKey) else { fatalError() }
+    guard let config, let soundFont = config.soundFonts.getBy(key: config.soundFontKey) else { fatalError() }
     return soundFont
   }
 }
@@ -72,6 +72,7 @@ extension FontEditor {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    guard let config else { return }
 
     let soundFont = self.soundFont
     name.text = soundFont.displayName
@@ -109,7 +110,7 @@ extension FontEditor: UITextFieldDelegate {
    Notification that user wishes to interact with a text field. Keep it visible.
    */
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    textFieldKeyboardMonitor.viewToKeepVisible = textField
+    textFieldKeyboardMonitor?.viewToKeepVisible = textField
     return true
   }
 
@@ -125,7 +126,7 @@ extension FontEditor: UITextFieldDelegate {
    Notification that editing in a text field is coming to an end
    */
   func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-    textFieldKeyboardMonitor.viewToKeepVisible = nil
+    textFieldKeyboardMonitor?.viewToKeepVisible = nil
     return true
   }
 }
@@ -171,7 +172,7 @@ extension FontEditor: SegueHandler {
 private extension FontEditor {
 
   @IBAction func close(_ sender: UIBarButtonItem) {
-    if let soundFont = config.soundFonts.getBy(key: config.soundFontKey) {
+    if let config, let soundFont = config.soundFonts.getBy(key: config.soundFontKey) {
       let newName = name.text ?? ""
       if !newName.isEmpty {
         soundFont.displayName = newName
@@ -181,11 +182,12 @@ private extension FontEditor {
     }
 
     self.dismiss(animated: true)
-    config.completionHandler?(true)
+    config?.completionHandler?(true)
     AskForReview.maybe()
   }
 
   @IBAction func makeAllVisible(_ sender: UIButton) {
+    guard let config else { return }
     config.soundFonts.makeAllVisible(key: config.soundFontKey)
     updateHiddenCount()
   }
@@ -206,15 +208,19 @@ private extension FontEditor {
   }
 
   func prepareToEdit(_ segue: UIStoryboardSegue) {
+    guard let config else { return }
     guard let viewController = segue.destination as? TagsEditorTableViewController else {
       fatalError("unexpected controller relationships")
     }
 
-    let config = TagsEditorTableViewController.Config(tags: self.config.tags, active: activeTags,
-                                                      builtIn: soundFont.kind.builtin) { [weak self] tags in
-      self?.activeTags = tags
-    }
-
-    viewController.configure(config)
+    viewController.configure(
+      TagsEditorTableViewController.Config(
+        tags: config.tags,
+        active: activeTags,
+        builtIn: soundFont.kind.builtin
+      ) { [weak self] tags in
+        self?.activeTags = tags
+      }
+    )
   }
 }

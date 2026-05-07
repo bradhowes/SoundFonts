@@ -8,8 +8,8 @@ import MorkAndMIDI
  A table view that shows the known MIDI devices.
  */
 final class MIDIConnectionsTableViewController: UITableViewController {
-  private var midi: MIDI!
-  private var midiConnectionMonitor: MIDIConnectionMonitor!
+  private var midi: MIDI?
+  private var midiConnectionMonitor: MIDIConnectionMonitor?
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var activeChannel: Int = -1
   private var monitorToken: NotificationObserver?
@@ -38,9 +38,10 @@ extension MIDIConnectionsTableViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    monitorToken = self.midiConnectionMonitor.addConnectionActivityMonitor { payload in
+    guard let midi, let midiConnectionMonitor else { return }
+    monitorToken = midiConnectionMonitor.addConnectionActivityMonitor { payload in
       let accepted = self.accepting(channel: payload.channel)
-      for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
+      for (row, source) in midi.sourceConnections.enumerated() where source.uniqueId == payload.uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
         if let cell: MIDIConnectionsTableCell = self.tableView.cellForRow(at: indexPath) {
           cell.channel.text = "\(payload.channel + 1)"
@@ -68,42 +69,45 @@ extension MIDIConnectionsTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    midi.sourceConnections.count
+    midi?.sourceConnections.count ?? 0
   }
 
   override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MIDIConnectionsTableCell = tableView.dequeueReusableCell(at: indexPath)
-    let source = midi.sourceConnections[indexPath.row]
-    cell.name.text = source.displayName
+    if let midi, let midiConnectionMonitor {
+      let source = midi.sourceConnections[indexPath.row]
+      cell.name.text = source.displayName
 
-    let connectionState = midiConnectionMonitor.connectionState(for: source.uniqueId)
-    if let channel = source.channel {
-      cell.channel.text = "\(channel + 1)"
-    } else {
-      cell.channel.text = "—"
+      let connectionState = midiConnectionMonitor.connectionState(for: source.uniqueId)
+      if let channel = source.channel {
+        cell.channel.text = "\(channel + 1)"
+      } else {
+        cell.channel.text = "—"
+      }
+
+      cell.velocityStepper.minimumValue = 0
+      cell.velocityStepper.maximumValue = 128
+
+      if let fixedVelocity = connectionState.fixedVelocity {
+        cell.velocityStepper.value = Double(fixedVelocity)
+        cell.velocity.text = "\(fixedVelocity)"
+      } else {
+        cell.velocity.text = "Off"
+        cell.velocityStepper.value = 128
+      }
+
+      cell.velocityStepper.tag = Int(source.uniqueId)
+      if cell.velocityStepper.target(forAction: #selector(velocityStepperChanged(_:)), withSender: self) == nil {
+        cell.velocityStepper.addTarget(self, action: #selector(velocityStepperChanged(_:)), for: .valueChanged)
+      }
+
+      cell.connected.isOn = source.connected
+      cell.connected.tag = Int(source.uniqueId)
+      if cell.connected.target(forAction: #selector(connectedStateChanged(_:)), withSender: cell.connected) == nil {
+        cell.connected.addTarget(self, action: #selector(connectedStateChanged(_:)), for: .valueChanged)
+      }
     }
 
-    cell.velocityStepper.minimumValue = 0
-    cell.velocityStepper.maximumValue = 128
-
-    if let fixedVelocity = connectionState.fixedVelocity {
-      cell.velocityStepper.value = Double(fixedVelocity)
-      cell.velocity.text = "\(fixedVelocity)"
-    } else {
-      cell.velocity.text = "Off"
-      cell.velocityStepper.value = 128
-    }
-
-    cell.velocityStepper.tag = Int(source.uniqueId)
-    if cell.velocityStepper.target(forAction: #selector(velocityStepperChanged(_:)), withSender: self) == nil {
-      cell.velocityStepper.addTarget(self, action: #selector(velocityStepperChanged(_:)), for: .valueChanged)
-    }
-
-    cell.connected.isOn = source.connected
-    cell.connected.tag = Int(source.uniqueId)
-    if cell.connected.target(forAction: #selector(connectedStateChanged(_:)), withSender: cell.connected) == nil {
-      cell.connected.addTarget(self, action: #selector(connectedStateChanged(_:)), for: .valueChanged)
-    }
     return cell
   }
 
@@ -115,9 +119,9 @@ extension MIDIConnectionsTableViewController {
           """, preferredStyle: .alert)
     ac.addAction(
       UIAlertAction(title: "Yes", style: .default) { _ in
-        self.midi.stop()
+        self.midi?.stop()
         MIDIRestart()
-        self.midi.start()
+        self.midi?.start()
       })
     ac.addAction(
       UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -128,8 +132,9 @@ extension MIDIConnectionsTableViewController {
   }
 
   @IBAction func velocityStepperChanged(_ sender: UIStepper) {
+    guard let midi, let midiConnectionMonitor else { return }
     let uniqueId = Int32(sender.tag)
-    for (row, source) in self.midi.sourceConnections.enumerated() where source.uniqueId == uniqueId {
+    for (row, source) in midi.sourceConnections.enumerated() where source.uniqueId == uniqueId {
       guard let cell: MIDIConnectionsTableCell = tableView.cellForRow(at: .init(row: row, section: 0)) else {
         return
       }
@@ -145,6 +150,7 @@ extension MIDIConnectionsTableViewController {
   }
 
   @IBAction func connectedStateChanged(_ sender: UISwitch) {
+    guard let midi, let midiConnectionMonitor else { return }
     let uniqueId = Int32(sender.tag)
     if sender.isOn {
       midiConnectionMonitor.setAutoConnectState(for: uniqueId, autoConnect: true)
