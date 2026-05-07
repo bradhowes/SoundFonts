@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Eurostile.ttc">
+            <string>EurostileRegular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Favorites View Controller-->
         <scene sceneID="RD6-oX-VFs">
@@ -16,22 +21,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IR7-rn-XMj" userLabel="Favorites">
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="job-Sm-IYg">
                                 <rect key="frame" x="8" y="8" width="398" height="880"/>
-                                <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <gestureRecognizers/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0rF-eW-4kh">
-                                    <size key="itemSize" width="80" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Yb7-t8-5Oz" appends="YES" id="ffO-VO-Xo2"/>
-                                    <outletCollection property="gestureRecognizers" destination="0DJ-wu-xH2" appends="YES" id="Hih-Pj-gAv"/>
-                                </connections>
-                            </collectionView>
+                                <subviews>
+                                    <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IR7-rn-XMj" userLabel="Favorites">
+                                        <rect key="frame" x="0.0" y="0.0" width="398" height="880"/>
+                                        <color key="backgroundColor" red="0.06274414062" green="0.06274414062" blue="0.06274414062" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <gestureRecognizers/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0rF-eW-4kh">
+                                            <size key="itemSize" width="80" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="0DJ-wu-xH2" appends="YES" id="Hih-Pj-gAv"/>
+                                            <outletCollection property="gestureRecognizers" destination="Yb7-t8-5Oz" appends="YES" id="ffO-VO-Xo2"/>
+                                        </connections>
+                                    </collectionView>
+                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PRT-82-Xd5">
+                                        <rect key="frame" x="96.5" y="411" width="205" height="58.5"/>
+                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="54"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.06304931641" green="0.06304931641" blue="0.06304931641" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="IR7-rn-XMj" secondAttribute="trailing" id="7Id-fj-AEd"/>
+                                    <constraint firstAttribute="bottom" secondItem="IR7-rn-XMj" secondAttribute="bottom" id="Nus-TS-8YX"/>
+                                    <constraint firstItem="IR7-rn-XMj" firstAttribute="top" secondItem="job-Sm-IYg" secondAttribute="top" id="aCD-rj-hu0"/>
+                                    <constraint firstItem="PRT-82-Xd5" firstAttribute="centerX" secondItem="job-Sm-IYg" secondAttribute="centerX" id="aLY-iI-dS4"/>
+                                    <constraint firstItem="IR7-rn-XMj" firstAttribute="leading" secondItem="job-Sm-IYg" secondAttribute="leading" id="hqB-VZ-ESV"/>
+                                    <constraint firstItem="PRT-82-Xd5" firstAttribute="centerY" secondItem="job-Sm-IYg" secondAttribute="centerY" id="sbD-ek-APM"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Bt-nf-V49"/>
                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -39,10 +64,10 @@
                             <bool key="isElement" value="NO"/>
                         </accessibility>
                         <constraints>
-                            <constraint firstItem="IR7-rn-XMj" firstAttribute="top" secondItem="Ss4-ST-6cC" secondAttribute="top" constant="8" id="WfA-2V-N96"/>
-                            <constraint firstItem="IR7-rn-XMj" firstAttribute="leading" secondItem="Ss4-ST-6cC" secondAttribute="leading" constant="8" id="lQH-GD-WHe"/>
-                            <constraint firstAttribute="trailing" secondItem="IR7-rn-XMj" secondAttribute="trailing" constant="8" id="uHz-JW-Sju"/>
-                            <constraint firstAttribute="bottom" secondItem="IR7-rn-XMj" secondAttribute="bottom" constant="8" id="wJw-fF-zhc"/>
+                            <constraint firstItem="job-Sm-IYg" firstAttribute="top" secondItem="Ss4-ST-6cC" secondAttribute="top" constant="8" id="M4S-Fb-mEd"/>
+                            <constraint firstItem="job-Sm-IYg" firstAttribute="leading" secondItem="6Bt-nf-V49" secondAttribute="leading" constant="8" id="Vwb-4J-iGl"/>
+                            <constraint firstItem="6Bt-nf-V49" firstAttribute="trailing" secondItem="job-Sm-IYg" secondAttribute="trailing" constant="8" id="ceR-DT-Mtq"/>
+                            <constraint firstAttribute="bottom" secondItem="job-Sm-IYg" secondAttribute="bottom" constant="8" id="maq-Wa-YFc"/>
                         </constraints>
                     </view>
                     <connections>
