@@ -37,6 +37,33 @@ Here are some additional sites that have curated or custom SF2 files that should
 
 # Recent Changes
 
+## 2.32.3
+
+* Change how sound fonts are resolved from DAW song/preset files in order to remove issues when sharing files across devices.
+* Fix to remove audio artifacts in CUBASIS 3 when playhead stops.
+
+## 2.32.2
+
+* Removed remaining implicit unwrapping sites to eliminate chance of crash.
+
+## 2.32.1
+
+* Small AUv3 interface update to fix crash in Camelot host.
+
+## 2.32.0
+
+* Update to latest SF2Lib version.
+* Incorporate SceneDelegate to future-proof app against later iOS releases.
+* Internal build changes to improve releases.
+
+## 2.31.1
+
+* Pressing "Done" when searching only dismisses the text keyboard and keeps showing the current search results.
+
+## 2.31.0
+
+* Enable searching in font list by dragging down to reveal search bar.
+
 ## 2.30.12
 
 * Various fixes related to accessibility -- thanks to Neal Hibbard for raising the issue
