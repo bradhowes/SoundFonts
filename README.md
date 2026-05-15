@@ -37,6 +37,10 @@ Here are some additional sites that have curated or custom SF2 files that should
 
 # Recent Changes
 
+## 2.32.4
+
+* Hide MIDI buttons in Settings panel when in AUv3 component.
+
 ## 2.32.3
 
 * Change how sound fonts are resolved from DAW song/preset files in order to remove issues when sharing files across devices.
