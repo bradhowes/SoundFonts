@@ -488,6 +488,7 @@ private extension SettingsViewController {
     midiAutoConnectStackView.isHidden = true
     bluetoothMIDIConnectStackView.isHidden = true
     backgroundMIDIProcessingModeStackView.isHidden = true
+    midiControllersStackView.isHidden = true
 
     divider2.isHidden = true
     divider3.isHidden = true
